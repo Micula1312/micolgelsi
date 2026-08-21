@@ -4,24 +4,137 @@ import { getCollection } from 'astro:content';
 
 const projects = await getCollection('projects');
 const exhibitions = await getCollection('exhibitions');
-const items = [...projects, ...exhibitions]
-  .filter((item) => item.data.featured)
-  .sort((a, b) => String(b.data.year).localeCompare(String(a.data.year)));
+const works = await getCollection('works');
+
+const items = [...projects, ...exhibitions, ...works].map((item) => {
+  const year = String(item.data.year);
+  const yearMatch = year.match(/\d{4}/);
+  const yearGroup = yearMatch?.[0] ?? year;
+  const typeLabel = item.data.type === 'exhibition'
+    ? 'Exhibition'
+    : item.data.medium?.[0]
+      ? item.data.medium[0]
+      : item.data.type;
+
+  return {
+    ...item,
+    yearGroup,
+    typeLabel,
+  };
+}).sort((a, b) => {
+  const yearDiff = Number(b.yearGroup) - Number(a.yearGroup);
+  if (yearDiff !== 0) return yearDiff;
+  return a.data.title.localeCompare(b.data.title);
+});
 ---
-<BaseLayout title="Micol Gelsi — Artist & Researcher">
-  <section class="intro">
-    <h1>Micol Gelsi</h1>
-    <p class="lead">Artist and researcher working across living archives, bodies, territories, ecological practices and technological systems.</p>
+<BaseLayout title="Micol Gelsi">
+  <section class="work-index" aria-labelledby="work-heading">
+    <div class="index-toolbar">
+      <h1 id="work-heading">Work</h1>
+      <div class="view-switch" aria-label="Arrange work by">
+        <button class="view-button is-active" type="button" data-view="year" aria-pressed="true">Year</button>
+        <button class="view-button" type="button" data-view="type" aria-pressed="false">Type</button>
+      </div>
+    </div>
+
+    <div id="work-list" class="work-list" data-view="year">
+      {items.map((item) => (
+        <a
+          class="work-row"
+          href={`/${item.collection}/${item.id}/`}
+          data-year={item.yearGroup}
+          data-type={item.typeLabel}
+          data-title={item.data.title}
+        >
+          <span class="work-title">{item.data.title}</span>
+          <span class="work-kind">{item.typeLabel}</span>
+          <span class="work-year">{item.data.year}</span>
+        </a>
+      ))}
+    </div>
   </section>
 
-  <section id="work" class="index" aria-label="Selected work">
-    {items.map((item, index) => (
-      <a class="index-row" href={`/${item.collection}/${item.id}/`}>
-        <span class="index-number">{String(index + 1).padStart(2, '0')}</span>
-        <span class="index-title">{item.data.title}</span>
-        <span class="index-type">{item.data.type}</span>
-        <span class="index-year">{item.data.year}</span>
-      </a>
-    ))}
-  </section>
+  <script is:inline>
+    (() => {
+      const list = document.querySelector('#work-list');
+      const buttons = [...document.querySelectorAll('.view-button')];
+      if (!list || !buttons.length) return;
+
+      const rows = [...list.querySelectorAll('.work-row')];
+
+      const sortRows = (view) => [...rows].sort((a, b) => {
+        const groupA = a.dataset[view] || '';
+        const groupB = b.dataset[view] || '';
+
+        if (view === 'year') {
+          const yearDiff = Number(groupB) - Number(groupA);
+          if (yearDiff !== 0) return yearDiff;
+        } else {
+          const groupDiff = groupA.localeCompare(groupB);
+          if (groupDiff !== 0) return groupDiff;
+        }
+
+        return (a.dataset.title || '').localeCompare(b.dataset.title || '');
+      });
+
+      const layout = (view, animate = true) => {
+        const first = new Map(rows.map((row) => [row, row.getBoundingClientRect()]));
+
+        list.querySelectorAll('.work-group').forEach((heading) => heading.remove());
+
+        let currentGroup = null;
+        sortRows(view).forEach((row) => {
+          const group = row.dataset[view] || '';
+          if (group !== currentGroup) {
+            currentGroup = group;
+            const heading = document.createElement('div');
+            heading.className = 'work-group';
+            heading.textContent = group;
+            heading.setAttribute('aria-hidden', 'true');
+            list.appendChild(heading);
+          }
+          list.appendChild(row);
+        });
+
+        list.dataset.view = view;
+
+        if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        rows.forEach((row) => {
+          const before = first.get(row);
+          const after = row.getBoundingClientRect();
+          if (!before) return;
+
+          const dx = before.left - after.left;
+          const dy = before.top - after.top;
+          if (dx === 0 && dy === 0) return;
+
+          row.animate(
+            [
+              { transform: `translate(${dx}px, ${dy}px)` },
+              { transform: 'translate(0, 0)' }
+            ],
+            { duration: 520, easing: 'cubic-bezier(.22,.61,.36,1)' }
+          );
+        });
+      };
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const view = button.dataset.view;
+          if (!view || list.dataset.view === view) return;
+
+          buttons.forEach((candidate) => {
+            const active = candidate === button;
+            candidate.classList.toggle('is-active', active);
+            candidate.setAttribute('aria-pressed', String(active));
+          });
+
+          layout(view);
+        });
+      });
+
+      layout('year', false);
+    })();
+  </script>
 </BaseLayout>
