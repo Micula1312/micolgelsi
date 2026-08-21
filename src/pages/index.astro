@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('projects');
+const exhibitions = await getCollection('exhibitions');
+const items = [...projects, ...exhibitions]
+  .filter((item) => item.data.featured)
+  .sort((a, b) => String(b.data.year).localeCompare(String(a.data.year)));
+---
+<BaseLayout title="Micol Gelsi — Artist & Researcher">
+  <section class="intro">
+    <h1>Micol Gelsi</h1>
+    <p class="lead">Artist and researcher working across living archives, bodies, territories, ecological practices and technological systems.</p>
+  </section>
+
+  <section id="work" class="index" aria-label="Selected work">
+    {items.map((item, index) => (
+      <a class="index-row" href={`/${item.collection}/${item.id}/`}>
+        <span class="index-number">{String(index + 1).padStart(2, '0')}</span>
+        <span class="index-title">{item.data.title}</span>
+        <span class="index-type">{item.data.type}</span>
+        <span class="index-year">{item.data.year}</span>
+      </a>
+    ))}
+  </section>
+</BaseLayout>
