@@ -1,0 +1,54 @@
+:root {
+  --bg: #ffffff;
+  --fg: #111111;
+  --muted: #777777;
+  --line: #d9d9d9;
+  --max: 1600px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--bg); color: var(--fg); }
+body { margin: 0; background: var(--bg); color: var(--fg); font-size: 14px; line-height: 1.35; }
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 0.16em; }
+img { display: block; max-width: 100%; }
+
+.shell { width: min(100% - 32px, var(--max)); margin: 0 auto; }
+.site-header { display: grid; grid-template-columns: 1fr auto; gap: 24px; padding: 18px 0 64px; border-bottom: 1px solid var(--line); }
+.site-name { font-weight: 400; letter-spacing: -0.02em; }
+.site-nav { display: flex; gap: 24px; }
+
+.page { padding: 28px 0 96px; }
+.eyebrow { color: var(--muted); margin-bottom: 12px; }
+.intro { display: grid; grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr); gap: 40px; margin-bottom: 88px; }
+h1 { margin: 0; font-size: clamp(42px, 7vw, 112px); line-height: 0.92; font-weight: 400; letter-spacing: -0.055em; max-width: 12ch; }
+.lead { margin: 0; max-width: 44ch; align-self: end; font-size: 16px; }
+
+.index { border-top: 1px solid var(--line); }
+.index-row { display: grid; grid-template-columns: 56px minmax(0, 1fr) 100px 180px; gap: 20px; padding: 13px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.index-row:hover .index-title { text-decoration: underline; text-underline-offset: 0.14em; }
+.index-number, .index-type { color: var(--muted); }
+.index-year { text-align: right; }
+
+.meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; border-top: 1px solid var(--line); padding-top: 12px; margin-top: 72px; color: var(--muted); }
+.prose { max-width: 680px; font-size: 17px; line-height: 1.5; }
+.related { margin-top: 88px; }
+.related h2 { font-size: 14px; font-weight: 400; margin: 0 0 16px; color: var(--muted); }
+
+@media (max-width: 760px) {
+  .shell { width: min(100% - 20px, var(--max)); }
+  .site-header { padding-bottom: 36px; }
+  .intro { grid-template-columns: 1fr; margin-bottom: 56px; }
+  .lead { max-width: none; }
+  .index-row { grid-template-columns: 36px minmax(0, 1fr) auto; }
+  .index-type { display: none; }
+  .meta { grid-template-columns: 1fr 1fr; }
+}
+
+@media print {
+  .site-nav { display: none; }
+  .shell { width: 100%; }
+  body { font-size: 10pt; }
+  .page { padding-bottom: 0; }
+}
