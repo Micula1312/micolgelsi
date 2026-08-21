@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const works = await getCollection('works');
+  return works.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const parent = entry.data.parent;
+---
+<BaseLayout title={`${entry.data.title} — Micol Gelsi`}>
+  <div class="eyebrow">
+    {parent ? <a href={`/${parent.type === 'exhibition' ? 'exhibitions' : 'projects'}/${parent.slug}/`}>← {parent.slug.replaceAll('-', ' ')}</a> : 'Work'}
+  </div>
+  <section class="intro">
+    <h1>{entry.data.title}</h1>
+    {entry.data.summary && <p class="lead">{entry.data.summary}</p>}
+  </section>
+
+  <article class="prose"><Content /></article>
+
+  <div class="meta">
+    <div>Year<br />{entry.data.year}</div>
+    <div>Type<br />Work</div>
+    <div>Medium<br />{entry.data.medium.join(', ') || '—'}</div>
+    <div>Themes<br />{entry.data.themes.join(', ') || '—'}</div>
+  </div>
+</BaseLayout>
