@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const exhibitions = await getCollection('exhibitions');
+  return exhibitions.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const allWorks = await getCollection('works');
+const related = allWorks.filter((work) => entry.data.works.includes(work.id));
+---
+<BaseLayout title={`${entry.data.title} — Micol Gelsi`}>
+  <div class="eyebrow">Exhibition · {entry.data.year}</div>
+  <section class="intro">
+    <h1>{entry.data.title}</h1>
+    {entry.data.summary && <p class="lead">{entry.data.summary}</p>}
+  </section>
+
+  <article class="prose"><Content /></article>
+
+  <div class="meta">
+    <div>Year<br />{entry.data.year}</div>
+    <div>Location<br />{entry.data.location ?? '—'}</div>
+    <div>Dates<br />{entry.data.dates ?? '—'}</div>
+    <div>Type<br />Exhibition</div>
+  </div>
+
+  {related.length > 0 && (
+    <section class="related">
+      <h2>Works in the exhibition</h2>
+      <div class="index">
+        {related.map((work, index) => (
+          <a class="index-row" href={`/works/${work.id}/`}>
+            <span class="index-number">{String(index + 1).padStart(2, '0')}</span>
+            <span class="index-title">{work.data.title}</span>
+            <span class="index-type">work</span>
+            <span class="index-year">{work.data.year}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</BaseLayout>
