@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const areas = await getCollection('research');
+---
+<BaseLayout title="Research — Micol Gelsi">
+  <section class="simple-index">
+    <h1>Research</h1>
+    {areas.map((area) => (
+      <article class="research-row">
+        <strong>{area.data.title}</strong>
+        {area.data.summary && <p>{area.data.summary}</p>}
+      </article>
+    ))}
+  </section>
+</BaseLayout>
