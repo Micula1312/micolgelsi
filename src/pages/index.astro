@@ -5,44 +5,83 @@ import { getCollection } from 'astro:content';
 const projects = await getCollection('projects');
 const exhibitions = await getCollection('exhibitions');
 const works = await getCollection('works');
+const external = await getCollection('external');
+
+const inferResearch = (item) => {
+  if (item.data.researchAreas?.length) return item.data.researchAreas;
+  const tags = [...(item.data.themes ?? []), ...(item.data.medium ?? [])].map((x) => x.toLowerCase());
+  const result = new Set();
+  if (tags.some((x) => ['territory', 'ecology', 'wildness', 'urban wilderness'].includes(x))) result.add('urban-wilderness');
+  if (tags.some((x) => ['archive', 'research'].includes(x))) result.add('generative-archives');
+  if (tags.some((x) => ['interspecies', 'more-than-human'].includes(x))) result.add('interspecies');
+  if (tags.some((x) => ['digital', 'net art', 'computer vision', 'interactive installation'].includes(x))) result.add('technology-digitalization');
+  if (tags.some((x) => ['memory', 'body', 'participation'].includes(x))) result.add('emotional-geographies');
+  return [...result];
+};
 
 const items = [...projects, ...exhibitions, ...works].map((item) => {
   const year = String(item.data.year);
   const yearMatch = year.match(/\d{4}/);
   const yearGroup = yearMatch?.[0] ?? year;
-  const typeLabel = item.data.type === 'exhibition'
-    ? 'Exhibition'
-    : item.data.medium?.[0]
-      ? item.data.medium[0]
-      : item.data.type;
+  const typeLabel = item.data.type === 'exhibition' ? 'Exhibition' : item.data.medium?.[0] ?? item.data.type;
+  return { ...item, yearGroup, typeLabel, researchAreas: inferResearch(item) };
+}).sort((a, b) => Number(b.yearGroup) - Number(a.yearGroup) || a.data.title.localeCompare(b.data.title));
 
-  return { ...item, yearGroup, typeLabel };
-}).sort((a, b) => {
-  const yearDiff = Number(b.yearGroup) - Number(a.yearGroup);
-  if (yearDiff !== 0) return yearDiff;
-  return a.data.title.localeCompare(b.data.title);
-});
+const researchAreas = [
+  ['urban-wilderness', 'Urban Wilderness'],
+  ['generative-archives', 'Generative Archives'],
+  ['interspecies', 'Interspecies'],
+  ['technology-digitalization', 'Technology & Digitalization'],
+  ['emotional-geographies', 'Emotional Geographies']
+];
 ---
 <BaseLayout title="Micol Gelsi">
-  <section class="work-index" aria-labelledby="work-heading">
-    <div class="index-toolbar">
-      <h1 id="work-heading">Projects</h1>
-      <div class="view-switch" aria-label="Arrange projects by">
-        <button class="view-button is-active" type="button" data-view="year" aria-pressed="true">Year</button>
-        <button class="view-button" type="button" data-view="type" aria-pressed="false">Type</button>
+  <div class="home-grid">
+    <section id="projects" class="work-index" aria-labelledby="projects-heading">
+      <div class="index-toolbar">
+        <h1 id="projects-heading">Projects</h1>
+        <div class="view-switch" aria-label="Arrange projects by">
+          <button class="view-button is-active" type="button" data-view="year" aria-pressed="true">Year</button>
+          <button class="view-button" type="button" data-view="type" aria-pressed="false">Type</button>
+          <button class="view-button" type="button" data-view="research" aria-pressed="false">Research</button>
+        </div>
       </div>
-    </div>
 
-    <div id="work-list" class="work-list" data-view="year">
-      {items.map((item) => (
-        <a class="work-row" href={`/${item.collection}/${item.id}/`} data-year={item.yearGroup} data-type={item.typeLabel} data-title={item.data.title}>
-          <span class="work-title">{item.data.title}</span>
-          <span class="work-kind">{item.typeLabel}</span>
-          <span class="work-year">{item.data.year}</span>
-        </a>
-      ))}
-    </div>
-  </section>
+      <div id="work-list" class="work-list" data-view="year">
+        <div class="research-field" aria-hidden="true">
+          {researchAreas.map(([key, label]) => <span class={`research-anchor anchor-${key}`}>{label}</span>)}
+        </div>
+        {items.map((item) => (
+          <a
+            class="work-row"
+            href={`/${item.collection}/${item.id}/`}
+            data-year={item.yearGroup}
+            data-type={item.typeLabel}
+            data-title={item.data.title}
+            data-research={item.researchAreas.join(',')}
+          >
+            <span class="work-title">{item.data.title}</span>
+            {item.data.collaborators?.length > 0 && <span class="collab-pill">W/ {item.data.collaborators.join(' + ')}</span>}
+            <span class="work-kind">{item.typeLabel}</span>
+            <span class="work-year">{item.data.year}</span>
+            {item.data.avatar && <img class="project-avatar" src={item.data.avatar} alt="" loading="lazy" />}
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <aside class="external-column" aria-label="External projects">
+      <h2>External</h2>
+      <div class="external-list">
+        {external.map((item) => item.data.url ? (
+          <a href={item.data.url} target="_blank" rel="noreferrer"><strong>{item.data.title}</strong><span>{item.data.kind} ↗</span></a>
+        ) : (
+          <div><strong>{item.data.title}</strong><span>{item.data.kind}</span></div>
+        ))}
+      </div>
+      <a class="playground-link" href="/playground"><strong>Playground</strong><span>live experiments →</span></a>
+    </aside>
+  </div>
 
   <script is:inline>
     (() => {
@@ -50,58 +89,83 @@ const items = [...projects, ...exhibitions, ...works].map((item) => {
       const buttons = [...document.querySelectorAll('.view-button')];
       if (!list || !buttons.length) return;
       const rows = [...list.querySelectorAll('.work-row')];
+      const field = list.querySelector('.research-field');
+      const points = {
+        'urban-wilderness': [14, 18],
+        'generative-archives': [49, 14],
+        'interspecies': [82, 27],
+        'technology-digitalization': [72, 78],
+        'emotional-geographies': [23, 76]
+      };
       const sortRows = (view) => [...rows].sort((a, b) => {
         const groupA = a.dataset[view] || '';
         const groupB = b.dataset[view] || '';
         if (view === 'year') {
-          const yearDiff = Number(groupB) - Number(groupA);
-          if (yearDiff !== 0) return yearDiff;
+          const diff = Number(groupB) - Number(groupA);
+          if (diff) return diff;
         } else {
-          const groupDiff = groupA.localeCompare(groupB);
-          if (groupDiff !== 0) return groupDiff;
+          const diff = groupA.localeCompare(groupB);
+          if (diff) return diff;
         }
         return (a.dataset.title || '').localeCompare(b.dataset.title || '');
       });
+      const placeResearch = () => {
+        rows.forEach((row, index) => {
+          const keys = (row.dataset.research || '').split(',').filter(Boolean);
+          const coords = keys.map((key) => points[key]).filter(Boolean);
+          const base = coords.length ? coords.reduce((acc, p) => [acc[0] + p[0], acc[1] + p[1]], [0, 0]).map((v) => v / coords.length) : [50, 50];
+          const jitterX = ((index * 17) % 9) - 4;
+          const jitterY = ((index * 13) % 7) - 3;
+          row.style.setProperty('--x', `${Math.max(5, Math.min(88, base[0] + jitterX))}%`);
+          row.style.setProperty('--y', `${Math.max(8, Math.min(88, base[1] + jitterY))}%`);
+        });
+      };
       const layout = (view, animate = true) => {
         const first = new Map(rows.map((row) => [row, row.getBoundingClientRect()]));
         list.querySelectorAll('.work-group').forEach((heading) => heading.remove());
-        let currentGroup = null;
-        sortRows(view).forEach((row) => {
-          const group = row.dataset[view] || '';
-          if (group !== currentGroup) {
-            currentGroup = group;
-            const heading = document.createElement('div');
-            heading.className = 'work-group';
-            heading.textContent = group;
-            heading.setAttribute('aria-hidden', 'true');
-            list.appendChild(heading);
-          }
-          list.appendChild(row);
-        });
+        list.classList.toggle('is-research-map', view === 'research');
+        if (field) field.hidden = view !== 'research';
+        if (view === 'research') {
+          rows.forEach((row) => list.appendChild(row));
+          placeResearch();
+        } else {
+          rows.forEach((row) => { row.style.removeProperty('--x'); row.style.removeProperty('--y'); });
+          let currentGroup = null;
+          sortRows(view).forEach((row) => {
+            const group = row.dataset[view] || '';
+            if (group !== currentGroup) {
+              currentGroup = group;
+              const heading = document.createElement('div');
+              heading.className = 'work-group';
+              heading.textContent = group;
+              heading.setAttribute('aria-hidden', 'true');
+              list.appendChild(heading);
+            }
+            list.appendChild(row);
+          });
+        }
         list.dataset.view = view;
         if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        rows.forEach((row) => {
+        requestAnimationFrame(() => rows.forEach((row) => {
           const before = first.get(row);
           const after = row.getBoundingClientRect();
           if (!before) return;
           const dx = before.left - after.left;
           const dy = before.top - after.top;
-          if (dx === 0 && dy === 0) return;
-          row.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'translate(0, 0)' }], { duration: 520, easing: 'cubic-bezier(.22,.61,.36,1)' });
-        });
+          if (!dx && !dy) return;
+          row.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'translate(0,0)' }], { duration: 650, easing: 'cubic-bezier(.22,.61,.36,1)' });
+        }));
       };
-      buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-          const view = button.dataset.view;
-          if (!view || list.dataset.view === view) return;
-          buttons.forEach((candidate) => {
-            const active = candidate === button;
-            candidate.classList.toggle('is-active', active);
-            candidate.setAttribute('aria-pressed', String(active));
-          });
-          layout(view);
+      buttons.forEach((button) => button.addEventListener('click', () => {
+        const view = button.dataset.view;
+        if (!view || list.dataset.view === view) return;
+        buttons.forEach((candidate) => {
+          const active = candidate === button;
+          candidate.classList.toggle('is-active', active);
+          candidate.setAttribute('aria-pressed', String(active));
         });
-      });
+        layout(view);
+      }));
       layout('year', false);
     })();
   </script>
