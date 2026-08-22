@@ -6,9 +6,11 @@
   --grid-dot: rgba(17, 17, 17, .16);
 }
 
-html[data-theme="dark"] {
-  --grid-dot: rgba(244, 244, 244, .17);
-}
+html[data-theme="dark"] { --grid-dot: rgba(244, 244, 244, .17); }
+
+/* Scrollbars are never drawn, even when YEAR remains vertically scrollable. */
+html { scrollbar-width: none; -ms-overflow-style: none; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0; height: 0; display: none; }
 
 html[data-style="rgb"] body {
   background-color: var(--bg);
@@ -17,42 +19,50 @@ html[data-style="rgb"] body {
   background-position: 0 0;
 }
 
+/* YEAR scrolls through time; TYPE and RESEARCH behave like fixed screens. */
+html[data-project-view="year"],
+html[data-project-view="year"] body { overflow-x: hidden; overflow-y: auto; }
+
+html[data-project-view="type"],
+html[data-project-view="type"] body,
+html[data-project-view="research"],
+html[data-project-view="research"] body { overflow: hidden; height: 100%; }
+
+/* The identity/menu band stays present while the temporal field moves underneath. */
+html[data-style="rgb"][data-project-view="year"] .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  background: var(--bg);
+}
+
 /* All three views live on the same open coordinate plane: no enclosing boxes. */
 html[data-style="rgb"] .work-list,
 html[data-style="rgb"] .work-list.is-year-plane,
 html[data-style="rgb"] .work-list.is-year-list,
 html[data-style="rgb"] .work-list.is-type-map,
-html[data-style="rgb"] .work-list.is-research-map {
-  border: 0 !important;
-  outline: 0 !important;
-}
+html[data-style="rgb"] .work-list.is-research-map { border: 0 !important; outline: 0 !important; }
 
 html[data-style="rgb"] .work-list.is-type-map,
-html[data-style="rgb"] .work-list.is-research-map {
-  overflow: visible;
-}
+html[data-style="rgb"] .work-list.is-research-map { overflow: visible; }
 
-/* Keep text/media readable while letting the coordinate field remain visible. */
 html[data-style="rgb"] .site-header,
-html[data-style="rgb"] .page {
-  position: relative;
-}
+html[data-style="rgb"] .page { position: relative; }
+
+/* Restore sticky positioning after the general positioning rule above. */
+html[data-style="rgb"][data-project-view="year"] .site-header { position: sticky; }
 
 html[data-style="rgb"] .work-row,
 html[data-style="rgb"] .research-anchor,
 html[data-style="rgb"] .type-anchor,
 html[data-style="rgb"] .work-group {
-  text-shadow:
-    1px 0 var(--bg),
-    -1px 0 var(--bg),
-    0 1px var(--bg),
-    0 -1px var(--bg);
+  text-shadow: 1px 0 var(--bg), -1px 0 var(--bg), 0 1px var(--bg), 0 -1px var(--bg);
 }
 
-@media (max-width: 760px) {
-  :root { --grid-step: 16px; }
-}
+@media (max-width: 760px) { :root { --grid-step: 16px; } }
 
 @media print {
+  html, body { overflow: visible !important; }
   html[data-style="rgb"] body { background-image: none !important; }
+  html[data-style="rgb"][data-project-view="year"] .site-header { position: static; }
 }
