@@ -111,7 +111,35 @@ const researchAreas = [
       const layoutResearch = () => { rows.forEach((row,index)=>{const keys=(row.dataset.research||'').split(',').filter(Boolean);const coords=keys.map(key=>researchPoints[key]).filter(Boolean);const base=coords.length?coords.reduce((acc,p)=>[acc[0]+p[0],acc[1]+p[1]],[0,0]).map(v=>v/coords.length):[50,50];const jitterX=((index*19)%15)-7,jitterY=((index*23)%13)-6;row.style.setProperty('--x',`${Math.max(6,Math.min(92,base[0]+jitterX))}%`);row.style.setProperty('--y',`${Math.max(10,Math.min(90,base[1]+jitterY))}%`);list.appendChild(row);}); };
 
       const setViewportMode = view => { document.documentElement.dataset.projectView=view; document.body.dataset.projectView=view; if(view!=='year') window.scrollTo({top:0,behavior:'instant'}); };
-      const layout = (view, animate=true) => { const first=new Map(rows.map(row=>[row,row.getBoundingClientRect()]));clearFocus();clearGenerated();resetRows();list.classList.toggle('is-year-plane',view==='year');list.classList.toggle('is-type-map',view==='type');list.classList.toggle('is-research-map',view==='research');if(researchField)researchField.hidden=view!=='research';if(typeField)typeField.hidden=view!=='type';if(view==='year')layoutYear();if(view==='type')layoutType();if(view==='research')layoutResearch();list.dataset.view=view;setViewportMode(view);if(!animate||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;requestAnimationFrame(()=>rows.forEach(row=>{const before=first.get(row),after=row.getBoundingClientRect();if(!before)return;const dx=before.left-after.left,dy=before.top-after.top;if(!dx&&!dy)return;row.animate([{transform:`translate(${dx}px, ${dy}px)`},{transform:'translate(0,0)'}],{duration:720,easing:'cubic-bezier(.22,.61,.36,1)'});})); };
+      const layout = (view, animate=true) => {
+        const first=new Map(rows.map(row=>[row,row.getBoundingClientRect()]));
+        clearFocus();clearGenerated();resetRows();
+        list.classList.toggle('is-year-plane',view==='year');
+        list.classList.toggle('is-type-map',view==='type');
+        list.classList.toggle('is-research-map',view==='research');
+        if(researchField)researchField.hidden=view!=='research';
+        if(typeField)typeField.hidden=view!=='type';
+        if(view==='year')layoutYear();
+        if(view==='type')layoutType();
+        if(view==='research')layoutResearch();
+        list.dataset.view=view;
+        setViewportMode(view);
+        if(!animate||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+        requestAnimationFrame(()=>rows.forEach(row=>{
+          const before=first.get(row),after=row.getBoundingClientRect();
+          if(!before)return;
+          const dx=before.left-after.left,dy=before.top-after.top;
+          if(!dx&&!dy)return;
+          const finalTransform=getComputedStyle(row).transform;
+          const fromTransform=finalTransform==='none'
+            ? `translate(${dx}px, ${dy}px)`
+            : `translate(${dx}px, ${dy}px) ${finalTransform}`;
+          row.animate(
+            [{transform:fromTransform},{transform:finalTransform}],
+            {duration:720,easing:'cubic-bezier(.22,.61,.36,1)'}
+          );
+        }));
+      };
       buttons.forEach(button=>button.addEventListener('click',()=>{const view=button.dataset.view;if(!view||list.dataset.view===view)return;buttons.forEach(candidate=>{const active=candidate===button;candidate.classList.toggle('is-active',active);candidate.setAttribute('aria-pressed',String(active));});layout(view);}));
       layout('year',false);
     })();
