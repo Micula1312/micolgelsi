@@ -28,11 +28,15 @@ const normalize = (item) => {
     : item.data.type === 'exhibition'
       ? 'Exhibition'
       : item.data.medium?.[0] ?? item.data.type;
+  const start = item.data.startDate ?? yearMatch?.[0] ?? '';
+  const end = item.data.endDate ?? (item.data.status === 'ongoing' ? 'ongoing' : yearMatch?.[0] ?? '');
 
   return {
     ...item,
     yearGroup,
     typeLabel,
+    start,
+    end,
     researchAreas: inferResearch(item),
     href: item.collection === 'external' && item.data.url ? item.data.url : `/${item.collection}/${item.id}/`,
     externalLink: item.collection === 'external' && Boolean(item.data.url)
@@ -68,10 +72,11 @@ const researchAreas = [
       </div>
     </div>
 
-    <div id="work-list" class="work-list" data-view="year">
+    <div id="work-list" class="work-list is-year-list" data-view="year">
       <div class="research-field" aria-hidden="true">
         {researchAreas.map(([key, label]) => <span class={`research-anchor anchor-${key}`}>{label}</span>)}
       </div>
+      <div class="type-field" aria-hidden="true"></div>
 
       {items.map((item) => (
         <a
@@ -83,11 +88,12 @@ const researchAreas = [
           data-type={item.typeLabel}
           data-title={item.data.title}
           data-research={item.researchAreas.join(',')}
+          data-start={item.start}
+          data-end={item.end}
         >
+          <span class="timeline-mark" aria-hidden="true"><i></i></span>
           <span class="work-title">{item.data.title}{item.externalLink ? ' ↗' : ''}</span>
           {item.data.collaborators?.length > 0 && <span class="collab-pill">W/ {item.data.collaborators.join(' + ')}</span>}
-          <span class="work-kind">{item.typeLabel}</span>
-          <span class="work-year">{item.data.year ?? '—'}</span>
           {item.data.avatar && <img class="project-avatar" src={item.data.avatar} alt="" loading="lazy" />}
         </a>
       ))}
@@ -106,78 +112,114 @@ const researchAreas = [
       if (!list || !buttons.length) return;
 
       const rows = [...list.querySelectorAll('.work-row')];
-      const field = list.querySelector('.research-field');
-      const points = {
-        'urban-wilderness': [14, 18],
-        'generative-archives': [49, 14],
-        'interspecies': [82, 27],
-        'technology-digitalization': [72, 78],
-        'emotional-geographies': [23, 76]
+      const researchField = list.querySelector('.research-field');
+      const typeField = list.querySelector('.type-field');
+      const researchPoints = {
+        'urban-wilderness': [13, 18],
+        'generative-archives': [47, 14],
+        'interspecies': [82, 25],
+        'technology-digitalization': [75, 78],
+        'emotional-geographies': [20, 78]
       };
 
-      const sortRows = (view) => [...rows].sort((a, b) => {
-        const groupA = a.dataset[view] || '';
-        const groupB = b.dataset[view] || '';
-        if (view === 'year') {
-          const aYear = Number(groupA);
-          const bYear = Number(groupB);
-          const aValid = Number.isFinite(aYear);
-          const bValid = Number.isFinite(bYear);
-          if (aValid && bValid && aYear !== bYear) return bYear - aYear;
-          if (aValid !== bValid) return aValid ? -1 : 1;
-        } else {
-          const diff = groupA.localeCompare(groupB);
-          if (diff) return diff;
-        }
-        return (a.dataset.title || '').localeCompare(b.dataset.title || '');
+      const byTitle = (a, b) => (a.dataset.title || '').localeCompare(b.dataset.title || '');
+      const sortedByYear = () => [...rows].sort((a, b) => {
+        const ay = Number(a.dataset.year);
+        const by = Number(b.dataset.year);
+        const av = Number.isFinite(ay);
+        const bv = Number.isFinite(by);
+        if (av && bv && ay !== by) return by - ay;
+        if (av !== bv) return av ? -1 : 1;
+        return byTitle(a, b);
       });
 
-      const placeResearch = () => {
+      const clearGenerated = () => {
+        list.querySelectorAll('.work-group').forEach((node) => node.remove());
+        if (typeField) typeField.innerHTML = '';
+      };
+
+      const resetRows = () => rows.forEach((row) => {
+        row.style.removeProperty('--x');
+        row.style.removeProperty('--y');
+        row.style.removeProperty('--timeline-length');
+      });
+
+      const parseYear = (value) => {
+        const match = String(value || '').match(/\d{4}/);
+        return match ? Number(match[0]) : null;
+      };
+
+      const layoutYear = () => {
+        let currentYear = null;
+        sortedByYear().forEach((row) => {
+          const year = row.dataset.year || '—';
+          if (year !== currentYear) {
+            currentYear = year;
+            const heading = document.createElement('div');
+            heading.className = 'work-group';
+            heading.textContent = year;
+            list.appendChild(heading);
+          }
+          const start = parseYear(row.dataset.start) ?? parseYear(year);
+          const end = row.dataset.end === 'ongoing' ? 2026 : (parseYear(row.dataset.end) ?? start);
+          const length = start && end ? Math.max(1, end - start + 1) : 1;
+          row.style.setProperty('--timeline-length', String(length));
+          list.appendChild(row);
+        });
+      };
+
+      const layoutType = () => {
+        const types = [...new Set(rows.map((row) => row.dataset.type || 'Other'))].sort();
+        const columnWidth = 100 / Math.max(types.length, 1);
+        types.forEach((type, typeIndex) => {
+          if (typeField) {
+            const label = document.createElement('span');
+            label.className = 'type-anchor';
+            label.textContent = type;
+            label.style.left = `${typeIndex * columnWidth + columnWidth / 2}%`;
+            typeField.appendChild(label);
+          }
+          rows.filter((row) => (row.dataset.type || 'Other') === type)
+            .sort(byTitle)
+            .forEach((row, rowIndex) => {
+              row.style.setProperty('--x', `${typeIndex * columnWidth + columnWidth / 2}%`);
+              row.style.setProperty('--y', `${15 + rowIndex * 9}%`);
+              list.appendChild(row);
+            });
+        });
+      };
+
+      const layoutResearch = () => {
         rows.forEach((row, index) => {
           const keys = (row.dataset.research || '').split(',').filter(Boolean);
-          const coords = keys.map((key) => points[key]).filter(Boolean);
+          const coords = keys.map((key) => researchPoints[key]).filter(Boolean);
           const base = coords.length
-            ? coords.reduce((acc, p) => [acc[0] + p[0], acc[1] + p[1]], [0, 0]).map((v) => v / coords.length)
+            ? coords.reduce((acc, point) => [acc[0] + point[0], acc[1] + point[1]], [0, 0]).map((v) => v / coords.length)
             : [50, 50];
-          const jitterX = ((index * 17) % 9) - 4;
-          const jitterY = ((index * 13) % 7) - 3;
-          row.style.setProperty('--x', `${Math.max(5, Math.min(88, base[0] + jitterX))}%`);
-          row.style.setProperty('--y', `${Math.max(8, Math.min(88, base[1] + jitterY))}%`);
+          const jitterX = ((index * 19) % 15) - 7;
+          const jitterY = ((index * 23) % 13) - 6;
+          row.style.setProperty('--x', `${Math.max(6, Math.min(92, base[0] + jitterX))}%`);
+          row.style.setProperty('--y', `${Math.max(10, Math.min(90, base[1] + jitterY))}%`);
+          list.appendChild(row);
         });
       };
 
       const layout = (view, animate = true) => {
         const first = new Map(rows.map((row) => [row, row.getBoundingClientRect()]));
-        list.querySelectorAll('.work-group').forEach((heading) => heading.remove());
+        clearGenerated();
+        resetRows();
+        list.classList.toggle('is-year-list', view === 'year');
+        list.classList.toggle('is-type-map', view === 'type');
         list.classList.toggle('is-research-map', view === 'research');
-        if (field) field.hidden = view !== 'research';
+        if (researchField) researchField.hidden = view !== 'research';
+        if (typeField) typeField.hidden = view !== 'type';
 
-        if (view === 'research') {
-          rows.forEach((row) => list.appendChild(row));
-          placeResearch();
-        } else {
-          rows.forEach((row) => {
-            row.style.removeProperty('--x');
-            row.style.removeProperty('--y');
-          });
-          let currentGroup = null;
-          sortRows(view).forEach((row) => {
-            const group = row.dataset[view] || '—';
-            if (group !== currentGroup) {
-              currentGroup = group;
-              const heading = document.createElement('div');
-              heading.className = 'work-group';
-              heading.textContent = group;
-              heading.setAttribute('aria-hidden', 'true');
-              list.appendChild(heading);
-            }
-            list.appendChild(row);
-          });
-        }
+        if (view === 'year') layoutYear();
+        if (view === 'type') layoutType();
+        if (view === 'research') layoutResearch();
 
         list.dataset.view = view;
         if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
         requestAnimationFrame(() => rows.forEach((row) => {
           const before = first.get(row);
           const after = row.getBoundingClientRect();
@@ -187,7 +229,7 @@ const researchAreas = [
           if (!dx && !dy) return;
           row.animate(
             [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'translate(0,0)' }],
-            { duration: 650, easing: 'cubic-bezier(.22,.61,.36,1)' }
+            { duration: 720, easing: 'cubic-bezier(.22,.61,.36,1)' }
           );
         }));
       };
