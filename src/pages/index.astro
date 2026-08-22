@@ -90,8 +90,12 @@ const researchAreas = [
           data-research={item.researchAreas.join(',')}
           data-start={item.start}
           data-end={item.end}
+          data-moments={JSON.stringify(item.data.moments ?? [])}
         >
-          <span class="timeline-mark" aria-hidden="true"><i></i></span>
+          <span class="timeline-mark" aria-hidden="true">
+            <i></i>
+            <span class="output-moments"></span>
+          </span>
           <span class="work-title">{item.data.title}{item.externalLink ? ' ↗' : ''}</span>
           {item.data.collaborators?.length > 0 && <span class="collab-pill">W/ {item.data.collaborators.join(' + ')}</span>}
           {item.data.avatar && <img class="project-avatar" src={item.data.avatar} alt="" loading="lazy" />}
@@ -138,6 +142,11 @@ const researchAreas = [
         if (typeField) typeField.innerHTML = '';
       };
 
+      const clearFocus = () => {
+        list.classList.remove('has-year-focus');
+        rows.forEach((row) => row.classList.remove('is-year-focus'));
+      };
+
       const resetRows = () => rows.forEach((row) => {
         row.style.removeProperty('--x');
         row.style.removeProperty('--y');
@@ -148,6 +157,56 @@ const researchAreas = [
         const match = String(value || '').match(/\d{4}/);
         return match ? Number(match[0]) : null;
       };
+
+      const parseTime = (value) => {
+        if (!value) return null;
+        const normalized = /^\d{4}$/.test(value) ? `${value}-01-01` : value;
+        const stamp = Date.parse(normalized);
+        return Number.isFinite(stamp) ? stamp : null;
+      };
+
+      const renderMoments = (row) => {
+        const host = row.querySelector('.output-moments');
+        if (!host) return;
+        host.innerHTML = '';
+        let moments = [];
+        try { moments = JSON.parse(row.dataset.moments || '[]'); } catch { moments = []; }
+        if (!moments.length) return;
+
+        const startStamp = parseTime(row.dataset.start) ?? parseTime(row.dataset.year);
+        const endStamp = row.dataset.end === 'ongoing'
+          ? Date.now()
+          : (parseTime(row.dataset.end) ?? startStamp);
+        const range = Math.max(1, (endStamp ?? 1) - (startStamp ?? 0));
+
+        moments.forEach((moment) => {
+          const dot = document.createElement('span');
+          dot.className = 'moment-dot';
+          const momentStamp = parseTime(moment.date) ?? startStamp;
+          const ratio = Math.max(0, Math.min(1, ((momentStamp ?? startStamp ?? 0) - (startStamp ?? 0)) / range));
+          dot.style.left = `${ratio * 100}%`;
+
+          const label = document.createElement('span');
+          label.className = 'moment-label';
+          label.textContent = [moment.date, moment.title, moment.location].filter(Boolean).join(' · ');
+          dot.appendChild(label);
+          host.appendChild(dot);
+        });
+      };
+
+      const focusYearRow = (row) => {
+        if (list.dataset.view !== 'year') return;
+        rows.forEach((candidate) => candidate.classList.toggle('is-year-focus', candidate === row));
+        list.classList.add('has-year-focus');
+        renderMoments(row);
+      };
+
+      rows.forEach((row) => {
+        row.addEventListener('mouseenter', () => focusYearRow(row));
+        row.addEventListener('mouseleave', clearFocus);
+        row.addEventListener('focus', () => focusYearRow(row));
+        row.addEventListener('blur', clearFocus);
+      });
 
       const layoutYear = () => {
         let currentYear = null;
@@ -161,7 +220,7 @@ const researchAreas = [
             list.appendChild(heading);
           }
           const start = parseYear(row.dataset.start) ?? parseYear(year);
-          const end = row.dataset.end === 'ongoing' ? 2026 : (parseYear(row.dataset.end) ?? start);
+          const end = row.dataset.end === 'ongoing' ? new Date().getFullYear() : (parseYear(row.dataset.end) ?? start);
           const length = start && end ? Math.max(1, end - start + 1) : 1;
           row.style.setProperty('--timeline-length', String(length));
           list.appendChild(row);
@@ -206,6 +265,7 @@ const researchAreas = [
 
       const layout = (view, animate = true) => {
         const first = new Map(rows.map((row) => [row, row.getBoundingClientRect()]));
+        clearFocus();
         clearGenerated();
         resetRows();
         list.classList.toggle('is-year-list', view === 'year');
