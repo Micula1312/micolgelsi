@@ -1,0 +1,43 @@
+/* Monochrome coordinate-plane texture for the designed RGB skin.
+   Kept separate so the browser-native mode remains truly native. */
+
+:root {
+  --grid-step: 18px;
+  --grid-dot: rgba(17, 17, 17, .16);
+}
+
+html[data-theme="dark"] {
+  --grid-dot: rgba(244, 244, 244, .17);
+}
+
+html[data-style="rgb"] body {
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, var(--grid-dot) 1px, transparent 1.15px);
+  background-size: var(--grid-step) var(--grid-step);
+  background-position: 0 0;
+}
+
+/* Keep text/media readable while letting the coordinate field remain visible. */
+html[data-style="rgb"] .site-header,
+html[data-style="rgb"] .page {
+  position: relative;
+}
+
+html[data-style="rgb"] .work-row,
+html[data-style="rgb"] .research-anchor,
+html[data-style="rgb"] .type-anchor,
+html[data-style="rgb"] .work-group {
+  text-shadow:
+    1px 0 var(--bg),
+    -1px 0 var(--bg),
+    0 1px var(--bg),
+    0 -1px var(--bg);
+}
+
+@media (max-width: 760px) {
+  :root { --grid-step: 16px; }
+}
+
+@media print {
+  html[data-style="rgb"] body { background-image: none !important; }
+}
