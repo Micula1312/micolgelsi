@@ -17,6 +17,21 @@ html[data-style="rgb"] body {
   background-position: 0 0;
 }
 
+/* All three views live on the same open coordinate plane: no enclosing boxes. */
+html[data-style="rgb"] .work-list,
+html[data-style="rgb"] .work-list.is-year-plane,
+html[data-style="rgb"] .work-list.is-year-list,
+html[data-style="rgb"] .work-list.is-type-map,
+html[data-style="rgb"] .work-list.is-research-map {
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+html[data-style="rgb"] .work-list.is-type-map,
+html[data-style="rgb"] .work-list.is-research-map {
+  overflow: visible;
+}
+
 /* Keep text/media readable while letting the coordinate field remain visible. */
 html[data-style="rgb"] .site-header,
 html[data-style="rgb"] .page {
