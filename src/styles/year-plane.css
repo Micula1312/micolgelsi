@@ -1,49 +1,64 @@
 .year-axis,
 .year-side-label { display: none; }
 
+/* YEAR is not a framed panel: it is a long temporal plane that continues with scroll. */
 .work-list.is-year-plane {
-  height: min(72vh, 760px);
-  min-height: 560px;
-  border: 1px solid var(--line);
-  overflow: hidden;
+  height: 1180px;
+  min-height: 1180px;
+  border: 0;
+  overflow: visible;
+  position: relative;
 }
 
 .work-list.is-year-plane .year-axis {
   display: block;
   position: absolute;
   left: 50%;
-  top: 12px;
-  bottom: 12px;
+  top: 18px;
+  bottom: 18px;
   width: 1px;
   background: var(--line);
   pointer-events: none;
+  transform: translateX(-50%);
 }
 
-.work-list.is-year-plane .year-axis span {
+.work-list.is-year-plane .year-axis::before {
+  content: 'time ↑';
   position: absolute;
-  left: 8px;
+  left: 10px;
   top: 0;
   color: var(--muted);
   white-space: nowrap;
 }
 
-.work-list.is-year-plane .year-side-label {
-  display: block;
+.work-list.is-year-plane .year-axis span {
   position: absolute;
-  top: 12px;
+  left: 12px;
   color: var(--muted);
-  pointer-events: none;
+  white-space: nowrap;
+  transform: translateY(-50%);
 }
-.work-list.is-year-plane .year-side-art { left: 12px; }
-.work-list.is-year-plane .year-side-external { right: 12px; }
 
+.work-list.is-year-plane .year-axis span::before {
+  content: '';
+  position: absolute;
+  right: calc(100% + 8px);
+  top: 50%;
+  width: 9px;
+  height: 1px;
+  background: var(--line);
+}
+
+.work-list.is-year-plane .year-side-label { display: none; }
+
+/* Every project line lives in one tight bundle around the central time axis. */
 .work-list.is-year-plane .work-row {
   position: absolute;
   left: var(--x);
   top: var(--top);
   height: var(--height);
   width: 1px;
-  min-height: 44px;
+  min-height: 30px;
   transform: translateX(-50%);
   z-index: 2;
 }
@@ -54,13 +69,14 @@
   inset: 0;
   width: 1px;
   background: var(--fg);
+  opacity: .68;
 }
 
 .work-list.is-year-plane .timeline-end {
   position: absolute;
   left: 50%;
-  width: 7px;
-  height: 7px;
+  width: 5px;
+  height: 5px;
   border: 1px solid var(--fg);
   background: var(--bg);
   border-radius: 50%;
@@ -69,44 +85,41 @@
 .work-list.is-year-plane .timeline-end-top { top: 0; }
 .work-list.is-year-plane .timeline-end-bottom { top: 100%; }
 
+/* Names sit outside the bundle, connected to their own trajectory. */
 .work-list.is-year-plane .work-title {
   position: absolute;
-  left: 12px;
   top: 50%;
   width: max-content;
-  max-width: 220px;
-  transform: translateY(-50%);
+  max-width: 260px;
   line-height: 1.1;
+  transform: translateY(-50%);
+}
+
+.work-list.is-year-plane .work-row:not(.is-external-project) .work-title {
+  right: 18px;
+  text-align: right;
+}
+
+.work-list.is-year-plane .is-external-project .work-title {
+  left: 18px;
+  text-align: left;
 }
 
 .work-list.is-year-plane .collab-pill {
   position: absolute;
-  left: 12px;
   top: calc(50% + 18px);
   width: max-content;
 }
-
-.work-list.is-year-plane .is-external-project .work-title,
-.work-list.is-year-plane .is-external-project .collab-pill {
-  left: auto;
-  right: 12px;
-  text-align: right;
-}
+.work-list.is-year-plane .work-row:not(.is-external-project) .collab-pill { right: 18px; }
+.work-list.is-year-plane .is-external-project .collab-pill { left: 18px; }
 
 .work-list.is-year-plane.has-year-focus .work-row:not(.is-year-focus),
-.work-list.is-year-plane.has-year-focus .year-axis,
-.work-list.is-year-plane.has-year-focus .year-side-label {
+.work-list.is-year-plane.has-year-focus .year-axis {
   opacity: .06;
 }
 
-.work-list.is-year-plane .work-row.is-year-focus {
-  z-index: 12;
-}
-
-.work-list.is-year-plane .work-row.is-year-focus .timeline-mark {
-  width: 2px;
-}
-
+.work-list.is-year-plane .work-row.is-year-focus { z-index: 12; }
+.work-list.is-year-plane .work-row.is-year-focus .timeline-mark { width: 2px; opacity: 1; }
 .work-list.is-year-plane .work-row.is-year-focus .output-moments {
   display: block;
   position: absolute;
@@ -126,7 +139,6 @@
 
 .work-list.is-year-plane .moment-label {
   position: absolute;
-  left: 14px;
   top: 50%;
   width: max-content;
   max-width: 240px;
@@ -140,28 +152,25 @@
   opacity: 0;
   pointer-events: none;
 }
+.work-list.is-year-plane .work-row:not(.is-external-project) .moment-label { right: 14px; }
+.work-list.is-year-plane .is-external-project .moment-label { left: 14px; }
 .work-list.is-year-plane .moment-dot:hover .moment-label { opacity: 1; }
-.work-list.is-year-plane .is-external-project .moment-label {
-  left: auto;
-  right: 14px;
-  text-align: right;
-}
 
 html[data-style="rgb"] .work-list.is-year-plane .timeline-mark {
   background: linear-gradient(180deg, var(--rgb-b), var(--rgb-g), var(--rgb-r));
 }
-html[data-style="rgb"] .work-list.is-year-plane .moment-dot {
-  border-color: var(--rgb-b);
-}
+html[data-style="rgb"] .work-list.is-year-plane .moment-dot { border-color: var(--rgb-b); }
 
 html[data-style="native"] .year-axis,
 html[data-style="native"] .year-side-label { display: none !important; }
 
 @media (max-width: 760px) {
-  .work-list.is-year-plane { min-height: 640px; height: 74vh; }
+  .work-list.is-year-plane { height: 980px; min-height: 980px; }
   .work-list.is-year-plane .year-axis { left: 50%; }
   .work-list.is-year-plane .work-title { max-width: 130px; font-size: 12px; }
   .work-list.is-year-plane .collab-pill { display: none; }
+  .work-list.is-year-plane .work-row:not(.is-external-project) .work-title { right: 12px; }
+  .work-list.is-year-plane .is-external-project .work-title { left: 12px; }
 }
 
 @media print {
