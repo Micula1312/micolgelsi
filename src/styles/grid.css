@@ -19,16 +19,17 @@ html[data-style="rgb"] body {
   background-position: 0 0;
 }
 
-/* YEAR scrolls through time; TYPE and RESEARCH behave like fixed screens. */
-html[data-project-view="year"],
-html[data-project-view="year"] body { overflow-x: hidden; overflow-y: auto; }
+/* YEAR uses the browser's natural document scroll so position: sticky stays reliable. */
+html[data-project-view="year"] { overflow-x: hidden; overflow-y: visible; height: auto; }
+html[data-project-view="year"] body { overflow: visible; min-height: 100%; }
 
+/* TYPE and RESEARCH are fixed spatial screens. */
 html[data-project-view="type"],
 html[data-project-view="type"] body,
 html[data-project-view="research"],
 html[data-project-view="research"] body { overflow: hidden; height: 100%; }
 
-/* The identity/menu band stays present while the temporal field moves underneath. */
+/* The identity/menu band stays present while the YEAR field moves underneath. */
 html[data-style="rgb"][data-project-view="year"] .site-header {
   position: sticky;
   top: 0;
@@ -46,11 +47,7 @@ html[data-style="rgb"] .work-list.is-research-map { border: 0 !important; outlin
 html[data-style="rgb"] .work-list.is-type-map,
 html[data-style="rgb"] .work-list.is-research-map { overflow: visible; }
 
-html[data-style="rgb"] .site-header,
 html[data-style="rgb"] .page { position: relative; }
-
-/* Restore sticky positioning after the general positioning rule above. */
-html[data-style="rgb"][data-project-view="year"] .site-header { position: sticky; }
 
 html[data-style="rgb"] .work-row,
 html[data-style="rgb"] .research-anchor,
