@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const experiments = await getCollection('playground');
+---
+<BaseLayout title="Playground — Micol Gelsi">
+  <section class="simple-index">
+    <h1>Playground</h1>
+    {experiments.length === 0 ? (
+      <p class="muted">Experiments and live interfaces will appear here.</p>
+    ) : experiments.map((item) => (
+      item.data.url ? <a class="research-row" href={item.data.url} target="_blank" rel="noreferrer"><strong>{item.data.title}</strong><span>↗</span></a> : <div class="research-row"><strong>{item.data.title}</strong></div>
+    ))}
+  </section>
+</BaseLayout>
