@@ -78,6 +78,7 @@ const external = defineCollection({
     year: z.union([z.number(), z.string()]).optional(),
     startDate: z.string().optional(),
     endDate: z.string().optional(),
+    status: z.enum(['ongoing', 'completed']).default('completed'),
     url: z.string().optional(),
     summary: z.string().optional(),
     themes: z.array(z.string()).default([]),
