@@ -66,9 +66,7 @@ const researchAreas = [
     </div>
 
     <div id="work-list" class="work-list is-year-plane" data-view="year">
-      <div class="year-axis" aria-hidden="true"><span>time ↑</span></div>
-      <div class="year-side-label year-side-art" aria-hidden="true">artistic</div>
-      <div class="year-side-label year-side-external" aria-hidden="true">external</div>
+      <div class="year-axis" aria-hidden="true"></div>
 
       <div class="research-field" aria-hidden="true">
         {researchAreas.map(([key, label]) => <span class={`research-anchor anchor-${key}`}>{label}</span>)}
@@ -112,6 +110,7 @@ const researchAreas = [
       const rows = [...list.querySelectorAll('.work-row')];
       const researchField = list.querySelector('.research-field');
       const typeField = list.querySelector('.type-field');
+      const yearAxis = list.querySelector('.year-axis');
       const researchPoints = {
         'urban-wilderness': [13, 18],
         'generative-archives': [47, 14],
@@ -132,6 +131,7 @@ const researchAreas = [
 
       const clearGenerated = () => {
         if (typeField) typeField.innerHTML = '';
+        if (yearAxis) yearAxis.innerHTML = '';
       };
 
       const clearFocus = () => {
@@ -194,35 +194,44 @@ const researchAreas = [
         const minTime = Math.min(...starts, ...ends, now);
         const maxTime = Math.max(...starts, ...ends, now);
         const range = Math.max(1, maxTime - minTime);
-        const topPad = 10;
-        const usable = 78;
+        const topPad = 7;
+        const usable = 88;
 
-        const lanes = {
-          art: rows.filter((row) => row.dataset.lane === 'art').sort(byTitle),
-          external: rows.filter((row) => row.dataset.lane === 'external').sort(byTitle)
-        };
+        if (yearAxis) {
+          const minYear = new Date(minTime).getFullYear();
+          const maxYear = new Date(maxTime).getFullYear();
+          for (let year = maxYear; year >= minYear; year -= 1) {
+            const stamp = Date.parse(`${year}-01-01`);
+            const top = topPad + (1 - ((stamp - minTime) / range)) * usable;
+            const label = document.createElement('span');
+            label.textContent = String(year);
+            label.style.top = `${Math.max(topPad, Math.min(topPad + usable, top))}%`;
+            yearAxis.appendChild(label);
+          }
+        }
 
-        const xFor = (lane, index, total) => {
-          const start = lane === 'art' ? 10 : 58;
-          const end = lane === 'art' ? 45 : 90;
-          if (total <= 1) return (start + end) / 2;
-          return start + (index / (total - 1)) * (end - start);
-        };
+        const ordered = [...rows].sort((a, b) => {
+          const aStart = parseTime(a.dataset.start, parseTime(a.dataset.year, now));
+          const bStart = parseTime(b.dataset.start, parseTime(b.dataset.year, now));
+          return aStart - bStart || byTitle(a, b);
+        });
 
-        Object.entries(lanes).forEach(([lane, laneRows]) => {
-          laneRows.forEach((row, index) => {
-            const startStamp = parseTime(row.dataset.start, parseTime(row.dataset.year, now));
-            const endStamp = parseTime(row.dataset.end, startStamp);
-            const low = Math.min(startStamp, endStamp);
-            const high = Math.max(startStamp, endStamp);
-            const top = topPad + (1 - ((high - minTime) / range)) * usable;
-            const bottom = topPad + (1 - ((low - minTime) / range)) * usable;
-            const height = Math.max(7, bottom - top);
-            row.style.setProperty('--x', `${xFor(lane, index, laneRows.length)}%`);
-            row.style.setProperty('--top', `${top}%`);
-            row.style.setProperty('--height', `${height}%`);
-            list.appendChild(row);
-          });
+        ordered.forEach((row, index) => {
+          const startStamp = parseTime(row.dataset.start, parseTime(row.dataset.year, now));
+          const endStamp = parseTime(row.dataset.end, startStamp);
+          const low = Math.min(startStamp, endStamp);
+          const high = Math.max(startStamp, endStamp);
+          const top = topPad + (1 - ((high - minTime) / range)) * usable;
+          const bottom = topPad + (1 - ((low - minTime) / range)) * usable;
+          const height = Math.max(2.6, bottom - top);
+
+          // A very tight central bundle: project trajectories differ only by a few pixels/percent.
+          const offsetIndex = index - (ordered.length - 1) / 2;
+          const x = 50 + Math.max(-4.5, Math.min(4.5, offsetIndex * 0.9));
+          row.style.setProperty('--x', `${x}%`);
+          row.style.setProperty('--top', `${top}%`);
+          row.style.setProperty('--height', `${height}%`);
+          list.appendChild(row);
         });
       };
 
