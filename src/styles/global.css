@@ -36,7 +36,7 @@ h1, h2 { margin: 0; font: inherit; }
 .work-row { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(120px, 220px) minmax(100px, 160px); gap: 18px; padding: 11px 0; border-bottom: 1px solid var(--line); align-items: baseline; will-change: transform; }
 .work-row:hover { text-decoration: none; }
 .work-row:hover .work-title { text-decoration: underline; text-underline-offset: .15em; }
-.work-title { font-weight: 700; }
+.work-title { font-weight: 700; text-transform: uppercase; }
 .work-kind { color: var(--muted); }
 .work-year { text-align: right; }
 .collab-pill { border: 1px solid var(--fg); padding: 1px 5px; white-space: nowrap; font-size: 11px; line-height: 1.2; font-weight: 400; }
