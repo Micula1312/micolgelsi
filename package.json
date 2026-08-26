@@ -3,8 +3,8 @@
   "type": "module",
   "version": "0.1.0",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "node scripts/import-content.mjs && astro dev",
+    "build": "node scripts/import-content.mjs && astro build",
     "preview": "astro preview",
     "check": "astro check",
     "import:content": "node scripts/import-content.mjs"
