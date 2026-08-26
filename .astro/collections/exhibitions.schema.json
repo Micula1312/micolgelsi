@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "year": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "startDate": {
+      "type": "string"
+    },
+    "endDate": {
+      "type": "string"
+    },
+    "status": {
+      "default": "completed",
+      "type": "string",
+      "enum": [
+        "ongoing",
+        "completed"
+      ]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "medium": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "themes": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "researchAreas": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "urban-wilderness",
+          "generative-archives",
+          "interspecies",
+          "technology-digitalization",
+          "emotional-geographies"
+        ]
+      }
+    },
+    "collaborators": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "avatar": {
+      "type": "string"
+    },
+    "cover": {
+      "type": "string"
+    },
+    "moments": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "media": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "date",
+          "title"
+        ]
+      }
+    },
+    "featured": {
+      "default": false,
+      "type": "boolean"
+    },
+    "portfolio": {
+      "default": {
+        "art": false,
+        "research": false,
+        "digital": false
+      },
+      "type": "object",
+      "properties": {
+        "art": {
+          "default": false,
+          "type": "boolean"
+        },
+        "research": {
+          "default": false,
+          "type": "boolean"
+        },
+        "digital": {
+          "default": false,
+          "type": "boolean"
+        }
+      }
+    },
+    "type": {
+      "type": "string",
+      "const": "exhibition"
+    },
+    "works": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dates": {
+      "type": "string"
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "year",
+    "type"
+  ]
+}

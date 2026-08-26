@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "kind": {
+      "default": "external project",
+      "type": "string"
+    },
+    "year": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "startDate": {
+      "type": "string"
+    },
+    "endDate": {
+      "type": "string"
+    },
+    "status": {
+      "default": "completed",
+      "type": "string",
+      "enum": [
+        "ongoing",
+        "completed"
+      ]
+    },
+    "url": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "themes": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "researchAreas": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "urban-wilderness",
+          "generative-archives",
+          "interspecies",
+          "technology-digitalization",
+          "emotional-geographies"
+        ]
+      }
+    },
+    "collaborators": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "avatar": {
+      "type": "string"
+    },
+    "moments": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "media": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "date",
+          "title"
+        ]
+      }
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}
