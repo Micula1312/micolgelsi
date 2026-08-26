@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const ROOT = process.cwd();
+const SOURCE_ROOT = path.join(ROOT, 'src', 'projects');
 const MEDIA_ROOT = path.join(ROOT, 'public', 'media');
 const CONTENT_ROOT = path.join(ROOT, 'src', 'content');
 
@@ -17,11 +18,7 @@ const SECTION_NAMES = new Set([
   'TITLE','START','END','STATUS','TYPE','MEDIUM','RESEARCH','WITH','SHORT','LINKS','MOMENTS'
 ]);
 
-const splitList = (value = '') => value
-  .split(/[,;\n]/)
-  .map((v) => v.trim())
-  .filter(Boolean);
-
+const splitList = (value = '') => value.split(/[,;\n]/).map((v) => v.trim()).filter(Boolean);
 const yamlString = (value = '') => JSON.stringify(String(value));
 
 const parseInfo = (text) => {
@@ -52,9 +49,7 @@ const parseMoments = (raw = '') => {
       if (m) {
         const key = m[1].toLowerCase();
         if (['location','media','href'].includes(key)) moment[key] = m[2].trim();
-      } else if (!moment.location) {
-        moment.location = line;
-      }
+      } else if (!moment.location) moment.location = line;
     }
     if (!moment.title) moment.title = moment.date;
     return moment;
@@ -76,7 +71,8 @@ const detectAsset = async (dir, names) => {
   return null;
 };
 
-const generateMarkdown = async (slug, dir, data) => {
+const generateMarkdown = async (slug, sourceDir, data) => {
+  const mediaDir = path.join(MEDIA_ROOT, slug);
   const collection = inferCollection(data.TYPE || 'project');
   const title = (data.TITLE || slug.replaceAll('-', ' ')).trim();
   const start = (data.START || '').trim();
@@ -91,22 +87,17 @@ const generateMarkdown = async (slug, dir, data) => {
   const invalidResearch = research.filter((x) => !VALID_RESEARCH.has(x));
   if (invalidResearch.length) console.warn(`⚠ ${slug}: ignored unknown research keys: ${invalidResearch.join(', ')}`);
 
-  const avatarName = await detectAsset(dir, ['avatar.webp','avatar.gif','avatar.webm','avatar.png','avatar.jpg','avatar.jpeg']);
-  const coverName = await detectAsset(dir, ['cover.webp','cover.jpg','cover.jpeg','cover.png','cover.gif']);
+  const avatarName = await detectAsset(mediaDir, ['avatar.webp','avatar.gif','avatar.webm','avatar.png','avatar.jpg','avatar.jpeg']);
+  const coverName = await detectAsset(mediaDir, ['cover.webp','cover.jpg','cover.jpeg','cover.png','cover.gif']);
   const baseUrl = `/media/${slug}`;
   const moments = parseMoments(data.MOMENTS).map((moment) => {
     if (moment.media && !moment.media.startsWith('/')) moment.media = `${baseUrl}/${moment.media.replace(/^\.\//,'')}`;
     return moment;
   });
 
-  const front = [];
-  front.push('---');
-  front.push(`title: ${yamlString(title)}`);
-  if (collection === 'external') {
-    front.push(`kind: ${yamlString((data.TYPE || 'external project').trim())}`);
-  } else {
-    front.push(`type: ${collection === 'exhibitions' ? 'exhibition' : collection === 'works' ? 'work' : 'project'}`);
-  }
+  const front = ['---', `title: ${yamlString(title)}`];
+  if (collection === 'external') front.push(`kind: ${yamlString((data.TYPE || 'external project').trim())}`);
+  else front.push(`type: ${collection === 'exhibitions' ? 'exhibition' : collection === 'works' ? 'work' : 'project'}`);
   front.push(`year: ${yamlString(year)}`);
   if (start) front.push(`startDate: ${yamlString(start)}`);
   if (end && end.toLowerCase() !== 'ongoing') front.push(`endDate: ${yamlString(end)}`);
@@ -133,8 +124,7 @@ const generateMarkdown = async (slug, dir, data) => {
     }
   } else front.push('  []');
   if (collection === 'projects' || collection === 'exhibitions') front.push('works: []');
-  front.push('---');
-  front.push('');
+  front.push('---', '');
   if (data.SHORT?.trim()) front.push(data.SHORT.trim());
   if (data.LINKS?.trim()) {
     front.push('', '## Links', '');
@@ -146,24 +136,28 @@ const generateMarkdown = async (slug, dir, data) => {
 
 const run = async () => {
   let entries = [];
-  try { entries = await fs.readdir(MEDIA_ROOT, { withFileTypes: true }); }
-  catch { console.error(`Missing ${MEDIA_ROOT}`); process.exit(1); }
+  try { entries = await fs.readdir(SOURCE_ROOT, { withFileTypes: true }); }
+  catch {
+    await fs.mkdir(SOURCE_ROOT, { recursive: true });
+    console.log(`Created ${SOURCE_ROOT}. Add <slug>/info.txt folders there, then run again.`);
+    return;
+  }
 
   let count = 0;
   for (const entry of entries) {
-    if (!entry.isDirectory()) continue;
+    if (!entry.isDirectory() || entry.name.startsWith('_')) continue;
     const slug = entry.name;
-    const dir = path.join(MEDIA_ROOT, slug);
-    const infoPath = path.join(dir, 'info.txt');
+    const sourceDir = path.join(SOURCE_ROOT, slug);
+    const infoPath = path.join(sourceDir, 'info.txt');
     let text;
     try { text = await fs.readFile(infoPath, 'utf8'); } catch { continue; }
     const parsed = parseInfo(text);
-    const { collection, markdown } = await generateMarkdown(slug, dir, parsed);
+    const { collection, markdown } = await generateMarkdown(slug, sourceDir, parsed);
     const outDir = path.join(CONTENT_ROOT, collection);
     await fs.mkdir(outDir, { recursive: true });
     const outPath = path.join(outDir, `${slug}.md`);
     await fs.writeFile(outPath, markdown, 'utf8');
-    console.log(`✓ ${slug} → src/content/${collection}/${slug}.md`);
+    console.log(`✓ src/projects/${slug}/info.txt → src/content/${collection}/${slug}.md`);
     count++;
   }
   console.log(`\nImported ${count} info.txt file${count === 1 ? '' : 's'}.`);
