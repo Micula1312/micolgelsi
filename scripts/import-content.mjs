@@ -56,11 +56,11 @@ const parseMoments = (raw = '') => {
   }).filter(Boolean);
 };
 
-const inferCollection = (type = '') => {
+const inferCollection = (type = '', sourceKind = 'artistic') => {
+  if (sourceKind === 'external') return 'external';
   const t = type.trim().toLowerCase();
   if (t === 'exhibition') return 'exhibitions';
   if (t === 'work' || t === 'installation' || t === 'performance') return 'works';
-  if (t === 'external' || t === 'website' || t === 'interface' || t === 'commission') return 'external';
   return 'projects';
 };
 
@@ -71,9 +71,9 @@ const detectAsset = async (dir, names) => {
   return null;
 };
 
-const generateMarkdown = async (slug, sourceDir, data) => {
-  const mediaDir = path.join(MEDIA_ROOT, slug);
-  const collection = inferCollection(data.TYPE || 'project');
+const generateMarkdown = async ({ slug, sourceKind, data }) => {
+  const mediaDir = path.join(MEDIA_ROOT, sourceKind, slug);
+  const collection = inferCollection(data.TYPE || 'project', sourceKind);
   const title = (data.TITLE || slug.replaceAll('-', ' ')).trim();
   const start = (data.START || '').trim();
   const end = (data.END || '').trim();
@@ -85,11 +85,11 @@ const generateMarkdown = async (slug, sourceDir, data) => {
   const research = splitList(data.RESEARCH).map((x) => x.toLowerCase().replace(/\s*&\s*/g, '-').replace(/\s+/g, '-'));
   const researchAreas = research.filter((x) => VALID_RESEARCH.has(x));
   const invalidResearch = research.filter((x) => !VALID_RESEARCH.has(x));
-  if (invalidResearch.length) console.warn(`⚠ ${slug}: ignored unknown research keys: ${invalidResearch.join(', ')}`);
+  if (invalidResearch.length) console.warn(`⚠ ${sourceKind}/${slug}: ignored unknown research keys: ${invalidResearch.join(', ')}`);
 
   const avatarName = await detectAsset(mediaDir, ['avatar.webp','avatar.gif','avatar.webm','avatar.png','avatar.jpg','avatar.jpeg']);
   const coverName = await detectAsset(mediaDir, ['cover.webp','cover.jpg','cover.jpeg','cover.png','cover.gif']);
-  const baseUrl = `/media/${slug}`;
+  const baseUrl = `/media/${sourceKind}/${slug}`;
   const moments = parseMoments(data.MOMENTS).map((moment) => {
     if (moment.media && !moment.media.startsWith('/')) moment.media = `${baseUrl}/${moment.media.replace(/^\.\//,'')}`;
     return moment;
@@ -134,33 +134,43 @@ const generateMarkdown = async (slug, sourceDir, data) => {
   return { collection, markdown: front.join('\n') };
 };
 
-const run = async () => {
+const importGroup = async (sourceKind) => {
+  const groupRoot = path.join(SOURCE_ROOT, sourceKind);
   let entries = [];
-  try { entries = await fs.readdir(SOURCE_ROOT, { withFileTypes: true }); }
+  try { entries = await fs.readdir(groupRoot, { withFileTypes: true }); }
   catch {
-    await fs.mkdir(SOURCE_ROOT, { recursive: true });
-    console.log(`Created ${SOURCE_ROOT}. Add <slug>/info.txt folders there, then run again.`);
-    return;
+    await fs.mkdir(groupRoot, { recursive: true });
+    return 0;
   }
 
   let count = 0;
   for (const entry of entries) {
     if (!entry.isDirectory() || entry.name.startsWith('_')) continue;
     const slug = entry.name;
-    const sourceDir = path.join(SOURCE_ROOT, slug);
+    const sourceDir = path.join(groupRoot, slug);
     const infoPath = path.join(sourceDir, 'info.txt');
     let text;
     try { text = await fs.readFile(infoPath, 'utf8'); } catch { continue; }
+
     const parsed = parseInfo(text);
-    const { collection, markdown } = await generateMarkdown(slug, sourceDir, parsed);
+    const { collection, markdown } = await generateMarkdown({ slug, sourceKind, data: parsed });
     const outDir = path.join(CONTENT_ROOT, collection);
     await fs.mkdir(outDir, { recursive: true });
     const outPath = path.join(outDir, `${slug}.md`);
     await fs.writeFile(outPath, markdown, 'utf8');
-    console.log(`✓ src/projects/${slug}/info.txt → src/content/${collection}/${slug}.md`);
+    console.log(`✓ src/projects/${sourceKind}/${slug}/info.txt → src/content/${collection}/${slug}.md`);
     count++;
   }
-  console.log(`\nImported ${count} info.txt file${count === 1 ? '' : 's'}.`);
+  return count;
+};
+
+const run = async () => {
+  await fs.mkdir(SOURCE_ROOT, { recursive: true });
+  await fs.mkdir(MEDIA_ROOT, { recursive: true });
+  const artistic = await importGroup('artistic');
+  const external = await importGroup('external');
+  const count = artistic + external;
+  console.log(`\nImported ${count} info.txt file${count === 1 ? '' : 's'} (${artistic} artistic, ${external} external).`);
 };
 
 run().catch((error) => { console.error(error); process.exit(1); });
