@@ -1,10 +1,11 @@
 import { spawn } from 'node:child_process';
 import { watch } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = process.cwd();
 const importer = path.join(ROOT, 'scripts', 'import-content.mjs');
-const astroCli = path.join(ROOT, 'node_modules', 'astro', 'astro.js');
+const astroCli = fileURLToPath(import.meta.resolve('astro/astro.js'));
 const watchRoots = [path.join(ROOT, 'src', 'projects'), path.join(ROOT, 'public', 'media')];
 let timer = null;
 let importing = false;
