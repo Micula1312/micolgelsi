@@ -1,0 +1,208 @@
+/* Minimal hacker / programmer layer.
+   The portfolio remains monochrome; fluorescent green is a system signal, never decoration. */
+
+:root {
+  --signal: #39ff14;
+  --signal-soft: rgba(57, 255, 20, .16);
+  --signal-faint: rgba(57, 255, 20, .08);
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+::selection {
+  background: var(--signal);
+  color: #000;
+}
+
+/* Interface / metadata speak in a coding voice; artworks stay in the neutral sans. */
+.site-nav,
+.view-switch,
+.eyebrow,
+.project-facts,
+.project-moments,
+.project-links,
+.system-controls,
+.year-axis,
+.type-anchor,
+.research-anchor,
+.collab-pill {
+  font-family: var(--mono);
+  letter-spacing: -.02em;
+}
+
+.site-nav,
+.view-switch,
+.eyebrow,
+.system-controls,
+.type-anchor,
+.research-anchor,
+.year-axis {
+  font-size: 11px;
+}
+
+/* Tiny command-line cues, kept deliberately quiet. */
+.site-name::before {
+  content: '> ';
+  color: var(--signal);
+  font-family: var(--mono);
+}
+
+#projects-heading::before {
+  content: './';
+  color: var(--signal);
+  font-family: var(--mono);
+}
+
+.eyebrow::before {
+  content: '[ ';
+  color: var(--signal);
+}
+.eyebrow::after {
+  content: ' ]';
+  color: var(--signal);
+}
+
+/* Green is reserved for interaction and active state. */
+a:focus-visible,
+button:focus-visible {
+  outline: 1px solid var(--signal);
+  outline-offset: 3px;
+}
+
+html[data-style="rgb"] a:hover,
+html[data-style="rgb"] .view-button:hover,
+html[data-style="rgb"] .view-button.is-active {
+  color: var(--signal);
+}
+
+html[data-style="rgb"] .view-button.is-active {
+  text-decoration-color: var(--signal);
+  text-decoration-thickness: 1px;
+}
+
+html[data-style="rgb"] .work-row:hover .work-title {
+  text-decoration-color: var(--signal);
+  text-decoration-thickness: 2px;
+}
+
+html[data-style="rgb"] .collab-pill {
+  border-color: var(--signal);
+  border-image: none;
+}
+
+/* Project names remain sober; a tiny cursor appears only on hover. */
+html[data-style="rgb"] .work-row:hover .work-title::after {
+  content: '_';
+  margin-left: .18em;
+  color: var(--signal);
+  font-family: var(--mono);
+  font-weight: 400;
+}
+
+/* System controls feel like a tiny status bar. */
+html[data-style="rgb"] .system-controls {
+  border: 1px solid var(--signal);
+  border-image: none;
+  box-shadow: none;
+}
+
+html[data-style="rgb"] .system-control button:hover {
+  color: var(--signal);
+}
+
+/* TYPE / RESEARCH labels become coordinate markers rather than headings. */
+html[data-style="rgb"] .type-anchor::before,
+html[data-style="rgb"] .research-anchor::before {
+  content: '+ ';
+  color: var(--signal);
+}
+
+html[data-style="rgb"] .work-list.is-type-map .work-row:hover,
+html[data-style="rgb"] .work-list.is-research-map .work-row:hover {
+  outline-color: var(--signal);
+}
+
+/* YEAR: one fluorescent signal through the otherwise monochrome temporal drawing. */
+html[data-style="rgb"] .work-list.is-year-plane .timeline-mark {
+  background: var(--fg);
+}
+
+html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-mark {
+  background: var(--signal);
+  box-shadow: 0 0 0 1px var(--signal-soft);
+}
+
+html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-end,
+html[data-style="rgb"] .work-list.is-year-plane .moment-dot {
+  border-color: var(--signal);
+}
+
+html[data-style="rgb"] .work-list.is-year-plane .moment-dot:hover {
+  background: var(--signal);
+}
+
+html[data-style="rgb"] .work-list.is-year-plane .moment-dot:hover .moment-label {
+  border-color: var(--signal);
+}
+
+/* Project detail pages: metadata behaves like machine-readable annotations. */
+.project-facts > div > span:first-child,
+.project-moments h2,
+.project-links h2,
+.related h2 {
+  text-transform: lowercase;
+}
+
+.project-facts > div > span:first-child::before {
+  content: '--';
+  color: var(--signal);
+  margin-right: .35em;
+}
+
+.project-links a::before {
+  content: '↳ ';
+  color: var(--signal);
+}
+
+/* Dark mode: never turn into neon sci-fi; green remains the single high-energy point. */
+html[data-theme="dark"] {
+  --signal-soft: rgba(57, 255, 20, .13);
+  --signal-faint: rgba(57, 255, 20, .06);
+}
+
+/* Native mode really stays native. */
+html[data-style="native"] .site-name::before,
+html[data-style="native"] #projects-heading::before,
+html[data-style="native"] .eyebrow::before,
+html[data-style="native"] .eyebrow::after,
+html[data-style="native"] .work-title::after,
+html[data-style="native"] .type-anchor::before,
+html[data-style="native"] .research-anchor::before,
+html[data-style="native"] .project-facts > div > span:first-child::before,
+html[data-style="native"] .project-links a::before {
+  content: none !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-style="rgb"] .work-row:hover .work-title::after {
+    animation: terminal-cursor 1s steps(1, end) infinite;
+  }
+}
+
+@keyframes terminal-cursor {
+  0%, 48% { opacity: 1; }
+  49%, 100% { opacity: 0; }
+}
+
+@media print {
+  .site-name::before,
+  #projects-heading::before,
+  .eyebrow::before,
+  .eyebrow::after,
+  .work-title::after,
+  .type-anchor::before,
+  .research-anchor::before,
+  .project-facts > div > span:first-child::before,
+  .project-links a::before {
+    content: none !important;
+  }
+}
