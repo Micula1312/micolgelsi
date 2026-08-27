@@ -1,0 +1,61 @@
+.project-moments {
+  margin-top: 88px;
+  border-top: 1px solid var(--line);
+}
+
+.project-moments h2 {
+  padding: 10px 0 28px;
+  color: var(--muted);
+}
+
+.project-moment {
+  display: grid;
+  grid-template-columns: 120px minmax(220px, 1.35fr) minmax(140px, .7fr) minmax(180px, 1fr) minmax(0, 1.5fr);
+  gap: 20px;
+  align-items: start;
+  padding: 11px 0;
+  border-top: 1px solid var(--line);
+}
+
+.output-date,
+.output-type,
+.output-location {
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.output-type {
+  text-transform: lowercase;
+  color: var(--muted);
+}
+
+.output-title a {
+  text-decoration: underline;
+  text-underline-offset: .16em;
+  text-decoration-color: var(--signal);
+}
+
+.project-moment img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  justify-self: end;
+}
+
+@media (max-width: 760px) {
+  .project-moment {
+    grid-template-columns: 90px 1fr;
+    gap: 8px 16px;
+  }
+
+  .output-type,
+  .output-location {
+    grid-column: 2;
+  }
+
+  .project-moment img {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-top: 8px;
+  }
+}
