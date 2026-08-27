@@ -11,6 +11,7 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const allWorks = await getCollection('works');
 const related = allWorks.filter((work) => entry.data.works.includes(work.id) || work.data.parent?.slug === entry.id);
+const worksByTitle = new Map(related.map((work) => [work.data.title.toLowerCase(), work]));
 const typeLabel = entry.data.displayType || 'Exhibition';
 ---
 <BaseLayout title={`${entry.data.title} — Micol Gelsi`}>
@@ -50,23 +51,17 @@ const typeLabel = entry.data.displayType || 'Exhibition';
   {entry.data.moments.length > 0 && (
     <section class="project-moments">
       <h2>Outputs</h2>
-      {entry.data.moments.map((moment) => (
-        <div class="project-moment">
-          <span>{moment.date}</span><strong>{moment.title}</strong><span>{moment.location || ''}</span>
+      {entry.data.moments.map((moment) => {
+        const relatedWork = worksByTitle.get(moment.title.toLowerCase());
+        const outputType = moment.type || relatedWork?.data.displayType || '—';
+        return <div class="project-moment">
+          <span class="output-date">{moment.date}</span>
+          <strong class="output-title">{moment.href ? <a href={moment.href}>{moment.title}</a> : moment.title}</strong>
+          <span class="output-type">{outputType}</span>
+          <span class="output-location">{moment.location || ''}</span>
           {moment.media && <img src={moment.media} alt="" loading="lazy" />}
-        </div>
-      ))}
-    </section>
-  )}
-
-  {related.length > 0 && (
-    <section class="related">
-      <h2>Works</h2>
-      {related.map((work) => (
-        <a class="related-work" href={`/works/${work.id}/`}>
-          <strong>{work.data.title}</strong><span>{work.data.displayType || 'Work'}</span><span>{work.data.year}</span>
-        </a>
-      ))}
+        </div>;
+      })}
     </section>
   )}
 
