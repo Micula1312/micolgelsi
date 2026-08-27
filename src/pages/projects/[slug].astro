@@ -2,7 +2,12 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 export async function getStaticPaths(){const projects=await getCollection('projects');return projects.map(entry=>({params:{slug:entry.id},props:{entry}}));}
-const {entry}=Astro.props;const {Content}=await render(entry);const allWorks=await getCollection('works');const relatedWorks=allWorks.filter(work=>entry.data.works.includes(work.id)||work.data.parent?.slug===entry.id);const typeLabel=entry.data.displayType||entry.data.medium?.[0]||'Project';
+const {entry}=Astro.props;
+const {Content}=await render(entry);
+const allWorks=await getCollection('works');
+const relatedWorks=allWorks.filter(work=>entry.data.works.includes(work.id)||work.data.parent?.slug===entry.id);
+const worksByTitle=new Map(relatedWorks.map(work=>[work.data.title.toLowerCase(),work]));
+const typeLabel=entry.data.displayType||entry.data.medium?.[0]||'Project';
 ---
 <BaseLayout title={`${entry.data.title} — Micol Gelsi`}>
   <div class="eyebrow"><a href="/#projects">Projects</a> · <span>{typeLabel}</span> · <span>{entry.data.year}</span></div>
@@ -21,7 +26,21 @@ const {entry}=Astro.props;const {Content}=await render(entry);const allWorks=awa
   </div>
   {entry.data.gallery.length>0&&<section class="media-grid">{entry.data.gallery.map((src,i)=><figure><img src={src} alt={`${entry.data.title} — ${i+1}`} loading="lazy" /></figure>)}</section>}
   {entry.data.videos.length>0&&<section class="video-list">{entry.data.videos.map(src=><video src={src} controls playsinline preload="metadata"></video>)}</section>}
-  {entry.data.moments.length>0&&<section class="project-moments"><h2>Outputs</h2>{entry.data.moments.map(moment=><div class="project-moment"><span>{moment.date}</span><strong>{moment.title}</strong><span>{moment.location||''}</span>{moment.media&&<img src={moment.media} alt="" loading="lazy" />}</div>)}</section>}
-  {relatedWorks.length>0&&<section class="related"><h2>Works</h2>{relatedWorks.map(work=><a class="related-work" href={`/works/${work.id}/`}><strong>{work.data.title}</strong><span>{work.data.displayType||'Work'}</span><span>{work.data.year}</span></a>)}</section>}
+  {entry.data.moments.length>0&&(
+    <section class="project-moments">
+      <h2>Outputs</h2>
+      {entry.data.moments.map(moment=>{
+        const relatedWork=worksByTitle.get(moment.title.toLowerCase());
+        const outputType=moment.type||relatedWork?.data.displayType||'—';
+        return <div class="project-moment">
+          <span class="output-date">{moment.date}</span>
+          <strong class="output-title">{moment.href?<a href={moment.href}>{moment.title}</a>:moment.title}</strong>
+          <span class="output-type">{outputType}</span>
+          <span class="output-location">{moment.location||''}</span>
+          {moment.media&&<img src={moment.media} alt="" loading="lazy" />}
+        </div>;
+      })}
+    </section>
+  )}
   {entry.data.links.length>0&&<section class="project-links"><h2>Links</h2>{entry.data.links.map(link=><a href={link} target="_blank" rel="noreferrer">{link} ↗</a>)}</section>}
 </BaseLayout>
