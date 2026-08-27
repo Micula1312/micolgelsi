@@ -14,6 +14,7 @@ const researchArea = z.enum([
 const moment = z.object({
   date: z.string(),
   title: z.string(),
+  type: z.string().optional(),
   location: z.string().optional(),
   media: z.string().optional(),
   href: z.string().optional()
