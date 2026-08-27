@@ -23,125 +23,46 @@ const normalize = (item) => {
   const year = item.data.year != null ? String(item.data.year) : '—';
   const yearMatch = year.match(/\d{4}/);
   const yearGroup = yearMatch?.[0] ?? year;
-  const typeLabel = item.collection === 'external'
-    ? item.data.kind
-    : item.data.type === 'exhibition'
-      ? 'Exhibition'
-      : item.data.medium?.[0] ?? item.data.type;
+  const typeLabel = item.collection === 'external' ? item.data.kind : item.data.type === 'exhibition' ? 'Exhibition' : item.data.medium?.[0] ?? item.data.type;
   const start = item.data.startDate ?? yearMatch?.[0] ?? '';
   const end = item.data.endDate ?? (item.data.status === 'ongoing' ? 'ongoing' : yearMatch?.[0] ?? '');
-
-  return {
-    ...item,
-    yearGroup,
-    typeLabel,
-    start,
-    end,
-    lane: item.collection === 'external' ? 'external' : 'art',
-    researchAreas: inferResearch(item),
-    href: item.collection === 'external' && item.data.url ? item.data.url : `/${item.collection}/${item.id}/`,
-    externalLink: item.collection === 'external' && Boolean(item.data.url)
-  };
+  return { ...item, yearGroup, typeLabel, start, end, lane: item.collection === 'external' ? 'external' : 'art', researchAreas: inferResearch(item), href: item.collection === 'external' && item.data.url ? item.data.url : `/${item.collection}/${item.id}/`, externalLink: item.collection === 'external' && Boolean(item.data.url) };
 };
 
 const items = [...projects, ...exhibitions, ...works, ...external].map(normalize);
-
 const researchAreas = [
-  ['urban-wilderness', 'Urban Wilderness'],
-  ['generative-archives', 'Generative Archives'],
-  ['interspecies', 'Interspecies'],
-  ['technology-digitalization', 'Technology & Digitalization'],
-  ['emotional-geographies', 'Emotional Geographies']
+  ['urban-wilderness', 'Urban Wilderness'], ['generative-archives', 'Generative Archives'], ['interspecies', 'Interspecies'],
+  ['technology-digitalization', 'Technology & Digitalization'], ['emotional-geographies', 'Emotional Geographies'],
+  ['eco-feminism', 'Eco-feminism'], ['pleasure-activism', 'Pleasure Activism']
 ];
 ---
 <BaseLayout title="Micol Gelsi">
   <section id="projects" class="work-index" aria-labelledby="projects-heading">
-    <div class="index-toolbar">
-      <h1 id="projects-heading">Projects</h1>
-      <div class="view-switch" aria-label="Arrange projects by">
-        <button class="view-button is-active" type="button" data-view="year" aria-pressed="true">Year</button>
-        <button class="view-button" type="button" data-view="type" aria-pressed="false">Type</button>
-        <button class="view-button" type="button" data-view="research" aria-pressed="false">Research</button>
-      </div>
-    </div>
-
+    <div class="index-toolbar"><h1 id="projects-heading">Projects</h1><div class="view-switch" aria-label="Arrange projects by"><button class="view-button is-active" type="button" data-view="year" aria-pressed="true">Year</button><button class="view-button" type="button" data-view="type" aria-pressed="false">Type</button><button class="view-button" type="button" data-view="research" aria-pressed="false">Research</button></div></div>
     <div id="work-list" class="work-list is-year-plane" data-view="year">
       <div class="year-axis" aria-hidden="true"></div>
-      <div class="research-field" aria-hidden="true">
-        {researchAreas.map(([key, label]) => <span class={`research-anchor anchor-${key}`}>{label}</span>)}
-      </div>
+      <div class="research-field" aria-hidden="true">{researchAreas.map(([key, label]) => <span class={`research-anchor anchor-${key}`}>{label}</span>)}</div>
       <div class="type-field" aria-hidden="true"></div>
-
       {items.map((item) => (
-        <a class={`work-row ${item.collection === 'external' ? 'is-external-project' : ''}`} href={item.href}
-          target={item.externalLink ? '_blank' : undefined} rel={item.externalLink ? 'noreferrer' : undefined}
-          data-year={item.yearGroup} data-type={item.typeLabel} data-title={item.data.title}
-          data-research={item.researchAreas.join(',')} data-start={item.start} data-end={item.end}
-          data-lane={item.lane} data-moments={JSON.stringify(item.data.moments ?? [])}>
-          <span class="timeline-mark" aria-hidden="true"><span class="timeline-end timeline-end-top"></span><span class="timeline-end timeline-end-bottom"></span><span class="output-moments"></span></span>
-          <span class="work-title">{item.data.title}{item.externalLink ? ' ↗' : ''}</span>
-          {item.data.collaborators?.length > 0 && <span class="collab-pill">W/ {item.data.collaborators.join(' + ')}</span>}
-          {item.data.avatar && <img class="project-avatar" src={item.data.avatar} alt="" loading="lazy" />}
+        <a class={`work-row ${item.collection === 'external' ? 'is-external-project' : ''}`} href={item.href} target={item.externalLink ? '_blank' : undefined} rel={item.externalLink ? 'noreferrer' : undefined} data-year={item.yearGroup} data-type={item.typeLabel} data-title={item.data.title} data-research={item.researchAreas.join(',')} data-start={item.start} data-end={item.end} data-lane={item.lane} data-moments={JSON.stringify(item.data.moments ?? [])}>
+          <span class="timeline-mark" aria-hidden="true"><span class="timeline-end timeline-end-top"></span><span class="timeline-end timeline-end-bottom"></span><span class="output-moments"></span></span><span class="work-title">{item.data.title}{item.externalLink ? ' ↗' : ''}</span>{item.data.collaborators?.length > 0 && <span class="collab-pill">W/ {item.data.collaborators.join(' + ')}</span>}{item.data.avatar && <img class="project-avatar" src={item.data.avatar} alt="" loading="lazy" />}
         </a>
       ))}
     </div>
   </section>
-
   <script is:inline>
     (() => {
-      const list = document.querySelector('#work-list');
-      const buttons = [...document.querySelectorAll('.view-button')];
-      if (!list || !buttons.length) return;
-      const rows = [...list.querySelectorAll('.work-row')];
-      const researchField = list.querySelector('.research-field');
-      const typeField = list.querySelector('.type-field');
-      const yearAxis = list.querySelector('.year-axis');
-      const researchPoints = {'urban-wilderness':[13,18],'generative-archives':[47,14],'interspecies':[82,25],'technology-digitalization':[75,78],'emotional-geographies':[20,78]};
-      const byTitle = (a,b) => (a.dataset.title || '').localeCompare(b.dataset.title || '');
-      const parseTime = (value, fallback = null) => { if (!value || value === '—') return fallback; if (value === 'ongoing') return Date.now(); const raw=String(value); const normalized=/^\d{4}$/.test(raw)?`${raw}-01-01`:/^\d{4}-\d{2}$/.test(raw)?`${raw}-01`:raw; const stamp=Date.parse(normalized); return Number.isFinite(stamp)?stamp:fallback; };
-      const clearGenerated = () => { if(typeField) typeField.innerHTML=''; if(yearAxis) yearAxis.innerHTML=''; };
-      const clearFocus = () => { list.classList.remove('has-year-focus'); rows.forEach(row=>row.classList.remove('is-year-focus')); };
-      const resetRows = () => rows.forEach(row=>['--x','--y','--top','--height'].forEach(prop=>row.style.removeProperty(prop)));
-      const renderMoments = (row) => { const host=row.querySelector('.output-moments'); if(!host)return; host.innerHTML=''; let moments=[]; try{moments=JSON.parse(row.dataset.moments||'[]')}catch{moments=[]} if(!moments.length)return; const startStamp=parseTime(row.dataset.start,parseTime(row.dataset.year,Date.now())); const endStamp=parseTime(row.dataset.end,startStamp); const low=Math.min(startStamp,endStamp); const high=Math.max(startStamp,endStamp); const range=Math.max(1,high-low); moments.forEach(moment=>{ const stamp=parseTime(moment.date,startStamp); const chronological=Math.max(0,Math.min(1,(stamp-low)/range)); const dot=document.createElement('span'); dot.className='moment-dot'; dot.style.top=`${(1-chronological)*100}%`; const label=document.createElement('span'); label.className='moment-label'; label.textContent=[moment.date,moment.title,moment.location].filter(Boolean).join(' · '); dot.appendChild(label); host.appendChild(dot); }); };
-      const focusYearRow = row => { if(list.dataset.view!=='year')return; rows.forEach(candidate=>candidate.classList.toggle('is-year-focus',candidate===row)); list.classList.add('has-year-focus'); renderMoments(row); };
-      rows.forEach(row=>{row.addEventListener('mouseenter',()=>focusYearRow(row));row.addEventListener('mouseleave',clearFocus);row.addEventListener('focus',()=>focusYearRow(row));row.addEventListener('blur',clearFocus);});
-
-      const layoutYear = () => { const now=Date.now(); const starts=rows.map(row=>parseTime(row.dataset.start,parseTime(row.dataset.year,now))).filter(Number.isFinite); const ends=rows.map(row=>parseTime(row.dataset.end,parseTime(row.dataset.start,now))).filter(Number.isFinite); const minTime=Math.min(...starts,...ends,now); const maxTime=Math.max(...starts,...ends,now); const range=Math.max(1,maxTime-minTime); const topPad=7,usable=88; if(yearAxis){const minYear=new Date(minTime).getFullYear(),maxYear=new Date(maxTime).getFullYear();for(let year=maxYear;year>=minYear;year--){const stamp=Date.parse(`${year}-01-01`);const top=topPad+(1-((stamp-minTime)/range))*usable;const label=document.createElement('span');label.textContent=String(year);label.style.top=`${Math.max(topPad,Math.min(topPad+usable,top))}%`;yearAxis.appendChild(label);}} const ordered=[...rows].sort((a,b)=>{const as=parseTime(a.dataset.start,parseTime(a.dataset.year,now));const bs=parseTime(b.dataset.start,parseTime(b.dataset.year,now));return as-bs||byTitle(a,b)}); ordered.forEach((row,index)=>{const startStamp=parseTime(row.dataset.start,parseTime(row.dataset.year,now));const endStamp=parseTime(row.dataset.end,startStamp);const low=Math.min(startStamp,endStamp),high=Math.max(startStamp,endStamp);const top=topPad+(1-((high-minTime)/range))*usable;const bottom=topPad+(1-((low-minTime)/range))*usable;const height=Math.max(2.6,bottom-top);const offsetIndex=index-(ordered.length-1)/2;const x=50+Math.max(-4.5,Math.min(4.5,offsetIndex*.9));row.style.setProperty('--x',`${x}%`);row.style.setProperty('--top',`${top}%`);row.style.setProperty('--height',`${height}%`);list.appendChild(row);}); };
-      const layoutType = () => { const types=[...new Set(rows.map(row=>row.dataset.type||'Other'))].sort();const columnWidth=100/Math.max(types.length,1);types.forEach((type,typeIndex)=>{if(typeField){const label=document.createElement('span');label.className='type-anchor';label.textContent=type;label.style.left=`${typeIndex*columnWidth+columnWidth/2}%`;typeField.appendChild(label);}rows.filter(row=>(row.dataset.type||'Other')===type).sort(byTitle).forEach((row,rowIndex)=>{row.style.setProperty('--x',`${typeIndex*columnWidth+columnWidth/2}%`);row.style.setProperty('--y',`${15+rowIndex*9}%`);list.appendChild(row);});}); };
-      const layoutResearch = () => { rows.forEach((row,index)=>{const keys=(row.dataset.research||'').split(',').filter(Boolean);const coords=keys.map(key=>researchPoints[key]).filter(Boolean);const base=coords.length?coords.reduce((acc,p)=>[acc[0]+p[0],acc[1]+p[1]],[0,0]).map(v=>v/coords.length):[50,50];const jitterX=((index*19)%15)-7,jitterY=((index*23)%13)-6;row.style.setProperty('--x',`${Math.max(6,Math.min(92,base[0]+jitterX))}%`);row.style.setProperty('--y',`${Math.max(10,Math.min(90,base[1]+jitterY))}%`);list.appendChild(row);}); };
-
-      const setViewportMode = view => { document.documentElement.dataset.projectView=view; document.body.dataset.projectView=view; if(view!=='year') window.scrollTo({top:0,behavior:'instant'}); };
-      const layout = (view, animate=true) => {
-        const first=new Map(rows.map(row=>[row,row.getBoundingClientRect()]));
-        clearFocus();clearGenerated();resetRows();
-        list.classList.toggle('is-year-plane',view==='year');
-        list.classList.toggle('is-type-map',view==='type');
-        list.classList.toggle('is-research-map',view==='research');
-        if(researchField)researchField.hidden=view!=='research';
-        if(typeField)typeField.hidden=view!=='type';
-        if(view==='year')layoutYear();
-        if(view==='type')layoutType();
-        if(view==='research')layoutResearch();
-        list.dataset.view=view;
-        setViewportMode(view);
-        if(!animate||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-        requestAnimationFrame(()=>rows.forEach(row=>{
-          const before=first.get(row),after=row.getBoundingClientRect();
-          if(!before)return;
-          const dx=before.left-after.left,dy=before.top-after.top;
-          if(!dx&&!dy)return;
-          const finalTransform=getComputedStyle(row).transform;
-          const fromTransform=finalTransform==='none'
-            ? `translate(${dx}px, ${dy}px)`
-            : `translate(${dx}px, ${dy}px) ${finalTransform}`;
-          row.animate(
-            [{transform:fromTransform},{transform:finalTransform}],
-            {duration:720,easing:'cubic-bezier(.22,.61,.36,1)'}
-          );
-        }));
-      };
-      buttons.forEach(button=>button.addEventListener('click',()=>{const view=button.dataset.view;if(!view||list.dataset.view===view)return;buttons.forEach(candidate=>{const active=candidate===button;candidate.classList.toggle('is-active',active);candidate.setAttribute('aria-pressed',String(active));});layout(view);}));
-      layout('year',false);
+      const list=document.querySelector('#work-list');const buttons=[...document.querySelectorAll('.view-button')];if(!list||!buttons.length)return;const rows=[...list.querySelectorAll('.work-row')];const researchField=list.querySelector('.research-field');const typeField=list.querySelector('.type-field');const yearAxis=list.querySelector('.year-axis');
+      const researchPoints={'urban-wilderness':[12,18],'generative-archives':[43,13],'interspecies':[82,20],'technology-digitalization':[82,72],'emotional-geographies':[43,82],'eco-feminism':[13,72],'pleasure-activism':[22,45]};
+      const byTitle=(a,b)=>(a.dataset.title||'').localeCompare(b.dataset.title||'');const parseTime=(value,fallback=null)=>{if(!value||value==='—')return fallback;if(value==='ongoing')return Date.now();const raw=String(value);const normalized=/^\d{4}$/.test(raw)?`${raw}-01-01`:/^\d{4}-\d{2}$/.test(raw)?`${raw}-01`:raw;const stamp=Date.parse(normalized);return Number.isFinite(stamp)?stamp:fallback;};const clearGenerated=()=>{if(typeField)typeField.innerHTML='';if(yearAxis)yearAxis.innerHTML='';};const clearFocus=()=>{list.classList.remove('has-year-focus');rows.forEach(row=>row.classList.remove('is-year-focus'));};const resetRows=()=>rows.forEach(row=>['--x','--y','--top','--height'].forEach(prop=>row.style.removeProperty(prop)));
+      const renderMoments=(row)=>{const host=row.querySelector('.output-moments');if(!host)return;host.innerHTML='';let moments=[];try{moments=JSON.parse(row.dataset.moments||'[]')}catch{}if(!moments.length)return;const startStamp=parseTime(row.dataset.start,parseTime(row.dataset.year,Date.now()));const endStamp=parseTime(row.dataset.end,startStamp);const low=Math.min(startStamp,endStamp),high=Math.max(startStamp,endStamp),range=Math.max(1,high-low);moments.forEach(moment=>{const stamp=parseTime(moment.date,startStamp);const chronological=Math.max(0,Math.min(1,(stamp-low)/range));const dot=document.createElement('span');dot.className='moment-dot';dot.style.top=`${(1-chronological)*100}%`;const label=document.createElement('span');label.className='moment-label';label.textContent=[moment.date,moment.title,moment.location].filter(Boolean).join(' · ');dot.appendChild(label);host.appendChild(dot);});};
+      const focusYearRow=row=>{if(list.dataset.view!=='year')return;rows.forEach(candidate=>candidate.classList.toggle('is-year-focus',candidate===row));list.classList.add('has-year-focus');renderMoments(row);};rows.forEach(row=>{row.addEventListener('mouseenter',()=>focusYearRow(row));row.addEventListener('mouseleave',clearFocus);row.addEventListener('focus',()=>focusYearRow(row));row.addEventListener('blur',clearFocus);});
+      const layoutYear=()=>{const now=Date.now();const starts=rows.map(row=>parseTime(row.dataset.start,parseTime(row.dataset.year,now))).filter(Number.isFinite);const ends=rows.map(row=>parseTime(row.dataset.end,parseTime(row.dataset.start,now))).filter(Number.isFinite);const minTime=Math.min(...starts,...ends,now),maxTime=Math.max(...starts,...ends,now),range=Math.max(1,maxTime-minTime),topPad=7,usable=88;if(yearAxis){const minYear=new Date(minTime).getFullYear(),maxYear=new Date(maxTime).getFullYear();for(let year=maxYear;year>=minYear;year--){const stamp=Date.parse(`${year}-01-01`),top=topPad+(1-((stamp-minTime)/range))*usable,label=document.createElement('span');label.textContent=String(year);label.style.top=`${Math.max(topPad,Math.min(topPad+usable,top))}%`;yearAxis.appendChild(label);}}const ordered=[...rows].sort((a,b)=>{const as=parseTime(a.dataset.start,parseTime(a.dataset.year,now)),bs=parseTime(b.dataset.start,parseTime(b.dataset.year,now));return as-bs||byTitle(a,b)});ordered.forEach((row,index)=>{const startStamp=parseTime(row.dataset.start,parseTime(row.dataset.year,now)),endStamp=parseTime(row.dataset.end,startStamp),low=Math.min(startStamp,endStamp),high=Math.max(startStamp,endStamp),top=topPad+(1-((high-minTime)/range))*usable,bottom=topPad+(1-((low-minTime)/range))*usable,height=Math.max(2.6,bottom-top),offsetIndex=index-(ordered.length-1)/2,x=50+Math.max(-4.5,Math.min(4.5,offsetIndex*.9));row.style.setProperty('--x',`${x}%`);row.style.setProperty('--top',`${top}%`);row.style.setProperty('--height',`${height}%`);list.appendChild(row);});};
+      const layoutType=()=>{const types=[...new Set(rows.map(row=>row.dataset.type||'Other'))].sort(),columnWidth=100/Math.max(types.length,1);types.forEach((type,typeIndex)=>{if(typeField){const label=document.createElement('span');label.className='type-anchor';label.textContent=type;label.style.left=`${typeIndex*columnWidth+columnWidth/2}%`;typeField.appendChild(label);}rows.filter(row=>(row.dataset.type||'Other')===type).sort(byTitle).forEach((row,rowIndex)=>{row.style.setProperty('--x',`${typeIndex*columnWidth+columnWidth/2}%`);row.style.setProperty('--y',`${15+rowIndex*9}%`);list.appendChild(row);});});};
+      const layoutResearch=()=>{rows.forEach((row,index)=>{const keys=(row.dataset.research||'').split(',').filter(Boolean),coords=keys.map(key=>researchPoints[key]).filter(Boolean),base=coords.length?coords.reduce((acc,p)=>[acc[0]+p[0],acc[1]+p[1]],[0,0]).map(v=>v/coords.length):[50,50],jitterX=((index*19)%15)-7,jitterY=((index*23)%13)-6;row.style.setProperty('--x',`${Math.max(6,Math.min(92,base[0]+jitterX))}%`);row.style.setProperty('--y',`${Math.max(10,Math.min(90,base[1]+jitterY))}%`);list.appendChild(row);});};
+      const setViewportMode=view=>{document.documentElement.dataset.projectView=view;document.body.dataset.projectView=view;if(view!=='year')window.scrollTo({top:0,behavior:'instant'});};
+      const layout=(view,animate=true)=>{const first=new Map(rows.map(row=>[row,row.getBoundingClientRect()]));clearFocus();clearGenerated();resetRows();list.classList.toggle('is-year-plane',view==='year');list.classList.toggle('is-type-map',view==='type');list.classList.toggle('is-research-map',view==='research');if(researchField)researchField.hidden=view!=='research';if(typeField)typeField.hidden=view!=='type';if(view==='year')layoutYear();if(view==='type')layoutType();if(view==='research')layoutResearch();list.dataset.view=view;setViewportMode(view);if(!animate||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;requestAnimationFrame(()=>rows.forEach(row=>{const before=first.get(row),after=row.getBoundingClientRect();if(!before)return;const dx=before.left-after.left,dy=before.top-after.top;if(!dx&&!dy)return;const finalTransform=getComputedStyle(row).transform,fromTransform=finalTransform==='none'?`translate(${dx}px, ${dy}px)`:`translate(${dx}px, ${dy}px) ${finalTransform}`;row.animate([{transform:fromTransform},{transform:finalTransform}],{duration:720,easing:'cubic-bezier(.22,.61,.36,1)'});}));};
+      buttons.forEach(button=>button.addEventListener('click',()=>{const view=button.dataset.view;if(!view||list.dataset.view===view)return;buttons.forEach(candidate=>{const active=candidate===button;candidate.classList.toggle('is-active',active);candidate.setAttribute('aria-pressed',String(active));});layout(view);}));layout('year',false);
     })();
   </script>
 </BaseLayout>
