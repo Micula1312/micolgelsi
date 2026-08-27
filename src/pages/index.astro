@@ -4,7 +4,6 @@ import { getCollection } from 'astro:content';
 
 const projects = await getCollection('projects');
 const exhibitions = await getCollection('exhibitions');
-const works = await getCollection('works');
 const external = await getCollection('external');
 
 const inferResearch = (item) => {
@@ -29,7 +28,7 @@ const normalize = (item) => {
   return { ...item, yearGroup, typeLabel, start, end, lane: item.collection === 'external' ? 'external' : 'art', researchAreas: inferResearch(item), href: item.collection === 'external' && item.data.url ? item.data.url : `/${item.collection}/${item.id}/`, externalLink: item.collection === 'external' && Boolean(item.data.url) };
 };
 
-const items = [...projects, ...exhibitions, ...works, ...external].map(normalize);
+const items = [...projects, ...exhibitions, ...external].map(normalize);
 const researchAreas = [
   ['urban-wilderness', 'Urban Wilderness'], ['generative-archives', 'Generative Archives'], ['interspecies', 'Interspecies'],
   ['technology-digitalization', 'Technology & Digitalization'], ['emotional-geographies', 'Emotional Geographies'],
