@@ -4,6 +4,7 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 const importer = path.join(ROOT, 'scripts', 'import-content.mjs');
+const astroCli = path.join(ROOT, 'node_modules', 'astro', 'astro.js');
 const watchRoots = [path.join(ROOT, 'src', 'projects'), path.join(ROOT, 'public', 'media')];
 let timer = null;
 let importing = false;
@@ -26,10 +27,9 @@ const scheduleImport = () => {
 
 runImport();
 
-const astro = spawn(process.platform === 'win32' ? 'npx.cmd' : 'npx', ['astro', 'dev'], {
+const astro = spawn(process.execPath, [astroCli, 'dev'], {
   stdio: 'inherit',
-  cwd: ROOT,
-  shell: false
+  cwd: ROOT
 });
 
 for (const root of watchRoots) {
@@ -45,7 +45,10 @@ for (const root of watchRoots) {
   }
 }
 
-const shutdown = () => { astro.kill('SIGTERM'); process.exit(); };
+const shutdown = () => {
+  if (!astro.killed) astro.kill();
+  process.exit();
+};
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
 astro.on('exit', (code) => process.exit(code ?? 0));
