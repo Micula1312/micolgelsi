@@ -10,37 +10,70 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const allWorks = await getCollection('works');
-const related = allWorks.filter((work) => entry.data.works.includes(work.id));
+const related = allWorks.filter((work) => entry.data.works.includes(work.id) || work.data.parent?.slug === entry.id);
+const typeLabel = entry.data.displayType || 'Exhibition';
 ---
 <BaseLayout title={`${entry.data.title} — Micol Gelsi`}>
-  <div class="eyebrow">Exhibition · {entry.data.year}</div>
-  <section class="intro">
+  <div class="eyebrow"><a href="/#projects">Projects</a> · <span>{typeLabel}</span> · <span>{entry.data.year}</span></div>
+
+  <section class="project-head">
     <h1>{entry.data.title}</h1>
     {entry.data.summary && <p class="lead">{entry.data.summary}</p>}
   </section>
 
-  <article class="prose"><Content /></article>
+  {entry.data.cover && <figure class="project-cover"><img src={entry.data.cover} alt="" /></figure>}
 
-  <div class="meta">
-    <div>Year<br />{entry.data.year}</div>
-    <div>Location<br />{entry.data.location ?? '—'}</div>
-    <div>Dates<br />{entry.data.dates ?? '—'}</div>
-    <div>Type<br />Exhibition</div>
+  <div class="project-body">
+    <article class="prose"><Content /></article>
+    <aside class="project-facts">
+      <div><span>Type</span>{typeLabel}</div>
+      <div><span>Year</span>{entry.data.year}</div>
+      <div><span>Status</span>{entry.data.status}</div>
+      <div><span>Medium</span>{entry.data.medium.join(', ') || '—'}</div>
+      <div><span>Research</span>{entry.data.researchAreas.join(', ') || '—'}</div>
+      {entry.data.collaborators.length > 0 && <div><span>With</span>{entry.data.collaborators.join(', ')}</div>}
+    </aside>
   </div>
+
+  {entry.data.gallery.length > 0 && (
+    <section class="media-grid">
+      {entry.data.gallery.map((src, i) => <figure><img src={src} alt={`${entry.data.title} — ${i + 1}`} loading="lazy" /></figure>)}
+    </section>
+  )}
+
+  {entry.data.videos.length > 0 && (
+    <section class="video-list">
+      {entry.data.videos.map((src) => <video src={src} controls playsinline preload="metadata"></video>)}
+    </section>
+  )}
+
+  {entry.data.moments.length > 0 && (
+    <section class="project-moments">
+      <h2>Outputs</h2>
+      {entry.data.moments.map((moment) => (
+        <div class="project-moment">
+          <span>{moment.date}</span><strong>{moment.title}</strong><span>{moment.location || ''}</span>
+          {moment.media && <img src={moment.media} alt="" loading="lazy" />}
+        </div>
+      ))}
+    </section>
+  )}
 
   {related.length > 0 && (
     <section class="related">
-      <h2>Works in the exhibition</h2>
-      <div class="index">
-        {related.map((work, index) => (
-          <a class="index-row" href={`/works/${work.id}/`}>
-            <span class="index-number">{String(index + 1).padStart(2, '0')}</span>
-            <span class="index-title">{work.data.title}</span>
-            <span class="index-type">work</span>
-            <span class="index-year">{work.data.year}</span>
-          </a>
-        ))}
-      </div>
+      <h2>Works</h2>
+      {related.map((work) => (
+        <a class="related-work" href={`/works/${work.id}/`}>
+          <strong>{work.data.title}</strong><span>{work.data.displayType || 'Work'}</span><span>{work.data.year}</span>
+        </a>
+      ))}
+    </section>
+  )}
+
+  {entry.data.links.length > 0 && (
+    <section class="project-links">
+      <h2>Links</h2>
+      {entry.data.links.map((link) => <a href={link} target="_blank" rel="noreferrer">{link} ↗</a>)}
     </section>
   )}
 </BaseLayout>
