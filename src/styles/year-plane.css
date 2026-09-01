@@ -96,7 +96,7 @@
   font-size: 12px;
   line-height: 1;
 }
-.work-list.is-year-plane .timeline-end-top::before { content: '✦'; }
+.work-list.is-year-plane .timeline-end-top::before { content: '★'; }
 .work-list.is-year-plane .timeline-end-bottom { top: 100%; }
 
 /* Names sit outside the bundle, connected to their own trajectory. */
