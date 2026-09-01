@@ -10,16 +10,16 @@
   position: relative;
 }
 
+/* Cartesian-like temporal Y axis, aligned to the left edge of the field. */
 .work-list.is-year-plane .year-axis {
   display: block;
   position: absolute;
-  left: 50%;
+  left: clamp(42px, 6vw, 86px);
   top: 18px;
   bottom: 18px;
   width: 1px;
   background: var(--line);
   pointer-events: none;
-  transform: translateX(-50%);
 }
 
 .work-list.is-year-plane .year-axis::before {
@@ -51,7 +51,7 @@
 
 .work-list.is-year-plane .year-side-label { display: none; }
 
-/* Every project line lives in one tight bundle around the central time axis. */
+/* Every project line lives in one tight bundle in the temporal field. */
 .work-list.is-year-plane .work-row {
   position: absolute;
   left: var(--x);
@@ -82,7 +82,21 @@
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
-.work-list.is-year-plane .timeline-end-top { top: 0; }
+
+/* Chronological end = top of each project trajectory. */
+.work-list.is-year-plane .timeline-end-top {
+  top: 0;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1;
+}
+.work-list.is-year-plane .timeline-end-top::before { content: '✦'; }
 .work-list.is-year-plane .timeline-end-bottom { top: 100%; }
 
 /* Names sit outside the bundle, connected to their own trajectory. */
@@ -166,7 +180,7 @@ html[data-style="native"] .year-side-label { display: none !important; }
 
 @media (max-width: 760px) {
   .work-list.is-year-plane { height: 980px; min-height: 980px; }
-  .work-list.is-year-plane .year-axis { left: 50%; }
+  .work-list.is-year-plane .year-axis { left: 34px; }
   .work-list.is-year-plane .work-title { max-width: 130px; font-size: 12px; }
   .work-list.is-year-plane .collab-pill { display: none; }
   .work-list.is-year-plane .work-row:not(.is-external-project) .work-title { right: 12px; }
