@@ -30,7 +30,7 @@
 .research-anchor,
 .year-axis { font-size: 11px; }
 
-.site-name::before { content: '> '; color: var(--signal); font-family: var(--mono); }
+.site-name::before { content: '✦ '; color: var(--signal); font-family: var(--mono); }
 #projects-heading::before { content: './'; color: var(--signal); font-family: var(--mono); }
 .eyebrow::before { content: '[ '; color: var(--signal); }
 .eyebrow::after { content: ' ]'; color: var(--signal); }
@@ -51,8 +51,9 @@ html[data-style="rgb"] .work-list.is-type-map .work-row:hover,
 html[data-style="rgb"] .work-list.is-research-map .work-row:hover { outline-color: var(--signal); }
 html[data-style="rgb"] .work-list.is-year-plane .timeline-mark { background: var(--fg); }
 html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-mark { background: var(--signal); box-shadow: 0 0 0 1px var(--signal-soft); }
-html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-end,
+html[data-style="rgb"] .work-list.is-year-plane .timeline-end,
 html[data-style="rgb"] .work-list.is-year-plane .moment-dot { border-color: var(--signal); }
+html[data-style="rgb"] .work-list.is-year-plane .timeline-end-top { color: var(--signal); }
 html[data-style="rgb"] .work-list.is-year-plane .moment-dot:hover { background: var(--signal); }
 html[data-style="rgb"] .work-list.is-year-plane .moment-dot:hover .moment-label { border-color: var(--signal); }
 
