@@ -15,6 +15,9 @@
         }
       ]
     },
+    "displayType": {
+      "type": "string"
+    },
     "startDate": {
       "type": "string"
     },
@@ -59,7 +62,9 @@
           "generative-archives",
           "interspecies",
           "technology-digitalization",
-          "emotional-geographies"
+          "emotional-geographies",
+          "eco-feminism",
+          "pleasure-activism"
         ]
       }
     },
@@ -76,6 +81,27 @@
     "cover": {
       "type": "string"
     },
+    "gallery": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "videos": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "links": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "moments": {
       "default": [],
       "type": "array",
@@ -86,6 +112,9 @@
             "type": "string"
           },
           "title": {
+            "type": "string"
+          },
+          "type": {
             "type": "string"
           },
           "location": {

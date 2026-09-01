@@ -1,0 +1,35 @@
+TITLE:
+Gaia Ginevra Giorgi 
+
+START:
+2025-06
+
+END:
+2025-06
+
+STATUS:
+completed
+
+TYPE:
+project
+
+MEDIUM:
+research, archive, website, installation
+
+RESEARCH:
+urban-wilderness
+generative-archives
+interspecies
+
+WITH:
+
+SHORT:
+testo breve...
+
+LINKS:
+
+MOMENTS:
+2024-06
+Soft Data Foraging
+location: Bologna
+media: moments/soft-data.jpg

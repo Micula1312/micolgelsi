@@ -56,7 +56,9 @@
           "generative-archives",
           "interspecies",
           "technology-digitalization",
-          "emotional-geographies"
+          "emotional-geographies",
+          "eco-feminism",
+          "pleasure-activism"
         ]
       }
     },
@@ -80,6 +82,9 @@
             "type": "string"
           },
           "title": {
+            "type": "string"
+          },
+          "type": {
             "type": "string"
           },
           "location": {

@@ -1,0 +1,35 @@
+TITLE:
+Archive of the #Untamed
+
+START:
+2024-03
+
+END:
+ongoing
+
+STATUS:
+ongoing
+
+TYPE:
+project
+
+MEDIUM:
+research, archive, website, installation
+
+RESEARCH:
+urban-wilderness
+generative-archives
+interspecies
+
+WITH:
+
+SHORT:
+testo breve...
+
+LINKS:
+
+MOMENTS:
+2024-06
+Soft Data Foraging
+location: Bologna
+media: moments/soft-data.jpg
