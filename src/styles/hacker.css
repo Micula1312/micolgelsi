@@ -30,7 +30,7 @@
 .research-anchor,
 .year-axis { font-size: 11px; }
 
-.site-name::before { content: '✦ '; color: var(--signal); font-family: var(--mono); }
+.site-name::before { content: '★ '; color: var(--signal); font-family: var(--mono); }
 #projects-heading::before { content: './'; color: var(--signal); font-family: var(--mono); }
 .eyebrow::before { content: '[ '; color: var(--signal); }
 .eyebrow::after { content: ' ]'; color: var(--signal); }
