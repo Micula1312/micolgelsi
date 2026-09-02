@@ -1,65 +1,80 @@
 .year-axis,
 .year-side-label { display: none; }
 
-/* YEAR is not a framed panel: it is a long temporal plane that continues with scroll. */
+/* YEAR = horizontal temporal field. The dashboard stays fixed while this panel scrolls on X. */
 .work-list.is-year-plane {
-  height: 1180px;
-  min-height: 1180px;
-  border: 0;
-  overflow: visible;
   position: relative;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted) transparent;
 }
 
-/* Cartesian-like temporal Y axis, aligned to the left edge of the field. */
+.work-list.is-year-plane::-webkit-scrollbar { height: 5px; }
+.work-list.is-year-plane::-webkit-scrollbar-track { background: transparent; }
+.work-list.is-year-plane::-webkit-scrollbar-thumb { background: var(--muted); }
+
+.work-list.is-year-plane .year-track {
+  position: relative;
+  width: max(100%, var(--year-width, 1900px));
+  height: 100%;
+  min-height: 100%;
+}
+
+/* Time lives on X, from the oldest date at left to now at right. */
 .work-list.is-year-plane .year-axis {
   display: block;
   position: absolute;
-  left: clamp(42px, 6vw, 86px);
-  top: 18px;
-  bottom: 18px;
-  width: 1px;
+  left: 52px;
+  right: 34px;
+  bottom: 28px;
+  height: 1px;
   background: var(--line);
   pointer-events: none;
 }
 
-.work-list.is-year-plane .year-axis::before {
-  content: 'time ↑';
+.work-list.is-year-plane .year-axis::after {
+  content: 'time →';
   position: absolute;
-  left: 10px;
-  top: 0;
+  right: 0;
+  bottom: 10px;
   color: var(--muted);
   white-space: nowrap;
 }
 
 .work-list.is-year-plane .year-axis span {
   position: absolute;
-  left: 12px;
+  top: 10px;
   color: var(--muted);
   white-space: nowrap;
-  transform: translateY(-50%);
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 10px;
 }
 
 .work-list.is-year-plane .year-axis span::before {
   content: '';
   position: absolute;
-  right: calc(100% + 8px);
-  top: 50%;
-  width: 9px;
-  height: 1px;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  width: 1px;
+  height: 8px;
   background: var(--line);
 }
 
 .work-list.is-year-plane .year-side-label { display: none; }
 
-/* Every project line lives in one tight bundle in the temporal field. */
+/* Every project is a horizontal duration line. */
 .work-list.is-year-plane .work-row {
   position: absolute;
-  left: var(--x);
-  top: var(--top);
-  height: var(--height);
-  width: 1px;
-  min-height: 30px;
-  transform: translateX(-50%);
+  left: var(--left);
+  top: var(--y);
+  width: var(--width);
+  height: 1px;
+  min-width: 26px;
+  min-height: 1px;
+  transform: none;
   z-index: 2;
 }
 
@@ -67,14 +82,15 @@
   display: block;
   position: absolute;
   inset: 0;
-  width: 1px;
+  width: 100%;
+  height: 1px;
   background: var(--fg);
   opacity: .68;
 }
 
 .work-list.is-year-plane .timeline-end {
   position: absolute;
-  left: 50%;
+  top: 50%;
   width: 5px;
   height: 5px;
   border: 1px solid var(--fg);
@@ -83,9 +99,9 @@
   transform: translate(-50%, -50%);
 }
 
-/* Chronological end = top of each project trajectory. */
+.work-list.is-year-plane .timeline-end-bottom { left: 0; }
 .work-list.is-year-plane .timeline-end-top {
-  top: 0;
+  left: 100%;
   width: auto;
   height: auto;
   border: 0;
@@ -97,43 +113,33 @@
   line-height: 1;
 }
 .work-list.is-year-plane .timeline-end-top::before { content: '★'; }
-.work-list.is-year-plane .timeline-end-bottom { top: 100%; }
 
-/* Names sit outside the bundle, connected to their own trajectory. */
 .work-list.is-year-plane .work-title {
   position: absolute;
-  top: 50%;
+  left: 0;
+  bottom: 10px;
   width: max-content;
-  max-width: 260px;
+  max-width: 280px;
   line-height: 1.1;
-  transform: translateY(-50%);
-}
-
-.work-list.is-year-plane .work-row:not(.is-external-project) .work-title {
-  right: 18px;
-  text-align: right;
-}
-
-.work-list.is-year-plane .is-external-project .work-title {
-  left: 18px;
+  transform: none;
   text-align: left;
 }
 
+.work-list.is-year-plane .is-external-project .work-title { bottom: auto; top: 10px; }
+
 .work-list.is-year-plane .collab-pill {
   position: absolute;
-  top: calc(50% + 18px);
+  left: 0;
+  bottom: 28px;
   width: max-content;
 }
-.work-list.is-year-plane .work-row:not(.is-external-project) .collab-pill { right: 18px; }
-.work-list.is-year-plane .is-external-project .collab-pill { left: 18px; }
+.work-list.is-year-plane .is-external-project .collab-pill { bottom: auto; top: 28px; }
 
 .work-list.is-year-plane.has-year-focus .work-row:not(.is-year-focus),
-.work-list.is-year-plane.has-year-focus .year-axis {
-  opacity: .06;
-}
+.work-list.is-year-plane.has-year-focus .year-axis { opacity: .07; }
 
 .work-list.is-year-plane .work-row.is-year-focus { z-index: 12; }
-.work-list.is-year-plane .work-row.is-year-focus .timeline-mark { width: 2px; opacity: 1; }
+.work-list.is-year-plane .work-row.is-year-focus .timeline-mark { height: 2px; opacity: 1; }
 .work-list.is-year-plane .work-row.is-year-focus .output-moments {
   display: block;
   position: absolute;
@@ -142,7 +148,7 @@
 
 .work-list.is-year-plane .moment-dot {
   position: absolute;
-  left: 50%;
+  top: 50%;
   width: 8px;
   height: 8px;
   border: 1px solid var(--fg);
@@ -153,7 +159,8 @@
 
 .work-list.is-year-plane .moment-label {
   position: absolute;
-  top: 50%;
+  left: 50%;
+  bottom: 12px;
   width: max-content;
   max-width: 240px;
   padding: 2px 4px;
@@ -162,29 +169,24 @@
   color: var(--fg);
   font-size: 11px;
   line-height: 1.2;
-  transform: translateY(-50%);
+  transform: translateX(-50%);
   opacity: 0;
   pointer-events: none;
 }
-.work-list.is-year-plane .work-row:not(.is-external-project) .moment-label { right: 14px; }
-.work-list.is-year-plane .is-external-project .moment-label { left: 14px; }
 .work-list.is-year-plane .moment-dot:hover .moment-label { opacity: 1; }
 
-html[data-style="rgb"] .work-list.is-year-plane .timeline-mark {
-  background: linear-gradient(180deg, var(--rgb-b), var(--rgb-g), var(--rgb-r));
-}
-html[data-style="rgb"] .work-list.is-year-plane .moment-dot { border-color: var(--rgb-b); }
+html[data-style="rgb"] .work-list.is-year-plane .timeline-mark { background: var(--fg); }
+html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-mark { background: var(--signal); }
+html[data-style="rgb"] .work-list.is-year-plane .moment-dot { border-color: var(--signal); }
 
 html[data-style="native"] .year-axis,
 html[data-style="native"] .year-side-label { display: none !important; }
 
 @media (max-width: 760px) {
-  .work-list.is-year-plane { height: 980px; min-height: 980px; }
-  .work-list.is-year-plane .year-axis { left: 34px; }
-  .work-list.is-year-plane .work-title { max-width: 130px; font-size: 12px; }
+  .work-list.is-year-plane .year-track { width: max(100%, var(--year-width, 1500px)); }
+  .work-list.is-year-plane .year-axis { left: 36px; right: 26px; bottom: 24px; }
+  .work-list.is-year-plane .work-title { max-width: 170px; font-size: 12px; }
   .work-list.is-year-plane .collab-pill { display: none; }
-  .work-list.is-year-plane .work-row:not(.is-external-project) .work-title { right: 12px; }
-  .work-list.is-year-plane .is-external-project .work-title { left: 12px; }
 }
 
 @media print {
