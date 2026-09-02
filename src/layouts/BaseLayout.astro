@@ -5,6 +5,7 @@ import '../styles/grid.css';
 import '../styles/hacker.css';
 import '../styles/glyph-hover.css';
 import '../styles/outputs.css';
+import '../styles/dashboard.css';
 const { title = 'Micol Gelsi' } = Astro.props;
 ---
 <!doctype html>
@@ -30,7 +31,8 @@ const { title = 'Micol Gelsi' } = Astro.props;
         </div>
         <nav class="site-nav" aria-label="Main navigation">
           <a href="/cv">CV</a>
-          <a class="playground-link" href="/playground" aria-label="Playground" data-label="PLAYGROUND">★</a>
+          <a href="/playground">PLAYGROUND</a>
+          <a href="/play-with-me">PLAY WITH ME</a>
         </nav>
       </header>
       <main class="page"><slot /></main>
