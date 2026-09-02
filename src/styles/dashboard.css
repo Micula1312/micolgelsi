@@ -110,9 +110,46 @@ body[data-project-view] .work-list.is-research-map {
   border: 1px solid var(--line);
 }
 
+/* YEAR becomes a horizontal timeline viewport inside the fixed dashboard. */
+body[data-project-view] .work-list.is-year-plane {
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  touch-action: pan-x;
+}
+
+body[data-project-view] .work-list.is-year-plane::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--year-scroll-span, 100%);
+  height: 1px;
+  pointer-events: none;
+}
+
+body[data-project-view] .work-list.is-year-plane .work-row {
+  margin-left: var(--year-shift, 0px);
+}
+
 body[data-project-view] .work-list.is-year-plane .year-axis {
   top: 14px;
   bottom: 14px;
+}
+
+body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar {
+  height: 7px;
+}
+body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar-track {
+  background: transparent;
+}
+body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar-thumb {
+  background: var(--line);
+}
+body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar-thumb:hover {
+  background: var(--signal);
 }
 
 @media (max-width: 760px) {
@@ -134,6 +171,10 @@ body[data-project-view] .work-list.is-year-plane .year-axis {
   body[data-project-view] .work-list.is-type-map,
   body[data-project-view] .work-list.is-research-map {
     min-height: 0;
+  }
+
+  body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar {
+    height: 4px;
   }
 }
 
