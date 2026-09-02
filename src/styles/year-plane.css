@@ -2,193 +2,42 @@
 .year-side-label { display: none; }
 
 /* YEAR = horizontal temporal field. The dashboard stays fixed while this panel scrolls on X. */
-.work-list.is-year-plane {
-  position: relative;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  overscroll-behavior-x: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--muted) transparent;
-}
+.work-list.is-year-plane { position:relative;overflow-x:auto!important;overflow-y:hidden!important;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--muted) transparent; }
+.work-list.is-year-plane::-webkit-scrollbar{height:5px}.work-list.is-year-plane::-webkit-scrollbar-track{background:transparent}.work-list.is-year-plane::-webkit-scrollbar-thumb{background:var(--muted)}
+.work-list.is-year-plane .year-track{position:relative;width:max(100%,var(--year-width,1900px));height:100%;min-height:100%}
+.work-list.is-year-plane .year-axis{display:block;position:absolute;left:52px;right:34px;bottom:28px;height:1px;background:var(--line);pointer-events:none}
+.work-list.is-year-plane .year-axis::after{content:'time →';position:absolute;right:0;bottom:10px;color:var(--muted);white-space:nowrap}
+.work-list.is-year-plane .year-axis span{position:absolute;top:10px;color:var(--muted);white-space:nowrap;transform:translateX(-50%);font-family:var(--mono);font-size:10px}
+.work-list.is-year-plane .year-axis span::before{content:'';position:absolute;left:50%;bottom:calc(100% + 8px);width:1px;height:8px;background:var(--line)}
+.work-list.is-year-plane .year-side-label{display:none}
 
-.work-list.is-year-plane::-webkit-scrollbar { height: 5px; }
-.work-list.is-year-plane::-webkit-scrollbar-track { background: transparent; }
-.work-list.is-year-plane::-webkit-scrollbar-thumb { background: var(--muted); }
+.work-list.is-year-plane .work-row{position:absolute;left:var(--left);top:var(--y);width:var(--width);height:1px;min-width:26px;min-height:1px;transform:none;z-index:2;overflow:visible}
+.work-list.is-year-plane .timeline-mark{display:block;position:absolute;inset:0;width:100%;height:1px;background:var(--fg);opacity:.68}
+.work-list.is-year-plane .timeline-end{position:absolute;top:50%;width:5px;height:5px;border:1px solid var(--fg);background:var(--bg);border-radius:50%;transform:translate(-50%,-50%)}
+.work-list.is-year-plane .timeline-end-bottom{left:0}
+.work-list.is-year-plane .timeline-end-top{left:100%;width:auto;height:auto;border:0;border-radius:0;background:transparent;color:var(--fg);font-family:var(--mono);font-size:12px;line-height:1;transition:transform .16s ease,color .16s ease,text-shadow .16s ease}
+.work-list.is-year-plane .timeline-end-top::before{content:'★'}
+.work-list.is-year-plane .is-star-hit .timeline-end-top{color:var(--signal);transform:translate(-50%,-50%) scale(2.4);text-shadow:0 0 12px var(--signal),0 0 30px var(--signal)}
 
-.work-list.is-year-plane .year-track {
-  position: relative;
-  width: max(100%, var(--year-width, 1900px));
-  height: 100%;
-  min-height: 100%;
-}
+/* The project name literally travels through its own duration. */
+.work-list.is-year-plane .work-title{position:absolute;left:0;bottom:10px;width:max-content;max-width:none;line-height:1.1;transform:none;text-align:left;will-change:transform;z-index:4;pointer-events:none}
+.work-list.is-year-plane .is-external-project .work-title{bottom:auto;top:10px}
+.work-list.is-year-plane .is-title-travelling .work-title{color:var(--signal);text-shadow:0 0 7px color-mix(in srgb,var(--signal) 62%,transparent)}
+.work-list.is-year-plane .collab-pill{position:absolute;left:0;bottom:28px;width:max-content}.work-list.is-year-plane .is-external-project .collab-pill{bottom:auto;top:28px}
+.work-list.is-year-plane.has-year-focus .work-row:not(.is-year-focus),.work-list.is-year-plane.has-year-focus .year-axis{opacity:.07}
+.work-list.is-year-plane .work-row.is-year-focus{z-index:12}.work-list.is-year-plane .work-row.is-year-focus .timeline-mark{height:2px;opacity:1}.work-list.is-year-plane .work-row.is-year-focus .output-moments{display:block;position:absolute;inset:0}
+.work-list.is-year-plane .moment-dot{position:absolute;top:50%;width:8px;height:8px;border:1px solid var(--fg);background:var(--bg);border-radius:50%;transform:translate(-50%,-50%)}
+.work-list.is-year-plane .moment-label{position:absolute;left:50%;bottom:12px;width:max-content;max-width:240px;padding:2px 4px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font-size:11px;line-height:1.2;transform:translateX(-50%);opacity:0;pointer-events:none}.work-list.is-year-plane .moment-dot:hover .moment-label{opacity:1}
+html[data-style="rgb"] .work-list.is-year-plane .timeline-mark{background:var(--fg)}html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-mark{background:var(--signal)}html[data-style="rgb"] .work-list.is-year-plane .moment-dot{border-color:var(--signal)}
+html[data-style="native"] .year-axis,html[data-style="native"] .year-side-label{display:none!important}
 
-/* Time lives on X, from the oldest date at left to now at right. */
-.work-list.is-year-plane .year-axis {
-  display: block;
-  position: absolute;
-  left: 52px;
-  right: 34px;
-  bottom: 28px;
-  height: 1px;
-  background: var(--line);
-  pointer-events: none;
-}
+/* Avatar burst: the project escapes the timeline for a fraction of a second. */
+.avatar-explosion{position:fixed;inset:0;z-index:9998;display:grid;place-items:center;overflow:hidden;background:color-mix(in srgb,var(--bg) 18%,transparent);opacity:0;visibility:hidden;pointer-events:none;backdrop-filter:contrast(1.35) saturate(.6);transition:opacity 80ms linear,visibility 0s linear 120ms}
+.avatar-explosion::before,.avatar-explosion::after{content:'';position:absolute;inset:0;pointer-events:none}.avatar-explosion::before{background:repeating-linear-gradient(0deg,transparent 0 3px,color-mix(in srgb,var(--signal) 10%,transparent) 3px 4px);mix-blend-mode:screen}.avatar-explosion::after{box-shadow:inset 0 0 18vw var(--bg)}
+.avatar-explosion img{width:100vw;height:100dvh;object-fit:cover;image-rendering:auto;transform:scale(.08);filter:grayscale(1) contrast(1.35);opacity:.2}
+.avatar-explosion.is-visible{opacity:1;visibility:visible;transition:opacity 70ms linear,visibility 0s}.avatar-explosion.is-visible img{animation:avatar-burst 900ms cubic-bezier(.16,.84,.22,1) both}
+@keyframes avatar-burst{0%{transform:scale(.08) rotate(-2deg);opacity:.15;filter:grayscale(1) contrast(1.7)}18%{opacity:1}48%{transform:scale(1.08) rotate(.6deg);filter:grayscale(.15) contrast(1.2)}82%{transform:scale(1);opacity:1}100%{transform:scale(1.03);opacity:0;filter:grayscale(1) contrast(1.7)}}
 
-.work-list.is-year-plane .year-axis::after {
-  content: 'time →';
-  position: absolute;
-  right: 0;
-  bottom: 10px;
-  color: var(--muted);
-  white-space: nowrap;
-}
-
-.work-list.is-year-plane .year-axis span {
-  position: absolute;
-  top: 10px;
-  color: var(--muted);
-  white-space: nowrap;
-  transform: translateX(-50%);
-  font-family: var(--mono);
-  font-size: 10px;
-}
-
-.work-list.is-year-plane .year-axis span::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 8px);
-  width: 1px;
-  height: 8px;
-  background: var(--line);
-}
-
-.work-list.is-year-plane .year-side-label { display: none; }
-
-/* Every project is a horizontal duration line. */
-.work-list.is-year-plane .work-row {
-  position: absolute;
-  left: var(--left);
-  top: var(--y);
-  width: var(--width);
-  height: 1px;
-  min-width: 26px;
-  min-height: 1px;
-  transform: none;
-  z-index: 2;
-}
-
-.work-list.is-year-plane .timeline-mark {
-  display: block;
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 1px;
-  background: var(--fg);
-  opacity: .68;
-}
-
-.work-list.is-year-plane .timeline-end {
-  position: absolute;
-  top: 50%;
-  width: 5px;
-  height: 5px;
-  border: 1px solid var(--fg);
-  background: var(--bg);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.work-list.is-year-plane .timeline-end-bottom { left: 0; }
-.work-list.is-year-plane .timeline-end-top {
-  left: 100%;
-  width: auto;
-  height: auto;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: var(--fg);
-  font-family: var(--mono);
-  font-size: 12px;
-  line-height: 1;
-}
-.work-list.is-year-plane .timeline-end-top::before { content: '★'; }
-
-.work-list.is-year-plane .work-title {
-  position: absolute;
-  left: 0;
-  bottom: 10px;
-  width: max-content;
-  max-width: 280px;
-  line-height: 1.1;
-  transform: none;
-  text-align: left;
-}
-
-.work-list.is-year-plane .is-external-project .work-title { bottom: auto; top: 10px; }
-
-.work-list.is-year-plane .collab-pill {
-  position: absolute;
-  left: 0;
-  bottom: 28px;
-  width: max-content;
-}
-.work-list.is-year-plane .is-external-project .collab-pill { bottom: auto; top: 28px; }
-
-.work-list.is-year-plane.has-year-focus .work-row:not(.is-year-focus),
-.work-list.is-year-plane.has-year-focus .year-axis { opacity: .07; }
-
-.work-list.is-year-plane .work-row.is-year-focus { z-index: 12; }
-.work-list.is-year-plane .work-row.is-year-focus .timeline-mark { height: 2px; opacity: 1; }
-.work-list.is-year-plane .work-row.is-year-focus .output-moments {
-  display: block;
-  position: absolute;
-  inset: 0;
-}
-
-.work-list.is-year-plane .moment-dot {
-  position: absolute;
-  top: 50%;
-  width: 8px;
-  height: 8px;
-  border: 1px solid var(--fg);
-  background: var(--bg);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.work-list.is-year-plane .moment-label {
-  position: absolute;
-  left: 50%;
-  bottom: 12px;
-  width: max-content;
-  max-width: 240px;
-  padding: 2px 4px;
-  border: 1px solid var(--line);
-  background: var(--bg);
-  color: var(--fg);
-  font-size: 11px;
-  line-height: 1.2;
-  transform: translateX(-50%);
-  opacity: 0;
-  pointer-events: none;
-}
-.work-list.is-year-plane .moment-dot:hover .moment-label { opacity: 1; }
-
-html[data-style="rgb"] .work-list.is-year-plane .timeline-mark { background: var(--fg); }
-html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-mark { background: var(--signal); }
-html[data-style="rgb"] .work-list.is-year-plane .moment-dot { border-color: var(--signal); }
-
-html[data-style="native"] .year-axis,
-html[data-style="native"] .year-side-label { display: none !important; }
-
-@media (max-width: 760px) {
-  .work-list.is-year-plane .year-track { width: max(100%, var(--year-width, 1500px)); }
-  .work-list.is-year-plane .year-axis { left: 36px; right: 26px; bottom: 24px; }
-  .work-list.is-year-plane .work-title { max-width: 170px; font-size: 12px; }
-  .work-list.is-year-plane .collab-pill { display: none; }
-}
-
-@media print {
-  .year-axis, .year-side-label { display: none !important; }
-}
+@media(max-width:760px){.work-list.is-year-plane .year-track{width:max(100%,var(--year-width,1500px))}.work-list.is-year-plane .year-axis{left:36px;right:26px;bottom:24px}.work-list.is-year-plane .work-title{font-size:12px}.work-list.is-year-plane .collab-pill{display:none}}
+@media(prefers-reduced-motion:reduce){.avatar-explosion.is-visible img{animation:none;transform:scale(1);opacity:1}.work-list.is-year-plane .work-title{will-change:auto}}
+@media print{.year-axis,.year-side-label,.avatar-explosion{display:none!important}}
