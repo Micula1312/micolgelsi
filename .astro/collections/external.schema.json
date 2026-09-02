@@ -69,6 +69,27 @@
         "type": "string"
       }
     },
+    "artistsInvolved": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "curatedBy": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "credits": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "avatar": {
       "type": "string"
     },
@@ -94,6 +115,15 @@
             "type": "string"
           },
           "href": {
+            "type": "string"
+          },
+          "curatedBy": {
+            "type": "string"
+          },
+          "artistsInvolved": {
+            "type": "string"
+          },
+          "credits": {
             "type": "string"
           }
         },

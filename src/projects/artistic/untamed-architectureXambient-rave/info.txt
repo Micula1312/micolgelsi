@@ -1,8 +1,8 @@
 TITLE:
-Archive of the #Untamed
+#untamed-architecture 4 @ambient-rave
 
 START:
-2024-03
+2026-03
 
 END:
 ongoing
@@ -11,10 +11,10 @@ STATUS:
 ongoing
 
 TYPE:
-project
+performance
 
 MEDIUM:
-research, archive, website, installation, participatory practice
+audiovisual performance, listening-practice, installation 
 
 RESEARCH:
 urban-wilderness
@@ -25,10 +25,11 @@ WITH:
 Comitato Rigenerazione NO Speculazione
 
 ARTISTS INVOLVED:
-Federico Falanga
-Adriano Sorbello (Fl00ba)
-blondegeisha
-Malincuore
+Stiky Verde
+Giuseppe di Capua
+Federico Russo
+Elisa Catalano
+Paolo Rucci
 
 
 CURATED BY:

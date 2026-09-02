@@ -18,7 +18,7 @@ researchAreas:
   - technology-digitalization
 collaborators:
   []
-cover: "/media/artistic/the-archive-is-alive/cover.png"
+cover: "/media/artistic/the-archive-is-alive/cover.webp"
 gallery:
   - "/media/artistic/the-archive-is-alive/images/89.webp"
   - "/media/artistic/the-archive-is-alive/images/95.webp"
@@ -36,7 +36,7 @@ gallery:
   - "/media/artistic/the-archive-is-alive/images/178.webp"
   - "/media/artistic/the-archive-is-alive/images/182.webp"
   - "/media/artistic/the-archive-is-alive/images/195.webp"
-  - "/media/artistic/the-archive-is-alive/images/gelsi_tag-life_3.jpg"
+  - "/media/artistic/the-archive-is-alive/images/gelsi_tag-life_3.webp"
   - "/media/artistic/the-archive-is-alive/images/IMG_0908.webp"
   - "/media/artistic/the-archive-is-alive/images/photo_5920109103663484609_y.webp"
 videos:

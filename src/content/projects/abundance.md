@@ -1,19 +1,21 @@
 ---
 title: "Abundance"
 type: project
-displayType: "project"
+displayType: "performance"
 year: "2024"
-startDate: "2024-03"
-endDate: "2025-10"
-status: ongoing
-summary: "testo breve..."
+startDate: "2024-01-26"
+endDate: "2024-01-26"
+status: completed
+summary: "A multidisciplinary research project and speculative portal exploring the intersection of the body, technology, and feminist imagination."
 medium:
-  - "research"
-  - "installation"
   - "performance"
+  - "installation"
+  - "party"
+  - "live video"
 researchAreas:
   - eco-feminism
   - pleasure-activism
+  - technology-digitalization
 collaborators:
   - "ASAP"
 gallery:
@@ -21,14 +23,18 @@ gallery:
 videos:
   []
 links:
-  []
+  - "https://..."
 moments:
-  - date: "2024-02"
-    title: "Abundance - first studio output"
+  - date: "2024-01-26"
+    title: "ABUNDANCE"
+    type: "performance"
     location: "DAS - Dispositivo Arti Sperimentali, Bologna"
-    media: "/media/artistic/abundance/moments/soft-data.jpg"
 works:
   []
 ---
 
-testo breve...
+ABUNDANCE is a multidisciplinary research project and speculative portal
+exploring the intersection of the body, technology, and feminist imagination.
+
+The project playfully subverts the capitalist paradigm of scarcity,
+reclaiming abundance as a practice already inscribed within our bodies...
