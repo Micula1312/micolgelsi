@@ -20,7 +20,9 @@ const moment = z.object({
   href: z.string().optional(),
   curatedBy: z.string().optional(),
   artistsInvolved: z.string().optional(),
-  credits: z.string().optional()
+  credits: z.string().optional(),
+  photoCredits: z.string().optional(),
+  collaborators: z.string().optional()
 });
 
 const common = z.object({
@@ -39,6 +41,7 @@ const common = z.object({
   artistsInvolved: z.array(z.string()).default([]),
   curatedBy: z.array(z.string()).default([]),
   credits: z.array(z.string()).default([]),
+  photoCredits: z.array(z.string()).default([]),
   avatar: z.string().optional(),
   cover: z.string().optional(),
   gallery: z.array(z.string()).default([]),
@@ -55,7 +58,7 @@ const works = defineCollection({ loader: glob({ pattern: '**/*.{md,mdx}', base: 
 
 const external = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/external' }),
-  schema: z.object({ title: z.string(), kind: z.string().default('external project'), year: z.union([z.number(), z.string()]).optional(), startDate: z.string().optional(), endDate: z.string().optional(), status: z.enum(['ongoing', 'completed']).default('completed'), url: z.string().optional(), summary: z.string().optional(), themes: z.array(z.string()).default([]), researchAreas: z.array(researchArea).default([]), collaborators: z.array(z.string()).default([]), artistsInvolved: z.array(z.string()).default([]), curatedBy: z.array(z.string()).default([]), credits: z.array(z.string()).default([]), avatar: z.string().optional(), moments: z.array(moment).default([]) })
+  schema: z.object({ title: z.string(), kind: z.string().default('external project'), year: z.union([z.number(), z.string()]).optional(), startDate: z.string().optional(), endDate: z.string().optional(), status: z.enum(['ongoing', 'completed']).default('completed'), url: z.string().optional(), summary: z.string().optional(), themes: z.array(z.string()).default([]), researchAreas: z.array(researchArea).default([]), collaborators: z.array(z.string()).default([]), artistsInvolved: z.array(z.string()).default([]), curatedBy: z.array(z.string()).default([]), credits: z.array(z.string()).default([]), photoCredits: z.array(z.string()).default([]), avatar: z.string().optional(), moments: z.array(moment).default([]) })
 });
 
 const playground = defineCollection({ loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/playground' }), schema: z.object({ title: z.string(), url: z.string().optional(), year: z.union([z.number(), z.string()]).optional(), summary: z.string().optional(), avatar: z.string().optional(), tags: z.array(z.string()).default([]) }) });
