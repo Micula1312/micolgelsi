@@ -1,0 +1,89 @@
+/* Dashboard layer: one quiet signal color, fixed visual panels, no rainbow chrome. */
+
+html[data-style="rgb"] .site-header,
+html[data-style="rgb"] .system-controls,
+html[data-style="rgb"] .collab-pill {
+  border-image: none !important;
+}
+
+html[data-style="rgb"] .site-header,
+html[data-style="rgb"] .system-controls,
+html[data-style="rgb"] .collab-pill {
+  border-color: var(--line) !important;
+}
+
+html[data-style="rgb"] .work-list.is-year-plane .timeline-mark,
+html[data-style="rgb"] .work-list.is-year-list .timeline-mark,
+html[data-style="rgb"] .work-list.is-year-list .timeline-mark i,
+html[data-style="rgb"] .work-list.is-year-list .work-row.is-year-focus .timeline-mark {
+  background: var(--fg) !important;
+}
+
+html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-mark {
+  background: var(--signal) !important;
+}
+
+html[data-style="rgb"] .view-button:nth-child(1):hover,
+html[data-style="rgb"] .view-button:nth-child(2):hover,
+html[data-style="rgb"] .view-button:nth-child(3):hover {
+  color: var(--signal) !important;
+}
+
+/* HOME = fixed dashboard frame below the header. */
+body[data-project-view] {
+  overflow: hidden;
+}
+
+body[data-project-view] .page {
+  padding: 12px 0 14px;
+}
+
+body[data-project-view] .work-index {
+  position: relative;
+  height: calc(100svh - 202px);
+  min-height: 520px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  padding: 12px;
+}
+
+body[data-project-view] .index-toolbar {
+  position: relative;
+  z-index: 20;
+  margin: 0;
+  min-height: 28px;
+}
+
+body[data-project-view] .work-list,
+body[data-project-view] .work-list.is-year-plane,
+body[data-project-view] .work-list.is-type-map,
+body[data-project-view] .work-list.is-research-map {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 48px;
+  bottom: 12px;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+body[data-project-view] .work-list.is-year-plane .year-axis {
+  top: 14px;
+  bottom: 14px;
+}
+
+/* Keep the shell feeling like a dashboard, not a long page. */
+body[data-project-view] .system-controls {
+  bottom: 12px;
+}
+
+@media (max-width: 760px) {
+  body[data-project-view] { overflow: auto; }
+  body[data-project-view] .work-index {
+    height: 72svh;
+    min-height: 620px;
+  }
+}
