@@ -18,6 +18,14 @@ const inferResearch = (item) => {
   return [...result];
 };
 
+const normalizeExternalUrl = (value = '') => {
+  const url = String(value).trim();
+  if (!url) return '';
+  if (/^https?:\/\//i.test(url)) return url;
+  if (url.startsWith('//')) return `https:${url}`;
+  return `https://${url.replace(/^\/+/, '')}`;
+};
+
 const normalize = (item) => {
   const year = item.data.year != null ? String(item.data.year) : '—';
   const yearMatch = year.match(/\d{4}/);
@@ -25,7 +33,8 @@ const normalize = (item) => {
   const lane = item.collection === 'external' ? 'external' : 'artistic';
   const start = item.data.startDate ?? yearMatch?.[0] ?? '';
   const end = item.data.endDate ?? (item.data.status === 'ongoing' ? 'ongoing' : yearMatch?.[0] ?? '');
-  return { ...item, yearGroup, lane, start, end, researchAreas: inferResearch(item), href: item.collection === 'external' && item.data.url ? item.data.url : `/${item.collection}/${item.id}/`, externalLink: item.collection === 'external' && Boolean(item.data.url) };
+  const externalUrl = item.collection === 'external' ? normalizeExternalUrl(item.data.url) : '';
+  return { ...item, yearGroup, lane, start, end, researchAreas: inferResearch(item), href: externalUrl || `/${item.collection}/${item.id}/`, externalLink: Boolean(externalUrl) };
 };
 
 const items = [...projects, ...exhibitions, ...external].map(normalize);
@@ -42,7 +51,7 @@ const researchAreas = [
       <div class="year-track" data-year-track>
         <div class="year-axis" aria-hidden="true"></div>
         {items.map((item) => (
-          <a class={`work-row ${item.lane === 'external' ? 'is-external-project' : ''}`} href={item.href} target={item.externalLink ? '_blank' : undefined} rel={item.externalLink ? 'noreferrer' : undefined} data-year={item.yearGroup} data-type={item.lane} data-title={item.data.title} data-research={item.researchAreas.join(',')} data-start={item.start} data-end={item.end} data-lane={item.lane} data-moments={JSON.stringify(item.data.moments ?? [])} data-avatar={item.data.avatar ?? ''}>
+          <a class={`work-row ${item.lane === 'external' ? 'is-external-project' : ''}`} href={item.href} target={item.externalLink ? '_blank' : undefined} rel={item.externalLink ? 'noopener noreferrer' : undefined} data-year={item.yearGroup} data-type={item.lane} data-title={item.data.title} data-research={item.researchAreas.join(',')} data-start={item.start} data-end={item.end} data-lane={item.lane} data-moments={JSON.stringify(item.data.moments ?? [])} data-avatar={item.data.avatar ?? ''}>
             <span class="timeline-mark" aria-hidden="true"><span class="timeline-end timeline-end-top"></span><span class="timeline-end timeline-end-bottom"></span><span class="output-moments"></span></span><span class="work-title">{item.data.title}{item.externalLink ? ' ↗' : ''}</span>{item.data.collaborators?.length > 0 && <span class="collab-pill">W/ {item.data.collaborators.join(' + ')}</span>}
           </a>
         ))}
