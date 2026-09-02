@@ -12,6 +12,12 @@ researchAreas:
   - interspecies
 collaborators:
   []
+artistsInvolved:
+  []
+curatedBy:
+  []
+credits:
+  []
 moments:
   - date: "2024-06"
     title: "Soft Data Foraging"

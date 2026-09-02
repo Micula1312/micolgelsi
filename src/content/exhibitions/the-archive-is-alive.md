@@ -1,22 +1,27 @@
 ---
 title: "The Archive Is Alive!"
-type: project
-displayType: "artistic"
+type: exhibition
+displayType: "exhibition"
 year: "2026"
-startDate: "2026-06-08"
-endDate: "2026-06-12"
+startDate: "2026-04"
+endDate: "2026-06"
 status: completed
 summary: "The Archive Is Alive! is an exhibition developed from the research project The Archive of the #Untamed. The exhibition explores the archive as a living, porous and generative structure: a space activated by bodies, data, technologies, participation and collective presence. Presented at Spazio Contact, Rome, 8–12 June 2026."
 medium:
-  - "exhibition"
   - "installation"
   - "participatory practice"
-  - "digital art"
 researchAreas:
   - generative-archives
   - urban-wilderness
   - technology-digitalization
 collaborators:
+  []
+artistsInvolved:
+  - "Giuseppe di Capua"
+  - "Federico Russo"
+curatedBy:
+  []
+credits:
   []
 cover: "/media/artistic/the-archive-is-alive/cover.webp"
 gallery:
@@ -46,7 +51,7 @@ links:
 moments:
   - date: "Glass Update | installation"
     title: "Meravigliosa Ragnatela | installation"
-    location: "#weplayoffline | participatory installation"
+    location: "#weplayoffline | participatory"
 works:
   []
 ---

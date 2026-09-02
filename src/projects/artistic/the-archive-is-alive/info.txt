@@ -2,21 +2,25 @@ TITLE:
 The Archive Is Alive!
 
 START:
-2026-06-08
+2026-04
 
 END:
-2026-06-12
+2026-06
 
 TYPE:
-artistic
+exhibition
 
 MEDIUM:
-exhibition, installation, participatory practice, digital art
+installation, participatory practice
 
 RESEARCH:
 generative-archives
 urban-wilderness
 technology-digitalization
+
+ARTISTS INVOLVED: 
+Giuseppe di Capua
+Federico Russo
 
 SHORT:
 The Archive Is Alive! is an exhibition developed from the research project
@@ -31,7 +35,8 @@ Presented at Spazio Contact, Rome, 8–12 June 2026.
 OUTPUTS:
 Glass Update | installation
 Meravigliosa Ragnatela | installation
-#weplayoffline | participatory installation
+#weplayoffline | participatory 
+tag-life | installation
 
 MOMENTS:
 2026-06-08

@@ -2,10 +2,10 @@ TITLE:
 Abundance
 
 START:
-2024-01-26
+2024-01
 
 END:
-2024-01-26
+2025-10
 
 STATUS:
 completed

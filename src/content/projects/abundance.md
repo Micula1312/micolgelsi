@@ -3,8 +3,8 @@ title: "Abundance"
 type: project
 displayType: "performance"
 year: "2024"
-startDate: "2024-01-26"
-endDate: "2024-01-26"
+startDate: "2024-01"
+endDate: "2025-10"
 status: completed
 summary: "A multidisciplinary research project and speculative portal exploring the intersection of the body, technology, and feminist imagination."
 medium:
@@ -18,6 +18,12 @@ researchAreas:
   - technology-digitalization
 collaborators:
   - "ASAP"
+artistsInvolved:
+  []
+curatedBy:
+  []
+credits:
+  []
 gallery:
   []
 videos:
