@@ -5,30 +5,39 @@
 .work-list.is-year-plane { position:relative;overflow-x:auto!important;overflow-y:hidden!important;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--muted) transparent; }
 .work-list.is-year-plane::-webkit-scrollbar{height:5px}.work-list.is-year-plane::-webkit-scrollbar-track{background:transparent}.work-list.is-year-plane::-webkit-scrollbar-thumb{background:var(--muted)}
 .work-list.is-year-plane .year-track{position:relative;width:max(100%,var(--year-width,1900px));height:100%;min-height:100%}
-.work-list.is-year-plane .year-axis{display:block;position:absolute;left:52px;right:34px;bottom:28px;height:1px;background:var(--line);pointer-events:none}
+.work-list.is-year-plane .year-axis{display:block;position:absolute;left:52px;right:34px;bottom:28px;height:1px;background:var(--line);pointer-events:none;transition:opacity .16s ease}
 .work-list.is-year-plane .year-axis::after{content:'time →';position:absolute;right:0;bottom:10px;color:var(--muted);white-space:nowrap}
 .work-list.is-year-plane .year-axis span{position:absolute;top:10px;color:var(--muted);white-space:nowrap;transform:translateX(-50%);font-family:var(--mono);font-size:10px}
 .work-list.is-year-plane .year-axis span::before{content:'';position:absolute;left:50%;bottom:calc(100% + 8px);width:1px;height:8px;background:var(--line)}
 .work-list.is-year-plane .year-side-label{display:none}
 
-.work-list.is-year-plane .work-row{position:absolute;left:var(--left);top:var(--y);width:var(--width);height:1px;min-width:26px;min-height:1px;transform:none;z-index:2;overflow:visible}
-.work-list.is-year-plane .timeline-mark{display:block;position:absolute;inset:0;width:100%;height:1px;background:var(--fg);opacity:.68}
-.work-list.is-year-plane .timeline-end{position:absolute;top:50%;width:5px;height:5px;border:1px solid var(--fg);background:var(--bg);border-radius:50%;transform:translate(-50%,-50%)}
+.work-list.is-year-plane .work-row{position:absolute;left:var(--left);top:var(--y);width:var(--width);height:1px;min-width:26px;min-height:1px;transform:none;z-index:2;overflow:visible;transition:opacity .16s ease,filter .16s ease}
+.work-list.is-year-plane .timeline-mark{display:block;position:absolute;inset:0;width:100%;height:1px;background:var(--fg);opacity:.68;transition:height .16s ease,opacity .16s ease,background .16s ease,box-shadow .16s ease}
+.work-list.is-year-plane .timeline-end{position:absolute;top:50%;width:5px;height:5px;border:1px solid var(--fg);background:var(--bg);border-radius:50%;transform:translate(-50%,-50%);transition:border-color .16s ease,box-shadow .16s ease}
 .work-list.is-year-plane .timeline-end-bottom{left:0}
 .work-list.is-year-plane .timeline-end-top{left:100%;width:auto;height:auto;border:0;border-radius:0;background:transparent;color:var(--fg);font-family:var(--mono);font-size:12px;line-height:1;transition:transform .16s ease,color .16s ease,text-shadow .16s ease}
 .work-list.is-year-plane .timeline-end-top::before{content:'★'}
 .work-list.is-year-plane .is-star-hit .timeline-end-top{color:var(--signal);transform:translate(-50%,-50%) scale(2.4);text-shadow:0 0 12px var(--signal),0 0 30px var(--signal)}
 
 /* The project name literally travels through its own duration. */
-.work-list.is-year-plane .work-title{position:absolute;left:0;bottom:10px;width:max-content;max-width:none;line-height:1.1;transform:none;text-align:left;will-change:transform;z-index:4;pointer-events:none}
+.work-list.is-year-plane .work-title{position:absolute;left:0;bottom:10px;width:max-content;max-width:none;line-height:1.1;transform:none;text-align:left;will-change:transform;z-index:4;pointer-events:none;transition:color .12s ease,text-shadow .12s ease}
 .work-list.is-year-plane .is-external-project .work-title{bottom:auto;top:10px}
 .work-list.is-year-plane .is-title-travelling .work-title{color:var(--signal);text-shadow:0 0 7px color-mix(in srgb,var(--signal) 62%,transparent)}
 .work-list.is-year-plane .collab-pill{position:absolute;left:0;bottom:28px;width:max-content}.work-list.is-year-plane .is-external-project .collab-pill{bottom:auto;top:28px}
-.work-list.is-year-plane.has-year-focus .work-row:not(.is-year-focus),.work-list.is-year-plane.has-year-focus .year-axis{opacity:.07}
-.work-list.is-year-plane .work-row.is-year-focus{z-index:12}.work-list.is-year-plane .work-row.is-year-focus .timeline-mark{height:2px;opacity:1}.work-list.is-year-plane .work-row.is-year-focus .output-moments{display:block;position:absolute;inset:0}
+
+/* Focus state: one project becomes the signal, everything else falls away. */
+.work-list.is-year-plane.has-year-focus .work-row:not(.is-year-focus){opacity:.045;filter:grayscale(1)}
+.work-list.is-year-plane.has-year-focus .year-axis{opacity:.1}
+.work-list.is-year-plane .work-row.is-year-focus{z-index:12;opacity:1!important;filter:none!important}
+.work-list.is-year-plane .work-row.is-year-focus .work-title{color:var(--signal)!important;text-shadow:0 0 6px color-mix(in srgb,var(--signal) 75%,transparent),0 0 16px color-mix(in srgb,var(--signal) 35%,transparent)}
+.work-list.is-year-plane .work-row.is-year-focus .timeline-mark{height:2px!important;opacity:1!important;background:var(--signal)!important;box-shadow:0 0 5px color-mix(in srgb,var(--signal) 72%,transparent),0 0 14px color-mix(in srgb,var(--signal) 30%,transparent)}
+.work-list.is-year-plane .work-row.is-year-focus .timeline-end{border-color:var(--signal);box-shadow:0 0 7px color-mix(in srgb,var(--signal) 60%,transparent)}
+.work-list.is-year-plane .work-row.is-year-focus .timeline-end-top{color:var(--signal)}
+.work-list.is-year-plane .work-row.is-year-focus .output-moments{display:block;position:absolute;inset:0}
+
 .work-list.is-year-plane .moment-dot{position:absolute;top:50%;width:8px;height:8px;border:1px solid var(--fg);background:var(--bg);border-radius:50%;transform:translate(-50%,-50%)}
 .work-list.is-year-plane .moment-label{position:absolute;left:50%;bottom:12px;width:max-content;max-width:240px;padding:2px 4px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font-size:11px;line-height:1.2;transform:translateX(-50%);opacity:0;pointer-events:none}.work-list.is-year-plane .moment-dot:hover .moment-label{opacity:1}
-html[data-style="rgb"] .work-list.is-year-plane .timeline-mark{background:var(--fg)}html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-mark{background:var(--signal)}html[data-style="rgb"] .work-list.is-year-plane .moment-dot{border-color:var(--signal)}
+html[data-style="rgb"] .work-list.is-year-plane .timeline-mark{background:var(--fg)}html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-mark{background:var(--signal)!important}html[data-style="rgb"] .work-list.is-year-plane .moment-dot{border-color:var(--signal)}
 html[data-style="native"] .year-axis,html[data-style="native"] .year-side-label{display:none!important}
 
 /* Avatar burst: the project escapes the timeline for a fraction of a second. */
@@ -39,5 +48,5 @@ html[data-style="native"] .year-axis,html[data-style="native"] .year-side-label{
 @keyframes avatar-burst{0%{transform:scale(.08) rotate(-2deg);opacity:.15;filter:grayscale(1) contrast(1.7)}18%{opacity:1}48%{transform:scale(1.08) rotate(.6deg);filter:grayscale(.15) contrast(1.2)}82%{transform:scale(1);opacity:1}100%{transform:scale(1.03);opacity:0;filter:grayscale(1) contrast(1.7)}}
 
 @media(max-width:760px){.work-list.is-year-plane .year-track{width:max(100%,var(--year-width,1500px))}.work-list.is-year-plane .year-axis{left:36px;right:26px;bottom:24px}.work-list.is-year-plane .work-title{font-size:12px}.work-list.is-year-plane .collab-pill{display:none}}
-@media(prefers-reduced-motion:reduce){.avatar-explosion.is-visible img{animation:none;transform:scale(1);opacity:1}.work-list.is-year-plane .work-title{will-change:auto}}
+@media(prefers-reduced-motion:reduce){.avatar-explosion.is-visible img{animation:none;transform:scale(1);opacity:1}.work-list.is-year-plane .work-title{will-change:auto}.work-list.is-year-plane .work-row,.work-list.is-year-plane .timeline-mark{transition:none}}
 @media print{.year-axis,.year-side-label,.avatar-explosion{display:none!important}}
