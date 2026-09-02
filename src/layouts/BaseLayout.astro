@@ -32,6 +32,7 @@ const fixedShell = ['/', '/playground', '/play-with-me'].includes(pathname);
           </p>
         </div>
         <nav class="site-nav" aria-label="Main navigation">
+          <a href="/#projects" aria-current={pathname === '/' ? 'page' : undefined}>PROJECTS</a>
           <a href="/cv">CV</a>
           <a href="/playground" aria-current={pathname === '/playground' ? 'page' : undefined}>PLAYGROUND</a>
           <a href="/play-with-me" aria-current={pathname === '/play-with-me' ? 'page' : undefined}>PLAY WITH ME</a>
@@ -76,6 +77,33 @@ const fixedShell = ['/', '/playground', '/play-with-me'].includes(pathname);
         });
 
         updateLabels();
+
+        const yearList = document.querySelector('#work-list');
+        if (yearList) {
+          const spreadYearRows = () => {
+            const rows = [...yearList.querySelectorAll('.work-row')];
+            if (yearList.dataset.view !== 'year') {
+              yearList.style.removeProperty('--year-scroll-span');
+              rows.forEach((row) => row.style.removeProperty('--year-shift'));
+              return;
+            }
+            const step = window.innerWidth <= 760 ? 88 : 118;
+            const span = Math.max(yearList.clientWidth + 1, yearList.clientWidth + Math.max(0, rows.length - 5) * step);
+            yearList.style.setProperty('--year-scroll-span', `${span}px`);
+            rows.forEach((row, index) => row.style.setProperty('--year-shift', `${index * step}px`));
+          };
+
+          spreadYearRows();
+          window.addEventListener('resize', spreadYearRows);
+          new MutationObserver(spreadYearRows).observe(yearList, { attributes: true, attributeFilter: ['data-view'] });
+
+          yearList.addEventListener('wheel', (event) => {
+            if (yearList.dataset.view !== 'year') return;
+            if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+            yearList.scrollLeft += event.deltaY;
+            event.preventDefault();
+          }, { passive: false });
+        }
       })();
     </script>
   </body>
