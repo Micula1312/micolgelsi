@@ -40,22 +40,28 @@ html[data-style="rgb"] a:hover,
 html[data-style="rgb"] .view-button:hover,
 html[data-style="rgb"] .view-button.is-active { color: var(--signal); }
 html[data-style="rgb"] .view-button.is-active { text-decoration-color: var(--signal); text-decoration-thickness: 1px; }
-html[data-style="rgb"] .work-row:hover .work-title { text-decoration-color: var(--signal); text-decoration-thickness: 2px; }
+html[data-style="rgb"] .work-row:hover .work-title {
+  text-decoration-color: transparent;
+  text-shadow:
+    0 0 4px var(--signal),
+    0 0 10px var(--signal-soft),
+    0 0 18px var(--signal-faint);
+}
+html[data-style="rgb"] .work-list.is-type-map .work-row:hover,
+html[data-style="rgb"] .work-list.is-research-map .work-row:hover { outline: 0 !important; }
 html[data-style="rgb"] .collab-pill { border-color: var(--signal); border-image: none; }
 html[data-style="rgb"] .work-row:hover .work-title::after { content: '_'; margin-left: .18em; color: var(--signal); font-family: var(--mono); font-weight: 400; }
 html[data-style="rgb"] .system-controls { border: 1px solid var(--signal); border-image: none; box-shadow: none; }
 html[data-style="rgb"] .system-control button:hover { color: var(--signal); }
 html[data-style="rgb"] .type-anchor::before,
 html[data-style="rgb"] .research-anchor::before { content: '+ '; color: var(--signal); }
-html[data-style="rgb"] .work-list.is-type-map .work-row:hover,
-html[data-style="rgb"] .work-list.is-research-map .work-row:hover { outline-color: var(--signal); }
 html[data-style="rgb"] .work-list.is-year-plane .timeline-mark { background: var(--fg); }
-html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-mark { background: var(--signal); box-shadow: 0 0 0 1px var(--signal-soft); }
+html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-mark { background: var(--signal); box-shadow: 0 0 8px var(--signal-soft); }
 html[data-style="rgb"] .work-list.is-year-plane .timeline-end,
 html[data-style="rgb"] .work-list.is-year-plane .moment-dot { border-color: var(--signal); }
 html[data-style="rgb"] .work-list.is-year-plane .timeline-end-top { color: var(--signal); }
-html[data-style="rgb"] .work-list.is-year-plane .moment-dot:hover { background: var(--signal); }
-html[data-style="rgb"] .work-list.is-year-plane .moment-dot:hover .moment-label { border-color: var(--signal); }
+html[data-style="rgb"] .work-list.is-year-plane .moment-dot:hover { background: var(--signal); box-shadow: 0 0 9px var(--signal); }
+html[data-style="rgb"] .work-list.is-year-plane .moment-dot:hover .moment-label { border-color: transparent; box-shadow: 0 0 14px var(--signal-soft); }
 
 /* INTERNAL PAGES — same coordinate plane, but editorial spacing. */
 .eyebrow { margin: 8px 0 34px; }
