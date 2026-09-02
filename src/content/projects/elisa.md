@@ -26,6 +26,7 @@ curatedBy:
   []
 credits:
   []
+cover: "/media/artistic/elisa/cover.webp"
 gallery:
   []
 videos:
