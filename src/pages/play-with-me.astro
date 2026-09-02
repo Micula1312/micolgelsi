@@ -2,27 +2,32 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="Play With Me — Micol Gelsi">
-  <section class="play-board">
-    <header class="play-head">
-      <div>
-        <small>PLAY WITH ME / 001</small>
-        <h1 class="glyph" data-glyph="☻︎✎︎✦︎☞︎♒︎⌁︎☄︎✺︎">DRAW ON YOURSELF</h1>
+  <section class="board" aria-labelledby="play-title">
+    <div class="board-toolbar">
+      <div class="title-group">
+        <span>PLAY WITH ME / 001</span>
+        <h1 id="play-title">DRAW ON YOURSELF</h1>
       </div>
-      <p>allow camera → draw directly on your face → send me the result.</p>
-    </header>
+      <p>camera → draw → send</p>
+    </div>
 
-    <div class="play-frame">
+    <div class="play-panel">
       <div class="stage" data-stage>
         <video autoplay muted playsinline data-video></video>
         <canvas data-canvas></canvas>
-        <div class="placeholder" data-placeholder><span>★</span><button type="button" data-camera>ALLOW CAMERA</button></div>
+        <div class="placeholder" data-placeholder>
+          <span class="camera-mark">★</span>
+          <button type="button" data-camera>ALLOW CAMERA</button>
+        </div>
       </div>
 
-      <div class="tools">
-        <button type="button" data-clear>CLEAR</button>
-        <button type="button" data-undo>UNDO</button>
-        <label>BRUSH <input type="range" min="1" max="40" value="7" data-brush /></label>
-        <button type="button" data-send>★ SEND ME</button>
+      <div class="tool-row">
+        <div class="tool-group">
+          <button type="button" data-clear>CLEAR</button>
+          <button type="button" data-undo>UNDO</button>
+          <label>BRUSH <input type="range" min="1" max="40" value="7" data-brush /></label>
+        </div>
+        <button class="send" type="button" data-send>★ SEND ME</button>
       </div>
       <p class="note" data-note></p>
     </div>
@@ -39,15 +44,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const ctx = canvas?.getContext('2d');
       if (!stage || !video || !canvas || !ctx) return;
       let drawing = false, last = null, history = [];
-      const resize = () => { const r=stage.getBoundingClientRect(), dpr=devicePixelRatio||1; canvas.width=r.width*dpr; canvas.height=r.height*dpr; canvas.style.width=`${r.width}px`; canvas.style.height=`${r.height}px`; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.lineCap='round'; ctx.lineJoin='round'; };
+
+      const resize = () => {
+        const r = stage.getBoundingClientRect(), dpr = devicePixelRatio || 1;
+        const snapshot = canvas.width && canvas.height ? canvas.toDataURL() : null;
+        canvas.width = Math.max(1, r.width * dpr);
+        canvas.height = Math.max(1, r.height * dpr);
+        canvas.style.width = `${r.width}px`;
+        canvas.style.height = `${r.height}px`;
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        if (snapshot) { const img = new Image(); img.onload = () => ctx.drawImage(img,0,0,r.width,r.height); img.src = snapshot; }
+      };
       resize(); window.addEventListener('resize', resize);
       const point = e => { const r=canvas.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top}; };
       canvas.addEventListener('pointerdown', e=>{ history.push(canvas.toDataURL()); drawing=true; last=point(e); canvas.setPointerCapture(e.pointerId); });
       canvas.addEventListener('pointermove', e=>{ if(!drawing)return; const n=point(e); ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--signal').trim()||'#39ff14'; ctx.lineWidth=Number(brush?.value||7); ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(n.x,n.y); ctx.stroke(); last=n; });
       canvas.addEventListener('pointerup', ()=>{ drawing=false; last=null; });
-      document.querySelector('[data-camera]')?.addEventListener('click', async()=>{ try { video.srcObject=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false}); placeholder.hidden=true; } catch { note.textContent='camera permission denied — draw on the void.'; } });
+
+      document.querySelector('[data-camera]')?.addEventListener('click', async()=>{
+        try { video.srcObject=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false}); placeholder.hidden=true; }
+        catch { note.textContent='camera permission denied — draw on the void.'; }
+      });
       document.querySelector('[data-clear]')?.addEventListener('click', ()=>{ history.push(canvas.toDataURL()); ctx.clearRect(0,0,canvas.width,canvas.height); });
-      document.querySelector('[data-undo]')?.addEventListener('click', ()=>{ const s=history.pop(); if(!s)return; const img=new Image(); img.onload=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0,canvas.getBoundingClientRect().width,canvas.getBoundingClientRect().height)}; img.src=s; });
+      document.querySelector('[data-undo]')?.addEventListener('click', ()=>{ const s=history.pop(); if(!s)return; const img=new Image(); img.onload=()=>{const r=canvas.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);ctx.drawImage(img,0,0,r.width,r.height)}; img.src=s; });
       document.querySelector('[data-send]')?.addEventListener('click', async()=>{
         const r=stage.getBoundingClientRect(), out=document.createElement('canvas'); out.width=r.width*2; out.height=r.height*2; const o=out.getContext('2d');
         o.save(); o.translate(out.width,0); o.scale(-1,1); if(video.videoWidth)o.drawImage(video,0,0,out.width,out.height); else {o.fillStyle='#000';o.fillRect(0,0,out.width,out.height);} o.restore(); o.drawImage(canvas,0,0,out.width,out.height);
@@ -59,6 +79,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </script>
 
   <style>
-    .play-board{height:calc(100svh - 202px);min-height:520px;border:1px solid var(--line);padding:12px;overflow:hidden}.play-head{display:grid;grid-template-columns:1fr minmax(240px,.7fr);gap:32px;align-items:end;margin-bottom:12px}.play-head small{color:var(--muted);font-family:var(--mono);font-size:11px}.play-head h1{margin-top:4px;font-size:clamp(28px,4vw,64px);line-height:.95;font-weight:700;letter-spacing:-.04em}.play-head p{margin:0;max-width:38ch;color:var(--muted)}.play-frame{height:calc(100% - 88px);border:1px solid var(--line);padding:10px;display:grid;grid-template-rows:minmax(0,1fr) auto auto;overflow:hidden}.stage{position:relative;width:100%;height:100%;overflow:hidden;background:#050505}.stage video,.stage canvas{position:absolute;inset:0;width:100%;height:100%}.stage video{object-fit:cover;transform:scaleX(-1)}.stage canvas{z-index:2;touch-action:none;cursor:crosshair}.placeholder{position:absolute;inset:0;z-index:3;display:grid;place-content:center;gap:18px;text-align:center;background:#050505;color:#fff}.placeholder[hidden]{display:none}.placeholder span{font-size:clamp(60px,13vw,180px);line-height:1}.placeholder button{border:1px solid currentColor;background:transparent;color:inherit;padding:7px 10px;cursor:pointer}.tools{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:10px 0 2px}.tools button{border:0;background:none;padding:0;font:inherit;cursor:pointer}.tools label{display:flex;align-items:center;gap:8px}.tools [data-send]{margin-left:auto;font-weight:700}.note{min-height:1.4em;margin:4px 0 0;color:var(--muted);font-size:11px}.glyph{position:relative;display:inline-block}.glyph:hover{color:transparent!important}.glyph:hover::after{content:attr(data-glyph);position:absolute;left:0;top:0;width:max-content;color:var(--signal);font-family:"Segoe UI Symbol","Segoe UI Emoji","Apple Symbols",sans-serif;font-weight:400;letter-spacing:.06em;text-shadow:0 0 6px var(--signal-soft),0 0 14px var(--signal-faint)}@media(max-width:760px){.play-board{height:auto;min-height:720px}.play-head{grid-template-columns:1fr}.play-frame{height:560px}.tools [data-send]{margin-left:0;width:100%;text-align:left}}
+    .board{height:100%;min-height:0;border:1px solid var(--line);padding:12px;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden}
+    .board-toolbar{min-height:48px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:start;font-family:var(--mono);font-size:11px}.title-group{display:flex;gap:18px;align-items:baseline;min-width:0}.title-group>span,.board-toolbar p{color:var(--muted);margin:0}.title-group h1{font:inherit;font-weight:700;white-space:nowrap}.board-toolbar p{text-align:right}
+    .play-panel{min-height:0;border:1px solid var(--line);padding:10px;display:grid;grid-template-rows:minmax(0,1fr) auto auto;overflow:hidden}.stage{position:relative;min-height:0;width:100%;height:100%;overflow:hidden;background:#050505}.stage video,.stage canvas{position:absolute;inset:0;width:100%;height:100%}.stage video{object-fit:cover;transform:scaleX(-1)}.stage canvas{z-index:2;touch-action:none;cursor:crosshair}.placeholder{position:absolute;inset:0;z-index:3;display:grid;place-content:center;gap:14px;text-align:center;background:#050505;color:#fff}.placeholder[hidden]{display:none}.camera-mark{font-size:clamp(42px,8vw,110px);line-height:1;color:var(--muted)}.placeholder button{border:0;background:none;color:inherit;padding:0;cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:700}
+    .tool-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:9px 0 2px;font-family:var(--mono);font-size:11px}.tool-group{display:flex;align-items:center;gap:16px;min-width:0}.tool-row button{border:0;background:none;padding:0;cursor:pointer;font:inherit}.tool-row label{display:flex;align-items:center;gap:7px}.tool-row input{width:100px}.send{font-weight:700!important;white-space:nowrap}.note{min-height:1.2em;margin:3px 0 0;color:var(--muted);font-family:var(--mono);font-size:10px}
+    @media(max-width:760px){.board{padding:8px}.board-toolbar{min-height:58px;grid-template-columns:1fr;gap:3px}.title-group{display:grid;gap:2px}.title-group h1{white-space:normal}.board-toolbar p{text-align:left}.play-panel{padding:7px}.tool-row{align-items:flex-start;gap:8px}.tool-group{gap:8px;flex-wrap:wrap}.tool-row input{width:72px}.send{margin-left:auto}.camera-mark{font-size:46px}}
   </style>
 </BaseLayout>
