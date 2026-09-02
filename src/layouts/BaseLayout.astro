@@ -8,7 +8,7 @@ import '../styles/outputs.css';
 import '../styles/dashboard.css';
 const { title = 'Micol Gelsi' } = Astro.props;
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
-const fixedShell = ['/', '/playground', '/play-with-me'].includes(pathname);
+const fixedShell = ['/', '/play-with-me'].includes(pathname);
 ---
 <!doctype html>
 <html lang="en" data-style="rgb" data-theme="dark">
@@ -34,7 +34,6 @@ const fixedShell = ['/', '/playground', '/play-with-me'].includes(pathname);
         <nav class="site-nav" aria-label="Main navigation">
           <a href="/#projects" aria-current={pathname === '/' ? 'page' : undefined}>PROJECTS</a>
           <a href="/cv">CV</a>
-          <a href="/playground" aria-current={pathname === '/playground' ? 'page' : undefined}>PLAYGROUND</a>
           <a href="/play-with-me" aria-current={pathname === '/play-with-me' ? 'page' : undefined}>PLAY WITH ME</a>
         </nav>
       </header>
