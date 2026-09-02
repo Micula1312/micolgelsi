@@ -8,17 +8,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <span>PLAY WITH ME / 001</span>
         <h1 id="play-title">DRAW ON YOURSELF</h1>
       </div>
-      <p>camera → draw → send</p>
+      <p>camera → draw → write → send</p>
     </div>
 
     <div class="play-panel">
       <div class="stage" data-stage>
         <video autoplay muted playsinline data-video></video>
+        <div class="camera-fx" aria-hidden="true"></div>
         <canvas data-canvas></canvas>
+        <div class="postcard-text" data-postcard aria-hidden="true"></div>
         <div class="placeholder" data-placeholder>
           <span class="camera-mark">★</span>
           <button type="button" data-camera>ALLOW CAMERA</button>
         </div>
+      </div>
+
+      <div class="text-row">
+        <label for="postcard-copy">MESSAGE</label>
+        <input id="postcard-copy" type="text" maxlength="72" autocomplete="off" placeholder="TYPE SOMETHING FOR THE POSTCARD…" data-text />
       </div>
 
       <div class="tool-row">
@@ -41,10 +48,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const placeholder = document.querySelector('[data-placeholder]');
       const brush = document.querySelector('[data-brush]');
       const note = document.querySelector('[data-note]');
+      const textInput = document.querySelector('[data-text]');
+      const postcard = document.querySelector('[data-postcard]');
       const ctx = canvas?.getContext('2d');
       if (!stage || !video || !canvas || !ctx) return;
       let drawing = false, last = null, history = [];
 
+      const signal = () => getComputedStyle(document.documentElement).getPropertyValue('--signal').trim() || '#39ff14';
       const resize = () => {
         const r = stage.getBoundingClientRect(), dpr = devicePixelRatio || 1;
         const snapshot = canvas.width && canvas.height ? canvas.toDataURL() : null;
@@ -59,18 +69,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       resize(); window.addEventListener('resize', resize);
       const point = e => { const r=canvas.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top}; };
       canvas.addEventListener('pointerdown', e=>{ history.push(canvas.toDataURL()); drawing=true; last=point(e); canvas.setPointerCapture(e.pointerId); });
-      canvas.addEventListener('pointermove', e=>{ if(!drawing)return; const n=point(e); ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--signal').trim()||'#39ff14'; ctx.lineWidth=Number(brush?.value||7); ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(n.x,n.y); ctx.stroke(); last=n; });
+      canvas.addEventListener('pointermove', e=>{ if(!drawing)return; const n=point(e); ctx.strokeStyle=signal(); ctx.lineWidth=Number(brush?.value||7); ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(n.x,n.y); ctx.stroke(); last=n; });
       canvas.addEventListener('pointerup', ()=>{ drawing=false; last=null; });
+      canvas.addEventListener('pointercancel', ()=>{ drawing=false; last=null; });
+
+      textInput?.addEventListener('input', () => {
+        if (postcard) postcard.textContent = textInput.value;
+      });
 
       document.querySelector('[data-camera]')?.addEventListener('click', async()=>{
         try { video.srcObject=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false}); placeholder.hidden=true; }
         catch { note.textContent='camera permission denied — draw on the void.'; }
       });
-      document.querySelector('[data-clear]')?.addEventListener('click', ()=>{ history.push(canvas.toDataURL()); ctx.clearRect(0,0,canvas.width,canvas.height); });
+      document.querySelector('[data-clear]')?.addEventListener('click', ()=>{ history.push(canvas.toDataURL()); const r=canvas.getBoundingClientRect(); ctx.clearRect(0,0,r.width,r.height); });
       document.querySelector('[data-undo]')?.addEventListener('click', ()=>{ const s=history.pop(); if(!s)return; const img=new Image(); img.onload=()=>{const r=canvas.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);ctx.drawImage(img,0,0,r.width,r.height)}; img.src=s; });
       document.querySelector('[data-send]')?.addEventListener('click', async()=>{
-        const r=stage.getBoundingClientRect(), out=document.createElement('canvas'); out.width=r.width*2; out.height=r.height*2; const o=out.getContext('2d');
-        o.save(); o.translate(out.width,0); o.scale(-1,1); if(video.videoWidth)o.drawImage(video,0,0,out.width,out.height); else {o.fillStyle='#000';o.fillRect(0,0,out.width,out.height);} o.restore(); o.drawImage(canvas,0,0,out.width,out.height);
+        const r=stage.getBoundingClientRect(), scale=2, out=document.createElement('canvas'); out.width=Math.round(r.width*scale); out.height=Math.round(r.height*scale); const o=out.getContext('2d');
+        o.save(); o.translate(out.width,0); o.scale(-1,1); o.filter='grayscale(1) contrast(1.45) brightness(.82)'; if(video.videoWidth)o.drawImage(video,0,0,out.width,out.height); else {o.fillStyle='#050505';o.fillRect(0,0,out.width,out.height);} o.restore(); o.filter='none';
+        o.save(); o.globalAlpha=.12; o.fillStyle=signal(); o.fillRect(0,0,out.width,out.height); o.restore();
+        o.drawImage(canvas,0,0,out.width,out.height);
+        const message=(textInput?.value||'').trim();
+        if(message){
+          const pad=28*scale, size=Math.max(28,Math.min(72,r.width*.065))*scale;
+          o.save(); o.fillStyle=signal(); o.font=`700 ${size}px Wingdings, "Segoe UI Symbol", sans-serif`; o.textBaseline='bottom';
+          const words=message.split(/\s+/), lines=[]; let line=''; const maxWidth=out.width-pad*2;
+          words.forEach(word=>{const test=line?`${line} ${word}`:word;if(o.measureText(test).width>maxWidth&&line){lines.push(line);line=word}else line=test}); if(line)lines.push(line);
+          lines.slice(-3).reverse().forEach((txt,i)=>o.fillText(txt,pad,out.height-pad-i*size*1.02,maxWidth)); o.restore();
+        }
         const blob=await new Promise(res=>out.toBlob(res,'image/png')); if(!blob)return; const file=new File([blob],`play-with-me-${Date.now()}.png`,{type:'image/png'});
         if(navigator.canShare?.({files:[file]})){ try{await navigator.share({files:[file],title:'★ DRAW ON YOURSELF',text:'send this sketch to micolg@gmail.com'}); note.textContent='shared ★'; return;}catch(e){if(e.name==='AbortError')return;} }
         const url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url; a.download=file.name; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); location.href='mailto:micolg@gmail.com?subject=%E2%98%85%20DRAW%20ON%20YOURSELF&body=Attach%20the%20PNG%20that%20was%20just%20downloaded.'; note.textContent='PNG saved — attach it to the email that opened ★';
@@ -81,8 +106,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <style>
     .board{height:100%;min-height:0;border:1px solid var(--line);padding:12px;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden}
     .board-toolbar{min-height:48px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:start;font-family:var(--mono);font-size:11px}.title-group{display:flex;gap:18px;align-items:baseline;min-width:0}.title-group>span,.board-toolbar p{color:var(--muted);margin:0}.title-group h1{font:inherit;font-weight:700;white-space:nowrap}.board-toolbar p{text-align:right}
-    .play-panel{min-height:0;border:1px solid var(--line);padding:10px;display:grid;grid-template-rows:minmax(0,1fr) auto auto;overflow:hidden}.stage{position:relative;min-height:0;width:100%;height:100%;overflow:hidden;background:#050505}.stage video,.stage canvas{position:absolute;inset:0;width:100%;height:100%}.stage video{object-fit:cover;transform:scaleX(-1)}.stage canvas{z-index:2;touch-action:none;cursor:crosshair}.placeholder{position:absolute;inset:0;z-index:3;display:grid;place-content:center;gap:14px;text-align:center;background:#050505;color:#fff}.placeholder[hidden]{display:none}.camera-mark{font-size:clamp(42px,8vw,110px);line-height:1;color:var(--muted)}.placeholder button{border:0;background:none;color:inherit;padding:0;cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:700}
+    .play-panel{min-height:0;border:1px solid var(--line);padding:10px;display:grid;grid-template-rows:minmax(0,1fr) auto auto auto;overflow:hidden}.stage{position:relative;min-height:0;width:100%;height:100%;overflow:hidden;background:#050505;isolation:isolate}.stage video,.stage canvas,.camera-fx{position:absolute;inset:0;width:100%;height:100%}.stage video{object-fit:cover;transform:scaleX(-1);filter:grayscale(1) contrast(1.45) brightness(.82)}.camera-fx{z-index:1;pointer-events:none;background:linear-gradient(to bottom,transparent 0,rgba(255,255,255,.018) 48%,rgba(255,255,255,.07) 50%,transparent 52%),color-mix(in srgb,var(--signal) 11%,transparent);background-size:100% 5px,100% 100%;mix-blend-mode:screen}.camera-fx::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 90px rgba(0,0,0,.9);background:radial-gradient(circle at 50% 45%,transparent 34%,rgba(0,0,0,.35) 100%)}.stage canvas{z-index:2;touch-action:none;cursor:crosshair}.postcard-text{position:absolute;z-index:3;left:clamp(16px,3vw,42px);right:clamp(16px,3vw,42px);bottom:clamp(16px,3vw,36px);color:var(--signal);font-family:Wingdings,"Segoe UI Symbol","Apple Symbols",sans-serif;font-size:clamp(28px,6vw,88px);font-weight:700;line-height:.9;letter-spacing:.015em;overflow-wrap:anywhere;text-shadow:0 0 8px color-mix(in srgb,var(--signal) 75%,transparent),0 0 24px color-mix(in srgb,var(--signal) 35%,transparent);pointer-events:none;max-height:48%;overflow:hidden}.placeholder{position:absolute;inset:0;z-index:4;display:grid;place-content:center;gap:14px;text-align:center;background:#050505;color:#fff}.placeholder[hidden]{display:none}.camera-mark{font-size:clamp(42px,8vw,110px);line-height:1;color:var(--muted)}.placeholder button{border:0;background:none;color:inherit;padding:0;cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:700}
+    .text-row{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px;padding:9px 0 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:10px}.text-row label{color:var(--muted)}.text-row input{min-width:0;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;color:var(--fg);padding:4px 0;font:inherit;outline:0}.text-row input:focus{border-color:var(--signal)}.text-row input::placeholder{color:var(--muted)}
     .tool-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:9px 0 2px;font-family:var(--mono);font-size:11px}.tool-group{display:flex;align-items:center;gap:16px;min-width:0}.tool-row button{border:0;background:none;padding:0;cursor:pointer;font:inherit}.tool-row label{display:flex;align-items:center;gap:7px}.tool-row input{width:100px}.send{font-weight:700!important;white-space:nowrap}.note{min-height:1.2em;margin:3px 0 0;color:var(--muted);font-family:var(--mono);font-size:10px}
-    @media(max-width:760px){.board{padding:8px}.board-toolbar{min-height:58px;grid-template-columns:1fr;gap:3px}.title-group{display:grid;gap:2px}.title-group h1{white-space:normal}.board-toolbar p{text-align:left}.play-panel{padding:7px}.tool-row{align-items:flex-start;gap:8px}.tool-group{gap:8px;flex-wrap:wrap}.tool-row input{width:72px}.send{margin-left:auto}.camera-mark{font-size:46px}}
+    @media(max-width:760px){.board{padding:8px}.board-toolbar{min-height:58px;grid-template-columns:1fr;gap:3px}.title-group{display:grid;gap:2px}.title-group h1{white-space:normal}.board-toolbar p{text-align:left}.play-panel{padding:7px}.tool-row{align-items:flex-start;gap:8px}.tool-group{gap:8px;flex-wrap:wrap}.tool-row input{width:72px}.send{margin-left:auto}.camera-mark{font-size:46px}.postcard-text{font-size:clamp(26px,10vw,58px);bottom:18px}.text-row{gap:8px}}
   </style>
 </BaseLayout>
