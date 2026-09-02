@@ -90,6 +90,13 @@
         "type": "string"
       }
     },
+    "photoCredits": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "avatar": {
       "type": "string"
     },
@@ -124,6 +131,12 @@
             "type": "string"
           },
           "credits": {
+            "type": "string"
+          },
+          "photoCredits": {
+            "type": "string"
+          },
+          "collaborators": {
             "type": "string"
           }
         },

@@ -22,6 +22,8 @@ curatedBy:
   - "Flyer"
 credits:
   []
+photoCredits:
+  []
 cover: "/media/artistic/elisa/cover.webp"
 gallery:
   []

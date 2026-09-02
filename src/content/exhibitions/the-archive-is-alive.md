@@ -23,6 +23,8 @@ curatedBy:
   []
 credits:
   []
+photoCredits:
+  []
 cover: "/media/artistic/the-archive-is-alive/cover.webp"
 gallery:
   - "/media/artistic/the-archive-is-alive/images/89.webp"

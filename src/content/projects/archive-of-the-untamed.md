@@ -27,6 +27,8 @@ curatedBy:
   []
 credits:
   []
+photoCredits:
+  []
 cover: "/media/artistic/archive-of-the-untamed/cover.webp"
 gallery:
   - "/media/artistic/archive-of-the-untamed/images/ChatGPT Image 9 feb 2026, 22_45_31.webp"

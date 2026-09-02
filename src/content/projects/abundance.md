@@ -24,6 +24,8 @@ curatedBy:
   []
 credits:
   []
+photoCredits:
+  []
 gallery:
   []
 videos:
