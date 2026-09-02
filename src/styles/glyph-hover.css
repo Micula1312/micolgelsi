@@ -30,16 +30,44 @@ html[data-style="rgb"] .intro h1:hover::after {
   font-family: "Segoe UI Symbol", "Segoe UI Emoji", "Apple Symbols", "Noto Sans Symbols 2", sans-serif;
   font-weight: 400;
   letter-spacing: .025em;
-  text-shadow: 0 0 4px var(--signal), 0 0 10px var(--signal-soft), 0 0 18px var(--signal-faint);
+  text-shadow: 0 0 0 transparent;
   pointer-events: none;
+  animation: wingding-glow .82s ease-out forwards !important;
 }
 
 html[data-style="rgb"] .work-row:hover .work-title::after {
   font-size: .92em;
 }
 
+@keyframes wingding-glow {
+  0% {
+    opacity: .68;
+    text-shadow: 0 0 0 transparent;
+  }
+  55% {
+    opacity: .9;
+    text-shadow: 0 0 4px var(--signal-soft);
+  }
+  100% {
+    opacity: 1;
+    text-shadow:
+      0 0 4px var(--signal),
+      0 0 10px var(--signal-soft),
+      0 0 18px var(--signal-faint);
+  }
+}
+
 html[data-style="native"] .work-title::after,
 html[data-style="native"] .project-head h1::after,
 html[data-style="native"] .intro h1::after {
   content: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-style="rgb"] .work-row:hover .work-title::after,
+  html[data-style="rgb"] .project-head h1:hover::after,
+  html[data-style="rgb"] .intro h1:hover::after {
+    animation: none !important;
+    text-shadow: 0 0 4px var(--signal), 0 0 10px var(--signal-soft), 0 0 18px var(--signal-faint);
+  }
 }
