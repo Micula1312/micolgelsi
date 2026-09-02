@@ -6,13 +6,9 @@ year: "2026"
 startDate: "2026-03"
 endDate: "2026-10"
 status: ongoing
-summary: "Archive of the #Untamed is a living, affective archive exploring urban wilderness through bodies, memories, territories and more-than-human relations. Conceived as a porous and generative organism, the archive continuously transforms through the traces and interactions of those who move through it."
+summary: "The performance stems from a reflection on contemporary forms of control and the possibility of envisioning new forms of female emancipation. By exploring themes such as the relationship between the body, identity, and the construction of imagery, the work examines the cultural and technological mechanisms that shape our perception of reality. The figure of Aicha Kandisha serves as a bridge between myth and the present, prompting a reflection on the narratives that have historically shaped the female body. The reference to \"hypnocracy\" introduces a critique of the mechanisms through which images, language, and media steer desires and behaviors, suggesting a need to reclaim spaces for awareness and self-determination."
 medium:
-  - "research"
-  - "archive"
-  - "website"
-  - "installation"
-  - "participatory practice"
+  - "audiovisual performance"
 researchAreas:
   - urban-wilderness
   - generative-archives
@@ -23,7 +19,7 @@ artistsInvolved:
   - "Beatrice Resta"
   - "Benedetta Marino"
 curatedBy:
-  []
+  - "Flyer"
 credits:
   []
 cover: "/media/artistic/elisa/cover.webp"
@@ -32,7 +28,7 @@ gallery:
 videos:
   []
 links:
-  - "https://thearchiveoftheuntamed.xyz/"
+  []
 moments:
   - date: "2024-06"
     title: "Soft Data Foraging"
@@ -50,12 +46,3 @@ works:
   []
 ---
 
-Archive of the #Untamed is a living, affective archive that regenerates through interaction: a porous and imaginative organism that transforms with those who move through it, created to explore the meaning of the wild within an urban context.
-
-The project gathers materials connected to the Prati di Caprara and to the relationships that unfold through them, from the activities of the Comitato Rigenerazione NO Speculazione to the experiences of artists and audiences during the EXIT festival. Anyone who has experienced the woodland is invited to contribute traces and memories, creating a layered narrative in constant evolution. Beyond preservation, the archive fosters exchange and interaction, both human and interspecies, through a process of collective co-creation that investigates urban wilderness as a generative principle. Memory remains fluid, continually redefined through encounters between human and more-than-human experience.
-
-The archive’s first activation took shape in the exhibition Soft Data Foraging, part of the Luccichio programme. An enigmatic apparition triggered a process of fabulation: at the Prati di Caprara, the discovery of a cybernetic chimera — a USB drive embedded in a bioplastic fossil — brought a buried archive back to the surface, a trace of a time out of joint.
-
-The exhibition unfolded as an installation and multimedia journey, offering a fictional entry point into the archive, also through digital tools such as a Discord server designed to support its evolution and the development of a digital community around it. The project involved the collaboration of visual artist Federico Falanga and electronic musician Adriano Sorbello (Fl00ba). During the closing event, the installations entered into dialogue with sets by blondegeisha and Malincuore in an audiovisual performance that reinterpreted the archival material collected throughout the project.
-
-The project continues as an artistic research project investigating the role of digital and participatory archives within urban space. Its objectives include the production of digital, installation-based and editorial outcomes; the development of methodologies for the collective construction of archives; and the creation of new dispositifs that reinterpret the collected materials, generating new perspectives, relations and tools.
