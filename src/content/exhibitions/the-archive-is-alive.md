@@ -5,7 +5,6 @@ displayType: "exhibition"
 year: "2026"
 startDate: "2026-04"
 endDate: "2026-06"
-status: completed
 summary: "The Archive Is Alive! is an exhibition developed from the research project The Archive of the #Untamed. The exhibition explores the archive as a living, porous and generative structure: a space activated by bodies, data, technologies, participation and collective presence. Presented at Spazio Contact, Rome, 8–12 June 2026."
 medium:
   - "installation"

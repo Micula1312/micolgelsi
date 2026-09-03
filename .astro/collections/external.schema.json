@@ -5,6 +5,12 @@
     "title": {
       "type": "string"
     },
+    "author": {
+      "type": "string"
+    },
+    "teaser": {
+      "type": "string"
+    },
     "kind": {
       "default": "external project",
       "type": "string"
@@ -26,7 +32,6 @@
       "type": "string"
     },
     "status": {
-      "default": "completed",
       "type": "string",
       "enum": [
         "ongoing",

@@ -1,5 +1,5 @@
 {
-	"pid": 30736,
+	"pid": 31764,
 	"port": 4321,
 	"url": "http://localhost:4321",
 	"urls": {
@@ -14,5 +14,5 @@
 		]
 	},
 	"background": false,
-	"startedAt": "2026-09-03T10:33:44.646Z"
+	"startedAt": "2026-09-03T10:57:50.983Z"
 }
