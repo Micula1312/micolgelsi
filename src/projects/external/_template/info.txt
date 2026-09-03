@@ -9,6 +9,16 @@ STATUS:
 TYPE:
 website
 
+PRACTICE:
+web-development
+
+ROLE:
+Web development
+
+CLIENT:
+
+STACK:
+
 MEDIUM:
 
 RESEARCH:
