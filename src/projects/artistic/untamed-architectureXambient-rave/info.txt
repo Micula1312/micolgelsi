@@ -1,5 +1,5 @@
 TITLE:
-#untamed-architecture 4 @ambient-rave
+#untamed-architecture X @ambient-rave <3
 
 AUTHOR:
 
@@ -16,10 +16,10 @@ STATUS:
 ongoing
 
 TYPE:
-performance
+multimedia performance
 
 MEDIUM:
-audiovisual performance, listening-practice, installation
+audiovisual performance, live media manipulation, sound, listening practice
 
 RESEARCH:
 urban-wilderness
@@ -44,27 +44,34 @@ Paolo Rucci
 CURATED BY:
 
 CREDITS:
-Concept and curatorship — Micol Gelsi
 
 EXCERPT:
-#untamed-architecture 4 @ambient-rave is an audiovisual performance and spatial activation developed within Archive of the #Untamed, where sound, image and temporary architectures become tools for inhabiting and re-reading urban space.
+A 30-minute multimedia performance exploring urban wilderness in the Aniene River Nature Reserve through the live manipulation of materials contained in the hyper-object Archive of the #Untamed, accompanied by the sonic narrative of Rome-based DJ and producer Stiky Verde.
 
 DESCRIPTION:
-An audiovisual and installation-based activation developed from Archive of the #Untamed. The project brings together listening practices, live image, sound and temporary spatial dispositifs, treating the performance space as a mutable architecture and a site of collective presence.
+#untamed-architecture X @ambient-rave <3 is a multimedia performance developed from Archive of the #Untamed.
+
+The work reactivates “La passeggiata distensiva con Lilo”, a wild exploration through the Aniene River Nature Reserve, inside a new spatial and performative context. Images, recordings and archival traces contained in the hyper-object Archive of the #Untamed are manipulated live, transforming the archive from a repository into material for audiovisual action.
+
+The performance moves between human and more-than-human points of view: the walk is not only reconstructed as a route through urban wilderness, but can also be experienced from Lilo’s perspective. The invitation — “if the practice feels difficult, feel it from Lilo’s point of view” — shifts listening and orientation away from a solely human experience of the territory.
+
+The live manipulation of the archive unfolds together with the sonic narrative of Rome-based DJ and producer Stiky Verde. Sound, moving image and archival fragments generate a temporary environment in which landscape, memory and presence are continuously recomposed.
+
+Duration: 30 min.
 
 LINKS:
 https://thearchiveoftheuntamed.xyz/
 
 OUTPUTS:
 2026-06-10
-#untamed-architecture 4 @ambient-rave
+#untamed-architecture X @ambient-rave <3
 type: multimedia installation + performance
 location: Acquario Romano / Casa dell’Architettura, Roma
 credits: Roma Contaminata
 media: casa-architetturaa
 
 2026
-#untamed-architecture 4 @ambient-rave
+#untamed-architecture X @ambient-rave <3
 type: multimedia installation + performance
 location: Fondazione Pastificio Cerere, Roma
 credits: Roma Diffusa
