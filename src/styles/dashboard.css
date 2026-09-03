@@ -18,14 +18,10 @@ html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timelin
   background: var(--signal) !important;
 }
 
-/* Hover language: no underlines anywhere. Interactive text only blinks green.
-   Project titles stay excluded because their glyph hover grows a soft glow instead. */
 a:hover,
 button:hover,
 .view-button:hover,
-.system-control button:hover {
-  text-decoration: none !important;
-}
+.system-control button:hover { text-decoration: none !important; }
 
 html[data-style="rgb"] a:not(.work-row):hover,
 html[data-style="rgb"] button:hover,
@@ -33,127 +29,49 @@ html[data-style="rgb"] .view-button:hover,
 html[data-style="rgb"] .system-control button:hover {
   color: var(--signal) !important;
   text-decoration: none !important;
-  animation: signal-hover-blink .72s steps(1, end) infinite;
+  animation: signal-hover-blink .72s steps(1,end) infinite;
 }
 
 html[data-style="rgb"] .work-row:hover,
 html[data-style="rgb"] .work-row:hover .work-title,
-html[data-style="rgb"] .work-row:hover .work-title::after {
-  animation-name: none;
-}
+html[data-style="rgb"] .work-row:hover .work-title::after { animation-name:none; }
 
-@keyframes signal-hover-blink {
-  0%, 54% { opacity: 1; }
-  55%, 72% { opacity: .28; }
-  73%, 100% { opacity: 1; }
-}
+@keyframes signal-hover-blink {0%,54%{opacity:1}55%,72%{opacity:.28}73%,100%{opacity:1}}
 
-/* HOME / PLAYGROUND / PLAY WITH ME = one fixed viewport shell. */
-body[data-fixed-shell="true"] {
-  height: 100dvh;
-  overflow: hidden;
-  overscroll-behavior: none;
-}
+body[data-fixed-shell="true"] {height:100dvh;overflow:hidden;overscroll-behavior:none}
+body[data-fixed-shell="true"] .shell {height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+body[data-fixed-shell="true"] .site-header {flex:0 0 auto}
+body[data-fixed-shell="true"] .page {flex:1 1 auto;min-height:0;overflow:hidden;padding:12px 0 14px}
+body[data-fixed-shell="true"] .system-controls {bottom:12px}
 
-body[data-fixed-shell="true"] .shell {
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-body[data-fixed-shell="true"] .site-header {
-  flex: 0 0 auto;
-}
-
-body[data-fixed-shell="true"] .page {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow: hidden;
-  padding: 12px 0 14px;
-}
-
-body[data-fixed-shell="true"] .system-controls {
-  bottom: 12px;
-}
-
-/* HOME dashboard. */
-body[data-project-view] .work-index {
-  position: relative;
-  height: 100%;
-  min-height: 0;
-  border: 1px solid var(--line);
-  overflow: hidden;
-  padding: 12px;
-}
-
-body[data-project-view] .index-toolbar {
-  position: relative;
-  z-index: 20;
-  margin: 0;
-  min-height: 28px;
-}
-
+body[data-project-view] .work-index {position:relative;height:100%;min-height:0;border:1px solid var(--line);overflow:hidden;padding:12px}
+body[data-project-view] .index-toolbar {position:relative;z-index:20;margin:0;min-height:28px}
 body[data-project-view] .work-list,
 body[data-project-view] .work-list.is-year-plane,
 body[data-project-view] .work-list.is-type-map,
-body[data-project-view] .work-list.is-research-map {
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  top: 48px;
-  bottom: 12px;
-  width: auto;
-  height: auto;
-  min-height: 0;
-  overflow: hidden;
-  border: 1px solid var(--line);
+body[data-project-view] .work-list.is-research-map {position:absolute;left:12px;right:12px;top:48px;bottom:12px;width:auto;height:auto;min-height:0;overflow:hidden;border:1px solid var(--line)}
+
+/* Smaller project names across all three visualizations. */
+body[data-project-view] .work-list .work-title {font-size:10px;letter-spacing:.015em;line-height:1.08}
+
+/* Main projects breathe softly instead of becoming larger. */
+body[data-project-view] .work-row.is-featured .work-title {color:var(--signal);animation:featured-breathe 2.8s ease-in-out infinite}
+body[data-project-view] .work-row.is-featured .timeline-mark {box-shadow:0 0 5px color-mix(in srgb,var(--signal) 24%,transparent)}
+@keyframes featured-breathe {0%,100%{text-shadow:0 0 0 transparent;opacity:.82}50%{text-shadow:0 0 4px var(--signal),0 0 11px var(--signal-soft),0 0 20px var(--signal-faint);opacity:1}}
+
+/* YEAR scroll exists only when JS marks the panel vertical; the bar itself is never visible. */
+body[data-project-view] .work-list.is-year-plane {overflow-x:hidden!important;overflow-y:hidden!important;overscroll-behavior-x:contain;scrollbar-width:none!important;touch-action:pan-x}
+body[data-project-view] .work-list.is-year-plane.is-scrollable-year {overflow-x:auto!important}
+body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar {display:none!important;width:0!important;height:0!important}
+
+@media(max-width:760px){
+  body[data-fixed-shell="true"],body[data-fixed-shell="true"] .shell{height:100dvh;overflow:hidden}
+  body[data-fixed-shell="true"] .page{min-height:0;overflow:hidden;padding:8px 0 10px}
+  body[data-project-view] .work-index,body[data-project-view] .work-list,body[data-project-view] .work-list.is-year-plane,body[data-project-view] .work-list.is-type-map,body[data-project-view] .work-list.is-research-map{min-height:0}
+  body[data-project-view] .work-list .work-title{font-size:9px}
 }
 
-/* Only the Year panel moves: the page itself remains a fixed dashboard. */
-body[data-project-view] .work-list.is-year-plane {
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  overscroll-behavior-x: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--muted) transparent;
-  touch-action: pan-x;
-}
-
-body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar { height: 5px; }
-body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar-track { background: transparent; }
-body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar-thumb { background: var(--muted); }
-body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar-thumb:hover { background: var(--signal); }
-
-@media (max-width: 760px) {
-  body[data-fixed-shell="true"],
-  body[data-fixed-shell="true"] .shell {
-    height: 100dvh;
-    overflow: hidden;
-  }
-
-  body[data-fixed-shell="true"] .page {
-    min-height: 0;
-    overflow: hidden;
-    padding: 8px 0 10px;
-  }
-
-  body[data-project-view] .work-index,
-  body[data-project-view] .work-list,
-  body[data-project-view] .work-list.is-year-plane,
-  body[data-project-view] .work-list.is-type-map,
-  body[data-project-view] .work-list.is-research-map {
-    min-height: 0;
-  }
-
-  body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar { height: 4px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html[data-style="rgb"] a:not(.work-row):hover,
-  html[data-style="rgb"] button:hover,
-  html[data-style="rgb"] .view-button:hover,
-  html[data-style="rgb"] .system-control button:hover {
-    animation: none;
-  }
+@media(prefers-reduced-motion:reduce){
+  html[data-style="rgb"] a:not(.work-row):hover,html[data-style="rgb"] button:hover,html[data-style="rgb"] .view-button:hover,html[data-style="rgb"] .system-control button:hover{animation:none}
+  body[data-project-view] .work-row.is-featured .work-title{animation:none;text-shadow:0 0 5px var(--signal-soft)}
 }
