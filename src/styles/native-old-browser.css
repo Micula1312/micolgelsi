@@ -1,0 +1,254 @@
+/* Intentional old-browser simulation: crude, readable, stable. */
+html[data-style="native"] {
+  --native-bg:#c0c0c0;
+  --native-fg:#000;
+  --native-blue:#0000ee;
+  --native-purple:#551a8b;
+  --native-border-light:#fff;
+  --native-border-dark:#808080;
+  background:var(--native-bg)!important;
+  color:var(--native-fg)!important;
+  color-scheme:light!important;
+  font-family:"Times New Roman",Times,serif!important;
+}
+html[data-style="native"] body {
+  margin:8px!important;
+  min-height:100vh!important;
+  height:auto!important;
+  overflow:auto!important;
+  background:var(--native-bg)!important;
+  color:var(--native-fg)!important;
+  font-family:"Times New Roman",Times,serif!important;
+  font-size:16px!important;
+  line-height:1.15!important;
+}
+html[data-style="native"] body[data-fixed-shell="true"],
+html[data-style="native"] body[data-fixed-shell="true"] .shell,
+html[data-style="native"] body[data-fixed-shell="true"] .page {
+  height:auto!important;
+  min-height:0!important;
+  overflow:visible!important;
+  display:block!important;
+}
+html[data-style="native"] .shell {
+  width:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+}
+html[data-style="native"] .site-header {
+  display:block!important;
+  position:static!important;
+  padding:4px 6px 8px!important;
+  margin:0 0 10px!important;
+  border:2px outset var(--native-border-light)!important;
+  background:#d4d0c8!important;
+}
+html[data-style="native"] .identity {display:block!important;}
+html[data-style="native"] .site-name {
+  display:block!important;
+  margin:0 0 8px!important;
+  color:var(--native-blue)!important;
+  font:bold 22px/1 "Times New Roman",Times,serif!important;
+  text-decoration:underline!important;
+}
+html[data-style="native"] .site-bio {
+  display:block!important;
+  max-width:720px!important;
+  margin:0 0 10px!important;
+  font:16px/1.15 "Times New Roman",Times,serif!important;
+}
+html[data-style="native"] .site-nav {
+  display:flex!important;
+  gap:12px!important;
+  justify-content:flex-start!important;
+  flex-wrap:wrap!important;
+  margin-top:8px!important;
+}
+html[data-style="native"] a {
+  color:var(--native-blue)!important;
+  text-decoration:underline!important;
+}
+html[data-style="native"] a:visited {color:var(--native-purple)!important;}
+html[data-style="native"] button,
+html[data-style="native"] input,
+html[data-style="native"] select,
+html[data-style="native"] textarea {
+  font:13px Arial,Helvetica,sans-serif!important;
+  color:#000!important;
+  background:#d4d0c8!important;
+}
+html[data-style="native"] button {
+  border:2px outset #f0f0f0!important;
+  padding:2px 8px!important;
+  cursor:default!important;
+}
+html[data-style="native"] button:active {border-style:inset!important;}
+html[data-style="native"] .page {
+  padding:0!important;
+  margin:0!important;
+}
+html[data-style="native"] .work-index,
+html[data-style="native"] .board,
+html[data-style="native"] .simple-index,
+html[data-style="native"] .intro,
+html[data-style="native"] .prose,
+html[data-style="native"] .meta,
+html[data-style="native"] .related {
+  position:static!important;
+  width:auto!important;
+  height:auto!important;
+  min-height:0!important;
+  max-width:none!important;
+  overflow:visible!important;
+  background:#fff!important;
+  color:#000!important;
+  border:2px inset #fff!important;
+  padding:8px!important;
+  margin:0 0 10px!important;
+}
+html[data-style="native"] .index-toolbar {
+  display:block!important;
+  margin:0 0 10px!important;
+}
+html[data-style="native"] .index-toolbar h1 {
+  display:block!important;
+  margin:0 0 8px!important;
+  font:bold 24px/1 "Times New Roman",Times,serif!important;
+}
+html[data-style="native"] .view-switch {
+  display:flex!important;
+  gap:6px!important;
+  flex-wrap:wrap!important;
+}
+html[data-style="native"] .view-button {
+  display:inline-block!important;
+  color:#000!important;
+  text-decoration:none!important;
+  background:#d4d0c8!important;
+}
+html[data-style="native"] .work-list,
+html[data-style="native"] .work-list.is-year-plane,
+html[data-style="native"] .work-list.is-type-map,
+html[data-style="native"] .work-list.is-research-map {
+  position:static!important;
+  inset:auto!important;
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  min-height:0!important;
+  overflow:visible!important;
+  border:1px solid #808080!important;
+  background:#fff!important;
+  padding:6px!important;
+}
+html[data-style="native"] .year-track {width:auto!important;height:auto!important;position:static!important;}
+html[data-style="native"] .year-axis,
+html[data-style="native"] .research-field,
+html[data-style="native"] .type-field,
+html[data-style="native"] .timeline-mark,
+html[data-style="native"] .project-avatar,
+html[data-style="native"] .web-role {display:none!important;}
+html[data-style="native"] .work-row,
+html[data-style="native"] .work-list .work-row {
+  display:block!important;
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  width:auto!important;
+  max-width:none!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:3px 2px!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+html[data-style="native"] .work-title {
+  display:inline!important;
+  color:var(--native-blue)!important;
+  font:bold 16px/1.1 "Times New Roman",Times,serif!important;
+  text-decoration:underline!important;
+  text-transform:none!important;
+  animation:none!important;
+}
+html[data-style="native"] .project-badges {display:inline!important;margin-left:8px!important;}
+html[data-style="native"] .author-pill,
+html[data-style="native"] .collab-pill {
+  display:inline!important;
+  border:0!important;
+  padding:0!important;
+  font:12px Arial,Helvetica,sans-serif!important;
+  color:#666!important;
+}
+html[data-style="native"] .system-controls {
+  position:static!important;
+  display:flex!important;
+  gap:10px!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin:10px 0 0!important;
+  padding:4px!important;
+  border:2px outset #f0f0f0!important;
+  background:#d4d0c8!important;
+  color:#000!important;
+  font:12px Arial,Helvetica,sans-serif!important;
+}
+html[data-style="native"] .system-control>span {color:#000!important;}
+html[data-style="native"] .system-control button {font-weight:400!important;}
+html[data-style="native"] .web-inspector,
+html[data-style="native"] .web-inspector-backdrop {display:none!important;}
+
+/* Play With Me keeps working, but looks like a primitive embedded applet. */
+html[data-style="native"] .board-toolbar {display:block!important;font-family:"Times New Roman",Times,serif!important;}
+html[data-style="native"] .board-toolbar p {text-align:left!important;}
+html[data-style="native"] .play-panel {
+  display:block!important;
+  border:2px inset #fff!important;
+  background:#d4d0c8!important;
+  padding:6px!important;
+  overflow:visible!important;
+}
+html[data-style="native"] .stage {
+  display:block!important;
+  position:relative!important;
+  width:100%!important;
+  height:min(62vh,520px)!important;
+  min-height:280px!important;
+  margin:0 0 8px!important;
+  border:2px inset #fff!important;
+  background:#000!important;
+}
+html[data-style="native"] .stage video,
+html[data-style="native"] .stage canvas,
+html[data-style="native"] .camera-fx {position:absolute!important;inset:0!important;width:100%!important;height:100%!important;}
+html[data-style="native"] .postcard-text {
+  position:absolute!important;
+  top:8%!important;
+  right:3%!important;
+  left:auto!important;
+  bottom:8%!important;
+  width:36%!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  padding:12px!important;
+  border:2px inset #fff!important;
+  background:rgba(255,255,255,.82)!important;
+  color:#000!important;
+  font:bold 22px/1.05 "Times New Roman",Times,serif!important;
+  text-shadow:none!important;
+  overflow:hidden!important;
+}
+html[data-style="native"] .text-row,
+html[data-style="native"] .tool-row {display:flex!important;gap:8px!important;align-items:center!important;flex-wrap:wrap!important;padding:4px!important;border:0!important;}
+html[data-style="native"] .text-row input {flex:1 1 240px!important;border:2px inset #fff!important;background:#fff!important;color:#000!important;padding:3px!important;}
+
+@media(max-width:760px){
+  html[data-style="native"] body{margin:4px!important;font-size:15px!important;}
+  html[data-style="native"] .site-header{padding:4px!important;}
+  html[data-style="native"] .stage{height:52vh!important;}
+  html[data-style="native"] .postcard-text{width:46%!important;font-size:17px!important;}
+}
