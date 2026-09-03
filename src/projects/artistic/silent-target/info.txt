@@ -10,21 +10,18 @@ AVATAR:
 avatar.mp4
 
 START:
-2024
+2024-10
 
 END:
-2025
+2025-07
 
 STATUS:
-completed
 
 TYPE:
 interactive installation
 
 MEDIUM:
-video installation
 interactive installation
-cameras
 
 RESEARCH:
 technology-digitalization
@@ -34,7 +31,6 @@ COLLABORATORS:
 MAIN LINK:
 
 ARTISTS INVOLVED:
-Micol Gelsi
 
 CURATED BY:
 Daniela Cotimbo

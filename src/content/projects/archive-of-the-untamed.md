@@ -1,5 +1,6 @@
 ---
 title: "Archive of the #Untamed"
+mainLink: "https://thearchiveoftheuntamed.xyz/"
 featured: true
 type: project
 displayType: "project"
@@ -61,10 +62,8 @@ communication:
     url: "https://blog-esquilino.com/2026/06/12/12-e-13-6-26-roma-contaminata-village-allacquario-romano-casa-dellarchitettura/"
   - label: "ViviRoma — Roma Contaminata / The Archive of the #Untamed"
     url: "https://www.viviroma.it/index.php?Itemid=188&bulletinid=22294&groupid=216&option=com_community&task=viewbulletin&view=groups"
-  - label: "Dario Chillemi — The Archive Is Alive!"
-    url: "https://dariochillemi.com/tour/"
 links:
-  - "https://thearchiveoftheuntamed.xyz/"
+  []
 moments:
   - date: "2026-05"
     title: "Archive of the #Untamed — Conditions of Belonging: Joy"
@@ -98,13 +97,23 @@ moments:
     gallery:
       - "/media/artistic/archive-of-the-untamed/moments/maam1/587230944_17901723630300263_1927885586934172917_n.webp"
       - "/media/artistic/archive-of-the-untamed/moments/maam1/587291606_17901723642300263_331017323058871258_n.webp"
-      - "/media/artistic/archive-of-the-untamed/moments/maam1/IMG_0888.JPEG"
-      - "/media/artistic/archive-of-the-untamed/moments/maam1/micol-foto-2.JPG"
+      - "/media/artistic/archive-of-the-untamed/moments/maam1/IMG_0888.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/maam1/micol-foto-2.webp"
   - date: "2024-11"
     title: "Soft Data Foraging"
     type: "exhibition"
     location: "Ex Casa del Custode, Parco della Montagnola, Bologna"
-    media: "/media/artistic/archive-of-the-untamed/soft-data"
+    gallery:
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5013.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5022.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5042.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5049.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5059.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5063.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5079.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5089.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5104.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/photo_5960547809889469783_y.webp"
 works:
   []
 ---

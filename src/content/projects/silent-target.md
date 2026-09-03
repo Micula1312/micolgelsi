@@ -4,20 +4,17 @@ author: "Blivet"
 type: project
 displayType: "interactive installation"
 year: "2024"
-startDate: "2024"
-endDate: "2025"
-status: completed
+startDate: "2024-10"
+endDate: "2025-07"
 summary: "Silent Target is an interactive installation investigating visibility, privacy and the possibility of withdrawing from systems of constant observation."
 medium:
-  - "video installation"
   - "interactive installation"
-  - "cameras"
 researchAreas:
   - technology-digitalization
 collaborators:
   []
 artistsInvolved:
-  - "Micol Gelsi"
+  []
 curatedBy:
   - "Daniela Cotimbo"
 credits:
@@ -60,9 +57,9 @@ moments:
     type: "interactive installation"
     location: "Roma"
     gallery:
-      - "/media/artistic/silent-target/moments/videocitta/unnamed (2).png"
-      - "/media/artistic/silent-target/moments/videocitta/unnamed (4).jpg"
-      - "/media/artistic/silent-target/moments/videocitta/unnamed (5).jpg"
+      - "/media/artistic/silent-target/moments/videocitta/unnamed (2).webp"
+      - "/media/artistic/silent-target/moments/videocitta/unnamed (4).webp"
+      - "/media/artistic/silent-target/moments/videocitta/unnamed (5).webp"
 works:
   []
 ---

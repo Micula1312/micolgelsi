@@ -34,6 +34,9 @@ EXIT
 
 CREDITS:
 
+MAIN LINK:
+https://thearchiveoftheuntamed.xyz/
+
 EXCERPT:
 Archive of the #Untamed is a living, affective archive exploring urban wilderness through bodies, memories, territories and more-than-human relations. Conceived as a porous and generative organism, the archive continuously transforms through the traces and interactions of those who move through it.
 
@@ -64,10 +67,10 @@ Ordine degli Architetti di Roma — Roma Contaminata Village | https://www.archi
 Professione Architetto — Roma Contaminata | https://www.professionearchitetto.it/mostre/notizie/34142/roma-contaminata-un-villaggio-culturale-nel-giardino-della-casa-dell-architettura/
 Esquilino’s Weblog — Roma Contaminata Village | https://blog-esquilino.com/2026/06/12/12-e-13-6-26-roma-contaminata-village-allacquario-romano-casa-dellarchitettura/
 ViviRoma — Roma Contaminata / The Archive of the #Untamed | https://www.viviroma.it/index.php?Itemid=188&bulletinid=22294&groupid=216&option=com_community&task=viewbulletin&view=groups
-Dario Chillemi — The Archive Is Alive! | https://dariochillemi.com/tour/
+
 
 LINKS:
-https://thearchiveoftheuntamed.xyz/
+
 
 OUTPUTS:
 2026-05
