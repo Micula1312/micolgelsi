@@ -6,30 +6,28 @@ Blivet
 
 TEASER:
 
+AVATAR:
+avatar.mp4
+
 START:
 2024
 
 END:
-2024
+2025
 
 STATUS:
+completed
 
 TYPE:
 interactive installation
 
 MEDIUM:
-computer vision
-video surveillance
-CCTV
-real-time video
-installation
+video installation
+interactive installation
+cameras
 
 RESEARCH:
-surveillance
-visibility
-invisibility
-privacy
-digitalization
+technology-digitalization
 
 COLLABORATORS:
 
@@ -48,14 +46,14 @@ Hosted by Albumarte
 PHOTO CREDITS:
 
 EXCERPT:
-Silent Target is an interactive installation investigating surveillance, visibility and the possibility of disappearing within systems of constant observation.
+Silent Target is an interactive installation investigating visibility, privacy and the possibility of withdrawing from systems of constant observation.
 
 DESCRIPTION:
-Silent Target investigates the contemporary imperative of constant visibility and the possibility of resisting systems of generalized surveillance.
+Silent Target investigates the contemporary imperative of constant visibility and the possibility of resisting systems of generalized observation.
 
 The project draws on Pierre Zaoui's reflections on discretion as a political practice and form of resistance. Rather than proposing complete disappearance, it considers invisibility as something selective: the possibility of temporarily withdrawing from the continuous demand to be visible.
 
-The installation reverses the usual architecture of surveillance. Hidden cameras and a visible control room expose the mechanisms through which bodies are observed, captured and classified. Surveillance itself becomes visible and assumes a sculptural presence.
+The installation reverses the usual architecture of observation. Cameras and a control room expose the mechanisms through which bodies are observed and captured. The apparatus itself becomes visible and assumes a sculptural presence.
 
 The project questions the right to hide: when the apparatus of observation is placed openly in front of us, is it still possible to escape its gaze?
 
@@ -66,3 +64,11 @@ OUTPUTS:
 Silent Target — Re:Humanism
 type: interactive installation
 location: Albumarte, Roma
+curated by: Daniela Cotimbo
+media: albumarte
+
+2025
+Silent Target — Videocittà
+type: interactive installation
+location: Roma
+media: videocitta
