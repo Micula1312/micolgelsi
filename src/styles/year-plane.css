@@ -12,8 +12,8 @@
 .work-list.is-year-plane .year-side-label{display:none}
 
 .work-list.is-year-plane .work-row{position:absolute;left:var(--left);top:var(--y);width:var(--width);height:1px;min-width:26px;min-height:1px;transform:none;z-index:2;overflow:visible;transition:opacity .16s ease,filter .16s ease}
-/* generous invisible hover corridor around the 1px timeline */
-.work-list.is-year-plane .work-row::before{content:'';position:absolute;left:-8px;right:-8px;top:-18px;bottom:-18px;z-index:1;background:transparent;pointer-events:auto}
+/* generous invisible hover/click corridor around short timelines */
+.work-list.is-year-plane .work-row::before{content:'';position:absolute;left:-8px;top:-18px;bottom:-18px;width:max(calc(100% + 16px),360px);z-index:1;background:transparent;pointer-events:auto}
 .work-list.is-year-plane .timeline-mark{display:block;position:absolute;inset:0;width:100%;height:1px;background:var(--fg);opacity:.68;transition:height .16s ease,opacity .16s ease,background .16s ease,box-shadow .16s ease;z-index:2;pointer-events:none}
 .work-list.is-year-plane .timeline-end{position:absolute;top:50%;width:5px;height:5px;border:1px solid var(--fg);background:var(--bg);border-radius:50%;transform:translate(-50%,-50%);transition:border-color .16s ease,color .16s ease,text-shadow .16s ease,transform .16s ease;z-index:3;pointer-events:none}
 .work-list.is-year-plane .timeline-end-bottom{left:0}
@@ -22,16 +22,10 @@
 .work-list.is-year-plane .is-star-hit .timeline-end-top{color:var(--signal);transform:translate(-50%,-50%) scale(1.5);text-shadow:0 0 8px var(--signal),0 0 18px color-mix(in srgb,var(--signal) 45%,transparent);background:transparent!important;box-shadow:none!important}
 
 /* The project name literally travels through its own duration. */
-.work-list.is-year-plane .work-title{position:absolute;left:0;bottom:10px;width:max-content;max-width:none;line-height:1.1;transform:none;text-align:left;will-change:transform;z-index:4;pointer-events:none;transition:color .12s ease,text-shadow .12s ease}
+.work-list.is-year-plane .work-title{position:absolute;left:0;bottom:10px;width:max-content;max-width:none;line-height:1.1;transform:none;text-align:left;will-change:transform;z-index:4;pointer-events:auto;transition:color .12s ease,text-shadow .12s ease}
 .work-list.is-year-plane .is-external-project .work-title{bottom:auto;top:10px}
 .work-list.is-year-plane .is-title-travelling .work-title{color:var(--signal);text-shadow:0 0 7px color-mix(in srgb,var(--signal) 62%,transparent)}
 .work-list.is-year-plane .collab-pill{position:absolute;left:0;bottom:28px;width:max-content;z-index:4;pointer-events:none}.work-list.is-year-plane .is-external-project .collab-pill{bottom:auto;top:28px}
-
-/* YEAR uses the real project title: disable the glyph replacement here. */
-html[data-style="rgb"] .work-list.is-year-plane .work-row:hover .work-title,
-html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .work-title{color:var(--signal)!important;text-decoration:none!important;text-shadow:0 0 6px color-mix(in srgb,var(--signal) 75%,transparent),0 0 16px color-mix(in srgb,var(--signal) 35%,transparent)!important}
-html[data-style="rgb"] .work-list.is-year-plane .work-row:hover .work-title::after,
-html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .work-title::after{content:none!important;display:none!important;animation:none!important}
 
 /* Focus state: one project becomes the signal, everything else falls away. */
 .work-list.is-year-plane.has-year-focus .work-row:not(.is-year-focus){opacity:.05;filter:grayscale(1)}
