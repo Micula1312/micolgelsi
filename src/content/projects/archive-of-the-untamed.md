@@ -45,7 +45,7 @@ moments:
     curatedBy: "Lucia Fontanelli, Olivia Teglia"
     artistsInvolved: "Federico Falanga, Adriano Sorbello (Fl00ba), blondegeisha, Malincuore"
   - date: "2026-06-08"
-    title: "The Archive of"
+    title: "The Archive of the #UNTAMED"
     type: "exhibition"
     location: "Spazio Contact, Rome"
     href: "/exhibitions/the-archive-is-alive/"

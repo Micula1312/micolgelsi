@@ -161,6 +161,10 @@
         ]
       }
     },
+    "featured": {
+      "default": false,
+      "type": "boolean"
+    },
     "$schema": {
       "type": "string"
     }

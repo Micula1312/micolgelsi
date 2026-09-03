@@ -1,5 +1,7 @@
 ---
 title: "The Archive Is Alive!"
+author: "Micol Gelsi"
+featured: true
 type: exhibition
 displayType: "exhibition"
 year: "2026"
@@ -24,6 +26,7 @@ credits:
   []
 photoCredits:
   []
+avatar: "/media/artistic/the-archive-is-alive/avatar.mp4"
 cover: "/media/artistic/the-archive-is-alive/cover.webp"
 gallery:
   - "/media/artistic/the-archive-is-alive/images/89.webp"
