@@ -31,6 +31,12 @@ gallery:
   []
 videos:
   []
+criticalTexts:
+  []
+publications:
+  []
+communication:
+  []
 links:
   []
 moments:
@@ -49,7 +55,6 @@ moments:
       - "/media/artistic/silent-target/moments/albumarte/Copia di _DSC0900905.webp"
       - "/media/artistic/silent-target/moments/albumarte/Copia di _DSC0982914.webp"
       - "/media/artistic/silent-target/moments/albumarte/cover.webp"
-    curatedBy: "Daniela Cotimbo"
   - date: "2025"
     title: "Silent Target — Videocittà"
     type: "interactive installation"

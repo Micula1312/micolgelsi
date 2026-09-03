@@ -30,30 +30,42 @@ credits:
   []
 photoCredits:
   []
+avatar: "/media/artistic/archive-of-the-untamed/avatar.gif"
 cover: "/media/artistic/archive-of-the-untamed/cover.webp"
 gallery:
-  - "/media/artistic/archive-of-the-untamed/images/ChatGPT Image 9 feb 2026, 22_45_31.webp"
-  - "/media/artistic/archive-of-the-untamed/images/COME UN GLITTER-giorgiapinzauti.webp"
-  - "/media/artistic/archive-of-the-untamed/images/IMG_0888.webp"
-  - "/media/artistic/archive-of-the-untamed/images/IMG_8132.webp"
+  []
 videos:
   []
+criticalTexts:
+  - label: "IMPURE — Giorgia Pinzauti"
+    url: "https://www.impure.zone/pages/article?id=44"
+  - label: "Exibart — Rifugi, Fondazione Pastificio Cerere"
+    url: "https://www.exibart.com/mostre/cosa-significa-trovare-riparo-nellarte-mostra-roma-esplora-rifugi-pastificio-cerere/"
+publications:
+  - label: "Fondazione Pastificio Cerere — 6ARTISTA / Rifugi"
+    url: "https://www.pastificiocerere.it/wp-content/uploads/2026/02/FPC_6artista_opuscolo_WP_24_02_WEBLOW.pdf"
+communication:
+  - label: "Cultura Bologna — Archive of the Untamed: Soft Data Foraging"
+    url: "https://www.culturabologna.it/objects/archive-of-the-untamed-soft-data-foraging-performance-live-di-micol-gelsi"
+  - label: "ZERO — Luccichio: Archive of the Untamed – Soft Data Foraging"
+    url: "https://zero.eu/it/eventi/326176-luccichio-archive-of-the-untamed-soft-data-foraging%2Cbologna/"
+  - label: "Itinerari nell’Arte — Archive of the Untamed – Soft Data Foraging"
+    url: "https://www.itinerarinellarte.it/it/mostre/archive-of-the-untamed-soft-data-foraging-11832"
+  - label: "Casa dell’Architettura — Roma Contaminata"
+    url: "https://casadellarchitettura.it/roma-contaminata/"
+  - label: "Ordine degli Architetti di Roma — Roma Contaminata Village"
+    url: "https://www.architettiroma.it/notizie/architettura/roma-contaminata-village-dialogo-tra-discipline-per-nuova-visone-contemporanea-della-capitale/"
+  - label: "Professione Architetto — Roma Contaminata"
+    url: "https://www.professionearchitetto.it/mostre/notizie/34142/roma-contaminata-un-villaggio-culturale-nel-giardino-della-casa-dell-architettura/"
+  - label: "Esquilino’s Weblog — Roma Contaminata Village"
+    url: "https://blog-esquilino.com/2026/06/12/12-e-13-6-26-roma-contaminata-village-allacquario-romano-casa-dellarchitettura/"
+  - label: "ViviRoma — Roma Contaminata / The Archive of the #Untamed"
+    url: "https://www.viviroma.it/index.php?Itemid=188&bulletinid=22294&groupid=216&option=com_community&task=viewbulletin&view=groups"
+  - label: "Dario Chillemi — The Archive Is Alive!"
+    url: "https://dariochillemi.com/tour/"
 links:
   - "https://thearchiveoftheuntamed.xyz/"
 moments:
-  - date: "2024-06"
-    title: "Soft Data Foraging"
-    type: "exhibition"
-    location: "Ex Casa del Custode, Parco della Montagnola, Bologna"
-    curatedBy: "Lucia Fontanelli, Olivia Teglia"
-    artistsInvolved: "Federico Falanga, Adriano Sorbello (Fl00ba), blondegeisha, Malincuore"
-  - date: "2026-05"
-    title: "Archive of the #Untamed — Conditions of Belonging: Joy"
-    type: "multimedia installation"
-    location: "MAAM, Roma"
-    gallery:
-      - "/media/artistic/archive-of-the-untamed/moments/maam1/587230944_17901723630300263_1927885586934172917_n.webp"
-      - "/media/artistic/archive-of-the-untamed/moments/maam1/587291606_17901723642300263_331017323058871258_n.webp"
   - date: "2026-05"
     title: "Archive of the #Untamed — Conditions of Belonging: Joy"
     type: "multimedia installation"
@@ -64,7 +76,7 @@ moments:
       - "/media/artistic/archive-of-the-untamed/moments/maam2/avatar.gif"
       - "/media/artistic/archive-of-the-untamed/moments/maam2/IMG_0451.webp"
       - "/media/artistic/archive-of-the-untamed/moments/maam2/IMG_0469.webp"
-  - date: "2026"
+  - date: "2026-02"
     title: "Archive of the #Untamed — Rifugi"
     type: "multimedia installation"
     location: "Fondazione Pastificio Cerere, Roma"
@@ -79,11 +91,20 @@ moments:
       - "/media/artistic/archive-of-the-untamed/moments/pastificio/55111689969_9ee2fa5c4f_c.webp"
       - "/media/artistic/archive-of-the-untamed/moments/pastificio/55111690199_44d88ea7a8_c.webp"
       - "/media/artistic/archive-of-the-untamed/moments/pastificio/55111816315_0d54a85315_k.webp"
-  - date: "2026-06-08"
-    title: "The Archive Is Alive!"
+  - date: "2025-09"
+    title: "Archive of the #Untamed — Spotlight"
+    type: "multimedia installation"
+    location: "MAAM, Roma"
+    gallery:
+      - "/media/artistic/archive-of-the-untamed/moments/maam1/587230944_17901723630300263_1927885586934172917_n.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/maam1/587291606_17901723642300263_331017323058871258_n.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/maam1/IMG_0888.JPEG"
+      - "/media/artistic/archive-of-the-untamed/moments/maam1/micol-foto-2.JPG"
+  - date: "2024-11"
+    title: "Soft Data Foraging"
     type: "exhibition"
-    location: "Spazio Contact, Roma"
-    href: "/exhibitions/the-archive-is-alive/"
+    location: "Ex Casa del Custode, Parco della Montagnola, Bologna"
+    media: "/media/artistic/archive-of-the-untamed/soft-data"
 works:
   []
 ---

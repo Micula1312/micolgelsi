@@ -53,6 +53,12 @@ gallery:
 videos:
   - "/media/artistic/abundance/videos/Abundance_asap_reel_1.mp4"
   - "/media/artistic/abundance/videos/asap-abundance-granata.mp4"
+criticalTexts:
+  []
+publications:
+  []
+communication:
+  []
 links:
   - "https://www.youtube.com/watch?v=RWCJT4PrtRY&t=648s"
   - "https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance/"
@@ -66,7 +72,6 @@ moments:
     gallery:
       - "/media/artistic/abundance/moments/granata/ASAP_Granata_1.6.1.webp"
       - "/media/artistic/abundance/moments/granata/ASAP_Granata_1.85.3.webp"
-      - "/media/artistic/abundance/moments/granata/ASAP_Granata_1.136.2.webp"
       - "/media/artistic/abundance/moments/granata/ASAP_Granata_1.148.1.webp"
       - "/media/artistic/abundance/moments/granata/ASAP_Granata_1.150.1.webp"
       - "/media/artistic/abundance/moments/granata/asap-granata.webp"

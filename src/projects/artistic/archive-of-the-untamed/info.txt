@@ -70,33 +70,28 @@ LINKS:
 https://thearchiveoftheuntamed.xyz/
 
 OUTPUTS:
-2024-06
-Soft Data Foraging
-type: exhibition
-location: Ex Casa del Custode, Parco della Montagnola, Bologna
-curated by: Lucia Fontanelli, Olivia Teglia
-artists involved: Federico Falanga, Adriano Sorbello (Fl00ba), blondegeisha, Malincuore
-
-2026-05
-Archive of the #Untamed — Conditions of Belonging: Joy
-type: multimedia installation
-location: MAAM, Roma
-media: maam1
-
 2026-05
 Archive of the #Untamed — Conditions of Belonging: Joy
 type: multimedia installation
 location: MAAM, Roma
 media: maam2
 
-2026
+2026-02
 Archive of the #Untamed — Rifugi
 type: multimedia installation
 location: Fondazione Pastificio Cerere, Roma
 media: pastificio
 
-2026-06-08
-The Archive Is Alive!
+2025-09
+Archive of the #Untamed — Spotlight
+type: multimedia installation
+location: MAAM, Roma
+media: maam1
+
+2024-11
+Soft Data Foraging
 type: exhibition
-location: Spazio Contact, Roma
-href: /exhibitions/the-archive-is-alive/
+location: Ex Casa del Custode, Parco della Montagnola, Bologna
+curated by: Lucia Fontanelli, Olivia Teglia
+artists involved: Federico Falanga, Adriano Sorbello (Fl00ba), blondegeisha, Malincuore
+media: soft-data

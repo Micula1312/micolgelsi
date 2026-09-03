@@ -1,6 +1,5 @@
 ---
 title: "#untamed-architecture 4 @ambient-rave"
-author: "Micol Gelsi"
 featured: true
 type: project
 displayType: "performance"
@@ -38,6 +37,12 @@ gallery:
   []
 videos:
   []
+criticalTexts:
+  []
+publications:
+  []
+communication:
+  []
 links:
   - "https://thearchiveoftheuntamed.xyz/"
 moments:
@@ -50,7 +55,6 @@ moments:
       - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3318.webp"
       - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3361.webp"
       - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3400.webp"
-    credits: "Roma Contaminata"
   - date: "2026"
     title: "#untamed-architecture 4 @ambient-rave"
     type: "multimedia installation + performance"
@@ -63,7 +67,6 @@ moments:
       - "/media/artistic/untamed-architectureXambient-rave/pastificio/STELLA.webp"
       - "/media/artistic/untamed-architectureXambient-rave/pastificio/TOTEMINI.webp"
       - "/media/artistic/untamed-architectureXambient-rave/pastificio/WhatsApp Image 2026-06-03 at 14.06.11.webp"
-    credits: "Roma Diffusa"
 works:
   []
 ---

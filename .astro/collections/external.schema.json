@@ -18,6 +18,24 @@
       "default": "external project",
       "type": "string"
     },
+    "practice": {
+      "default": "web-development",
+      "type": "string"
+    },
+    "client": {
+      "type": "string"
+    },
+    "role": {
+      "default": "Web development",
+      "type": "string"
+    },
+    "stack": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "year": {
       "anyOf": [
         {

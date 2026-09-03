@@ -2,7 +2,6 @@ TITLE:
 #untamed-architecture 4 @ambient-rave
 
 AUTHOR:
-Micol Gelsi
 
 FEATURED:
 yes
