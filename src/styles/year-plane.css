@@ -1,9 +1,10 @@
 .year-axis,
 .year-side-label { display: none; }
 
-/* YEAR = horizontal temporal field. The dashboard stays fixed while this panel scrolls on X only when needed. */
-.work-list.is-year-plane { position:relative;overflow-x:auto!important;overflow-y:hidden!important;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--muted) transparent; }
-.work-list.is-year-plane::-webkit-scrollbar{height:5px}.work-list.is-year-plane::-webkit-scrollbar-track{background:transparent}.work-list.is-year-plane::-webkit-scrollbar-thumb{background:var(--muted)}
+/* YEAR = horizontal temporal field. Scroll exists only when the panel is taller than it is wide. */
+.work-list.is-year-plane { position:relative;overflow-x:hidden!important;overflow-y:hidden!important;overscroll-behavior-x:contain;scrollbar-width:none!important; }
+.work-list.is-year-plane.is-scrollable-year{overflow-x:auto!important}
+.work-list.is-year-plane::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
 .work-list.is-year-plane .year-track{position:relative;width:max(100%,var(--year-width,1900px));height:100%;min-height:100%}
 .work-list.is-year-plane .year-axis{display:block;position:absolute;left:52px;right:34px;bottom:28px;height:1px;background:var(--line);pointer-events:none;transition:opacity .16s ease}
 .work-list.is-year-plane .year-axis::after{content:'time →';position:absolute;right:0;bottom:10px;color:var(--muted);white-space:nowrap}
