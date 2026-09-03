@@ -47,11 +47,7 @@ credits:
 photoCredits:
   []
 gallery:
-  - "/media/artistic/abundance/images/20161130-DSCF5448.webp"
-  - "/media/artistic/abundance/images/20161130-DSCF5499.webp"
-  - "/media/artistic/abundance/images/20161130-DSCF5503.webp"
-  - "/media/artistic/abundance/images/WhatsApp Image 2025-03-29 at 19.04.19.webp"
-  - "/media/artistic/abundance/images/WhatsApp-Image-2023-08-09-at-09.54.541.webp"
+  []
 videos:
   []
 links:
@@ -71,6 +67,7 @@ moments:
       - "/media/artistic/abundance/moments/granata/ASAP_Granata_1.148.1.webp"
       - "/media/artistic/abundance/moments/granata/ASAP_Granata_1.150.1.webp"
       - "/media/artistic/abundance/moments/granata/asap-granata.webp"
+      - "/media/artistic/abundance/moments/granata/WhatsApp-Image-2023-08-09-at-09.54.541.webp"
     href: "https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance,bologna/"
   - date: "2024-01-26"
     title: "ABUNDANCE — COLLAGENE"
@@ -99,6 +96,7 @@ moments:
       - "/media/artistic/abundance/moments/alchemilla/image (7).webp"
       - "/media/artistic/abundance/moments/alchemilla/image (8).webp"
       - "/media/artistic/abundance/moments/alchemilla/image.webp"
+      - "/media/artistic/abundance/moments/alchemilla/WhatsApp Image 2025-03-29 at 19.04.19.webp"
   - date: "2025-06-14"
     title: "I AM ABUNDANCE"
     type: "performance"
