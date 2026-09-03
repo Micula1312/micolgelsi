@@ -7,6 +7,12 @@ ASAP
 TEASER:
 https://www.youtube.com/watch?v=G4F5kCSM5JQ
 
+AVATAR:
+avatar.mp4
+
+FEATURED:
+yes
+
 START:
 2023-05-05
 

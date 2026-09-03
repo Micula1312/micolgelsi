@@ -28,7 +28,7 @@ const resolveAvatar=async(mediaDir,baseUrl,explicit='')=>{
     if(/^https?:\/\//i.test(raw)||raw.startsWith('/'))return raw;
     try{await fs.access(path.join(mediaDir,raw));return`${baseUrl}/${raw.split(path.sep).join('/')}`;}catch{}
   }
-  const names=['avatar.webp','avatar.gif','avatar.png','avatar.jpg','avatar.jpeg','avatar.avif'];
+  const names=['avatar.mp4','avatar.webm','avatar.mov','avatar.webp','avatar.gif','avatar.png','avatar.jpg','avatar.jpeg','avatar.avif'];
   const rootAvatar=await detectAsset(mediaDir,names);if(rootAvatar)return`${baseUrl}/${rootAvatar}`;
   const imageAvatar=await detectAsset(path.join(mediaDir,'images'),names);if(imageAvatar)return`${baseUrl}/images/${imageAvatar}`;
   return'';
@@ -41,7 +41,9 @@ const generateMarkdown=async({slug,sourceKind,data})=>{
   const avatar=await resolveAvatar(mediaDir,baseUrl,data.AVATAR);
   const coverName=await detectAsset(mediaDir,['cover.webp','cover.jpg','cover.jpeg','cover.png','cover.gif']);
   const gallery=(await listMedia(path.join(mediaDir,'images'),IMAGE_EXT)).filter(n=>!/^avatar\./i.test(n)).map(n=>`${baseUrl}/images/${n}`);
-  const videos=(await listMedia(path.join(mediaDir,'video'),VIDEO_EXT)).map(n=>`${baseUrl}/video/${n}`);
+  const videoSingular=await listMedia(path.join(mediaDir,'video'),VIDEO_EXT);
+  const videoPlural=await listMedia(path.join(mediaDir,'videos'),VIDEO_EXT);
+  const videos=[...new Set([...videoSingular.map(n=>`${baseUrl}/video/${n}`),...videoPlural.map(n=>`${baseUrl}/videos/${n}`)])];
   const links=splitList(data.LINKS).map(normalizeUrl);
   const moments=await Promise.all(parseMoments((data.OUTPUTS||'').trim()?data.OUTPUTS:data.MOMENTS).map(m=>resolveMomentMedia(m,mediaDir,baseUrl)));
   const excerpt=(data.EXCERPT||data.SHORT||'').trim();

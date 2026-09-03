@@ -1,6 +1,12 @@
 TITLE:
 #untamed-architecture 4 @ambient-rave
 
+AUTHOR:
+Micol Gelsi
+
+FEATURED:
+yes
+
 START:
 2026-03
 
@@ -14,13 +20,19 @@ TYPE:
 performance
 
 MEDIUM:
-audiovisual performance, listening-practice, installation 
+audiovisual performance, listening-practice, installation
 
 RESEARCH:
 urban-wilderness
 generative-archives
 interspecies
 
+COLLABORATORS:
+Stiky Verde
+Giuseppe di Capua
+Federico Russo
+Elisa Catalano
+Paolo Rucci
 
 ARTISTS INVOLVED:
 Stiky Verde
@@ -32,23 +44,28 @@ Paolo Rucci
 CURATED BY:
 
 CREDITS:
+Concept and curatorship — Micol Gelsi
 
 EXCERPT:
+#untamed-architecture 4 @ambient-rave is an audiovisual performance and spatial activation developed within Archive of the #Untamed, where sound, image and temporary architectures become tools for inhabiting and re-reading urban space.
+
+DESCRIPTION:
+An audiovisual and installation-based activation developed from Archive of the #Untamed. The project brings together listening practices, live image, sound and temporary spatial dispositifs, treating the performance space as a mutable architecture and a site of collective presence.
 
 LINKS:
 https://thearchiveoftheuntamed.xyz/
 
 OUTPUTS:
-2024-06
-Soft Data Foraging
-type: exhibition
-location: Ex Casa del Custode, Parco della Montagnola, Bologna
-curated by: Lucia Fontanelli, Olivia Teglia
-artists involved: Federico Falanga, Adriano Sorbello (Fl00ba), blondegeisha, Malincuore
-media: moments/soft-data.jpg
+2026-06-10
+#untamed-architecture 4 @ambient-rave
+type: multimedia installation + performance
+location: Acquario Romano / Casa dell’Architettura, Roma
+credits: Roma Contaminata
+media: casa-architetturaa
 
-2026-06-08
-The Archive Is Alive!
-type: exhibition
-location: Spazio Contact, Rome
-href: /exhibitions/the-archive-is-alive/
+2026
+#untamed-architecture 4 @ambient-rave
+type: multimedia installation + performance
+location: Fondazione Pastificio Cerere, Roma
+credits: Roma Diffusa
+media: pastificio

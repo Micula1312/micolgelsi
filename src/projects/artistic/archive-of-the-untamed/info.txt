@@ -1,6 +1,12 @@
 TITLE:
 Archive of the #Untamed
 
+AUTHOR:
+Micol Gelsi
+
+FEATURED:
+yes
+
 START:
 2024-10
 
@@ -21,8 +27,7 @@ urban-wilderness
 generative-archives
 interspecies
 
-WITH:
-
+COLLABORATORS:
 
 CURATED BY:
 EXIT
@@ -53,10 +58,27 @@ type: exhibition
 location: Ex Casa del Custode, Parco della Montagnola, Bologna
 curated by: Lucia Fontanelli, Olivia Teglia
 artists involved: Federico Falanga, Adriano Sorbello (Fl00ba), blondegeisha, Malincuore
-media: moments/soft-data
+
+2026-05
+Archive of the #Untamed — Conditions of Belonging: Joy
+type: multimedia installation
+location: MAAM, Roma
+media: maam1
+
+2026-05
+Archive of the #Untamed — Conditions of Belonging: Joy
+type: multimedia installation
+location: MAAM, Roma
+media: maam2
+
+2026
+Archive of the #Untamed — Rifugi
+type: multimedia installation
+location: Fondazione Pastificio Cerere, Roma
+media: pastificio
 
 2026-06-08
-The Archive of the #UNTAMED
+The Archive Is Alive!
 type: exhibition
-location: Spazio Contact, Rome
+location: Spazio Contact, Roma
 href: /exhibitions/the-archive-is-alive/
