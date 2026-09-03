@@ -2,7 +2,6 @@ TITLE:
 Archive of the #Untamed
 
 AUTHOR:
-Micol Gelsi
 
 FEATURED:
 yes

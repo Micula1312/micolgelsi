@@ -1,6 +1,5 @@
 ---
 title: "Archive of the #Untamed"
-author: "Micol Gelsi"
 featured: true
 type: project
 displayType: "project"
