@@ -10,7 +10,7 @@ summary: "Silent Target is an interactive installation investigating visibility,
 medium:
   - "interactive installation"
 researchAreas:
-  - technology-digitalization
+  - surveillance-politics-of-visibility
 collaborators:
   []
 artistsInvolved:

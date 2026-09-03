@@ -16,8 +16,7 @@ medium:
   - "workshop"
 researchAreas:
   - eco-feminism
-  - pleasure-activism
-  - emotional-geographies
+  - bodies-affects
 collaborators:
   - "studioferrari"
 artistsInvolved:

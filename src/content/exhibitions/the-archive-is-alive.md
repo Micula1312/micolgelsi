@@ -13,7 +13,8 @@ medium:
 researchAreas:
   - generative-archives
   - urban-wilderness
-  - technology-digitalization
+  - bodies-affects
+  - surveillance-politics-of-visibility
 collaborators:
   []
 artistsInvolved:
@@ -82,7 +83,7 @@ works:
   []
 ---
 
-THE ARCHIVE IS ALIVE Di Micol Gelsi, con Giuseppe di Capua e Federico Russo Testo di Giorgia Pinzauti 
+THE ARCHIVE IS ALIVE Di Micol Gelsi, con Giuseppe Di Capua e Federico Russo Testo di Giorgia Pinzauti 
 The archive Ls alive! Espressione-titolo della mostra, si propone come un gioco di attraversamenti, in cui concedersi un momento per divenire comunita ristretta e aleatoria II campo intermediale, preparato dal collettivo artistico riunito da Micol Gelsi, avvolge ii gruppo di spettatori agent invitandoli a fidarsi sin dall'esterno della galleria La serranda abbassata si oppone infatti allatrasparenza del vetro e costringe a inseguire la curiosite per superare la soglia, per lasciarsi attraversare dall'archivio indisciplinata 
 Nel campo vibrante della mostra l'archivio dMene materia performante, esponendo it passato e influenzando it presente. Larchivio e materia viva che ci osserva e registra, per mostrarci immediettamente e proiettarci nel futuro. 
 Chi predispone it campo intermediale lo fa per elaborare emozioni intime e creare un output collettivo. Disciogliere l'individualismo e compito dell'archMsta, chetrama una rete di cavi e appigli per stimolare reazioni e relazioni the diverran no futuro archivio, costru-endo una genealogia di gesti e affetti che si mescoleranno con le stratificazioni del passata 

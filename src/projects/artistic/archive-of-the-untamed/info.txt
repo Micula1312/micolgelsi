@@ -24,8 +24,7 @@ research, archive, website, installation, participatory practice
 RESEARCH:
 urban-wilderness
 generative-archives
-more-than-human-relations
-digital-access-inclusion
+interspecies
 
 COLLABORATORS:
 Lucia Fontanelli, Olivia Teglia, Giuseppe di Capua, Comitato Rigenerazione no Speculazione
@@ -69,13 +68,15 @@ Professione Architetto — Roma Contaminata | https://www.professionearchitetto.
 Esquilino’s Weblog — Roma Contaminata Village | https://blog-esquilino.com/2026/06/12/12-e-13-6-26-roma-contaminata-village-allacquario-romano-casa-dellarchitettura/
 ViviRoma — Roma Contaminata / The Archive of the #Untamed | https://www.viviroma.it/index.php?Itemid=188&bulletinid=22294&groupid=216&option=com_community&task=viewbulletin&view=groups
 
+
 LINKS:
+
 
 OUTPUTS:
 2026-05
 Archive of the #Untamed — Conditions of Belonging: Joy
 type: multimedia installation
-location: MAAM, Roma
+location: Museo dell'Altro e dell'Altrove di Metropoliz, Roma
 media: maam2
 
 2026-02

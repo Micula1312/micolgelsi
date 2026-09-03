@@ -17,7 +17,8 @@ medium:
 researchAreas:
   - urban-wilderness
   - generative-archives
-  - interspecies
+  - more-than-human-relations
+  - digital-access-inclusion
 collaborators:
   - "Lucia Fontanelli"
   - "Olivia Teglia"

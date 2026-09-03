@@ -9,7 +9,8 @@ status: ongoing
 medium:
   - "audiovisual performance"
 researchAreas:
-  []
+  - bodies-affects
+  - surveillance-politics-of-visibility
 collaborators:
   []
 artistsInvolved:
