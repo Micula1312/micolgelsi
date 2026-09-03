@@ -21,6 +21,11 @@ emotional-geographies
 WITH:
 ASAP
 
+COLLABORATORS: studioferrari
+
+MAIN LINK:
+https://www.youtube.com/watch?v=G4F5kCSM5JQ
+
 SHORT:
 ABUNDANCE is a tropical party and a dancing ritual celebrating bodies liberated from a mentality of scarcity. An ironic journey through a techno-materialist and new-age universe towards a new era.
 
@@ -31,7 +36,6 @@ With Caro Anderson, dancer and founder of Bundabolo, and DJ Romina Thomas. Origi
 LINKS:
 https://www.youtube.com/watch?v=RWCJT4PrtRY&t=648s
 https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance/
-https://zero.eu/it/eventi/299899-abundance,bologna/
 https://zero.eu/it/eventi/349808-abundance-w-jomoon/
 https://www.instagram.com/p/C2HzMW1MbTv/?img_index=1
 
@@ -47,6 +51,13 @@ ABUNDANCE — COLLAGENE
 type: performance + Dj set
 location: DAS – Dispositivo Arti Sperimentali, Bologna
 media: moments/abundance-das.jpg
+
+2024-01-26
+ABUNDANCE — COLLAGENE
+type: performance + dj set
+location: DAS, BolognaDAS – Dispositivo Arti Sperimentali, Bologna
+media: collagene
+url: https://zero.eu/it/eventi/299899-abundance,bologna/
 
 2025-06-14
 I AM ABUNDANCE
