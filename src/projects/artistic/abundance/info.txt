@@ -39,7 +39,7 @@ MOMENTS:
 2023-10-12
 ABUNDANCE — with studioferrari
 location: Granata Bologna
-media: moments/asap abundance granata.mp4
+media: moments/abundance-granata.jpg
 url: https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance,bologna/
 
 2024-01-26
