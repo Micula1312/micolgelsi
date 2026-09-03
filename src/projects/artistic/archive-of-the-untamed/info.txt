@@ -27,7 +27,7 @@ generative-archives
 interspecies
 
 COLLABORATORS:
-Lucia Fontanelli, Olivia Teglia, Giuseppe di Capua, Comitato Rigenerazione no Speculazione 
+Lucia Fontanelli, Olivia Teglia, Giuseppe di Capua, Comitato Rigenerazione no Speculazione
 
 CURATED BY:
 EXIT
@@ -47,6 +47,24 @@ The archive’s first activation took shape in the exhibition Soft Data Foraging
 The exhibition unfolded as an installation and multimedia journey, offering a fictional entry point into the archive, also through digital tools such as a Discord server designed to support its evolution and the development of a digital community around it. The project involved the collaboration of visual artist Federico Falanga and electronic musician Adriano Sorbello (Fl00ba). During the closing event, the installations entered into dialogue with sets by blondegeisha and Malincuore in an audiovisual performance that reinterpreted the archival material collected throughout the project.
 
 The project continues as an artistic research project investigating the role of digital and participatory archives within urban space. Its objectives include the production of digital, installation-based and editorial outcomes; the development of methodologies for the collective construction of archives; and the creation of new dispositifs that reinterpret the collected materials, generating new perspectives, relations and tools.
+
+CRITICAL TEXTS:
+IMPURE — Giorgia Pinzauti | https://www.impure.zone/pages/article?id=44
+Exibart — Rifugi, Fondazione Pastificio Cerere | https://www.exibart.com/mostre/cosa-significa-trovare-riparo-nellarte-mostra-roma-esplora-rifugi-pastificio-cerere/
+
+PUBLICATIONS:
+Fondazione Pastificio Cerere — 6ARTISTA / Rifugi | https://www.pastificiocerere.it/wp-content/uploads/2026/02/FPC_6artista_opuscolo_WP_24_02_WEBLOW.pdf
+
+COMMUNICATION:
+Cultura Bologna — Archive of the Untamed: Soft Data Foraging | https://www.culturabologna.it/objects/archive-of-the-untamed-soft-data-foraging-performance-live-di-micol-gelsi
+ZERO — Luccichio: Archive of the Untamed – Soft Data Foraging | https://zero.eu/it/eventi/326176-luccichio-archive-of-the-untamed-soft-data-foraging%2Cbologna/
+Itinerari nell’Arte — Archive of the Untamed – Soft Data Foraging | https://www.itinerarinellarte.it/it/mostre/archive-of-the-untamed-soft-data-foraging-11832
+Casa dell’Architettura — Roma Contaminata | https://casadellarchitettura.it/roma-contaminata/
+Ordine degli Architetti di Roma — Roma Contaminata Village | https://www.architettiroma.it/notizie/architettura/roma-contaminata-village-dialogo-tra-discipline-per-nuova-visone-contemporanea-della-capitale/
+Professione Architetto — Roma Contaminata | https://www.professionearchitetto.it/mostre/notizie/34142/roma-contaminata-un-villaggio-culturale-nel-giardino-della-casa-dell-architettura/
+Esquilino’s Weblog — Roma Contaminata Village | https://blog-esquilino.com/2026/06/12/12-e-13-6-26-roma-contaminata-village-allacquario-romano-casa-dellarchitettura/
+ViviRoma — Roma Contaminata / The Archive of the #Untamed | https://www.viviroma.it/index.php?Itemid=188&bulletinid=22294&groupid=216&option=com_community&task=viewbulletin&view=groups
+Dario Chillemi — The Archive Is Alive! | https://dariochillemi.com/tour/
 
 LINKS:
 https://thearchiveoftheuntamed.xyz/
