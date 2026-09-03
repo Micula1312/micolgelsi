@@ -26,6 +26,7 @@ const normalizeExternalUrl = (value = '') => {
   return `https://${url.replace(/^\/+/, '')}`;
 };
 
+const defaultFeatured = new Set(['abundance','archive-of-the-untamed','the-archive-is-alive','untamed-architectureXambient-rave']);
 const normalize = (item) => {
   const year = item.data.year != null ? String(item.data.year) : '—';
   const yearMatch = year.match(/\d{4}/);
@@ -34,7 +35,8 @@ const normalize = (item) => {
   const start = item.data.startDate ?? yearMatch?.[0] ?? '';
   const end = item.data.endDate ?? (item.data.status === 'ongoing' ? 'ongoing' : yearMatch?.[0] ?? '');
   const externalUrl = item.collection === 'external' ? normalizeExternalUrl(item.data.url) : '';
-  return { ...item, yearGroup, lane, start, end, researchAreas: inferResearch(item), href: externalUrl || `/${item.collection}/${item.id}/`, externalLink: Boolean(externalUrl) };
+  const featured = Boolean(item.data.featured) || defaultFeatured.has(item.id);
+  return { ...item, yearGroup, lane, start, end, featured, researchAreas: inferResearch(item), href: externalUrl || `/${item.collection}/${item.id}/`, externalLink: Boolean(externalUrl) };
 };
 
 const items = [...projects, ...exhibitions, ...external].map(normalize);
@@ -51,7 +53,7 @@ const researchAreas = [
       <div class="year-track" data-year-track>
         <div class="year-axis" aria-hidden="true"></div>
         {items.map((item) => (
-          <a class={`work-row ${item.lane === 'external' ? 'is-external-project' : ''}`} href={item.href} target={item.externalLink ? '_blank' : undefined} rel={item.externalLink ? 'noopener noreferrer' : undefined} data-year={item.yearGroup} data-type={item.lane} data-title={item.data.title} data-research={item.researchAreas.join(',')} data-start={item.start} data-end={item.end} data-lane={item.lane} data-moments={JSON.stringify(item.data.moments ?? [])}>
+          <a class={`work-row ${item.lane === 'external' ? 'is-external-project' : ''} ${item.featured ? 'is-featured' : ''}`} href={item.href} target={item.externalLink ? '_blank' : undefined} rel={item.externalLink ? 'noopener noreferrer' : undefined} data-year={item.yearGroup} data-type={item.lane} data-title={item.data.title} data-research={item.researchAreas.join(',')} data-start={item.start} data-end={item.end} data-lane={item.lane} data-moments={JSON.stringify(item.data.moments ?? [])}>
             <span class="timeline-mark" aria-hidden="true"><span class="timeline-end timeline-end-top"></span><span class="timeline-end timeline-end-bottom"></span><span class="output-moments"></span></span><span class="work-title">{item.data.title}{item.externalLink ? ' ↗' : ''}</span><span class="project-badges">{item.data.author&&<span class="author-pill">BY {item.data.author}</span>}{item.data.collaborators?.length>0&&<span class="collab-pill">W/ {item.data.collaborators.join(' + ')}</span>}</span>
           </a>
         ))}
@@ -59,7 +61,7 @@ const researchAreas = [
       <div class="research-field" aria-hidden="true">{researchAreas.map(([key, label]) => <span class={`research-anchor anchor-${key}`}>{label}</span>)}</div>
       <div class="type-field" aria-hidden="true"></div>
     </div>
-    <div class="project-legend" aria-label="Project labels"><span>BY = authored by</span><span>W/ = with</span></div>
+    <div class="project-legend" aria-label="Project labels"><span>BY = authored by</span><span>W/ = with</span><span>pulse = main project</span></div>
   </section>
   <script is:inline>
     (() => {

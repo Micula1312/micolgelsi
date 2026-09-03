@@ -1,6 +1,15 @@
 TITLE:
 The Archive Is Alive!
 
+AUTHOR:
+Micol Gelsi
+
+AVATAR:
+avatar.mp4
+
+FEATURED:
+yes
+
 START:
 2026-04
 

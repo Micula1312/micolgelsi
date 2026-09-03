@@ -4,6 +4,10 @@ AUTHOR:
 
 TEASER:
 
+AVATAR:
+
+FEATURED:
+
 START:
 
 END:
