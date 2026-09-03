@@ -2,16 +2,16 @@ TITLE:
 Abundance
 
 START:
-2024-01-26
+2023-05-05
 
 END:
-2024-01-26
+2025-10-26
 
 TYPE:
-performance
+performance, installation
 
 MEDIUM:
-performance, party, dance, sound, multidisciplinary performance
+performance, party, dance
 
 RESEARCH:
 eco-feminism
@@ -29,11 +29,38 @@ A multidisciplinary performative project by ASAP (Lucia Fontanelli, Micol Gelsi,
 With Caro Anderson, dancer and founder of Bundabolo, and DJ Romina Thomas. Original music by Filippo Bonelli (Girovelle Psicotroniche) and Malezachi.
 
 LINKS:
+https://www.youtube.com/watch?v=RWCJT4PrtRY&t=648s
+https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance/
 https://zero.eu/it/eventi/299899-abundance,bologna/
+https://zero.eu/it/eventi/349808-abundance-w-jomoon/
 https://www.instagram.com/p/C2HzMW1MbTv/?img_index=1
 
 MOMENTS:
+2023-10-12
+ABUNDANCE — with studioferrari
+location: Granata Bologna
+media: moments/asap abundance granata.mp4
+url: https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance,bologna/
+
 2024-01-26
 ABUNDANCE — COLLAGENE
+type: performance + Dj set
 location: DAS – Dispositivo Arti Sperimentali, Bologna
 media: moments/abundance-das.jpg
+
+2025-06-14
+I AM ABUNDANCE
+type: workahop
+location: Alchemilla, Bologna
+media: moments/abundance-alchemilla.jpg
+
+2025-06-14
+I AM ABUNDANCE.
+type: performance
+location: Palazzo Bronzo, Genova
+media: moments/abundance-palazzo.jpg
+
+2024-01-26
+I AM ABUNDANCE.
+location: Liminal Space, Roma
+media: moments/abundance-lmnl.jpg

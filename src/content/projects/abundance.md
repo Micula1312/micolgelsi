@@ -1,21 +1,20 @@
 ---
 title: "Abundance"
 type: project
-displayType: "performance"
-year: "2024"
-startDate: "2024-01"
-endDate: "2025-10"
+displayType: "performance, installation"
+year: "2023"
+startDate: "2023-05-05"
+endDate: "2025-10-26"
 status: completed
-summary: "A multidisciplinary research project and speculative portal exploring the intersection of the body, technology, and feminist imagination."
+summary: "ABUNDANCE is a tropical party and a dancing ritual celebrating bodies liberated from a mentality of scarcity. An ironic journey through a techno-materialist and new-age universe towards a new era. A multidisciplinary performative project by ASAP (Lucia Fontanelli, Micol Gelsi, Nina Lanzi, Olivia Teglia, Bianca Zueneli, Nico Guerzoni), presented within COLLAGENE at DAS – Dispositivo Arti Sperimentali, Bologna. With Caro Anderson, dancer and founder of Bundabolo, and DJ Romina Thomas. Original music by Filippo Bonelli (Girovelle Psicotroniche) and Malezachi."
 medium:
   - "performance"
-  - "installation"
   - "party"
-  - "live video"
+  - "dance"
 researchAreas:
   - eco-feminism
   - pleasure-activism
-  - technology-digitalization
+  - emotional-geographies
 collaborators:
   - "ASAP"
 artistsInvolved:
@@ -31,18 +30,42 @@ gallery:
 videos:
   []
 links:
-  - "https://..."
+  - "https://www.youtube.com/watch?v=RWCJT4PrtRY&t=648s"
+  - "https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance/"
+  - "https://zero.eu/it/eventi/299899-abundance"
+  - "bologna/"
+  - "https://zero.eu/it/eventi/349808-abundance-w-jomoon/"
+  - "https://www.instagram.com/p/C2HzMW1MbTv/?img_index=1"
 moments:
+  - date: "2023-10-12"
+    title: "ABUNDANCE — with studioferrari"
+    location: "Granata Bologna"
+    media: "/media/artistic/abundance/moments/asap abundance granata.mp4"
   - date: "2024-01-26"
-    title: "ABUNDANCE"
+    title: "ABUNDANCE — COLLAGENE"
+    type: "performance + Dj set"
+    location: "DAS – Dispositivo Arti Sperimentali, Bologna"
+    media: "/media/artistic/abundance/moments/abundance-das.jpg"
+  - date: "2025-06-14"
+    title: "I AM ABUNDANCE"
+    type: "workahop"
+    location: "Alchemilla, Bologna"
+    media: "/media/artistic/abundance/moments/abundance-alchemilla.jpg"
+  - date: "2025-06-14"
+    title: "I AM ABUNDANCE."
     type: "performance"
-    location: "DAS - Dispositivo Arti Sperimentali, Bologna"
+    location: "Palazzo Bronzo, Genova"
+    media: "/media/artistic/abundance/moments/abundance-palazzo.jpg"
+  - date: "2024-01-26"
+    title: "I AM ABUNDANCE."
+    location: "Liminal Space, Roma"
+    media: "/media/artistic/abundance/moments/abundance-lmnl.jpg"
 works:
   []
 ---
 
-ABUNDANCE is a multidisciplinary research project and speculative portal
-exploring the intersection of the body, technology, and feminist imagination.
+ABUNDANCE is a tropical party and a dancing ritual celebrating bodies liberated from a mentality of scarcity. An ironic journey through a techno-materialist and new-age universe towards a new era.
 
-The project playfully subverts the capitalist paradigm of scarcity,
-reclaiming abundance as a practice already inscribed within our bodies...
+A multidisciplinary performative project by ASAP (Lucia Fontanelli, Micol Gelsi, Nina Lanzi, Olivia Teglia, Bianca Zueneli, Nico Guerzoni), presented within COLLAGENE at DAS – Dispositivo Arti Sperimentali, Bologna.
+
+With Caro Anderson, dancer and founder of Bundabolo, and DJ Romina Thomas. Original music by Filippo Bonelli (Girovelle Psicotroniche) and Malezachi.
