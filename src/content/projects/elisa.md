@@ -40,9 +40,9 @@ moments:
     curatedBy: "Lucia Fontanelli, Olivia Teglia"
     artistsInvolved: "Federico Falanga, Adriano Sorbello (Fl00ba), blondegeisha, Malincuore"
   - date: "2026-06-08"
-    title: "The Archive Is Alive!"
-    type: "exhibition"
-    location: "Spazio Contact, Rome"
+    title: "Elisa X Inota festival"
+    type: "AV videomapping"
+    location: "Inota Festival, Budapest"
     href: "/exhibitions/the-archive-is-alive/"
 works:
   []

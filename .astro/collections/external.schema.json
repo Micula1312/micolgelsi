@@ -11,6 +11,9 @@
     "teaser": {
       "type": "string"
     },
+    "mainLink": {
+      "type": "string"
+    },
     "kind": {
       "default": "external project",
       "type": "string"
@@ -125,6 +128,13 @@
           },
           "media": {
             "type": "string"
+          },
+          "gallery": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "href": {
             "type": "string"

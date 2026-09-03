@@ -1,6 +1,12 @@
 TITLE:
 Abundance
 
+AUTHOR:
+ASAP
+
+TEASER:
+https://www.youtube.com/watch?v=G4F5kCSM5JQ
+
 START:
 2023-05-05
 
@@ -11,27 +17,49 @@ TYPE:
 performance, installation
 
 MEDIUM:
-performance, party, dance
+performance, party, workshop
 
 RESEARCH:
 eco-feminism
 pleasure-activism
 emotional-geographies
 
-WITH:
-ASAP
-
-COLLABORATORS: studioferrari
+COLLABORATORS:
+studioferrari
 
 MAIN LINK:
 https://www.youtube.com/watch?v=G4F5kCSM5JQ
 
-SHORT:
+ARTISTS INVOLVED:
+Lucia Fontanelli
+Micol Gelsi
+Nina Lanzi
+Olivia Teglia
+Bianca Zueneli
+Nico Guerzoni
+Caro Anderson
+Romina Thomas
+Filippo Bonelli
+Malezachi
+
+CURATED BY:
+
+CREDITS:
+ASAP — Lucia Fontanelli, Micol Gelsi, Nina Lanzi, Olivia Teglia, Bianca Zueneli, Nico Guerzoni
+Caro Anderson — dancer, founder of Bundabolo
+Romina Thomas — DJ
+Filippo Bonelli (Girovelle Psicotroniche) — original music
+Malezachi — original music
+
+PHOTO CREDITS:
+
+EXCERPT:
 ABUNDANCE is a tropical party and a dancing ritual celebrating bodies liberated from a mentality of scarcity. An ironic journey through a techno-materialist and new-age universe towards a new era.
 
-A multidisciplinary performative project by ASAP (Lucia Fontanelli, Micol Gelsi, Nina Lanzi, Olivia Teglia, Bianca Zueneli, Nico Guerzoni), presented within COLLAGENE at DAS – Dispositivo Arti Sperimentali, Bologna.
+DESCRIPTION:
+A multidisciplinary performative project by ASAP, presented through performances, parties, workshops and installations between 2023 and 2025.
 
-With Caro Anderson, dancer and founder of Bundabolo, and DJ Romina Thomas. Original music by Filippo Bonelli (Girovelle Psicotroniche) and Malezachi.
+ABUNDANCE is conceived as a tropical party and a dancing ritual celebrating bodies liberated from a mentality of scarcity. An ironic journey through a techno-materialist and new-age universe towards a new era.
 
 LINKS:
 https://www.youtube.com/watch?v=RWCJT4PrtRY&t=648s
@@ -42,36 +70,30 @@ https://www.instagram.com/p/C2HzMW1MbTv/?img_index=1
 MOMENTS:
 2023-10-12
 ABUNDANCE — with studioferrari
-location: Granata Bologna
-media: moments/abundance-granata.jpg
+location: Granata, Bologna
+media: abundance-granata.jpg
 url: https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance,bologna/
 
 2024-01-26
 ABUNDANCE — COLLAGENE
-type: performance + Dj set
-location: DAS – Dispositivo Arti Sperimentali, Bologna
-media: moments/abundance-das.jpg
-
-2024-01-26
-ABUNDANCE — COLLAGENE
 type: performance + dj set
-location: DAS, BolognaDAS – Dispositivo Arti Sperimentali, Bologna
+location: DAS – Dispositivo Arti Sperimentali, Bologna
 media: collagene
 url: https://zero.eu/it/eventi/299899-abundance,bologna/
 
 2025-06-14
 I AM ABUNDANCE
-type: workahop
+type: workshop
 location: Alchemilla, Bologna
-media: moments/abundance-alchemilla.jpg
+media: alchemilla
 
 2025-06-14
-I AM ABUNDANCE.
+I AM ABUNDANCE
 type: performance
 location: Palazzo Bronzo, Genova
-media: moments/abundance-palazzo.jpg
+media: palazzo
 
-2024-01-26
-I AM ABUNDANCE.
+[DATA DA VERIFICARE]
+I AM ABUNDANCE
 location: Liminal Space, Roma
-media: moments/abundance-lmnl.jpg
+media: abundance-lmnl.jpg

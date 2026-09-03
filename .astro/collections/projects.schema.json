@@ -11,6 +11,9 @@
     "teaser": {
       "type": "string"
     },
+    "mainLink": {
+      "type": "string"
+    },
     "year": {
       "anyOf": [
         {
@@ -155,6 +158,13 @@
           },
           "media": {
             "type": "string"
+          },
+          "gallery": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "href": {
             "type": "string"
