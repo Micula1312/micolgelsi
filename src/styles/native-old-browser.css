@@ -153,7 +153,7 @@ html[data-style="native"] .web-role {display:none!important;}
 html[data-style="native"] .work-row,
 html[data-style="native"] .work-list .work-row {
   display:block!important;
-  position:static!important;
+  position:relative!important;
   inset:auto!important;
   transform:none!important;
   width:auto!important;
@@ -166,16 +166,27 @@ html[data-style="native"] .work-list .work-row {
   background:transparent!important;
   opacity:1!important;
   text-shadow:none!important;
+  pointer-events:auto!important;
+  z-index:auto!important;
+}
+html[data-style="native"] .work-row::before,
+html[data-style="native"] .work-list .work-row::before {
+  display:none!important;
+  content:none!important;
+  pointer-events:none!important;
 }
 html[data-style="native"] .work-title {
   display:inline!important;
+  position:static!important;
   color:var(--native-blue)!important;
   font:bold 16px/1.1 "Times New Roman",Times,serif!important;
   text-decoration:underline!important;
   text-transform:none!important;
   animation:none!important;
+  transform:none!important;
+  pointer-events:auto!important;
 }
-html[data-style="native"] .project-badges {display:inline!important;margin-left:8px!important;}
+html[data-style="native"] .project-badges {display:inline!important;position:static!important;margin-left:8px!important;}
 html[data-style="native"] .author-pill,
 html[data-style="native"] .collab-pill {
   display:inline!important;
@@ -199,8 +210,28 @@ html[data-style="native"] .system-controls {
 }
 html[data-style="native"] .system-control>span {color:#000!important;}
 html[data-style="native"] .system-control button {font-weight:400!important;}
-html[data-style="native"] .web-inspector,
 html[data-style="native"] .web-inspector-backdrop {display:none!important;}
+html[data-style="native"] .web-inspector {
+  display:flex!important;
+  width:min(92vw,520px)!important;
+  height:auto!important;
+  max-height:82vh!important;
+  top:30px!important;
+  right:30px!important;
+  padding:34px 12px 12px!important;
+  border:2px outset #fff!important;
+  background:#d4d0c8!important;
+  color:#000!important;
+  box-shadow:4px 4px 0 #808080!important;
+  transform:translateX(120%)!important;
+  transition:none!important;
+}
+html[data-style="native"] .web-inspector.is-open {transform:translateX(0)!important;}
+html[data-style="native"] .web-inspector h2,
+html[data-style="native"] .web-inspector p,
+html[data-style="native"] .web-inspector dt,
+html[data-style="native"] .web-inspector dd {color:#000!important;font-family:"Times New Roman",Times,serif!important;}
+html[data-style="native"] .web-inspector-visit {color:var(--native-blue)!important;text-decoration:underline!important;}
 
 /* Play With Me keeps working, but looks like a primitive embedded applet. */
 html[data-style="native"] .board-toolbar {display:block!important;font-family:"Times New Roman",Times,serif!important;}
@@ -251,4 +282,5 @@ html[data-style="native"] .text-row input {flex:1 1 240px!important;border:2px i
   html[data-style="native"] .site-header{padding:4px!important;}
   html[data-style="native"] .stage{height:52vh!important;}
   html[data-style="native"] .postcard-text{width:46%!important;font-size:17px!important;}
+  html[data-style="native"] .web-inspector{top:8px!important;right:8px!important;width:calc(100vw - 16px)!important;}
 }
