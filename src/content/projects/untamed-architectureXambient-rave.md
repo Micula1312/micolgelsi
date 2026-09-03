@@ -1,10 +1,13 @@
 ---
 title: "#untamed-architecture 4 @ambient-rave"
+author: "Micol Gelsi"
+featured: true
 type: project
 displayType: "performance"
 year: "2026"
 startDate: "2026-03"
 status: ongoing
+summary: "#untamed-architecture 4 @ambient-rave is an audiovisual performance and spatial activation developed within Archive of the #Untamed, where sound, image and temporary architectures become tools for inhabiting and re-reading urban space."
 medium:
   - "audiovisual performance"
   - "listening-practice"
@@ -14,7 +17,11 @@ researchAreas:
   - generative-archives
   - interspecies
 collaborators:
-  []
+  - "Stiky Verde"
+  - "Giuseppe di Capua"
+  - "Federico Russo"
+  - "Elisa Catalano"
+  - "Paolo Rucci"
 artistsInvolved:
   - "Stiky Verde"
   - "Giuseppe di Capua"
@@ -24,7 +31,7 @@ artistsInvolved:
 curatedBy:
   []
 credits:
-  []
+  - "Concept and curatorship — Micol Gelsi"
 photoCredits:
   []
 gallery:
@@ -34,19 +41,31 @@ videos:
 links:
   - "https://thearchiveoftheuntamed.xyz/"
 moments:
-  - date: "2024-06"
-    title: "Soft Data Foraging"
-    type: "exhibition"
-    location: "Ex Casa del Custode, Parco della Montagnola, Bologna"
-    media: "/media/artistic/untamed-architectureXambient-rave/moments/soft-data.jpg"
-    curatedBy: "Lucia Fontanelli, Olivia Teglia"
-    artistsInvolved: "Federico Falanga, Adriano Sorbello (Fl00ba), blondegeisha, Malincuore"
-  - date: "2026-06-08"
-    title: "The Archive Is Alive!"
-    type: "exhibition"
-    location: "Spazio Contact, Rome"
-    href: "/exhibitions/the-archive-is-alive/"
+  - date: "2026-06-10"
+    title: "#untamed-architecture 4 @ambient-rave"
+    type: "multimedia installation + performance"
+    location: "Acquario Romano / Casa dell’Architettura, Roma"
+    gallery:
+      - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3274.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3318.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3361.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3400.webp"
+    credits: "Roma Contaminata"
+  - date: "2026"
+    title: "#untamed-architecture 4 @ambient-rave"
+    type: "multimedia installation + performance"
+    location: "Fondazione Pastificio Cerere, Roma"
+    gallery:
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/CAVI AMIX.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/COME UN GLITTER.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/DAL BASSO.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/MIC SCALA 3.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/STELLA.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/TOTEMINI.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/WhatsApp Image 2026-06-03 at 14.06.11.webp"
+    credits: "Roma Diffusa"
 works:
   []
 ---
 
+An audiovisual and installation-based activation developed from Archive of the #Untamed. The project brings together listening practices, live image, sound and temporary spatial dispositifs, treating the performance space as a mutable architecture and a site of collective presence.

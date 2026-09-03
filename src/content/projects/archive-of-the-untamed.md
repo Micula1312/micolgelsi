@@ -1,5 +1,7 @@
 ---
 title: "Archive of the #Untamed"
+author: "Micol Gelsi"
+featured: true
 type: project
 displayType: "project"
 year: "2024"
@@ -17,7 +19,10 @@ researchAreas:
   - generative-archives
   - interspecies
 collaborators:
-  []
+  - "Lucia Fontanelli"
+  - "Olivia Teglia"
+  - "Giuseppe di Capua"
+  - "Comitato Rigenerazione no Speculazione"
 artistsInvolved:
   []
 curatedBy:
@@ -41,13 +46,44 @@ moments:
     title: "Soft Data Foraging"
     type: "exhibition"
     location: "Ex Casa del Custode, Parco della Montagnola, Bologna"
-    media: "/media/artistic/archive-of-the-untamed/moments/soft-data"
     curatedBy: "Lucia Fontanelli, Olivia Teglia"
     artistsInvolved: "Federico Falanga, Adriano Sorbello (Fl00ba), blondegeisha, Malincuore"
+  - date: "2026-05"
+    title: "Archive of the #Untamed — Conditions of Belonging: Joy"
+    type: "multimedia installation"
+    location: "MAAM, Roma"
+    gallery:
+      - "/media/artistic/archive-of-the-untamed/moments/maam1/587230944_17901723630300263_1927885586934172917_n.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/maam1/587291606_17901723642300263_331017323058871258_n.webp"
+  - date: "2026-05"
+    title: "Archive of the #Untamed — Conditions of Belonging: Joy"
+    type: "multimedia installation"
+    location: "MAAM, Roma"
+    gallery:
+      - "/media/artistic/archive-of-the-untamed/moments/maam2/4400E7EC-9E0D-4AB3-A1FD-B8A8556AA26A.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/maam2/a.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/maam2/avatar.gif"
+      - "/media/artistic/archive-of-the-untamed/moments/maam2/IMG_0451.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/maam2/IMG_0469.webp"
+  - date: "2026"
+    title: "Archive of the #Untamed — Rifugi"
+    type: "multimedia installation"
+    location: "Fondazione Pastificio Cerere, Roma"
+    gallery:
+      - "/media/artistic/archive-of-the-untamed/moments/pastificio/_DSC4899.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/pastificio/_DSC4903.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/pastificio/_DSC4921.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/pastificio/615960973_1281931970638407_6735099143040586732_n.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/pastificio/55111688844_48eff0afa8_c.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/pastificio/55111688984_f23108fadc_k.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/pastificio/55111689069_732fd6a960_c.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/pastificio/55111689969_9ee2fa5c4f_c.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/pastificio/55111690199_44d88ea7a8_c.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/pastificio/55111816315_0d54a85315_k.webp"
   - date: "2026-06-08"
-    title: "The Archive of the #UNTAMED"
+    title: "The Archive Is Alive!"
     type: "exhibition"
-    location: "Spazio Contact, Rome"
+    location: "Spazio Contact, Roma"
     href: "/exhibitions/the-archive-is-alive/"
 works:
   []

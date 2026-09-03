@@ -3,6 +3,7 @@ title: "Abundance"
 author: "ASAP"
 teaser: "https://www.youtube.com/watch?v=G4F5kCSM5JQ"
 mainLink: "https://www.youtube.com/watch?v=G4F5kCSM5JQ"
+featured: true
 type: project
 displayType: "performance, installation"
 year: "2023"
@@ -46,10 +47,12 @@ credits:
   - "Malezachi — original music"
 photoCredits:
   []
+avatar: "/media/artistic/abundance/avatar.mp4"
 gallery:
   []
 videos:
-  []
+  - "/media/artistic/abundance/videos/Abundance_asap_reel_1.mp4"
+  - "/media/artistic/abundance/videos/asap-abundance-granata.mp4"
 links:
   - "https://www.youtube.com/watch?v=RWCJT4PrtRY&t=648s"
   - "https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance/"

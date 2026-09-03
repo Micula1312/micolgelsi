@@ -49,7 +49,9 @@ gallery:
   - "/media/artistic/the-archive-is-alive/images/IMG_0908.webp"
   - "/media/artistic/the-archive-is-alive/images/photo_5920109103663484609_y.webp"
 videos:
-  []
+  - "/media/artistic/the-archive-is-alive/videos/1.mp4"
+  - "/media/artistic/the-archive-is-alive/videos/2.mp4"
+  - "/media/artistic/the-archive-is-alive/videos/IMG_0895.mp4"
 links:
   []
 moments:
