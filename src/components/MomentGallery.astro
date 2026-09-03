@@ -1,0 +1,42 @@
+---
+const { images = [], title = '' } = Astro.props;
+---
+{images.length > 0 && (
+  <div class="moment-gallery" data-moment-gallery data-images={JSON.stringify(images)} data-title={title}>
+    {images.map((src, index) => (
+      <button class="moment-thumb" type="button" data-moment-index={index} aria-label={`Open image ${index + 1} of ${images.length}`}>
+        <img src={src} alt={`${title} — ${index + 1}`} loading="lazy" />
+      </button>
+    ))}
+  </div>
+)}
+
+<script>
+  const galleries = document.querySelectorAll('[data-moment-gallery]:not([data-gallery-ready])');
+  let lightbox = document.querySelector('[data-moment-lightbox]');
+  if (!lightbox && galleries.length) {
+    lightbox = document.createElement('div');
+    lightbox.className = 'moment-lightbox';
+    lightbox.dataset.momentLightbox = '';
+    lightbox.setAttribute('aria-hidden','true');
+    lightbox.innerHTML = `<button class="moment-lightbox-close" type="button" aria-label="Close">×</button><button class="moment-lightbox-prev" type="button" aria-label="Previous image">←</button><figure><img alt=""><figcaption></figcaption></figure><button class="moment-lightbox-next" type="button" aria-label="Next image">→</button>`;
+    document.body.append(lightbox);
+  }
+  if (lightbox) {
+    const image = lightbox.querySelector('img');
+    const caption = lightbox.querySelector('figcaption');
+    let currentImages = [], currentTitle = '', currentIndex = 0;
+    const show = () => { if (!currentImages.length) return; image.src = currentImages[currentIndex]; image.alt = `${currentTitle} — ${currentIndex + 1}`; caption.textContent = `${currentIndex + 1} / ${currentImages.length}`; };
+    const open = (gallery, index) => { currentImages = JSON.parse(gallery.dataset.images || '[]'); currentTitle = gallery.dataset.title || ''; currentIndex = index; show(); lightbox.classList.add('is-open'); lightbox.setAttribute('aria-hidden','false'); document.documentElement.classList.add('has-lightbox'); };
+    const close = () => { lightbox.classList.remove('is-open'); lightbox.setAttribute('aria-hidden','true'); document.documentElement.classList.remove('has-lightbox'); };
+    galleries.forEach(gallery => { gallery.dataset.galleryReady = ''; gallery.querySelectorAll('[data-moment-index]').forEach(button => button.addEventListener('click', () => open(gallery, Number(button.dataset.momentIndex || 0)))); });
+    if (!lightbox.dataset.ready) {
+      lightbox.dataset.ready = '';
+      lightbox.querySelector('.moment-lightbox-close').addEventListener('click', close);
+      lightbox.querySelector('.moment-lightbox-prev').addEventListener('click', () => { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; show(); });
+      lightbox.querySelector('.moment-lightbox-next').addEventListener('click', () => { currentIndex = (currentIndex + 1) % currentImages.length; show(); });
+      lightbox.addEventListener('click', event => { if (event.target === lightbox) close(); });
+      document.addEventListener('keydown', event => { if (!lightbox.classList.contains('is-open')) return; if (event.key === 'Escape') close(); if (event.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; show(); } if (event.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % currentImages.length; show(); } });
+    }
+  }
+</script>
