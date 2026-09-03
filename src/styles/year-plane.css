@@ -1,14 +1,17 @@
 .year-axis,
 .year-side-label { display: none; }
 
-/* YEAR = horizontal temporal field. The dashboard stays fixed while this panel scrolls on X. */
+/* YEAR = horizontal temporal field. The dashboard stays fixed while this panel scrolls on X only when needed. */
 .work-list.is-year-plane { position:relative;overflow-x:auto!important;overflow-y:hidden!important;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--muted) transparent; }
 .work-list.is-year-plane::-webkit-scrollbar{height:5px}.work-list.is-year-plane::-webkit-scrollbar-track{background:transparent}.work-list.is-year-plane::-webkit-scrollbar-thumb{background:var(--muted)}
 .work-list.is-year-plane .year-track{position:relative;width:max(100%,var(--year-width,1900px));height:100%;min-height:100%}
 .work-list.is-year-plane .year-axis{display:block;position:absolute;left:52px;right:34px;bottom:28px;height:1px;background:var(--line);pointer-events:none;transition:opacity .16s ease}
 .work-list.is-year-plane .year-axis::after{content:'time →';position:absolute;right:0;bottom:10px;color:var(--muted);white-space:nowrap}
-.work-list.is-year-plane .year-axis span{position:absolute;top:10px;color:var(--muted);white-space:nowrap;transform:translateX(-50%);font-family:var(--mono);font-size:10px}
-.work-list.is-year-plane .year-axis span::before{content:'';position:absolute;left:50%;bottom:calc(100% + 8px);width:1px;height:8px;background:var(--line)}
+.work-list.is-year-plane .year-axis span{position:absolute;white-space:nowrap;transform:translateX(-50%);font-family:var(--mono)}
+.work-list.is-year-plane .year-axis .year-label{top:10px;color:var(--muted);font-size:10px}
+.work-list.is-year-plane .year-axis .year-label::before{content:'';position:absolute;left:50%;bottom:calc(100% + 8px);width:1px;height:8px;background:var(--line)}
+.work-list.is-year-plane .year-axis .month-label{top:-14px;color:color-mix(in srgb,var(--muted) 72%,transparent);font-size:7px;letter-spacing:.02em;text-transform:lowercase;opacity:.82}
+.work-list.is-year-plane .year-axis .month-label::before{content:'';position:absolute;left:50%;top:10px;width:1px;height:4px;background:color-mix(in srgb,var(--line) 72%,transparent)}
 .work-list.is-year-plane .year-side-label{display:none}
 
 .work-list.is-year-plane .work-row{position:absolute;left:var(--left);top:var(--y);width:var(--width);height:1px;min-width:26px;min-height:1px;transform:none;z-index:2;overflow:visible;transition:opacity .16s ease,filter .16s ease}
@@ -48,6 +51,6 @@ html[data-style="native"] .year-axis,html[data-style="native"] .year-side-label{
 .avatar-explosion.is-visible{opacity:1;visibility:visible;transition:opacity 70ms linear,visibility 0s}.avatar-explosion.is-visible img{animation:avatar-burst 900ms cubic-bezier(.16,.84,.22,1) both}
 @keyframes avatar-burst{0%{transform:scale(.08) rotate(-2deg);opacity:.15;filter:grayscale(1) contrast(1.7)}18%{opacity:1}48%{transform:scale(1.08) rotate(.6deg);filter:grayscale(.15) contrast(1.2)}82%{transform:scale(1);opacity:1}100%{transform:scale(1.03);opacity:0;filter:grayscale(1) contrast(1.7)}}
 
-@media(max-width:760px){.work-list.is-year-plane .year-track{width:max(100%,var(--year-width,1500px))}.work-list.is-year-plane .year-axis{left:36px;right:26px;bottom:24px}.work-list.is-year-plane .work-title{font-size:12px}.work-list.is-year-plane .collab-pill{display:none}}
+@media(max-width:760px){.work-list.is-year-plane .year-track{width:max(100%,var(--year-width,1500px))}.work-list.is-year-plane .year-axis{left:36px;right:26px;bottom:24px}.work-list.is-year-plane .work-title{font-size:12px}.work-list.is-year-plane .collab-pill{display:none}.work-list.is-year-plane .year-axis .month-label{font-size:6px}}
 @media(prefers-reduced-motion:reduce){.avatar-explosion.is-visible img{animation:none;transform:scale(1);opacity:1}.work-list.is-year-plane .work-title{will-change:auto}.work-list.is-year-plane .work-row,.work-list.is-year-plane .timeline-mark{transition:none}}
 @media print{.year-axis,.year-side-label,.avatar-explosion{display:none!important}}
