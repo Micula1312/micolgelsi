@@ -1,451 +1,252 @@
 #!/usr/bin/env python3
-"""Offline media optimizer + integrity audit for the micolgelsi portfolio.
+"""Safe recursive media optimizer + audit for the portfolio.
 
-Recommended workflow:
-  py tools/optimize_images.py public/media/artistic/abundance --audit
-  py tools/optimize_images.py public/media/artistic/abundance --clean
-  py tools/optimize_images.py public/media/artistic/abundance
+Workflow:
+  py tools/optimize_images.py public/media --audit
+  py tools/optimize_images.py public/media --clean
+  py tools/optimize_images.py public/media
 
 Rules:
-- web-ready files live in the normal media folders
-- originals live only in a sibling _source/ folder
-- _source/ is never optimized recursively
-- cleanup never deletes orphan originals or conflicting files
-- exact duplicate originals are removed only when --clean can prove they are byte-identical
-
-Optimization:
-- JPG/JPEG/PNG/TIFF/BMP/HEIC/HEIF -> WebP
-- MOV/AVI/MKV/M4V/MPG/MPEG/WMV/MP4 -> web MP4 (H.264 + AAC)
-- successful originals are moved into sibling _source/
-- safe to run repeatedly
-
-Audit detects:
-- originals left beside an already-generated WebP/MP4
-- duplicate originals both outside and inside _source/
-- conflicting originals with the same name but different bytes
-- orphan originals in _source/ with no generated web file
-- stale ffmpeg temporary files
-- empty _source/ folders
-
-HEIC/HEIF support requires pillow-heif.
-Video support requires ffmpeg available in PATH.
+- web assets stay in normal folders
+- originals are archived in sibling _source/
+- _source is never re-optimized
+- an MP4 with _source/<same-name>.mp4 is treated as an already-generated web file
+- cleanup only removes byte-identical duplicates / stale temp files / empty _source dirs
 """
-
 from __future__ import annotations
 
-import argparse
-import hashlib
-import shutil
-import subprocess
+import argparse, hashlib, shutil, subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
 try:
     from PIL import Image, ImageOps
 except ImportError:
-    print("Missing Pillow. Install it with: py -m pip install Pillow pillow-heif")
+    print("Missing Pillow. Install: py -m pip install Pillow pillow-heif")
     raise SystemExit(1)
-
 try:
     from pillow_heif import register_heif_opener
-    register_heif_opener()
-    HEIF_ENABLED = True
+    register_heif_opener(); HEIF_ENABLED=True
 except Exception:
-    HEIF_ENABLED = False
+    HEIF_ENABLED=False
 
-IMAGE_INPUTS = {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".bmp", ".heic", ".heif"}
-VIDEO_INPUTS = {".mov", ".avi", ".mkv", ".m4v", ".mpg", ".mpeg", ".wmv", ".mp4"}
-SKIP_DIRS = {"_source", "node_modules", ".git"}
-TEMP_VIDEO_SUFFIX = ".__optimized__.mp4"
-
+IMAGE_INPUTS={'.jpg','.jpeg','.png','.tif','.tiff','.bmp','.heic','.heif'}
+VIDEO_INPUTS={'.mov','.avi','.mkv','.m4v','.mpg','.mpeg','.wmv','.mp4'}
+SKIP_DIRS={'_source','node_modules','.git'}
+TEMP_VIDEO_SUFFIX='.__optimized__.mp4'
 
 @dataclass
 class AuditIssue:
-    level: str
-    code: str
-    path: Path
-    note: str
+    level:str; code:str; path:Path; note:str
 
+def sha256(path:Path)->str:
+    h=hashlib.sha256()
+    with path.open('rb') as f:
+        for chunk in iter(lambda:f.read(1024*1024),b''): h.update(chunk)
+    return h.hexdigest()
 
-def human_bytes(value: int) -> str:
-    units = ["B", "KB", "MB", "GB"]
-    size = float(value)
-    for unit in units:
-        if size < 1024 or unit == units[-1]:
-            return f"{size:.1f} {unit}"
-        size /= 1024
-    return f"{value} B"
+def identical(a:Path,b:Path)->bool:
+    try:return a.stat().st_size==b.stat().st_size and sha256(a)==sha256(b)
+    except OSError:return False
 
+def human_bytes(n:int)->str:
+    x=float(n)
+    for u in ['B','KB','MB','GB']:
+        if x<1024 or u=='GB': return f'{x:.1f} {u}'
+        x/=1024
 
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+def is_in_source(path:Path)->bool:return '_source' in path.parts
 
+def archived_canonical(path:Path)->Path:return path.parent/'_source'/path.name
 
-def files_identical(a: Path, b: Path) -> bool:
-    try:
-        return a.stat().st_size == b.stat().st_size and sha256(a) == sha256(b)
-    except OSError:
-        return False
+def generated_for_archived(path:Path)->Path:
+    parent=path.parent.parent
+    suffix='.webp' if path.suffix.lower() in IMAGE_INPUTS else '.mp4'
+    stem=path.stem
+    # legacy backups foo-2.mp4, foo-3.mp4 belong to generated foo.mp4 when canonical foo.mp4 exists
+    if path.suffix.lower()=='.mp4' and '-' in stem:
+        base,tail=stem.rsplit('-',1)
+        if tail.isdigit() and (parent/f'{base}.mp4').exists(): stem=base
+    return parent/f'{stem}{suffix}'
 
+def is_generated_mp4(path:Path)->bool:
+    return path.suffix.lower()=='.mp4' and archived_canonical(path).exists()
 
-def iter_media(root: Path):
-    for path in root.rglob("*"):
-        if not path.is_file():
-            continue
-        if any(part in SKIP_DIRS for part in path.parts):
-            continue
-        suffix = path.suffix.lower()
-        if suffix in IMAGE_INPUTS:
-            yield "image", path
-        elif suffix in VIDEO_INPUTS:
-            yield "video", path
+def iter_media(root:Path):
+    for p in root.rglob('*'):
+        if not p.is_file() or any(part in SKIP_DIRS for part in p.parts): continue
+        s=p.suffix.lower()
+        if s in IMAGE_INPUTS: yield 'image',p
+        elif s in VIDEO_INPUTS:
+            if s=='.mp4' and is_generated_mp4(p): continue
+            yield 'video',p
 
-
-def generated_for_original(source: Path) -> Path:
-    return source.with_suffix(".webp") if source.suffix.lower() in IMAGE_INPUTS else source.with_suffix(".mp4")
-
-
-def generated_for_archived_source(source: Path) -> Path:
-    # _source/foo.jpg -> ../foo.webp ; _source/foo.mov -> ../foo.mp4
-    parent = source.parent.parent if source.parent.name == "_source" else source.parent
-    suffix = ".webp" if source.suffix.lower() in IMAGE_INPUTS else ".mp4"
-    return parent / f"{source.stem}{suffix}"
-
-
-def canonical_source_destination(source: Path) -> Path:
-    source_dir = source.parent / "_source"
-    source_dir.mkdir(exist_ok=True)
-    return source_dir / source.name
-
-
-def safe_source_destination(source: Path) -> Path:
-    destination = canonical_source_destination(source)
-    if not destination.exists():
-        return destination
-    stem, suffix = source.stem, source.suffix
-    index = 2
+def safe_archive_destination(source:Path)->Path:
+    d=source.parent/'_source'; d.mkdir(exist_ok=True)
+    target=d/source.name
+    if not target.exists(): return target
+    i=2
     while True:
-        candidate = destination.parent / f"{stem}-{index}{suffix}"
-        if not candidate.exists():
-            return candidate
-        index += 1
+        c=d/f'{source.stem}-{i}{source.suffix}'
+        if not c.exists(): return c
+        i+=1
 
+def archive_original(source:Path,keep:bool)->None:
+    if not keep: shutil.move(str(source),str(safe_archive_destination(source)))
 
-def move_original(source: Path, keep_originals: bool) -> None:
-    if not keep_originals:
-        shutil.move(str(source), str(safe_source_destination(source)))
-
-
-def collect_audit(root: Path) -> list[AuditIssue]:
-    issues: list[AuditIssue] = []
-
-    for path in root.rglob("*"):
-        if not path.is_file():
+def collect_audit(root:Path)->list[AuditIssue]:
+    issues=[]
+    for p in root.rglob('*'):
+        if not p.is_file(): continue
+        if p.name.endswith(TEMP_VIDEO_SUFFIX):
+            final=p.with_name(p.name.replace(TEMP_VIDEO_SUFFIX,'.mp4'))
+            issues.append(AuditIssue('WARN','temp-video',p,'stale ffmpeg temp' if final.exists() else 'temp file without final'))
             continue
-
-        if path.name.endswith(TEMP_VIDEO_SUFFIX):
-            final = path.with_name(path.name.replace(TEMP_VIDEO_SUFFIX, ".mp4"))
-            note = "temporary ffmpeg file; final exists" if final.exists() else "temporary ffmpeg file; final is missing"
-            issues.append(AuditIssue("WARN", "temp-video", path, note))
+        s=p.suffix.lower()
+        if is_in_source(p):
+            if s not in IMAGE_INPUTS|VIDEO_INPUTS: continue
+            generated=generated_for_archived(p)
+            canonical=generated.parent/'_source'/generated.name
+            # legacy numbered MP4 backups are reported separately; never treated as errors
+            if s=='.mp4' and p.stem.rsplit('-',1)[-1].isdigit() and canonical.exists():
+                issues.append(AuditIssue('INFO','legacy-video-source',p,f'old optimizer backup for {generated.name}'))
+            elif not generated.exists():
+                issues.append(AuditIssue('INFO','orphan-source',p,f'no generated file: {generated.name}'))
             continue
-
-        in_source = "_source" in path.parts
-        suffix = path.suffix.lower()
-
-        if in_source and suffix in IMAGE_INPUTS | VIDEO_INPUTS:
-            generated = generated_for_archived_source(path)
-            if not generated.exists():
-                issues.append(AuditIssue("INFO", "orphan-source", path, f"no generated file: {generated.name}"))
+        if s not in IMAGE_INPUTS|VIDEO_INPUTS: continue
+        archived=archived_canonical(p)
+        if s=='.mp4' and archived.exists():
+            # This is the expected pair: compressed web MP4 + original archived MP4.
             continue
-
-        if in_source or suffix not in IMAGE_INPUTS | VIDEO_INPUTS:
-            continue
-
-        generated = generated_for_original(path)
-        archived = path.parent / "_source" / path.name
-
-        # For MP4, source and generated are the same path, so only duplicate-source checks apply.
-        has_generated = generated.exists() and generated.resolve() != path.resolve()
-
+        generated=p.with_suffix('.webp') if s in IMAGE_INPUTS else p.with_suffix('.mp4')
+        has_generated=generated.exists() and generated.resolve()!=p.resolve()
         if archived.exists():
-            if files_identical(path, archived):
-                issues.append(AuditIssue("WARN", "duplicate-original", path, f"identical copy already in _source/{path.name}"))
-            else:
-                issues.append(AuditIssue("ERROR", "source-conflict", path, f"different file already exists at _source/{path.name}"))
+            if identical(p,archived): issues.append(AuditIssue('WARN','duplicate-original',p,f'identical copy already in _source/{p.name}'))
+            else: issues.append(AuditIssue('ERROR','source-conflict',p,f'different original already exists at _source/{p.name}'))
         elif has_generated:
-            issues.append(AuditIssue("WARN", "original-outside-source", path, f"{generated.name} already exists; original should be in _source/"))
-
-    for directory in root.rglob("_source"):
-        if directory.is_dir():
-            try:
-                if not any(directory.iterdir()):
-                    issues.append(AuditIssue("INFO", "empty-source-dir", directory, "empty _source folder"))
-            except OSError:
-                pass
-
+            issues.append(AuditIssue('WARN','original-outside-source',p,f'{generated.name} already exists; original should be archived'))
+    for d in root.rglob('_source'):
+        try:
+            if d.is_dir() and not any(d.iterdir()): issues.append(AuditIssue('INFO','empty-source-dir',d,'empty _source folder'))
+        except OSError: pass
     return issues
 
-
-def print_audit(root: Path, issues: list[AuditIssue], heading: str = "Media audit") -> None:
-    print(f"\n{heading}")
-    print(f"Folder: {root}")
+def print_audit(root:Path,issues:list[AuditIssue],heading='Media audit')->None:
+    print(f'\n{heading}\nFolder: {root}')
     if not issues:
-        print("OK  media tree is clean")
-        return
-
-    counts = {"ERROR": 0, "WARN": 0, "INFO": 0}
-    for issue in issues:
-        counts[issue.level] = counts.get(issue.level, 0) + 1
-        try:
-            relative = issue.path.relative_to(root)
-        except ValueError:
-            relative = issue.path
-        print(f"{issue.level:<5} {issue.code:<24} {relative}  {issue.note}")
-
+        print('OK  media tree is clean'); return
+    counts={'ERROR':0,'WARN':0,'INFO':0}
+    for i in issues:
+        counts[i.level]+=1
+        try:r=i.path.relative_to(root)
+        except ValueError:r=i.path
+        print(f'{i.level:<5} {i.code:<24} {r}  {i.note}')
     print(f"Audit summary: {counts['ERROR']} errors | {counts['WARN']} warnings | {counts['INFO']} info")
 
-
-def clean_safe_issues(root: Path) -> tuple[int, int]:
-    """Apply only deterministic cleanup. Returns (fixed, conflicts)."""
-    fixed = conflicts = 0
-
-    # Work from a fresh snapshot because moves change the tree.
-    for issue in collect_audit(root):
-        path = issue.path
+def clean_safe(root:Path)->tuple[int,int]:
+    fixed=manual=0
+    issues=collect_audit(root)
+    for i in issues:
+        p=i.path
         try:
-            if issue.code == "original-outside-source" and path.exists():
-                destination = canonical_source_destination(path)
-                if destination.exists():
-                    if files_identical(path, destination):
-                        path.unlink()
-                        print(f"CLEAN duplicate removed: {path.relative_to(root)}")
-                        fixed += 1
-                    else:
-                        print(f"KEEP  conflict: {path.relative_to(root)}")
-                        conflicts += 1
-                else:
-                    shutil.move(str(path), str(destination))
-                    print(f"CLEAN moved original -> {destination.relative_to(root)}")
-                    fixed += 1
-
-            elif issue.code == "duplicate-original" and path.exists():
-                archived = path.parent / "_source" / path.name
-                if archived.exists() and files_identical(path, archived):
-                    path.unlink()
-                    print(f"CLEAN exact duplicate removed: {path.relative_to(root)}")
-                    fixed += 1
-
-            elif issue.code == "source-conflict":
-                print(f"KEEP  manual review required: {path.relative_to(root)}")
-                conflicts += 1
-
-            elif issue.code == "temp-video" and path.exists():
-                final = path.with_name(path.name.replace(TEMP_VIDEO_SUFFIX, ".mp4"))
-                if final.exists():
-                    path.unlink()
-                    print(f"CLEAN stale ffmpeg temp removed: {path.relative_to(root)}")
-                    fixed += 1
-                else:
-                    print(f"KEEP  temp has no final file: {path.relative_to(root)}")
-                    conflicts += 1
-        except OSError as exc:
-            print(f"KEEP  could not clean {path.relative_to(root)}: {exc}")
-            conflicts += 1
-
-    # Empty _source directories are always safe to remove.
-    for directory in sorted(root.rglob("_source"), key=lambda p: len(p.parts), reverse=True):
+            if i.code=='duplicate-original' and p.exists():
+                a=archived_canonical(p)
+                if a.exists() and identical(p,a): p.unlink(); fixed+=1; print(f'CLEAN exact duplicate: {p.relative_to(root)}')
+            elif i.code=='original-outside-source' and p.exists():
+                a=archived_canonical(p); a.parent.mkdir(exist_ok=True)
+                if not a.exists(): shutil.move(str(p),str(a)); fixed+=1; print(f'CLEAN archived original: {p.relative_to(root)}')
+                elif identical(p,a): p.unlink(); fixed+=1; print(f'CLEAN duplicate original: {p.relative_to(root)}')
+                else: manual+=1; print(f'KEEP conflict: {p.relative_to(root)}')
+            elif i.code=='legacy-video-source' and p.exists():
+                generated=generated_for_archived(p); canonical=generated.parent/'_source'/generated.name
+                if canonical.exists() and identical(p,canonical): p.unlink(); fixed+=1; print(f'CLEAN duplicate legacy backup: {p.relative_to(root)}')
+                else: print(f'KEEP legacy variant: {p.relative_to(root)}')
+            elif i.code=='source-conflict': manual+=1; print(f'KEEP manual review: {p.relative_to(root)}')
+            elif i.code=='temp-video' and p.exists():
+                final=p.with_name(p.name.replace(TEMP_VIDEO_SUFFIX,'.mp4'))
+                if final.exists(): p.unlink(); fixed+=1; print(f'CLEAN stale temp: {p.relative_to(root)}')
+                else: manual+=1; print(f'KEEP temp without final: {p.relative_to(root)}')
+        except OSError as e:
+            manual+=1; print(f'KEEP could not clean {p.relative_to(root)}: {e}')
+    for d in sorted(root.rglob('_source'),key=lambda x:len(x.parts),reverse=True):
         try:
-            if directory.is_dir() and not any(directory.iterdir()):
-                directory.rmdir()
-                print(f"CLEAN removed empty folder: {directory.relative_to(root)}")
-                fixed += 1
-        except OSError:
-            pass
+            if d.is_dir() and not any(d.iterdir()): d.rmdir(); fixed+=1; print(f'CLEAN empty folder: {d.relative_to(root)}')
+        except OSError: pass
+    return fixed,manual
 
-    return fixed, conflicts
-
-
-def optimize_image(source: Path, quality: int, max_size: int, keep_originals: bool, force: bool):
-    if source.suffix.lower() in {".heic", ".heif"} and not HEIF_ENABLED:
-        return "skip", 0, 0, "HEIC/HEIF requires pillow-heif"
-
-    destination = source.with_suffix(".webp")
-    if destination.exists() and not force:
-        return "skip", source.stat().st_size, destination.stat().st_size, "WebP already exists (run --clean to archive the loose original)"
-
-    before = source.stat().st_size
+def optimize_image(src:Path,quality:int,max_size:int,keep:bool,force:bool):
+    if src.suffix.lower() in {'.heic','.heif'} and not HEIF_ENABLED:return 'skip',0,0,'HEIC requires pillow-heif'
+    dst=src.with_suffix('.webp')
+    if dst.exists() and not force:return 'skip',src.stat().st_size,dst.stat().st_size,'WebP already exists'
+    before=src.stat().st_size
     try:
-        with Image.open(source) as im:
-            im = ImageOps.exif_transpose(im)
-            if max(im.size) > max_size:
-                ratio = max_size / max(im.size)
-                new_size = (max(1, round(im.width * ratio)), max(1, round(im.height * ratio)))
-                im = im.resize(new_size, Image.Resampling.LANCZOS)
-            im = im.convert("RGBA" if "A" in im.getbands() else "RGB")
-            im.save(destination, "WEBP", quality=quality, method=6, optimize=True)
+        with Image.open(src) as im:
+            im=ImageOps.exif_transpose(im)
+            if max(im.size)>max_size:
+                ratio=max_size/max(im.size); im=im.resize((max(1,round(im.width*ratio)),max(1,round(im.height*ratio))),Image.Resampling.LANCZOS)
+            im=im.convert('RGBA' if 'A' in im.getbands() else 'RGB'); im.save(dst,'WEBP',quality=quality,method=6,optimize=True)
+        after=dst.stat().st_size; archive_original(src,keep); return 'ok',before,after,''
+    except Exception as e:
+        dst.unlink(missing_ok=True); return 'error',before,0,str(e)
 
-        after = destination.stat().st_size
-        move_original(source, keep_originals)
-        return "ok", before, after, ""
-    except Exception as exc:
-        destination.unlink(missing_ok=True)
-        return "error", before, 0, str(exc)
+def ffmpeg_available()->bool:return shutil.which('ffmpeg') is not None
 
-
-def ffmpeg_available() -> bool:
-    return shutil.which("ffmpeg") is not None
-
-
-def optimize_video(source: Path, crf: int, max_video_width: int, keep_originals: bool, force: bool):
-    if not ffmpeg_available():
-        return "skip", 0, 0, "ffmpeg not found in PATH"
-
-    destination = source.with_suffix(".mp4")
-    same_path = source.resolve() == destination.resolve()
-    output = source.with_name(f"{source.stem}{TEMP_VIDEO_SUFFIX}") if same_path else destination
-
-    if destination.exists() and not same_path and not force:
-        return "skip", source.stat().st_size, destination.stat().st_size, "optimized MP4 already exists (run --clean to archive the loose original)"
-
-    before = source.stat().st_size
-    vf = ["-vf", f"scale='min({max_video_width},iw)':-2"] if max_video_width > 0 else []
-    command = [
-        "ffmpeg", "-y" if force or same_path else "-n", "-i", str(source), *vf,
-        "-c:v", "libx264", "-preset", "medium", "-crf", str(crf),
-        "-pix_fmt", "yuv420p", "-movflags", "+faststart",
-        "-c:a", "aac", "-b:a", "160k", str(output),
-    ]
-
+def optimize_video(src:Path,crf:int,max_width:int,keep:bool,force:bool):
+    if not ffmpeg_available(): return 'skip',0,0,'ffmpeg not found'
+    dst=src.with_suffix('.mp4'); same=src.resolve()==dst.resolve()
+    if same and is_generated_mp4(src) and not force:return 'skip',src.stat().st_size,src.stat().st_size,'already optimized (original exists in _source)'
+    if dst.exists() and not same and not force:return 'skip',src.stat().st_size,dst.stat().st_size,'optimized MP4 already exists'
+    out=src.with_name(f'{src.stem}{TEMP_VIDEO_SUFFIX}') if same else dst
+    before=src.stat().st_size
+    vf=['-vf',f"scale='min({max_width},iw)':-2"] if max_width>0 else []
+    cmd=['ffmpeg','-y' if force or same else '-n','-i',str(src),*vf,'-c:v','libx264','-preset','medium','-crf',str(crf),'-pix_fmt','yuv420p','-movflags','+faststart','-c:a','aac','-b:a','160k',str(out)]
     try:
-        result = subprocess.run(command, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
-        if result.returncode != 0:
-            output.unlink(missing_ok=True)
-            tail = "\n".join(result.stderr.splitlines()[-4:])
-            return "error", before, 0, tail or "ffmpeg failed"
-        if not output.exists() or output.stat().st_size == 0:
-            return "error", before, 0, "ffmpeg produced no output"
+        r=subprocess.run(cmd,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,text=True)
+        if r.returncode!=0:
+            out.unlink(missing_ok=True); return 'error',before,0,'\n'.join(r.stderr.splitlines()[-4:]) or 'ffmpeg failed'
+        if not out.exists() or out.stat().st_size==0:return 'error',before,0,'ffmpeg produced no output'
+        if same:
+            archive=safe_archive_destination(src)
+            if keep: shutil.copy2(src,archive)
+            else: shutil.move(str(src),str(archive))
+            out.replace(dst)
+        else: archive_original(src,keep)
+        return 'ok',before,dst.stat().st_size,''
+    except Exception as e:
+        out.unlink(missing_ok=True); return 'error',before,0,str(e)
 
-        if same_path:
-            if keep_originals:
-                backup = safe_source_destination(source)
-                shutil.copy2(source, backup)
-                source.unlink()
-            else:
-                shutil.move(str(source), str(safe_source_destination(source)))
-            output.replace(destination)
-        else:
-            move_original(source, keep_originals)
+def main()->int:
+    p=argparse.ArgumentParser(description='Optimize and audit portfolio media safely.')
+    p.add_argument('folder',nargs='?',default='public/media/artistic')
+    p.add_argument('--audit',action='store_true'); p.add_argument('--clean',action='store_true')
+    p.add_argument('--quality',type=int,default=82); p.add_argument('--max-size',type=int,default=2400)
+    p.add_argument('--video-crf',type=int,default=23); p.add_argument('--max-video-width',type=int,default=1920)
+    p.add_argument('--keep-originals',action='store_true'); p.add_argument('--force',action='store_true')
+    p.add_argument('--images-only',action='store_true'); p.add_argument('--videos-only',action='store_true')
+    a=p.parse_args(); root=Path(a.folder).expanduser().resolve()
+    if not root.is_dir(): print(f'Folder not found: {root}'); return 1
+    if a.images_only and a.videos_only: print('Choose one of --images-only / --videos-only'); return 1
+    pre=collect_audit(root); print_audit(root,pre,'Preflight media audit')
+    if a.audit:return 1 if any(i.level=='ERROR' for i in pre) else 0
+    if a.clean:
+        print('\nSafe cleanup'); fixed,manual=clean_safe(root); print(f'Cleanup summary: {fixed} fixed | {manual} need manual review')
+        print_audit(root,collect_audit(root),'Audit after cleanup')
+    media=list(iter_media(root))
+    if a.images_only:media=[x for x in media if x[0]=='image']
+    if a.videos_only:media=[x for x in media if x[0]=='video']
+    print(f'\nPortfolio Media Optimizer\nFolder: {root}\nConvertible items: {len(media)}\nHEIC: {"yes" if HEIF_ENABLED else "no"}\nFFmpeg: {"yes" if ffmpeg_available() else "no"}\n')
+    converted=skipped=failed=before_total=after_total=0
+    for kind,src in media:
+        if kind=='image':status,before,after,note=optimize_image(src,a.quality,a.max_size,a.keep_originals,a.force)
+        else:status,before,after,note=optimize_video(src,a.video_crf,a.max_video_width,a.keep_originals,a.force)
+        rel=src.relative_to(root)
+        if status=='ok':
+            converted+=1; before_total+=before; after_total+=after; print(f'OK   {rel}  {human_bytes(before)} -> {human_bytes(after)}')
+        elif status=='skip':skipped+=1; print(f'SKIP {rel}  {note}')
+        else:failed+=1; print(f'ERROR {rel}  {note}')
+    print(f'\nDone. Optimized: {converted} | skipped: {skipped} | errors: {failed}')
+    if converted:print(f'Processed: {human_bytes(before_total)} -> {human_bytes(after_total)}')
+    post=collect_audit(root); print_audit(root,post,'Final media audit')
+    return 1 if failed or any(i.level=='ERROR' for i in post) else 0
 
-        return "ok", before, destination.stat().st_size, ""
-    except Exception as exc:
-        output.unlink(missing_ok=True)
-        return "error", before, 0, str(exc)
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description="Optimize and audit portfolio media safely.")
-    parser.add_argument("folder", nargs="?", default="public/media/artistic", help="Folder to scan recursively")
-    parser.add_argument("--audit", action="store_true", help="Audit only; do not optimize or modify files")
-    parser.add_argument("--clean", action="store_true", help="Apply only safe cleanup, then optimize remaining new media")
-    parser.add_argument("--quality", type=int, default=82, help="WebP image quality, 1-100 (default: 82)")
-    parser.add_argument("--max-size", type=int, default=2400, help="Maximum image width/height in px (default: 2400)")
-    parser.add_argument("--video-crf", type=int, default=23, help="H.264 CRF, lower = higher quality (default: 23)")
-    parser.add_argument("--max-video-width", type=int, default=1920, help="Maximum video width in px; 0 disables resizing")
-    parser.add_argument("--keep-originals", action="store_true", help="Keep originals in place/copy instead of moving them")
-    parser.add_argument("--force", action="store_true", help="Overwrite existing generated media")
-    parser.add_argument("--images-only", action="store_true", help="Optimize images but skip videos")
-    parser.add_argument("--videos-only", action="store_true", help="Optimize videos but skip images")
-    args = parser.parse_args()
-
-    root = Path(args.folder).expanduser().resolve()
-    if not root.exists() or not root.is_dir():
-        print(f"Folder not found: {root}")
-        return 1
-    if not 1 <= args.quality <= 100:
-        print("--quality must be between 1 and 100")
-        return 1
-    if not 0 <= args.video_crf <= 51:
-        print("--video-crf must be between 0 and 51")
-        return 1
-    if args.images_only and args.videos_only:
-        print("Choose either --images-only or --videos-only, not both")
-        return 1
-
-    preflight = collect_audit(root)
-    print_audit(root, preflight, "Preflight media audit")
-
-    if args.audit:
-        return 1 if any(issue.level == "ERROR" for issue in preflight) else 0
-
-    if args.clean:
-        print("\nSafe cleanup")
-        fixed, conflicts = clean_safe_issues(root)
-        print(f"Cleanup summary: {fixed} fixed | {conflicts} need manual review")
-        print_audit(root, collect_audit(root), "Audit after cleanup")
-
-    media = list(iter_media(root))
-    if args.images_only:
-        media = [(kind, p) for kind, p in media if kind == "image"]
-    elif args.videos_only:
-        media = [(kind, p) for kind, p in media if kind == "video"]
-
-    image_count = sum(1 for kind, _ in media if kind == "image")
-    video_count = sum(1 for kind, _ in media if kind == "video")
-
-    print("\nPortfolio Media Optimizer")
-    print(f"Folder:      {root}")
-    print(f"Images:      {image_count}")
-    print(f"Videos:      {video_count}")
-    print(f"Image WebP:  quality {args.quality}, max side {args.max_size}px")
-    print(f"Video MP4:   H.264 CRF {args.video_crf}, max width {args.max_video_width or 'original'}px")
-    print(f"HEIC:        {'yes' if HEIF_ENABLED else 'no (install pillow-heif if needed)'}")
-    print(f"FFmpeg:      {'yes' if ffmpeg_available() else 'no — videos will be skipped'}\n")
-
-    if not media:
-        print("No convertible media found.")
-        return 0
-
-    total_before = total_after = converted = skipped = failed = 0
-    for kind, source in media:
-        if kind == "image":
-            status, before, after, note = optimize_image(source, args.quality, args.max_size, args.keep_originals, args.force)
-            generated_name = source.with_suffix(".webp").name
-        else:
-            status, before, after, note = optimize_video(source, args.video_crf, args.max_video_width, args.keep_originals, args.force)
-            generated_name = source.with_suffix(".mp4").name
-
-        relative = source.relative_to(root)
-        label = "IMG" if kind == "image" else "VID"
-        if status == "ok":
-            converted += 1
-            total_before += before
-            total_after += after
-            reduction = (1 - after / before) * 100 if before else 0
-            print(f"OK {label}  {relative} -> {generated_name}  {human_bytes(before)} -> {human_bytes(after)}  ({reduction:+.0f}% size)")
-        elif status == "skip":
-            skipped += 1
-            print(f"SKIP {label} {relative}  {note}")
-        else:
-            failed += 1
-            print(f"ERROR {label} {relative}  {note}")
-
-    print("\nDone.")
-    print(f"Optimized: {converted} | skipped: {skipped} | errors: {failed}")
-    if converted:
-        saved = total_before - total_after
-        reduction = (1 - total_after / total_before) * 100 if total_before else 0
-        print(f"Processed media: {human_bytes(total_before)} -> {human_bytes(total_after)} | difference {human_bytes(abs(saved))} ({reduction:+.0f}%)")
-    if not args.keep_originals:
-        print("Originals from successful conversions were moved into sibling _source/ folders.")
-
-    postflight = collect_audit(root)
-    print_audit(root, postflight, "Final media audit")
-    return 1 if failed or any(issue.level == "ERROR" for issue in postflight) else 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+if __name__=='__main__': raise SystemExit(main())
