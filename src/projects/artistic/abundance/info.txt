@@ -64,14 +64,14 @@ ABUNDANCE is conceived as a tropical party and a dancing ritual celebrating bodi
 LINKS:
 https://www.youtube.com/watch?v=RWCJT4PrtRY&t=648s
 https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance/
-https://zero.eu/it/eventi/349808-abundance-w-jomoon/
+https://zero.eu/it/eventi/349808-abundance-w-jomoon, roma/
 https://www.instagram.com/p/C2HzMW1MbTv/?img_index=1
 
 MOMENTS:
 2023-10-12
 ABUNDANCE — with studioferrari
 location: Granata, Bologna
-media: abundance-granata.jpg
+media: granata
 url: https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance,bologna/
 
 2024-01-26
@@ -93,7 +93,8 @@ type: performance
 location: Palazzo Bronzo, Genova
 media: palazzo
 
-[DATA DA VERIFICARE]
+2025-09-14
 I AM ABUNDANCE
 location: Liminal Space, Roma
-media: abundance-lmnl.jpg
+media: lmnl
+url: https://www.instagram.com/p/DQXdGO1ACzW/?img_index=2
