@@ -22,16 +22,10 @@ generative-archives
 interspecies
 
 WITH:
-Comitato Rigenerazione NO Speculazione
-
-ARTISTS INVOLVED:
-Federico Falanga
-Adriano Sorbello (Fl00ba)
-blondegeisha
-Malincuore
 
 
 CURATED BY:
+EXIT
 
 CREDITS:
 
@@ -59,10 +53,10 @@ type: exhibition
 location: Ex Casa del Custode, Parco della Montagnola, Bologna
 curated by: Lucia Fontanelli, Olivia Teglia
 artists involved: Federico Falanga, Adriano Sorbello (Fl00ba), blondegeisha, Malincuore
-media: moments/soft-data.jpg
+media: moments/soft-data
 
 2026-06-08
-The Archive Is Alive!
+The Archive of 
 type: exhibition
 location: Spazio Contact, Rome
 href: /exhibitions/the-archive-is-alive/

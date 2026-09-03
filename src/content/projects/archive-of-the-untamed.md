@@ -17,14 +17,11 @@ researchAreas:
   - generative-archives
   - interspecies
 collaborators:
-  - "Comitato Rigenerazione NO Speculazione"
-artistsInvolved:
-  - "Federico Falanga"
-  - "Adriano Sorbello (Fl00ba)"
-  - "blondegeisha"
-  - "Malincuore"
-curatedBy:
   []
+artistsInvolved:
+  []
+curatedBy:
+  - "EXIT"
 credits:
   []
 photoCredits:
@@ -44,11 +41,11 @@ moments:
     title: "Soft Data Foraging"
     type: "exhibition"
     location: "Ex Casa del Custode, Parco della Montagnola, Bologna"
-    media: "/media/artistic/archive-of-the-untamed/moments/soft-data.jpg"
+    media: "/media/artistic/archive-of-the-untamed/moments/soft-data"
     curatedBy: "Lucia Fontanelli, Olivia Teglia"
     artistsInvolved: "Federico Falanga, Adriano Sorbello (Fl00ba), blondegeisha, Malincuore"
   - date: "2026-06-08"
-    title: "The Archive Is Alive!"
+    title: "The Archive of"
     type: "exhibition"
     location: "Spazio Contact, Rome"
     href: "/exhibitions/the-archive-is-alive/"
