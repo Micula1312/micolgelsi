@@ -7,7 +7,6 @@ import '../styles/glyph-hover.css';
 import '../styles/outputs.css';
 import '../styles/dashboard.css';
 import '../styles/scrollbars.css';
-import '../styles/native-old-browser.css';
 const { title = 'Micol Gelsi' } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const baseNoSlash = base.replace(/\/$/, '');
@@ -47,10 +46,6 @@ const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
 
     <div class="system-controls" aria-label="Display settings">
       <div class="system-control">
-        <span>CSS</span>
-        <button type="button" data-style-toggle aria-label="Switch CSS mode">RGB</button>
-      </div>
-      <div class="system-control">
         <span>Mode</span>
         <button type="button" data-theme-toggle aria-label="Switch light or dark mode">Dark</button>
       </div>
@@ -59,28 +54,18 @@ const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
     <script is:inline>
       (() => {
         const root = document.documentElement;
-        const styleButton = document.querySelector('[data-style-toggle]');
+        root.dataset.style = 'rgb';
         const themeButton = document.querySelector('[data-theme-toggle]');
-        if (!styleButton || !themeButton) return;
-
-        const updateLabels = () => {
-          styleButton.textContent = root.dataset.style === 'native' ? 'Native' : 'RGB';
+        if (!themeButton) return;
+        const updateLabel = () => {
           themeButton.textContent = root.dataset.theme === 'dark' ? 'Dark' : 'Light';
-          styleButton.setAttribute('aria-pressed', String(root.dataset.style === 'native'));
           themeButton.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
         };
-
-        styleButton.addEventListener('click', () => {
-          root.dataset.style = root.dataset.style === 'native' ? 'rgb' : 'native';
-          updateLabels();
-        });
-
         themeButton.addEventListener('click', () => {
           root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-          updateLabels();
+          updateLabel();
         });
-
-        updateLabels();
+        updateLabel();
       })();
     </script>
     <script is:inline src={withBase('base-path.js')}></script>
