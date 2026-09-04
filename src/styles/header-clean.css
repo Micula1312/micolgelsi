@@ -1,5 +1,7 @@
-/* Keep the header separator monochrome. */
+/* No separator below the header. */
+.site-header,
 html[data-style="rgb"] .site-header {
+  border: 0 !important;
   border-image: none !important;
-  border-bottom: 1px solid var(--line) !important;
+  box-shadow: none !important;
 }
