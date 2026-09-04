@@ -50,8 +50,7 @@ avatar: "/media/artistic/abundance/avatar.mp4"
 gallery:
   []
 videos:
-  - "/media/artistic/abundance/videos/Abundance_asap_reel_1.mp4"
-  - "/media/artistic/abundance/videos/asap-abundance-granata.mp4"
+  []
 criticalTexts:
   []
 publications:
@@ -61,8 +60,6 @@ communication:
 links:
   - "https://www.youtube.com/watch?v=RWCJT4PrtRY&t=648s"
   - "https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance/"
-  - "https://zero.eu/it/eventi/349808-abundance-w-jomoon"
-  - "https://roma/"
   - "https://www.instagram.com/p/C2HzMW1MbTv/?img_index=1"
 moments:
   - date: "2023-10-12"
