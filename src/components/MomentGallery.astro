@@ -1,10 +1,17 @@
 ---
 const { images = [], title = '' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const withBase = (src = '') => {
+  const value = String(src);
+  if (!value.startsWith('/') || value.startsWith('//') || value.startsWith(base)) return value;
+  return `${base}${value.replace(/^\//, '')}`;
+};
+const resolvedImages = images.map(withBase);
 ---
-{images.length > 0 && (
-  <div class="moment-gallery" data-moment-gallery data-images={JSON.stringify(images)} data-title={title}>
-    {images.map((src, index) => (
-      <button class="moment-thumb" type="button" data-moment-index={index} aria-label={`Open image ${index + 1} of ${images.length}`}>
+{resolvedImages.length > 0 && (
+  <div class="moment-gallery" data-moment-gallery data-images={JSON.stringify(resolvedImages)} data-title={title}>
+    {resolvedImages.map((src, index) => (
+      <button class="moment-thumb" type="button" data-moment-index={index} aria-label={`Open image ${index + 1} of ${resolvedImages.length}`}>
         <img src={src} alt={`${title} — ${index + 1}`} loading="lazy" />
       </button>
     ))}
@@ -34,16 +41,12 @@ const { images = [], title = '' } = Astro.props;
     galleries.forEach(gallery => {
       gallery.dataset.galleryReady = '';
       gallery.querySelectorAll('[data-moment-index]').forEach(button => button.addEventListener('click', () => open(gallery, Number(button.dataset.momentIndex || 0))));
-
       if (!reducedMotion) {
-        let raf = 0;
-        let previous = 0;
-        let direction = 1;
+        let raf = 0, previous = 0, direction = 1;
         const speed = 34;
         const tick = time => {
           if (!previous) previous = time;
-          const dt = Math.min((time - previous) / 1000, .05);
-          previous = time;
+          const dt = Math.min((time - previous) / 1000, .05); previous = time;
           const maxScroll = Math.max(0, gallery.scrollWidth - gallery.clientWidth);
           if (maxScroll > 1) {
             gallery.scrollLeft += direction * speed * dt;
@@ -52,17 +55,8 @@ const { images = [], title = '' } = Astro.props;
           }
           raf = requestAnimationFrame(tick);
         };
-        const startAutoScroll = () => {
-          if (raf || gallery.scrollWidth <= gallery.clientWidth) return;
-          previous = 0;
-          raf = requestAnimationFrame(tick);
-        };
-        const stopAutoScroll = () => {
-          if (!raf) return;
-          cancelAnimationFrame(raf);
-          raf = 0;
-          previous = 0;
-        };
+        const startAutoScroll = () => { if (raf || gallery.scrollWidth <= gallery.clientWidth) return; previous = 0; raf = requestAnimationFrame(tick); };
+        const stopAutoScroll = () => { if (!raf) return; cancelAnimationFrame(raf); raf = 0; previous = 0; };
         gallery.addEventListener('pointerenter', startAutoScroll);
         gallery.addEventListener('pointerleave', stopAutoScroll);
         gallery.addEventListener('focusin', stopAutoScroll);
