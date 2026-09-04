@@ -8,6 +8,7 @@ import '../styles/outputs.css';
 import '../styles/dashboard.css';
 import '../styles/scrollbars.css';
 import '../styles/header-clean.css';
+import '../styles/compat.css';
 const { title = 'Micol Gelsi' } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const baseNoSlash = base.replace(/\/$/, '');
@@ -19,8 +20,9 @@ const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
 <html lang="en" data-style="rgb" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content="Micol Gelsi — artist and researcher" />
+    <meta name="theme-color" content="#080808" />
     <title>{title}</title>
   </head>
   <body data-fixed-shell={fixedShell ? 'true' : undefined}>
