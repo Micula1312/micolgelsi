@@ -1,3 +1,4 @@
 ---
-return Astro.redirect('/cv/micol-gelsi-cv.pdf');
+const base = import.meta.env.BASE_URL;
+return Astro.redirect(`${base}cv/micol-gelsi-cv.pdf`);
 ---
