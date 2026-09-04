@@ -4,7 +4,7 @@ author: "Blivet"
 type: project
 displayType: "interactive installation"
 year: "2024"
-startDate: "2024-10"
+startDate: "2024-02"
 endDate: "2025-07"
 summary: "Silent Target is an interactive installation investigating visibility, privacy and the possibility of withdrawing from systems of constant observation."
 medium:

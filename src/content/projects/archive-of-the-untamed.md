@@ -17,8 +17,6 @@ medium:
 researchAreas:
   - urban-wilderness
   - generative-archives
-  - more-than-human-relations
-  - digital-access-inclusion
 collaborators:
   - "Lucia Fontanelli"
   - "Olivia Teglia"
@@ -69,7 +67,7 @@ moments:
   - date: "2026-05"
     title: "Archive of the #Untamed — Conditions of Belonging: Joy"
     type: "multimedia installation"
-    location: "MAAM, Roma"
+    location: "Museo dell'Altro e dell'Altrove di Metropoliz, Roma"
     gallery:
       - "/media/artistic/archive-of-the-untamed/moments/maam2/4400E7EC-9E0D-4AB3-A1FD-B8A8556AA26A.webp"
       - "/media/artistic/archive-of-the-untamed/moments/maam2/a.webp"

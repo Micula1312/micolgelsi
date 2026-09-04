@@ -3,8 +3,8 @@ title: "#untamed-architecture X @ambient-rave <3"
 featured: true
 type: project
 displayType: "multimedia performance"
-year: "2026"
-startDate: "2026-03"
+year: "2025"
+startDate: "2025-12"
 status: ongoing
 summary: "A 30-minute multimedia performance exploring urban wilderness in the Aniene River Nature Reserve through the live manipulation of materials contained in the hyper-object Archive of the #Untamed, accompanied by the sonic narrative of Rome-based DJ and producer Stiky Verde."
 medium:

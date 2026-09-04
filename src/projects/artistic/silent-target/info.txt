@@ -10,7 +10,7 @@ AVATAR:
 avatar.mp4
 
 START:
-2024-10
+2024-02
 
 END:
 2025-07

@@ -7,13 +7,12 @@ FEATURED:
 yes
 
 START:
-2026-03
+2025-12
 
 END:
 ongoing
 
 STATUS:
-ongoing
 
 TYPE:
 multimedia performance
