@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 const researchArea = z.enum(['urban-wilderness','generative-archives','bodies-affects','more-than-human-relations','eco-feminism','surveillance-politics-of-visibility','digital-access-inclusion']);
