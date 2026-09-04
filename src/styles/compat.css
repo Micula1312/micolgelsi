@@ -1,0 +1,47 @@
+/* Cross-browser and mobile hardening. Keep this file last in the cascade. */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body { overflow-x: hidden; }
+img, video, iframe, canvas { max-width: 100%; }
+button, input, textarea, select { font: inherit; }
+
+/* Safe fallbacks for browsers that do not support color-mix(). */
+@supports not (color: color-mix(in srgb, #000 50%, #fff)) {
+  .work-list.is-type-map .work-row,
+  .work-list.is-research-map .work-row { background: var(--bg); }
+  .postcard-text { background: rgba(5,5,5,.74); border-color: rgba(255,255,255,.32); }
+  .camera-fx { background: linear-gradient(to bottom,transparent 0,rgba(255,255,255,.018) 48%,rgba(255,255,255,.07) 50%,transparent 52%); background-size: 100% 5px; }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .postcard-text,
+  .web-inspector-backdrop { backdrop-filter: none !important; }
+}
+
+@media (max-width: 760px) {
+  .site-nav a,
+  .view-button,
+  .system-control button {
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .system-controls {
+    left: max(10px, env(safe-area-inset-left));
+    bottom: max(10px, env(safe-area-inset-bottom));
+  }
+  .project-head,
+  .intro,
+  .project-body { min-width: 0; }
+  .prose,
+  .project-facts,
+  .project-moment,
+  .moment-gallery { min-width: 0; max-width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
