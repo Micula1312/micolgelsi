@@ -1,16 +1,16 @@
 ---
-const { images = [], title = '' } = Astro.props;
+const { images = [], title = '' } = Astro.props as { images?: string[]; title?: string };
 const base = import.meta.env.BASE_URL;
 const withBase = (src = '') => {
   const value = String(src);
   if (!value.startsWith('/') || value.startsWith('//') || value.startsWith(base)) return value;
   return `${base}${value.replace(/^\//, '')}`;
 };
-const resolvedImages = images.map(withBase);
+const resolvedImages: string[] = images.map(withBase);
 ---
 {resolvedImages.length > 0 && (
   <div class="moment-gallery" data-moment-gallery data-images={JSON.stringify(resolvedImages)} data-title={title}>
-    {resolvedImages.map((src, index) => (
+    {resolvedImages.map((src: string, index: number) => (
       <button class="moment-thumb" type="button" data-moment-index={index} aria-label={`Open image ${index + 1} of ${resolvedImages.length}`}>
         <img src={src} alt={`${title} — ${index + 1}`} loading="lazy" />
       </button>
@@ -19,8 +19,8 @@ const resolvedImages = images.map(withBase);
 )}
 
 <script>
-  const galleries = document.querySelectorAll('[data-moment-gallery]:not([data-gallery-ready])');
-  let lightbox = document.querySelector('[data-moment-lightbox]');
+  const galleries = document.querySelectorAll<HTMLElement>('[data-moment-gallery]:not([data-gallery-ready])');
+  let lightbox = document.querySelector<HTMLElement>('[data-moment-lightbox]');
   if (!lightbox && galleries.length) {
     lightbox = document.createElement('div');
     lightbox.className = 'moment-lightbox';
@@ -30,45 +30,94 @@ const resolvedImages = images.map(withBase);
     document.body.append(lightbox);
   }
   if (lightbox) {
-    const image = lightbox.querySelector('img');
-    const caption = lightbox.querySelector('figcaption');
-    let currentImages = [], currentTitle = '', currentIndex = 0;
-    const show = () => { if (!currentImages.length) return; image.src = currentImages[currentIndex]; image.alt = `${currentTitle} — ${currentIndex + 1}`; caption.textContent = `${currentIndex + 1} / ${currentImages.length}`; };
-    const open = (gallery, index) => { currentImages = JSON.parse(gallery.dataset.images || '[]'); currentTitle = gallery.dataset.title || ''; currentIndex = index; show(); lightbox.classList.add('is-open'); lightbox.setAttribute('aria-hidden','false'); document.documentElement.classList.add('has-lightbox'); };
-    const close = () => { lightbox.classList.remove('is-open'); lightbox.setAttribute('aria-hidden','true'); document.documentElement.classList.remove('has-lightbox'); };
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const box = lightbox;
+    const image = box.querySelector<HTMLImageElement>('img');
+    const caption = box.querySelector<HTMLElement>('figcaption');
+    if (image && caption) {
+      let currentImages: string[] = [];
+      let currentTitle = '';
+      let currentIndex = 0;
+      const show = () => {
+        if (!currentImages.length) return;
+        image.src = currentImages[currentIndex] ?? '';
+        image.alt = `${currentTitle} — ${currentIndex + 1}`;
+        caption.textContent = `${currentIndex + 1} / ${currentImages.length}`;
+      };
+      const open = (gallery: HTMLElement, index: number) => {
+        currentImages = JSON.parse(gallery.dataset.images || '[]') as string[];
+        currentTitle = gallery.dataset.title || '';
+        currentIndex = index;
+        show();
+        box.classList.add('is-open');
+        box.setAttribute('aria-hidden','false');
+        document.documentElement.classList.add('has-lightbox');
+      };
+      const close = () => {
+        box.classList.remove('is-open');
+        box.setAttribute('aria-hidden','true');
+        document.documentElement.classList.remove('has-lightbox');
+      };
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    galleries.forEach(gallery => {
-      gallery.dataset.galleryReady = '';
-      gallery.querySelectorAll('[data-moment-index]').forEach(button => button.addEventListener('click', () => open(gallery, Number(button.dataset.momentIndex || 0))));
-      if (!reducedMotion) {
-        let raf = 0, previous = 0, direction = 1;
-        const speed = 34;
-        const tick = time => {
-          if (!previous) previous = time;
-          const dt = Math.min((time - previous) / 1000, .05); previous = time;
-          const maxScroll = Math.max(0, gallery.scrollWidth - gallery.clientWidth);
-          if (maxScroll > 1) {
-            gallery.scrollLeft += direction * speed * dt;
-            if (gallery.scrollLeft >= maxScroll - .5) { gallery.scrollLeft = maxScroll; direction = -1; }
-            else if (gallery.scrollLeft <= .5) { gallery.scrollLeft = 0; direction = 1; }
-          }
-          raf = requestAnimationFrame(tick);
-        };
-        const startAutoScroll = () => { if (raf || gallery.scrollWidth <= gallery.clientWidth) return; previous = 0; raf = requestAnimationFrame(tick); };
-        const stopAutoScroll = () => { if (!raf) return; cancelAnimationFrame(raf); raf = 0; previous = 0; };
-        gallery.addEventListener('pointerenter', startAutoScroll);
-        gallery.addEventListener('pointerleave', stopAutoScroll);
-        gallery.addEventListener('focusin', stopAutoScroll);
+      galleries.forEach(gallery => {
+        gallery.dataset.galleryReady = '';
+        gallery.querySelectorAll<HTMLElement>('[data-moment-index]').forEach(button => {
+          button.addEventListener('click', () => open(gallery, Number(button.dataset.momentIndex || 0)));
+        });
+        if (!reducedMotion) {
+          let raf = 0, previous = 0, direction = 1;
+          const speed = 34;
+          const tick = (time: number) => {
+            if (!previous) previous = time;
+            const dt = Math.min((time - previous) / 1000, .05);
+            previous = time;
+            const maxScroll = Math.max(0, gallery.scrollWidth - gallery.clientWidth);
+            if (maxScroll > 1) {
+              gallery.scrollLeft += direction * speed * dt;
+              if (gallery.scrollLeft >= maxScroll - .5) { gallery.scrollLeft = maxScroll; direction = -1; }
+              else if (gallery.scrollLeft <= .5) { gallery.scrollLeft = 0; direction = 1; }
+            }
+            raf = requestAnimationFrame(tick);
+          };
+          const startAutoScroll = () => {
+            if (raf || gallery.scrollWidth <= gallery.clientWidth) return;
+            previous = 0;
+            raf = requestAnimationFrame(tick);
+          };
+          const stopAutoScroll = () => {
+            if (!raf) return;
+            cancelAnimationFrame(raf);
+            raf = 0;
+            previous = 0;
+          };
+          gallery.addEventListener('pointerenter', startAutoScroll);
+          gallery.addEventListener('pointerleave', stopAutoScroll);
+          gallery.addEventListener('focusin', stopAutoScroll);
+        }
+      });
+
+      if (!box.dataset.ready) {
+        box.dataset.ready = '';
+        box.querySelector<HTMLButtonElement>('.moment-lightbox-close')?.addEventListener('click', close);
+        box.querySelector<HTMLButtonElement>('.moment-lightbox-prev')?.addEventListener('click', () => {
+          if (!currentImages.length) return;
+          currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+          show();
+        });
+        box.querySelector<HTMLButtonElement>('.moment-lightbox-next')?.addEventListener('click', () => {
+          if (!currentImages.length) return;
+          currentIndex = (currentIndex + 1) % currentImages.length;
+          show();
+        });
+        box.addEventListener('click', event => { if (event.target === box) close(); });
+        document.addEventListener('keydown', event => {
+          if (!box.classList.contains('is-open')) return;
+          if (event.key === 'Escape') close();
+          if (!currentImages.length) return;
+          if (event.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; show(); }
+          if (event.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % currentImages.length; show(); }
+        });
       }
-    });
-    if (!lightbox.dataset.ready) {
-      lightbox.dataset.ready = '';
-      lightbox.querySelector('.moment-lightbox-close').addEventListener('click', close);
-      lightbox.querySelector('.moment-lightbox-prev').addEventListener('click', () => { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; show(); });
-      lightbox.querySelector('.moment-lightbox-next').addEventListener('click', () => { currentIndex = (currentIndex + 1) % currentImages.length; show(); });
-      lightbox.addEventListener('click', event => { if (event.target === lightbox) close(); });
-      document.addEventListener('keydown', event => { if (!lightbox.classList.contains('is-open')) return; if (event.key === 'Escape') close(); if (event.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; show(); } if (event.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % currentImages.length; show(); } });
     }
   }
 </script>
