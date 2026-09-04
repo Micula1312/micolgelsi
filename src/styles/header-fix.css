@@ -1,0 +1,5 @@
+.site-header,
+html[data-style="rgb"] .site-header {
+  border-image: none !important;
+  border-bottom: 0 !important;
+}
