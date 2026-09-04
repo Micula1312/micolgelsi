@@ -1,4 +1,19 @@
 ---
 const base = import.meta.env.BASE_URL;
-return Astro.redirect(`${base}cv/micol-gelsi-CV.pdf`);
+const pdf = `${base}cv/micol-gelsi-CV.pdf`;
 ---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="refresh" content={`0; url=${pdf}`} />
+    <title>Micol Gelsi — CV</title>
+  </head>
+  <body>
+    <p><a href={pdf}>Open CV</a></p>
+    <script is:inline define:vars={{ pdf }}>
+      window.location.replace(pdf);
+    </script>
+  </body>
+</html>
