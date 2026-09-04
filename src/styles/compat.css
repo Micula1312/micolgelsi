@@ -29,10 +29,156 @@ button, input, textarea, select { font: inherit; }
     display: inline-flex;
     align-items: center;
   }
+
+  /* Give the visual archive more room on phones. */
+  .site-header {
+    gap: 16px !important;
+    padding: 12px 0 16px !important;
+  }
+  .site-name { font-size: 13px; line-height: 1.15; }
+  .site-bio {
+    margin-top: 10px !important;
+    font-size: 11.5px;
+    line-height: 1.28;
+    max-width: 100%;
+  }
+  .site-nav {
+    gap: 14px !important;
+    font-size: 10px;
+    line-height: 1;
+  }
+  body[data-fixed-shell="true"] .page { padding: 7px 0 8px !important; }
+  body[data-project-view] .work-index { padding: 10px !important; }
+  body[data-project-view] .index-toolbar { min-height: 24px; }
+  body[data-project-view] .work-list,
+  body[data-project-view] .work-list.is-year-plane,
+  body[data-project-view] .work-list.is-type-map,
+  body[data-project-view] .work-list.is-research-map {
+    left: 10px !important;
+    right: 10px !important;
+    top: 42px !important;
+    bottom: 10px !important;
+  }
+
   .system-controls {
     left: max(10px, env(safe-area-inset-left));
     bottom: max(10px, env(safe-area-inset-bottom));
+    padding: 4px 6px;
+    font-size: 9px;
   }
+
+  /* YEAR: keep the timeline spatial, but make iOS horizontal swiping reliable. */
+  body[data-project-view] .work-list.is-year-plane.is-scrollable-year {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x !important;
+    overscroll-behavior-x: contain;
+  }
+  body[data-project-view] .work-list.is-year-plane .year-track,
+  body[data-project-view] .work-list.is-year-plane .work-row {
+    touch-action: pan-x !important;
+  }
+  .work-list.is-year-plane .work-title {
+    font-size: 9px !important;
+    max-width: 150px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .work-list.is-year-plane .year-axis { bottom: 20px !important; }
+
+  /* CONTEXT: two real columns on phones, instead of desktop coordinates colliding. */
+  body[data-project-view] .work-list.is-type-map {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+    grid-auto-flow: row dense;
+    grid-auto-rows: min-content;
+    align-content: start;
+    column-gap: 12px;
+    row-gap: 8px;
+    padding: 44px 10px 18px;
+    overflow: hidden !important;
+  }
+  .work-list.is-type-map .type-field { display: block !important; }
+  .work-list.is-type-map .type-anchor {
+    top: 10px !important;
+    font-size: 9px !important;
+    max-width: 44%;
+  }
+  .work-list.is-type-map .work-row {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0;
+    padding: 3px 2px !important;
+    justify-self: stretch;
+    align-items: flex-start;
+    background: transparent !important;
+  }
+  .work-list.is-type-map .work-row[data-type="artistic"] { grid-column: 1; }
+  .work-list.is-type-map .work-row[data-type="external"] { grid-column: 2; }
+  .work-list.is-type-map .work-title {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: left !important;
+    font-size: 9px !important;
+  }
+  .work-list.is-type-map .web-role { display: none !important; }
+
+  /* RESEARCH: keep the thematic vocabulary visible, but put project labels in a legible grid. */
+  body[data-project-view] .work-list.is-research-map {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    grid-auto-rows: min-content;
+    align-content: start;
+    gap: 8px 12px;
+    padding: 88px 10px 18px;
+    overflow: hidden !important;
+  }
+  .work-list.is-research-map .research-field {
+    display: grid !important;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 4px 12px;
+    position: absolute !important;
+    inset: 8px 10px auto 10px !important;
+    height: 72px;
+    overflow: hidden;
+  }
+  .work-list.is-research-map .research-anchor {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    max-width: none !important;
+    font-size: 8px !important;
+    line-height: 1.1;
+    text-align: left !important;
+    white-space: normal;
+  }
+  .work-list.is-research-map .work-row {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0;
+    padding: 3px 2px !important;
+    justify-self: stretch;
+    background: transparent !important;
+  }
+  .work-list.is-research-map .work-title {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-size: 9px !important;
+    line-height: 1.08 !important;
+  }
+  .work-list.is-research-map .web-role { display: none !important; }
+
   .project-head,
   .intro,
   .project-body { min-width: 0; }
