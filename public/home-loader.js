@@ -1,8 +1,10 @@
 (()=>{
+  const base='/portfolio';
   const path=location.pathname.replace(/\/$/,'')||'/';
-  if(path!=='/'||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  if(path!==base&&path!==`${base}/`&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  if(![base,`${base}/`].includes(location.pathname.replace(/\/$/, '')||'/'))return;
 
-  const frames=['/home-loader/01.webp','/home-loader/02.webp','/home-loader/03.webp'];
+  const frames=[`${base}/home-loader/01.webp`,`${base}/home-loader/02.webp`,`${base}/home-loader/03.webp`];
   const preload=src=>new Promise(resolve=>{const i=new Image();i.onload=()=>resolve(src);i.onerror=()=>resolve(null);i.src=src;});
 
   Promise.all(frames.map(preload)).then(loaded=>{
