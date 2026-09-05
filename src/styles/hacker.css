@@ -31,15 +31,23 @@
 .research-anchor,
 .year-axis { font-size: 11px; }
 
-/* Discursive copy can switch independently from light/dark mode. */
+/* Discursive copy can switch independently from light/dark mode.
+   Pink mode uses the exact web-role typographic language, while staying visible/readable. */
 html[data-copy-style="pink"] .site-bio,
 html[data-copy-style="pink"] .lead,
 html[data-copy-style="pink"] .prose,
 html[data-copy-style="pink"] .web-inspector-summary {
-  font-family: Helvetica, Arial, sans-serif;
-  font-style: italic;
+  display: inline-block;
+  margin-left: 7px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 10px;
   font-weight: 400;
-  color: var(--prose-pink);
+  font-style: italic;
+  text-transform: lowercase;
+  color: #ff2bbd;
+  opacity: 1;
+  transform: translateY(2px);
+  pointer-events: auto;
 }
 
 html[data-copy-style="plain"] .site-bio,
@@ -50,6 +58,9 @@ html[data-copy-style="plain"] .web-inspector-summary {
   font-style: normal;
   font-weight: 400;
   color: inherit;
+  text-transform: none;
+  opacity: 1;
+  transform: none;
 }
 
 .site-name::before { content: '★ '; color: var(--signal); font-family: var(--mono); }
