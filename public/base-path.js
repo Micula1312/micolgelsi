@@ -36,12 +36,19 @@
 
 /* YEAR VIEW — one shared avatar stage pinned inside the Year panel. */
 (() => {
+  const base = '/portfolio';
   const cache = new Map();
   const pending = new Map();
   let activeRow = null;
 
   const getList = () => document.querySelector('#work-list');
   const isYearRow = row => row?.matches?.('.work-row') && getList()?.dataset.view === 'year';
+  const withBase = value => {
+    if (!value) return '';
+    if (value.startsWith(base + '/')) return value;
+    if (value.startsWith('/') && !value.startsWith('//')) return `${base}${value}`;
+    return value;
+  };
 
   const sameOriginHref = row => {
     const raw = row?.getAttribute('href');
@@ -79,7 +86,7 @@
         const src = media.getAttribute('src');
         if (!src) return null;
         const result = {
-          src: new URL(src, href).href,
+          src: new URL(withBase(src), window.location.origin).href,
           kind: media.tagName.toLowerCase() === 'video' ? 'video' : 'image'
         };
         cache.set(href, result);
@@ -122,6 +129,7 @@
       const play = () => media.play().catch(() => {});
       media.addEventListener('loadeddata', play, { once: true });
       media.addEventListener('canplay', play, { once: true });
+      media.addEventListener('error', () => stage.classList.remove('is-visible'), { once: true });
       media.load();
       play();
     } else {
