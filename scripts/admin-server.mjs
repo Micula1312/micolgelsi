@@ -12,13 +12,17 @@ const UI_PATH=path.join(ROOT,'admin','index.html');
 const PORT=4310;
 const SECTION_NAMES=['TITLE','AUTHOR','TEASER','AVATAR','COVER','FEATURED','START','END','STATUS','TYPE','PRACTICE','ROLE','CLIENT','STACK','URL','MEDIUM','RESEARCH','WITH','COLLABORATORS','MAIN LINK','ARTISTS INVOLVED','CURATED BY','CREDITS','PHOTO CREDITS','EXCERPT','DESCRIPTION','SHORT','CRITICAL TEXTS','PUBLICATIONS','COMMUNICATION','LINKS','MOMENTS','OUTPUTS','PARENT','WORKS'];
 const MIME={'.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.gif':'image/gif','.avif':'image/avif','.mp4':'video/mp4','.webm':'video/webm','.mov':'video/quicktime'};
-const ADMIN_HIDDEN_MEDIA_DIRS=new Set(['source','sources']);
+const ADMIN_HIDDEN_MEDIA_DIRS=new Set(['source','sources','sourcce','sourcces']);
 
 const send=(res,status,body,type='application/json; charset=utf-8')=>{res.writeHead(status,{'content-type':type,'cache-control':'no-store'});res.end(type.startsWith('application/json')?JSON.stringify(body):body);};
 const safe=(value='')=>String(value).replace(/[^a-zA-Z0-9._-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
 const readBody=async(req,limit=1024*1024*250)=>{const chunks=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>limit)throw new Error('Payload too large');chunks.push(chunk);}return Buffer.concat(chunks);};
 const jsonBody=async req=>JSON.parse((await readBody(req,1024*1024*5)).toString('utf8')||'{}');
 const exists=async p=>{try{await fs.access(p);return true;}catch{return false;}};
+const isAdminHiddenMediaDir=name=>{
+  const normalized=String(name||'').toLowerCase().replace(/^[._\-\s]+/,'').replace(/[^a-z]/g,'');
+  return ADMIN_HIDDEN_MEDIA_DIRS.has(normalized);
+};
 
 function parseInfo(text=''){
   const result={};let current=null;
@@ -47,7 +51,7 @@ async function scanMedia(kind,slug,data={}){
     for(const entry of entries){
       const r=rel?`${rel}/${entry.name}`:entry.name,p=path.join(dir,entry.name);
       if(entry.isDirectory()){
-        if(ADMIN_HIDDEN_MEDIA_DIRS.has(entry.name.toLowerCase()))continue;
+        if(isAdminHiddenMediaDir(entry.name))continue;
         await walk(p,r);
         continue;
       }
