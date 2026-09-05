@@ -32,20 +32,36 @@
 .year-axis { font-size: 11px; }
 
 /* Discursive copy can switch independently from light/dark mode.
-   Pink mode borrows the web-role language, two points larger for readable copy. */
+   Pink mode borrows the web-role family + color, while keeping each text's own
+   uppercase/lowercase, italic/roman and regular/bold formatting intact. */
 html[data-copy-style="pink"] .site-bio,
 html[data-copy-style="pink"] .lead,
 html[data-copy-style="pink"] .prose,
 html[data-copy-style="pink"] .web-inspector-summary {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 12px;
-  font-style: italic;
-  font-weight: 400;
-  text-transform: lowercase;
   color: var(--prose-pink);
   opacity: 1;
   transform: none;
 }
+
+/* Preserve semantic emphasis inside pink copy. */
+html[data-copy-style="pink"] .site-bio strong,
+html[data-copy-style="pink"] .lead strong,
+html[data-copy-style="pink"] .prose strong,
+html[data-copy-style="pink"] .web-inspector-summary strong,
+html[data-copy-style="pink"] .site-bio b,
+html[data-copy-style="pink"] .lead b,
+html[data-copy-style="pink"] .prose b,
+html[data-copy-style="pink"] .web-inspector-summary b { font-weight: 700; }
+html[data-copy-style="pink"] .site-bio em,
+html[data-copy-style="pink"] .lead em,
+html[data-copy-style="pink"] .prose em,
+html[data-copy-style="pink"] .web-inspector-summary em,
+html[data-copy-style="pink"] .site-bio i,
+html[data-copy-style="pink"] .lead i,
+html[data-copy-style="pink"] .prose i,
+html[data-copy-style="pink"] .web-inspector-summary i { font-style: italic; }
 
 /* Bio is always a block below MICOL GELSI, never beside it. */
 .identity { display: block; }
@@ -57,8 +73,6 @@ html[data-copy-style="plain"] .lead,
 html[data-copy-style="plain"] .prose,
 html[data-copy-style="plain"] .web-inspector-summary {
   font-family: Arial, Helvetica, sans-serif;
-  font-style: normal;
-  font-weight: 400;
   color: inherit;
 }
 
