@@ -5,3 +5,9 @@ html[data-style="rgb"] .site-header {
   border-image: none !important;
   box-shadow: none !important;
 }
+
+.site-name{position:relative;display:inline-grid;align-items:center;justify-items:start;text-decoration:none!important;white-space:nowrap}
+.site-name-default,.site-name-hover{grid-area:1/1;transition:opacity .14s linear,transform .14s linear}
+.site-name-hover{opacity:0;transform:translateY(2px);color:var(--signal)}
+.site-name:hover .site-name-default,.site-name:focus-visible .site-name-default{opacity:0;transform:translateY(-2px)}
+.site-name:hover .site-name-hover,.site-name:focus-visible .site-name-hover{opacity:1;transform:translateY(0)}
