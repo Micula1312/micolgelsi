@@ -1,6 +1,5 @@
 ---
 title: "The Archive Is Alive!"
-featured: true
 type: exhibition
 displayType: "exhibition"
 year: "2026"
@@ -12,9 +11,9 @@ medium:
   - "participatory practice"
 researchAreas:
   - generative-archives
-  - live-data-manipulation
   - bodies-affects
   - surveillance-politics-of-visibility
+  - live-data-manipulation
 collaborators:
   []
 artistsInvolved:
@@ -26,7 +25,7 @@ credits:
   []
 photoCredits:
   []
-avatar: "/media/artistic/the-archive-is-alive/avatar.mp4"
+avatar: "/media/artistic/the-archive-is-alive/_source/avatar.mp4"
 cover: "/media/artistic/the-archive-is-alive/cover.webp"
 gallery:
   - "/media/artistic/the-archive-is-alive/images/1.webp"
@@ -83,11 +82,27 @@ works:
   []
 ---
 
-THE ARCHIVE IS ALIVE Di Micol Gelsi, con Giuseppe Di Capua e Federico Russo Testo di Giorgia Pinzauti 
-The archive Ls alive! Espressione-titolo della mostra, si propone come un gioco di attraversamenti, in cui concedersi un momento per divenire comunita ristretta e aleatoria II campo intermediale, preparato dal collettivo artistico riunito da Micol Gelsi, avvolge ii gruppo di spettatori agent invitandoli a fidarsi sin dall'esterno della galleria La serranda abbassata si oppone infatti allatrasparenza del vetro e costringe a inseguire la curiosite per superare la soglia, per lasciarsi attraversare dall'archivio indisciplinata 
-Nel campo vibrante della mostra l'archivio dMene materia performante, esponendo it passato e influenzando it presente. Larchivio e materia viva che ci osserva e registra, per mostrarci immediettamente e proiettarci nel futuro. 
-Chi predispone it campo intermediale lo fa per elaborare emozioni intime e creare un output collettivo. Disciogliere l'individualismo e compito dell'archMsta, chetrama una rete di cavi e appigli per stimolare reazioni e relazioni the diverran no futuro archivio, costru-endo una genealogia di gesti e affetti che si mescoleranno con le stratificazioni del passata 
-Nel desiderio smisurato di amicizia" citando l'ultima pubblicazione di Helene Giannecchini, the sorregge it percorso della mostra, intravediamo l'intelaiatura muhidimensionale nella qualecostruire genealogie alternative, archivio di una famiglia estemporanea, legate dal l'esperienza e non dalla biologia Nel senti-mento di amiciziae possibile stare a proprio agio con l'archivio, esporsi con piacerealle sue dinamiche per inventare attri modi di Vvere e di costruire relazioni. Nel tempo della mostra si costruisce un archiviofamigliare-amicalesovversivo e imprevedibile, ricordi che apparterranno atecollettivitadi un pomeriggio e the si amalgameranno con quelli delle giornate a seguire 
-E' un esercizio generativo di memoria quello che ci troviamo a esperire, un moto di vita per ostacolare it senso di perd Eta Linsistenza sulla registrazione, la conser-vazione e la memoria, non gerarchica, non sterile, bensi impregnate di intimitee tenerezza, e la corrente chetiene insieme i frammenti, in collegamento, in dispo-sizione variabile. 
-Vi/ere l'archivio a un atto di creazione. 
-- residency output @Spazio Contact , Roma - Maggio 2026
+THE ARCHIVE IS ALIVE!
+
+By Micol Gelsi, with Giuseppe Di Capua and Federico Russo
+Text by Giorgia Pinzauti
+
+The Archive Is Alive!, the expression that gives the exhibition its title, unfolds as a play of crossings: an invitation to take a moment to become a temporary, intimate and aleatory community.
+
+The intermedial field created by the artistic collective brought together by Micol Gelsi envelops the group of participating spectators, inviting them to place their trust in the work even before entering the gallery. The lowered shutter resists the transparency of the glass, compelling visitors to follow their curiosity, cross the threshold and allow themselves to be traversed by an undisciplined archive.
+
+Within the exhibition’s vibrating field, the archive becomes performative matter, exposing the past while acting upon the present. The archive is living matter: it observes and records us, immediately showing us back to ourselves and projecting us into the future.
+
+Those who prepare this intermedial field do so in order to process intimate emotions and generate a collective output. Dissolving individualism becomes the task of the archivist, who weaves a network of cables and points of connection to stimulate reactions and relationships that will themselves become a future archive—building a genealogy of gestures and affects that will mingle with the sedimentations of the past.
+
+In the “boundless desire for friendship”—to borrow from Hélène Giannecchini’s latest publication, which accompanies the exhibition—we glimpse a multidimensional framework within which alternative genealogies can be constructed: the archive of an ephemeral family, bound together by experience rather than biology.
+
+Within friendship, it becomes possible to feel at ease with the archive, to expose oneself willingly to its dynamics and invent other ways of living and building relationships.
+
+Over the course of the exhibition, a subversive and unpredictable archive of kinship and friendship takes shape: memories belonging to the temporary collectivity of an afternoon, gradually merging with those produced over the days that follow.
+
+What we are invited to experience is a generative exercise in memory, a movement of life that resists the sense of loss. The insistence on recording, preservation and memory—not hierarchical, not sterile, but imbued with intimacy and tenderness—is the current that holds these fragments together, keeping them connected and open to changing configurations.
+
+To live the archive is an act of creation.
+
+Residency output — Spazio Contact, Rome, May 2026

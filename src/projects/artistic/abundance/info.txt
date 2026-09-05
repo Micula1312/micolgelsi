@@ -28,6 +28,7 @@ performance, party, workshop
 RESEARCH:
 hydro-feminism
 bodies-affects
+live-data-manipulation
 
 COLLABORATORS:
 studioferrari

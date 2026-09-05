@@ -11,6 +11,8 @@ medium:
   - "interactive installation"
 researchAreas:
   - surveillance-politics-of-visibility
+  - live-data-manipulation
+  - generative-archives
 collaborators:
   []
 artistsInvolved:

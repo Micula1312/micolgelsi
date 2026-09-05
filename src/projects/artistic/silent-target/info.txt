@@ -25,6 +25,8 @@ interactive installation
 
 RESEARCH:
 surveillance-politics-of-visibility
+live-data-manipulation
+generative-archives
 
 COLLABORATORS:
 

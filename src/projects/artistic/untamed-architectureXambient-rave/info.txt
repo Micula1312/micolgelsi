@@ -75,3 +75,4 @@ location: Fondazione Pastificio Cerere, Roma
 credits: Roma Diffusa
 media: pastificio
 AVATAR: _source/cover.mp4
+COVER: pastificio/WhatsApp Image 2026-06-03 at 14.06.11.webp

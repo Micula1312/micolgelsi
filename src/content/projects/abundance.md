@@ -17,6 +17,7 @@ medium:
 researchAreas:
   - hydro-feminism
   - bodies-affects
+  - live-data-manipulation
 collaborators:
   - "studioferrari"
   - "Bundabolo"
