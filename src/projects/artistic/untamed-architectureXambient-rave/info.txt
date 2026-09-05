@@ -23,6 +23,7 @@ audiovisual performance, live media manipulation, sound, listening practice
 RESEARCH:
 urban-wilderness
 generative-archives
+live-data-manipulation
 
 COLLABORATORS:
 Stiky Verde
@@ -73,5 +74,4 @@ type: multimedia installation + performance
 location: Fondazione Pastificio Cerere, Roma
 credits: Roma Diffusa
 media: pastificio
-
 AVATAR: _source/cover.mp4
