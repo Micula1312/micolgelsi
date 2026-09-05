@@ -35,7 +35,7 @@ credits:
 photoCredits:
   []
 avatar: "/media/artistic/untamed-architectureXambient-rave/_source/cover.mp4"
-cover: "/media/artistic/untamed-architectureXambient-rave/cover.mp4"
+cover: "/media/artistic/untamed-architectureXambient-rave/pastificio/WhatsApp Image 2026-06-03 at 14.06.11.webp"
 gallery:
   []
 videos:
