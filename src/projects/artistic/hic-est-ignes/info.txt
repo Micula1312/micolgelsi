@@ -1,0 +1,17 @@
+TITLE: hic-est-ignes
+TYPE: project
+START: 
+END: ongoing
+STATUS: ongoing
+AVATAR: videos/performanceCLUSTER-2-.mp4
+COVER: videos/performanceCLUSTER.mp4
+RESEARCH: 
+MEDIUM: 
+EXCERPT: 
+DESCRIPTION: 
+OUTPUTS: 
+AUTHOR: 
+FEATURED: 
+MAIN LINK: 
+COLLABORATORS: 
+CREDITS:
