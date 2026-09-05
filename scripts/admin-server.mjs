@@ -11,6 +11,7 @@ const PUBLIC_CONFIG_PATH=path.join(ROOT,'public','research-areas.json');
 const UI_PATH=path.join(ROOT,'admin','index.html');
 const PORT=4310;
 const SECTION_NAMES=['TITLE','AUTHOR','TEASER','AVATAR','FEATURED','START','END','STATUS','TYPE','PRACTICE','ROLE','CLIENT','STACK','URL','MEDIUM','RESEARCH','WITH','COLLABORATORS','MAIN LINK','ARTISTS INVOLVED','CURATED BY','CREDITS','PHOTO CREDITS','EXCERPT','DESCRIPTION','SHORT','CRITICAL TEXTS','PUBLICATIONS','COMMUNICATION','LINKS','MOMENTS','OUTPUTS','PARENT','WORKS'];
+const MIME={'.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.gif':'image/gif','.avif':'image/avif','.mp4':'video/mp4','.webm':'video/webm','.mov':'video/quicktime'};
 
 const send=(res,status,body,type='application/json; charset=utf-8')=>{res.writeHead(status,{'content-type':type,'cache-control':'no-store'});res.end(type.startsWith('application/json')?JSON.stringify(body):body);};
 const safe=(value='')=>String(value).replace(/[^a-zA-Z0-9._-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
@@ -36,13 +37,14 @@ function setSection(text,name,value){
   lines.splice(start,end-start,...block);return lines.join('\n').replace(/\n{3,}/g,'\n\n').trimEnd()+'\n';
 }
 
-async function scanMedia(kind,slug){
+async function scanMedia(kind,slug,data={}){
   const root=path.join(MEDIA_ROOT,kind,slug);const out=[];
+  const avatarRaw=String(data.AVATAR||'').replace(/^\.\//,'').replace(/^\/+/, '');
   async function walk(dir,rel=''){
     let entries=[];try{entries=await fs.readdir(dir,{withFileTypes:true});}catch{return;}
-    for(const entry of entries){const r=rel?`${rel}/${entry.name}`:entry.name,p=path.join(dir,entry.name);if(entry.isDirectory())await walk(p,r);else out.push({name:entry.name,rel:r,url:`/media/${kind}/${slug}/${r.replaceAll('\\','/')}`});}
+    for(const entry of entries){const r=rel?`${rel}/${entry.name}`:entry.name,p=path.join(dir,entry.name);if(entry.isDirectory())await walk(p,r);else{const ext=path.extname(entry.name).toLowerCase();out.push({name:entry.name,rel:r,url:`/media/${kind}/${slug}/${r.replaceAll('\\','/')}`,kind:['.mp4','.webm','.mov'].includes(ext)?'video':'image',isAvatar:avatarRaw===r||avatarRaw===entry.name,isCover:/^cover\.(?:jpg|jpeg|png|webp|gif|avif)$/i.test(r)});}}
   }
-  await walk(root);return out;
+  await walk(root);return out.sort((a,b)=>a.rel.localeCompare(b.rel,undefined,{numeric:true}));
 }
 async function listProjects(){
   const result=[];
@@ -61,11 +63,15 @@ const server=http.createServer(async(req,res)=>{
   try{
     const url=new URL(req.url,'http://localhost');
     if(req.method==='GET'&&url.pathname==='/'){return send(res,200,await fs.readFile(UI_PATH,'utf8'),'text/html; charset=utf-8');}
+    if(req.method==='GET'&&url.pathname.startsWith('/media/')){
+      const rel=decodeURIComponent(url.pathname.replace(/^\/media\//,''));if(rel.includes('..'))return send(res,400,{error:'Invalid media path'});
+      const file=path.join(MEDIA_ROOT,...rel.split('/'));const body=await fs.readFile(file);return send(res,200,body,MIME[path.extname(file).toLowerCase()]||'application/octet-stream');
+    }
     if(req.method==='GET'&&url.pathname==='/api/projects')return send(res,200,await listProjects());
     if(req.method==='GET'&&url.pathname==='/api/categories')return send(res,200,await categories());
     if(req.method==='GET'&&url.pathname==='/api/project'){
       const kind=safe(url.searchParams.get('kind')),slug=safe(url.searchParams.get('slug'));if(!['artistic','external'].includes(kind)||!slug)return send(res,400,{error:'Invalid project'});
-      const infoPath=path.join(PROJECTS_ROOT,kind,slug,'info.txt');const text=await fs.readFile(infoPath,'utf8');return send(res,200,{kind,slug,text,data:parseInfo(text),media:await scanMedia(kind,slug)});
+      const infoPath=path.join(PROJECTS_ROOT,kind,slug,'info.txt');const text=await fs.readFile(infoPath,'utf8'),data=parseInfo(text);return send(res,200,{kind,slug,text,data,media:await scanMedia(kind,slug,data)});
     }
     if(req.method==='POST'&&url.pathname==='/api/project'){
       const body=await jsonBody(req),kind=safe(body.kind),slug=safe(body.slug);if(!['artistic','external'].includes(kind)||!slug)return send(res,400,{error:'Invalid project'});
@@ -78,11 +84,19 @@ const server=http.createServer(async(req,res)=>{
     if(req.method==='POST'&&url.pathname==='/api/create'){
       const body=await jsonBody(req),kind=['artistic','external'].includes(body.kind)?body.kind:'artistic',slug=safe(body.slug||body.title);if(!slug)return send(res,400,{error:'Slug required'});
       const dir=path.join(PROJECTS_ROOT,kind,slug);if(await exists(dir))return send(res,409,{error:'Project already exists'});await fs.mkdir(dir,{recursive:true});await fs.mkdir(path.join(MEDIA_ROOT,kind,slug,'images'),{recursive:true});await fs.mkdir(path.join(MEDIA_ROOT,kind,slug,'videos'),{recursive:true});
-      const text=`TITLE: ${body.title||slug}\nTYPE: ${kind==='external'?'website':'project'}\nSTART: \nEND: ongoing\nSTATUS: ongoing\nRESEARCH: \nMEDIUM: \nEXCERPT: \nDESCRIPTION: \n`;await fs.writeFile(path.join(dir,'info.txt'),text,'utf8');return send(res,200,{ok:true,kind,slug});
+      const text=`TITLE: ${body.title||slug}\nTYPE: ${kind==='external'?'website':'project'}\nSTART: \nEND: ongoing\nSTATUS: ongoing\nRESEARCH: \nMEDIUM: \nEXCERPT: \nDESCRIPTION: \nOUTPUTS: \n`;await fs.writeFile(path.join(dir,'info.txt'),text,'utf8');return send(res,200,{ok:true,kind,slug});
     }
     if(req.method==='POST'&&url.pathname==='/api/media'){
       const kind=safe(url.searchParams.get('kind')),slug=safe(url.searchParams.get('slug')),bucket=safe(url.searchParams.get('bucket')||'images'),name=safe(url.searchParams.get('name'));if(!['artistic','external'].includes(kind)||!slug||!name)return send(res,400,{error:'Invalid media target'});
       const allowed=new Set(['images','videos','video','root']);if(!allowed.has(bucket))return send(res,400,{error:'Invalid bucket'});const dir=bucket==='root'?path.join(MEDIA_ROOT,kind,slug):path.join(MEDIA_ROOT,kind,slug,bucket);await fs.mkdir(dir,{recursive:true});await fs.writeFile(path.join(dir,name),await readBody(req));return send(res,200,{ok:true,name,bucket});
+    }
+    if(req.method==='POST'&&url.pathname==='/api/media-role'){
+      const body=await jsonBody(req),kind=safe(body.kind),slug=safe(body.slug),rel=String(body.rel||'').replaceAll('\\','/');if(!['artistic','external'].includes(kind)||!slug||!rel||rel.includes('..'))return send(res,400,{error:'Invalid media'});
+      const source=path.join(MEDIA_ROOT,kind,slug,...rel.split('/'));if(!(await exists(source)))return send(res,404,{error:'Media not found'});
+      const infoPath=path.join(PROJECTS_ROOT,kind,slug,'info.txt');let text=await fs.readFile(infoPath,'utf8');
+      if(body.role==='avatar'){text=setSection(text,'AVATAR',rel);await fs.writeFile(infoPath,text,'utf8');}
+      if(body.role==='cover'){const ext=path.extname(source).toLowerCase();if(!['.jpg','.jpeg','.png','.webp','.gif','.avif'].includes(ext))return send(res,400,{error:'Cover must be an image'});for(const candidate of ['.jpg','.jpeg','.png','.webp','.gif','.avif']){const old=path.join(MEDIA_ROOT,kind,slug,`cover${candidate}`);if(await exists(old))await fs.unlink(old);}await fs.copyFile(source,path.join(MEDIA_ROOT,kind,slug,`cover${ext}`));}
+      return send(res,200,{ok:true});
     }
     if(req.method==='DELETE'&&url.pathname==='/api/media'){
       const kind=safe(url.searchParams.get('kind')),slug=safe(url.searchParams.get('slug')),rel=String(url.searchParams.get('rel')||'').replaceAll('\\','/');if(!['artistic','external'].includes(kind)||!slug||rel.includes('..'))return send(res,400,{error:'Invalid media'});await fs.unlink(path.join(MEDIA_ROOT,kind,slug,...rel.split('/')));return send(res,200,{ok:true});
