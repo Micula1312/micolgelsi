@@ -6,11 +6,9 @@ html[data-style="rgb"] .site-header {
   box-shadow: none !important;
 }
 
-/* Four Tet / Wingdings-like hover for the site name.
-   Keep one stable glyph for each letter so MICOL GELSI reads as a real symbol conversion,
-   instead of a single arbitrary unicode string that can render badly across systems. */
+/* Same exact Four Tet / symbol-glyph conversion used by project titles in Context view. */
 html[data-style="rgb"] .site-name{position:relative;display:inline-block;text-decoration:none!important;white-space:nowrap}
 html[data-style="rgb"] .site-name:hover,html[data-style="rgb"] .site-name:focus-visible{color:transparent!important;text-shadow:none!important}
-html[data-style="rgb"] .site-name:hover::after,html[data-style="rgb"] .site-name:focus-visible::after{content:'✣◉☼⌁◇ ✦⊹✶◈◐';position:absolute;left:0;top:0;width:100%;white-space:pre;color:var(--signal);font-family:"Segoe UI Symbol","Apple Symbols","Noto Sans Symbols 2","Segoe UI Emoji",sans-serif;font-weight:400;font-size:.98em;letter-spacing:.045em;text-shadow:0 0 0 transparent;pointer-events:none;animation:wingding-glow .82s ease-out forwards!important}
+html[data-style="rgb"] .site-name:hover::after,html[data-style="rgb"] .site-name:focus-visible::after{content:'⣎⡇ꉺლ༽இ•̛)ྀ◞ ༎ຶ ༽ৣৢ؞ৢ؞ؖ ꉺლ';position:absolute;left:0;top:0;width:max-content;max-width:100%;overflow:hidden;white-space:nowrap;color:var(--signal);font-family:"Segoe UI Symbol","Segoe UI Emoji","Apple Symbols","Noto Sans Symbols 2",sans-serif;font-weight:400;font-size:.92em;letter-spacing:.025em;text-shadow:0 0 0 transparent;pointer-events:none;animation:wingding-glow .82s ease-out forwards!important}
 html[data-style="native"] .site-name::after{content:none!important}
 @media(prefers-reduced-motion:reduce){html[data-style="rgb"] .site-name:hover::after,html[data-style="rgb"] .site-name:focus-visible::after{animation:none!important;text-shadow:0 0 4px var(--signal),0 0 10px var(--signal-soft),0 0 18px var(--signal-faint)}}
