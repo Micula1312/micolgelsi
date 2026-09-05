@@ -1,0 +1,15 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+const ROOT=process.cwd();
+const configPath=path.join(ROOT,'config','research-areas.json');
+const publicPath=path.join(ROOT,'public','research-areas.json');
+const importerPath=path.join(ROOT,'scripts','import-content.mjs');
+const categories=JSON.parse(await fs.readFile(configPath,'utf8'));
+const keys=categories.map(x=>String(x.key||'').trim()).filter(Boolean);
+await fs.writeFile(publicPath,JSON.stringify(categories,null,2)+'\n','utf8');
+let importer=await fs.readFile(importerPath,'utf8');
+const replacement=`const VALID_RESEARCH=new Set(${JSON.stringify(keys)});`;
+if(!/const VALID_RESEARCH=new Set\([^\n]+\);/.test(importer))throw new Error('Could not find VALID_RESEARCH in import-content.mjs');
+importer=importer.replace(/const VALID_RESEARCH=new Set\([^\n]+\);/,replacement);
+await fs.writeFile(importerPath,importer,'utf8');
+console.log(`Synced ${keys.length} research categories.`);
