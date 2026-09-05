@@ -40,7 +40,7 @@ const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
         </div>
         <nav class="site-nav" aria-label="Main navigation">
           <a href={`${base}#projects`} aria-current={pathname === '/' ? 'page' : undefined}>PROJECTS</a>
-          <a href={withBase('cv/')}>CV</a>
+          <a href={withBase('cv/micol-gelsi-CV.pdf')} target="_blank" rel="noopener">CV</a>
           <a href={withBase('play-with-me/')} aria-current={pathname === '/play-with-me' ? 'page' : undefined}>PLAY WITH ME</a>
         </nav>
       </header>
