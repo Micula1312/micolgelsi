@@ -25,7 +25,7 @@ const bioLines = [
 ];
 ---
 <!doctype html>
-<html lang="en" data-style="rgb" data-theme="dark">
+<html lang="en" data-style="rgb" data-theme="dark" data-copy-style="pink">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -56,23 +56,45 @@ const bioLines = [
         <span>Mode</span>
         <button type="button" data-theme-toggle aria-label="Switch light or dark mode">Dark</button>
       </div>
+      <div class="system-control">
+        <span>Text</span>
+        <button type="button" data-copy-toggle aria-label="Switch discursive text style">Pink</button>
+      </div>
     </div>
 
     <script is:inline>
       (() => {
         const root = document.documentElement;
         root.dataset.style = 'rgb';
+
         const themeButton = document.querySelector('[data-theme-toggle]');
         if (themeButton) {
-          const updateLabel = () => {
+          const updateThemeLabel = () => {
             themeButton.textContent = root.dataset.theme === 'dark' ? 'Dark' : 'Light';
             themeButton.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
           };
           themeButton.addEventListener('click', () => {
             root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-            updateLabel();
+            updateThemeLabel();
           });
-          updateLabel();
+          updateThemeLabel();
+        }
+
+        const copyButton = document.querySelector('[data-copy-toggle]');
+        if (copyButton) {
+          const savedCopyStyle = localStorage.getItem('portfolio-copy-style');
+          if (savedCopyStyle === 'pink' || savedCopyStyle === 'plain') root.dataset.copyStyle = savedCopyStyle;
+          const updateCopyLabel = () => {
+            const pink = root.dataset.copyStyle !== 'plain';
+            copyButton.textContent = pink ? 'Pink' : 'Plain';
+            copyButton.setAttribute('aria-pressed', String(pink));
+          };
+          copyButton.addEventListener('click', () => {
+            root.dataset.copyStyle = root.dataset.copyStyle === 'plain' ? 'pink' : 'plain';
+            localStorage.setItem('portfolio-copy-style', root.dataset.copyStyle);
+            updateCopyLabel();
+          });
+          updateCopyLabel();
         }
 
         const bio = document.querySelector('[data-type-bio="true"]');
