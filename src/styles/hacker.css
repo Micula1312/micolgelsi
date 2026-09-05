@@ -6,6 +6,7 @@
   --signal-soft: rgba(57, 255, 20, .16);
   --signal-faint: rgba(57, 255, 20, .08);
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --prose-pink: #ff2bbd;
 }
 
 ::selection { background: var(--signal); color: #000; }
@@ -29,6 +30,27 @@
 .type-anchor,
 .research-anchor,
 .year-axis { font-size: 11px; }
+
+/* Discursive copy can switch independently from light/dark mode. */
+html[data-copy-style="pink"] .site-bio,
+html[data-copy-style="pink"] .lead,
+html[data-copy-style="pink"] .prose,
+html[data-copy-style="pink"] .web-inspector-summary {
+  font-family: Helvetica, Arial, sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--prose-pink);
+}
+
+html[data-copy-style="plain"] .site-bio,
+html[data-copy-style="plain"] .lead,
+html[data-copy-style="plain"] .prose,
+html[data-copy-style="plain"] .web-inspector-summary {
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  color: inherit;
+}
 
 .site-name::before { content: '★ '; color: var(--signal); font-family: var(--mono); }
 #projects-heading::before { content: './'; color: var(--signal); font-family: var(--mono); }

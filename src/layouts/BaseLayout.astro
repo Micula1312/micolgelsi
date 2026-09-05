@@ -13,11 +13,19 @@ const { title = 'Micol Gelsi' } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const baseNoSlash = base.replace(/\/$/, '');
 const pathname = Astro.url.pathname.replace(baseNoSlash, '').replace(/\/$/, '') || '/';
+const isHome = pathname === '/';
 const fixedShell = ['/', '/play-with-me'].includes(pathname);
 const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
+const bioLines = [
+  'Artist and researcher working across performative and multimedia arts.',
+  'Her practice moves between physical and virtual spaces.',
+  'She works with living archives, bodies, territories and digital systems.',
+  'Memory, liminality and power recur as fields of investigation.',
+  'She works with ASAP and BLIVET and is a member of Sound Studies Forum.'
+];
 ---
 <!doctype html>
-<html lang="en" data-style="rgb" data-theme="dark">
+<html lang="en" data-style="rgb" data-theme="dark" data-copy-style="pink">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -30,12 +38,8 @@ const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
       <header class="site-header">
         <div class="identity">
           <a class="site-name" href={base} aria-label="Micol Gelsi">MICOL GELSI</a>
-          <p class="site-bio">
-            Artist and researcher working across performative and multimedia arts.<br />
-            Her practice moves between physical and virtual spaces.<br />
-            She works with living archives, bodies, territories and digital systems.<br />
-            Memory, liminality and power recur as fields of investigation.<br />
-            She works with ASAP and BLIVET and is a member of Sound Studies Forum.
+          <p class="site-bio" data-type-bio={isHome ? 'true' : undefined} data-bio-lines={isHome ? JSON.stringify(bioLines) : undefined}>
+            {bioLines.map((line, index) => <>{line}{index < bioLines.length - 1 && <br />}</>)}
           </p>
         </div>
         <nav class="site-nav" aria-label="Main navigation">
@@ -52,23 +56,63 @@ const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
         <span>Mode</span>
         <button type="button" data-theme-toggle aria-label="Switch light or dark mode">Dark</button>
       </div>
+      <div class="system-control">
+        <span>Text</span>
+        <button type="button" data-copy-toggle aria-label="Switch discursive text style">Pink</button>
+      </div>
     </div>
 
     <script is:inline>
       (() => {
         const root = document.documentElement;
         root.dataset.style = 'rgb';
+
         const themeButton = document.querySelector('[data-theme-toggle]');
-        if (!themeButton) return;
-        const updateLabel = () => {
-          themeButton.textContent = root.dataset.theme === 'dark' ? 'Dark' : 'Light';
-          themeButton.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
+        if (themeButton) {
+          const updateThemeLabel = () => {
+            themeButton.textContent = root.dataset.theme === 'dark' ? 'Dark' : 'Light';
+            themeButton.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
+          };
+          themeButton.addEventListener('click', () => {
+            root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+            updateThemeLabel();
+          });
+          updateThemeLabel();
+        }
+
+        const copyButton = document.querySelector('[data-copy-toggle]');
+        if (copyButton) {
+          const savedCopyStyle = localStorage.getItem('portfolio-copy-style');
+          if (savedCopyStyle === 'pink' || savedCopyStyle === 'plain') root.dataset.copyStyle = savedCopyStyle;
+          const updateCopyLabel = () => {
+            const pink = root.dataset.copyStyle !== 'plain';
+            copyButton.textContent = pink ? 'Pink' : 'Plain';
+            copyButton.setAttribute('aria-pressed', String(pink));
+          };
+          copyButton.addEventListener('click', () => {
+            root.dataset.copyStyle = root.dataset.copyStyle === 'plain' ? 'pink' : 'plain';
+            localStorage.setItem('portfolio-copy-style', root.dataset.copyStyle);
+            updateCopyLabel();
+          });
+          updateCopyLabel();
+        }
+
+        const bio = document.querySelector('[data-type-bio="true"]');
+        if (!bio) return;
+        let lines = [];
+        try { lines = JSON.parse(bio.dataset.bioLines || '[]'); } catch {}
+        if (!lines.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        bio.setAttribute('aria-label', lines.join(' '));
+        bio.innerHTML = '';
+        const stream = lines.flatMap((line, i) => [...line, ...(i < lines.length - 1 ? ['\n'] : [])]);
+        let i = 0;
+        const tick = () => {
+          const char = stream[i++];
+          if (char === '\n') bio.appendChild(document.createElement('br'));
+          else bio.appendChild(document.createTextNode(char));
+          if (i < stream.length) window.setTimeout(tick, char === ' ' ? 9 : 18 + Math.random() * 20);
         };
-        themeButton.addEventListener('click', () => {
-          root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-          updateLabel();
-        });
-        updateLabel();
+        window.setTimeout(tick, 180);
       })();
     </script>
     <script is:inline src={withBase('base-path.js')}></script>
