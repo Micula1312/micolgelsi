@@ -34,8 +34,8 @@
   observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
 
-/* YEAR VIEW — deliberately lightweight. No class MutationObserver, no polling,
-   no eager project requests: load one avatar only when the user hovers/focuses. */
+/* YEAR VIEW — one shared avatar stage. Prefer avatar data already rendered on
+   each project row; fall back to the project page only for older content. */
 (() => {
   const base = '/portfolio';
   const cache = new Map();
@@ -48,6 +48,8 @@
     if (value.startsWith('/') && !value.startsWith('//')) return `${base}${value}`;
     return value;
   };
+
+  const avatarKind = src => /\.(?:mp4|webm|mov)(?:[?#].*)?$/i.test(src || '') ? 'video' : 'image';
 
   const boot = () => {
     const list = document.querySelector('#work-list');
@@ -70,6 +72,13 @@
 
     const getAvatar = async row => {
       if (row.dataset.external === 'true') return null;
+
+      const direct = String(row.dataset.avatar || '').trim();
+      if (direct) {
+        const src = new URL(withBase(direct), window.location.origin).href;
+        return { src, kind: avatarKind(src) };
+      }
+
       const raw = row.getAttribute('href');
       if (!raw) return null;
       const href = new URL(raw, window.location.href).href;
@@ -127,7 +136,8 @@
     const show = async row => {
       if (list.dataset.view !== 'year' || row.dataset.external === 'true') return;
       activeRow = row;
-      stage.style.background = 'var(--signal)';
+      const hasDirectAvatar = Boolean(String(row.dataset.avatar || '').trim());
+      stage.style.background = hasDirectAvatar ? 'transparent' : 'var(--signal)';
       stage.classList.add('is-visible');
 
       const avatar = await getAvatar(row);
@@ -135,6 +145,8 @@
       if (avatar) {
         mount(avatar);
         stage.style.background = 'transparent';
+      } else {
+        stage.classList.remove('is-visible');
       }
     };
 
