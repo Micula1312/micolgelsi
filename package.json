@@ -3,13 +3,14 @@
   "type": "module",
   "version": "0.1.0",
   "scripts": {
-    "dev": "node scripts/import-content.mjs && astro dev --host",
+    "sync:research": "node scripts/sync-research-config.mjs",
+    "dev": "node scripts/sync-research-config.mjs && node scripts/import-content.mjs && astro dev --host",
     "dev:watch": "node scripts/dev.mjs",
     "admin": "node scripts/admin-server.mjs",
-    "build": "node scripts/import-content.mjs && astro build",
+    "build": "node scripts/sync-research-config.mjs && node scripts/import-content.mjs && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "import:content": "node scripts/import-content.mjs"
+    "import:content": "node scripts/sync-research-config.mjs && node scripts/import-content.mjs"
   },
   "dependencies": {
     "astro": "7.2.4"
