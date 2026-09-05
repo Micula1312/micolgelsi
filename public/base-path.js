@@ -34,9 +34,8 @@
   observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
 
-/* YEAR VIEW — reveal the project's own avatar as a small rotating star while
-   the title travels across its timeline segment. Avatar URLs are discovered
-   lazily from the project page so the index stays lightweight. */
+/* YEAR VIEW — reveal the project's own avatar as a rotating star. The star is
+   always pinned to the same top-left position inside the Year panel. */
 (() => {
   const cache = new Map();
   const pending = new Map();
@@ -76,6 +75,14 @@
     return job;
   };
 
+  const pinStarToPanel = (star, row) => {
+    const panel = row.closest('.work-list');
+    if (!panel) return;
+    const rect = panel.getBoundingClientRect();
+    star.style.left = `${rect.left + 20}px`;
+    star.style.top = `${rect.top + 20}px`;
+  };
+
   const ensureStar = async row => {
     if (!isYearRow(row)) return;
     let star = row.querySelector('.year-avatar-star');
@@ -85,6 +92,7 @@
       star.setAttribute('aria-hidden', 'true');
       row.appendChild(star);
     }
+    pinStarToPanel(star, row);
     row.classList.add('is-avatar-pending');
     const href = sameOriginHref(row);
     const avatar = await findAvatar(href);
@@ -97,11 +105,14 @@
       media.className = 'year-avatar-star-media';
       if (avatar.kind === 'video') {
         media.muted = true;
+        media.defaultMuted = true;
         media.loop = true;
         media.autoplay = true;
         media.playsInline = true;
-        media.preload = 'metadata';
-        media.play?.().catch(() => {});
+        media.setAttribute('muted', '');
+        media.setAttribute('playsinline', '');
+        media.setAttribute('autoplay', '');
+        media.preload = 'auto';
       } else {
         media.alt = '';
         media.decoding = 'async';
@@ -110,6 +121,14 @@
       star.dataset.src = avatar.src;
     }
     row.classList.add('has-year-avatar');
+    const video = star.querySelector('video');
+    if (video) {
+      video.muted = true;
+      video.defaultMuted = true;
+      const startVideo = () => video.play().catch(() => {});
+      if (video.readyState >= 2) startVideo();
+      else video.addEventListener('canplay', startVideo, { once: true });
+    }
   };
 
   const hideStar = row => {
@@ -136,4 +155,10 @@
     const row = event.target.closest?.('.work-row');
     if (row && !row.contains(event.relatedTarget)) hideStar(row);
   });
+  window.addEventListener('resize', () => {
+    document.querySelectorAll('.work-row.has-year-avatar .year-avatar-star').forEach(star => {
+      const row = star.closest('.work-row');
+      if (row) pinStarToPanel(star, row);
+    });
+  }, { passive: true });
 })();
