@@ -6,8 +6,9 @@ html[data-style="rgb"] .site-header {
   box-shadow: none !important;
 }
 
-.site-name{position:relative;display:inline-grid;align-items:center;justify-items:start;text-decoration:none!important;white-space:nowrap}
-.site-name-default,.site-name-hover{grid-area:1/1;transition:opacity .14s linear,transform .14s linear}
-.site-name-hover{opacity:0;transform:translateY(2px);color:var(--signal)}
-.site-name:hover .site-name-default,.site-name:focus-visible .site-name-default{opacity:0;transform:translateY(-2px)}
-.site-name:hover .site-name-hover,.site-name:focus-visible .site-name-hover{opacity:1;transform:translateY(0)}
+/* Same Four Tet / symbol-glyph hover used by the Context project view. */
+html[data-style="rgb"] .site-name{position:relative;display:inline-block;text-decoration:none!important;white-space:nowrap}
+html[data-style="rgb"] .site-name:hover,html[data-style="rgb"] .site-name:focus-visible{color:transparent!important;text-shadow:none!important}
+html[data-style="rgb"] .site-name:hover::after,html[data-style="rgb"] .site-name:focus-visible::after{content:'⣎⡇ꉺლ༽இ•̛)ྀ◞';position:absolute;left:0;top:0;width:max-content;white-space:nowrap;color:var(--signal);font-family:"Segoe UI Symbol","Segoe UI Emoji","Apple Symbols","Noto Sans Symbols 2",sans-serif;font-weight:400;font-size:.92em;letter-spacing:.025em;text-shadow:0 0 0 transparent;pointer-events:none;animation:wingding-glow .82s ease-out forwards!important}
+html[data-style="native"] .site-name::after{content:none!important}
+@media(prefers-reduced-motion:reduce){html[data-style="rgb"] .site-name:hover::after,html[data-style="rgb"] .site-name:focus-visible::after{animation:none!important;text-shadow:0 0 4px var(--signal),0 0 10px var(--signal-soft),0 0 18px var(--signal-faint)}}
