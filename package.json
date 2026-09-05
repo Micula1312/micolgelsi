@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "node scripts/import-content.mjs && astro dev --host",
     "dev:watch": "node scripts/dev.mjs",
+    "admin": "node scripts/admin-server.mjs",
     "build": "node scripts/import-content.mjs && astro build",
     "preview": "astro preview",
     "check": "astro check",
