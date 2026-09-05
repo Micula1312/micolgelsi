@@ -1,16 +1,16 @@
 TITLE: hic-est-ignes
 TYPE: project
-START: 
-END: ongoing
+START: 2023-09
+END: 2025-10
 STATUS: ongoing
 AVATAR: videos/performanceCLUSTER-2-.mp4
-COVER: videos/performanceCLUSTER.mp4
+COVER: images/_DSC6427.webp
 RESEARCH: 
 MEDIUM: 
 EXCERPT: 
 DESCRIPTION: 
 OUTPUTS: 
-AUTHOR: 
+AUTHOR: Blivet
 FEATURED: 
 MAIN LINK: 
 COLLABORATORS: 
