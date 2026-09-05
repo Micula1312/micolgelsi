@@ -34,8 +34,9 @@
   observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
 
-/* YEAR VIEW — one shared rotating avatar stage. It follows the exact
-   .is-year-focus state already used by the timeline hover interaction. */
+/* YEAR VIEW — shared rotating avatar stage. The stage becomes visible as soon
+   as a project enters the existing .is-year-focus state; media loading can no
+   longer keep the star hidden. */
 (() => {
   const base = '/portfolio';
   const cache = new Map();
@@ -65,6 +66,13 @@
     return stage;
   };
 
+  const forceVisible = stage => {
+    stage.classList.add('is-visible', 'is-loading');
+    stage.style.display = 'block';
+    stage.style.opacity = '1';
+    stage.style.visibility = 'visible';
+  };
+
   const projectHref = row => {
     const raw = row?.getAttribute('href');
     if (!raw || row?.dataset.external === 'true') return '';
@@ -88,15 +96,16 @@
         if (!media) return null;
         const src = media.getAttribute('src');
         if (!src) return null;
-        const resolved = withBase(src);
-        const result = {
-          src: new URL(resolved, window.location.origin).href,
+        return {
+          src: new URL(withBase(src), window.location.origin).href,
           kind: media.tagName.toLowerCase() === 'video' ? 'video' : 'image'
         };
-        cache.set(href, result);
-        return result;
       })
       .catch(() => null)
+      .then(result => {
+        if (result) cache.set(href, result);
+        return result;
+      })
       .finally(() => pending.delete(href));
 
     pending.set(href, job);
@@ -105,6 +114,7 @@
 
   const mountMedia = (stage, avatar) => {
     if (stage.dataset.src === avatar.src && stage.firstElementChild) {
+      stage.classList.remove('is-loading');
       const existing = stage.firstElementChild;
       if (existing.tagName === 'VIDEO') {
         existing.muted = true;
@@ -120,6 +130,12 @@
     const media = document.createElement(avatar.kind === 'video' ? 'video' : 'img');
     media.className = 'year-avatar-star-media';
 
+    const loaded = () => {
+      stage.classList.remove('is-loading');
+      forceVisible(stage);
+      stage.classList.remove('is-loading');
+    };
+
     if (avatar.kind === 'video') {
       media.muted = true;
       media.defaultMuted = true;
@@ -133,14 +149,15 @@
       media.setAttribute('playsinline', '');
       media.src = avatar.src;
       const play = () => media.play().catch(() => {});
-      media.addEventListener('loadeddata', play);
-      media.addEventListener('canplay', play);
+      media.addEventListener('loadeddata', () => { loaded(); play(); });
+      media.addEventListener('canplay', () => { loaded(); play(); });
       stage.appendChild(media);
       media.load();
       play();
     } else {
       media.alt = '';
       media.decoding = 'async';
+      media.addEventListener('load', loaded, { once: true });
       media.src = avatar.src;
       stage.appendChild(media);
     }
@@ -151,22 +168,29 @@
   const showForRow = async row => {
     const list = getList();
     if (!list || list.dataset.view !== 'year' || !row?.classList.contains('is-year-focus')) return;
+
     activeRow = row;
     const stage = ensureStage();
     if (!stage) return;
 
-    const avatar = await findAvatar(projectHref(row));
-    if (!avatar || activeRow !== row || !row.classList.contains('is-year-focus') || getList()?.dataset.view !== 'year') return;
+    /* Crucial: reveal the star now, before any async media request. */
+    forceVisible(stage);
 
-    mountMedia(stage, avatar);
-    stage.classList.add('is-visible');
+    const avatar = await findAvatar(projectHref(row));
+    if (activeRow !== row || !row.classList.contains('is-year-focus') || getList()?.dataset.view !== 'year') return;
+
+    if (avatar) mountMedia(stage, avatar);
+    else stage.classList.remove('is-loading');
   };
 
   const hideStage = () => {
     activeRow = null;
     const stage = ensureStage();
-    stage?.classList.remove('is-visible');
-    const video = stage?.querySelector('video');
+    if (!stage) return;
+    stage.classList.remove('is-visible', 'is-loading');
+    stage.style.opacity = '0';
+    stage.style.visibility = 'hidden';
+    const video = stage.querySelector('video');
     if (video && !video.paused) video.pause();
   };
 
@@ -187,6 +211,7 @@
       requestAnimationFrame(boot);
       return;
     }
+
     ensureStage();
     focusObserver?.disconnect();
     focusObserver = new MutationObserver(mutations => {
