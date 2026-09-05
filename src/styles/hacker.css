@@ -31,15 +31,25 @@
 .research-anchor,
 .year-axis { font-size: 11px; }
 
-/* Discursive copy: Helvetica italic in the same pink language as the web-development accent. */
-.site-bio,
-.lead,
-.prose,
-.web-inspector-summary {
+/* Discursive copy can switch independently from light/dark mode. */
+html[data-copy-style="pink"] .site-bio,
+html[data-copy-style="pink"] .lead,
+html[data-copy-style="pink"] .prose,
+html[data-copy-style="pink"] .web-inspector-summary {
   font-family: Helvetica, Arial, sans-serif;
   font-style: italic;
   font-weight: 400;
   color: var(--prose-pink);
+}
+
+html[data-copy-style="plain"] .site-bio,
+html[data-copy-style="plain"] .lead,
+html[data-copy-style="plain"] .prose,
+html[data-copy-style="plain"] .web-inspector-summary {
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  color: inherit;
 }
 
 .site-name::before { content: '★ '; color: var(--signal); font-family: var(--mono); }
