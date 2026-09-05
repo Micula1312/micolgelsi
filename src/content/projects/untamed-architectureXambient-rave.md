@@ -15,6 +15,7 @@ medium:
 researchAreas:
   - urban-wilderness
   - generative-archives
+  - live-data-manipulation
 collaborators:
   - "Stiky Verde"
   - "Giuseppe di Capua"
@@ -33,6 +34,8 @@ credits:
   []
 photoCredits:
   []
+avatar: "/media/artistic/untamed-architectureXambient-rave/_source/cover.mp4"
+cover: "/media/artistic/untamed-architectureXambient-rave/cover.mp4"
 gallery:
   []
 videos:

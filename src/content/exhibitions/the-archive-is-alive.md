@@ -12,7 +12,7 @@ medium:
   - "participatory practice"
 researchAreas:
   - generative-archives
-  - urban-wilderness
+  - live-data-manipulation
   - bodies-affects
   - surveillance-politics-of-visibility
 collaborators:

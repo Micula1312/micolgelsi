@@ -72,6 +72,7 @@ moments:
       - "/media/artistic/abundance/moments/granata/ASAP_Granata_1.85.3.webp"
       - "/media/artistic/abundance/moments/granata/ASAP_Granata_1.148.1.webp"
       - "/media/artistic/abundance/moments/granata/ASAP_Granata_1.150.1.webp"
+      - "/media/artistic/abundance/moments/granata/asap-abundance-granata.mp4"
       - "/media/artistic/abundance/moments/granata/asap-granata.webp"
       - "/media/artistic/abundance/moments/granata/WhatsApp-Image-2023-08-09-at-09.54.541.webp"
     href: "https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance,bologna/"
@@ -80,6 +81,7 @@ moments:
     type: "performance + dj set"
     location: "DAS – Dispositivo Arti Sperimentali, Bologna"
     gallery:
+      - "/media/artistic/abundance/moments/collagene/Abundance_asap_reel_1.mp4"
       - "/media/artistic/abundance/moments/collagene/collagene 26.01 (8) (1).webp"
       - "/media/artistic/abundance/moments/collagene/collagene 26.01 (13) (1).webp"
       - "/media/artistic/abundance/moments/collagene/collagene 26.01 (17).webp"

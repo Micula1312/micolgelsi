@@ -74,6 +74,7 @@ moments:
       - "/media/artistic/archive-of-the-untamed/moments/maam2/a.webp"
       - "/media/artistic/archive-of-the-untamed/moments/maam2/avatar.gif"
       - "/media/artistic/archive-of-the-untamed/moments/maam2/IMG_0451.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/maam2/IMG_0469__2.mp4"
       - "/media/artistic/archive-of-the-untamed/moments/maam2/IMG_0469.webp"
   - date: "2026-02"
     title: "Archive of the #Untamed — Rifugi"
@@ -104,6 +105,7 @@ moments:
     type: "exhibition"
     location: "Ex Casa del Custode, Parco della Montagnola, Bologna"
     gallery:
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/document_5095992938815554757.mp4"
       - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5013.webp"
       - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5022.webp"
       - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5042.webp"
@@ -113,6 +115,8 @@ moments:
       - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5079.webp"
       - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5089.webp"
       - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5104.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5133.mp4"
+      - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5143.mp4"
       - "/media/artistic/archive-of-the-untamed/moments/soft-data/photo_5960547809889469783_y.webp"
 works:
   []
