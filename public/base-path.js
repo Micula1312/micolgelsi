@@ -34,12 +34,15 @@
   observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
 
-/* YEAR VIEW — reveal the project's own avatar as a rotating star. The star is
-   always pinned to the same top-left position inside the Year panel. */
+/* YEAR VIEW — one shared avatar stage pinned inside the Year panel. */
 (() => {
   const cache = new Map();
   const pending = new Map();
-  const isYearRow = row => row?.matches?.('.work-row') && row.closest('.work-list')?.dataset.view === 'year';
+  let activeRow = null;
+
+  const getList = () => document.querySelector('#work-list');
+  const isYearRow = row => row?.matches?.('.work-row') && getList()?.dataset.view === 'year';
+
   const sameOriginHref = row => {
     const raw = row?.getAttribute('href');
     if (!raw || row?.dataset.external === 'true') return '';
@@ -47,6 +50,19 @@
       const url = new URL(raw, window.location.href);
       return url.origin === window.location.origin ? url.href : '';
     } catch { return ''; }
+  };
+
+  const ensureStage = () => {
+    const list = getList();
+    if (!list) return null;
+    let stage = list.querySelector(':scope > .year-avatar-star');
+    if (!stage) {
+      stage = document.createElement('span');
+      stage.className = 'year-avatar-star';
+      stage.setAttribute('aria-hidden', 'true');
+      list.appendChild(stage);
+    }
+    return stage;
   };
 
   const findAvatar = async href => {
@@ -75,90 +91,86 @@
     return job;
   };
 
-  const pinStarToPanel = (star, row) => {
-    const panel = row.closest('.work-list');
-    if (!panel) return;
-    const rect = panel.getBoundingClientRect();
-    star.style.left = `${rect.left + 20}px`;
-    star.style.top = `${rect.top + 20}px`;
+  const mountMedia = (stage, avatar) => {
+    if (stage.dataset.src === avatar.src && stage.firstElementChild) {
+      const existing = stage.firstElementChild;
+      if (existing.tagName === 'VIDEO') {
+        existing.muted = true;
+        existing.playsInline = true;
+        existing.loop = true;
+        existing.play().catch(() => {});
+      }
+      return;
+    }
+
+    stage.replaceChildren();
+    const media = document.createElement(avatar.kind === 'video' ? 'video' : 'img');
+    media.className = 'year-avatar-star-media';
+
+    if (avatar.kind === 'video') {
+      media.muted = true;
+      media.defaultMuted = true;
+      media.loop = true;
+      media.autoplay = true;
+      media.playsInline = true;
+      media.setAttribute('muted', '');
+      media.setAttribute('playsinline', '');
+      media.setAttribute('autoplay', '');
+      media.setAttribute('loop', '');
+      media.preload = 'auto';
+      media.src = avatar.src;
+      const play = () => media.play().catch(() => {});
+      media.addEventListener('loadeddata', play, { once: true });
+      media.addEventListener('canplay', play, { once: true });
+      media.load();
+      play();
+    } else {
+      media.alt = '';
+      media.decoding = 'async';
+      media.src = avatar.src;
+    }
+
+    stage.appendChild(media);
+    stage.dataset.src = avatar.src;
   };
 
-  const ensureStar = async row => {
+  const show = async row => {
     if (!isYearRow(row)) return;
-    let star = row.querySelector('.year-avatar-star');
-    if (!star) {
-      star = document.createElement('span');
-      star.className = 'year-avatar-star';
-      star.setAttribute('aria-hidden', 'true');
-      row.appendChild(star);
-    }
-    pinStarToPanel(star, row);
-    row.classList.add('is-avatar-pending');
+    activeRow = row;
+    const stage = ensureStage();
+    if (!stage) return;
     const href = sameOriginHref(row);
     const avatar = await findAvatar(href);
-    row.classList.remove('is-avatar-pending');
-    if (!avatar || !isYearRow(row) || !(row.matches(':hover') || row.matches(':focus-within') || document.activeElement === row)) return;
-    if (!star.dataset.src || star.dataset.src !== avatar.src) {
-      star.replaceChildren();
-      const media = document.createElement(avatar.kind === 'video' ? 'video' : 'img');
-      media.src = avatar.src;
-      media.className = 'year-avatar-star-media';
-      if (avatar.kind === 'video') {
-        media.muted = true;
-        media.defaultMuted = true;
-        media.loop = true;
-        media.autoplay = true;
-        media.playsInline = true;
-        media.setAttribute('muted', '');
-        media.setAttribute('playsinline', '');
-        media.setAttribute('autoplay', '');
-        media.preload = 'auto';
-      } else {
-        media.alt = '';
-        media.decoding = 'async';
-      }
-      star.appendChild(media);
-      star.dataset.src = avatar.src;
-    }
-    row.classList.add('has-year-avatar');
-    const video = star.querySelector('video');
-    if (video) {
-      video.muted = true;
-      video.defaultMuted = true;
-      const startVideo = () => video.play().catch(() => {});
-      if (video.readyState >= 2) startVideo();
-      else video.addEventListener('canplay', startVideo, { once: true });
-    }
+    if (activeRow !== row || !avatar || getList()?.dataset.view !== 'year') return;
+    mountMedia(stage, avatar);
+    stage.classList.add('is-visible');
   };
 
-  const hideStar = row => {
-    row?.classList?.remove('has-year-avatar', 'is-avatar-pending');
-    const video = row?.querySelector?.('.year-avatar-star video');
+  const hide = row => {
+    if (row && activeRow && row !== activeRow) return;
+    activeRow = null;
+    const stage = ensureStage();
+    stage?.classList.remove('is-visible');
+    const video = stage?.querySelector('video');
     if (video && !video.paused) video.pause();
   };
 
   document.addEventListener('mouseover', event => {
     const row = event.target.closest?.('.work-row');
     if (!row || row.contains(event.relatedTarget) || !isYearRow(row)) return;
-    ensureStar(row);
+    show(row);
   });
   document.addEventListener('mouseout', event => {
     const row = event.target.closest?.('.work-row');
     if (!row || row.contains(event.relatedTarget)) return;
-    hideStar(row);
+    hide(row);
   });
   document.addEventListener('focusin', event => {
     const row = event.target.closest?.('.work-row');
-    if (isYearRow(row)) ensureStar(row);
+    if (isYearRow(row)) show(row);
   });
   document.addEventListener('focusout', event => {
     const row = event.target.closest?.('.work-row');
-    if (row && !row.contains(event.relatedTarget)) hideStar(row);
+    if (row && !row.contains(event.relatedTarget)) hide(row);
   });
-  window.addEventListener('resize', () => {
-    document.querySelectorAll('.work-row.has-year-avatar .year-avatar-star').forEach(star => {
-      const row = star.closest('.work-row');
-      if (row) pinStarToPanel(star, row);
-    });
-  }, { passive: true });
 })();
