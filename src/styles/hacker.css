@@ -63,6 +63,27 @@ html[data-style="rgb"] .work-list.is-year-plane .timeline-end-top { color: var(-
 html[data-style="rgb"] .work-list.is-year-plane .moment-dot:hover { background: var(--signal); box-shadow: 0 0 9px var(--signal); }
 html[data-style="rgb"] .work-list.is-year-plane .moment-dot:hover .moment-label { border-color: transparent; box-shadow: 0 0 14px var(--signal-soft); }
 
+/* WEB DEVELOPMENT — editorial, light, intentionally softer than the system labels. */
+.web-role,
+.web-inspector-kicker,
+.web-inspector-visit {
+  font-family: Helvetica, Arial, sans-serif !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  color: #ff4fc8 !important;
+  letter-spacing: 0 !important;
+}
+.web-role {
+  text-transform: lowercase;
+  animation: none !important;
+  transition: opacity .18s ease, transform .18s ease;
+}
+.is-external-project:hover .web-role,
+.is-external-project:focus-visible .web-role {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
 /* INTERNAL PAGES — same coordinate plane, but editorial spacing. */
 .eyebrow { margin: 8px 0 34px; }
 .eyebrow a { text-decoration: none; }
