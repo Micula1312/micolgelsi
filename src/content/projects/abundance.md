@@ -15,10 +15,10 @@ medium:
   - "party"
   - "workshop"
 researchAreas:
-  - eco-feminism
   - bodies-affects
 collaborators:
   - "studioferrari"
+  - "Bundabolo"
 artistsInvolved:
   - "Lucia Fontanelli"
   - "Micol Gelsi"
@@ -41,6 +41,7 @@ credits:
   - "Nico Guerzoni"
   - "Caro Anderson — dancer"
   - "founder of Bundabolo"
+  - "studioferrari — artist studio"
   - "Romina Thomas — DJ"
   - "Filippo Bonelli (Girovelle Psicotroniche) — original music"
   - "Malezachi — original music"

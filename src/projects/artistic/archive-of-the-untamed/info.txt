@@ -24,7 +24,7 @@ research, archive, website, installation, participatory practice
 RESEARCH:
 urban-wilderness
 generative-archives
-interspecies
+live-data-manipulation
 
 COLLABORATORS:
 Lucia Fontanelli, Olivia Teglia, Giuseppe di Capua, Comitato Rigenerazione no Speculazione

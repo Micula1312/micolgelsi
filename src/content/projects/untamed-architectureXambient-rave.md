@@ -15,8 +15,6 @@ medium:
 researchAreas:
   - urban-wilderness
   - generative-archives
-  - more-than-human-relations
-  - bodies-affects
 collaborators:
   - "Stiky Verde"
   - "Giuseppe di Capua"
