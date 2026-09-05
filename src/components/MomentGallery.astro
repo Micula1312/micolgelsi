@@ -6,13 +6,16 @@ const withBase = (src = '') => {
   if (!value.startsWith('/') || value.startsWith('//') || value.startsWith(base)) return value;
   return `${base}${value.replace(/^\//, '')}`;
 };
-const resolvedImages: string[] = images.map(withBase);
+const resolvedMedia: string[] = images.map(withBase);
+const isVideo = (src = '') => /\.(?:mp4|webm|mov)(?:$|\?)/i.test(src);
 ---
-{resolvedImages.length > 0 && (
-  <div class="moment-gallery" data-moment-gallery data-images={JSON.stringify(resolvedImages)} data-title={title}>
-    {resolvedImages.map((src: string, index: number) => (
-      <button class="moment-thumb" type="button" data-moment-index={index} aria-label={`Open image ${index + 1} of ${resolvedImages.length}`}>
-        <img src={src} alt={`${title} — ${index + 1}`} loading="lazy" />
+{resolvedMedia.length > 0 && (
+  <div class="moment-gallery" data-moment-gallery data-media={JSON.stringify(resolvedMedia)} data-title={title}>
+    {resolvedMedia.map((src: string, index: number) => (
+      <button class={`moment-thumb ${isVideo(src) ? 'is-video' : ''}`} type="button" data-moment-index={index} aria-label={`Open ${isVideo(src) ? 'video' : 'image'} ${index + 1} of ${resolvedMedia.length}`}>
+        {isVideo(src)
+          ? <><video src={src} muted playsinline preload="metadata"></video><span class="moment-video-mark" aria-hidden="true">▶</span></>
+          : <img src={src} alt={`${title} — ${index + 1}`} loading="lazy" />}
       </button>
     ))}
   </div>
@@ -26,25 +29,46 @@ const resolvedImages: string[] = images.map(withBase);
     lightbox.className = 'moment-lightbox';
     lightbox.dataset.momentLightbox = '';
     lightbox.setAttribute('aria-hidden','true');
-    lightbox.innerHTML = `<button class="moment-lightbox-close" type="button" aria-label="Close">×</button><button class="moment-lightbox-prev" type="button" aria-label="Previous image">←</button><figure><img alt=""><figcaption></figcaption></figure><button class="moment-lightbox-next" type="button" aria-label="Next image">→</button>`;
+    lightbox.innerHTML = `<button class="moment-lightbox-close" type="button" aria-label="Close">×</button><button class="moment-lightbox-prev" type="button" aria-label="Previous media">←</button><figure><div class="moment-lightbox-stage"></div><figcaption></figcaption></figure><button class="moment-lightbox-next" type="button" aria-label="Next media">→</button>`;
     document.body.append(lightbox);
   }
   if (lightbox) {
     const box = lightbox;
-    const image = box.querySelector<HTMLImageElement>('img');
+    const stage = box.querySelector<HTMLElement>('.moment-lightbox-stage');
     const caption = box.querySelector<HTMLElement>('figcaption');
-    if (image && caption) {
-      let currentImages: string[] = [];
+    if (stage && caption) {
+      let currentMedia: string[] = [];
       let currentTitle = '';
       let currentIndex = 0;
+      const isVideo = (src = '') => /\.(?:mp4|webm|mov)(?:$|\?)/i.test(src);
+      const stopCurrentVideo = () => {
+        const video = stage.querySelector<HTMLVideoElement>('video');
+        if (video) video.pause();
+      };
       const show = () => {
-        if (!currentImages.length) return;
-        image.src = currentImages[currentIndex] ?? '';
-        image.alt = `${currentTitle} — ${currentIndex + 1}`;
-        caption.textContent = `${currentIndex + 1} / ${currentImages.length}`;
+        if (!currentMedia.length) return;
+        stopCurrentVideo();
+        const src = currentMedia[currentIndex] ?? '';
+        stage.innerHTML = '';
+        if (isVideo(src)) {
+          const video = document.createElement('video');
+          video.src = src;
+          video.controls = true;
+          video.autoplay = true;
+          video.playsInline = true;
+          video.preload = 'metadata';
+          stage.append(video);
+          video.play().catch(() => {});
+        } else {
+          const image = document.createElement('img');
+          image.src = src;
+          image.alt = `${currentTitle} — ${currentIndex + 1}`;
+          stage.append(image);
+        }
+        caption.textContent = `${currentIndex + 1} / ${currentMedia.length}`;
       };
       const open = (gallery: HTMLElement, index: number) => {
-        currentImages = JSON.parse(gallery.dataset.images || '[]') as string[];
+        currentMedia = JSON.parse(gallery.dataset.media || '[]') as string[];
         currentTitle = gallery.dataset.title || '';
         currentIndex = index;
         show();
@@ -53,6 +77,7 @@ const resolvedImages: string[] = images.map(withBase);
         document.documentElement.classList.add('has-lightbox');
       };
       const close = () => {
+        stopCurrentVideo();
         box.classList.remove('is-open');
         box.setAttribute('aria-hidden','true');
         document.documentElement.classList.remove('has-lightbox');
@@ -63,6 +88,11 @@ const resolvedImages: string[] = images.map(withBase);
         gallery.dataset.galleryReady = '';
         gallery.querySelectorAll<HTMLElement>('[data-moment-index]').forEach(button => {
           button.addEventListener('click', () => open(gallery, Number(button.dataset.momentIndex || 0)));
+        });
+        gallery.querySelectorAll<HTMLVideoElement>('.moment-thumb video').forEach(video => {
+          const thumb = video.closest<HTMLElement>('.moment-thumb');
+          thumb?.addEventListener('pointerenter', () => video.play().catch(() => {}));
+          thumb?.addEventListener('pointerleave', () => { video.pause(); video.currentTime = 0; });
         });
         if (!reducedMotion) {
           let raf = 0, previous = 0, direction = 1;
@@ -100,22 +130,22 @@ const resolvedImages: string[] = images.map(withBase);
         box.dataset.ready = '';
         box.querySelector<HTMLButtonElement>('.moment-lightbox-close')?.addEventListener('click', close);
         box.querySelector<HTMLButtonElement>('.moment-lightbox-prev')?.addEventListener('click', () => {
-          if (!currentImages.length) return;
-          currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+          if (!currentMedia.length) return;
+          currentIndex = (currentIndex - 1 + currentMedia.length) % currentMedia.length;
           show();
         });
         box.querySelector<HTMLButtonElement>('.moment-lightbox-next')?.addEventListener('click', () => {
-          if (!currentImages.length) return;
-          currentIndex = (currentIndex + 1) % currentImages.length;
+          if (!currentMedia.length) return;
+          currentIndex = (currentIndex + 1) % currentMedia.length;
           show();
         });
         box.addEventListener('click', event => { if (event.target === box) close(); });
         document.addEventListener('keydown', event => {
           if (!box.classList.contains('is-open')) return;
           if (event.key === 'Escape') close();
-          if (!currentImages.length) return;
-          if (event.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; show(); }
-          if (event.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % currentImages.length; show(); }
+          if (!currentMedia.length) return;
+          if (event.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + currentMedia.length) % currentMedia.length; show(); }
+          if (event.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % currentMedia.length; show(); }
         });
       }
     }
