@@ -119,9 +119,9 @@ body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar {display:non
 }
 
 /* RESEARCH becomes an atlas: one research field, then every project that crosses it. */
-body[data-project-view] .work-list.is-research-map{overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:none!important;padding:14px 16px 64px}
+body[data-project-view] .work-list.is-research-map{overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:none!important;padding:0 16px 64px}
 body[data-project-view] .work-list.is-research-map::-webkit-scrollbar{display:none!important}
-.research-atlas{position:relative!important;z-index:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 30px;align-content:start;width:100%;padding:4px 0 40px}
+.research-atlas{position:relative!important;z-index:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 30px;align-content:start;width:100%;padding:0 0 40px;margin:0}
 .research-atlas[hidden]{display:none!important}
 .research-group{min-width:0;border-top:1px solid var(--line);padding-top:8px}
 .research-group-title{margin:0 0 4px;font-family:var(--mono);font-size:10px;line-height:1.15;font-weight:400;color:var(--muted);letter-spacing:.025em}
@@ -142,8 +142,8 @@ body[data-project-view] .work-list.is-research-map::-webkit-scrollbar{display:no
   body[data-project-view] .index-toolbar h1{font-size:11px;white-space:nowrap}
   body[data-project-view] .view-switch{justify-self:end!important;gap:11px!important;font-size:9px;white-space:nowrap}
   body[data-project-view] .view-button{min-height:20px!important}
-  body[data-project-view] .work-list.is-research-map{display:block!important;padding:12px 10px 54px!important;overflow-y:auto!important}
-  .research-atlas{display:block!important;padding:0 0 36px}
+  body[data-project-view] .work-list.is-research-map{display:block!important;padding:0 10px 54px!important;overflow-y:auto!important}
+  .research-atlas{display:block!important;padding:0 0 36px;margin:0}
   .research-atlas[hidden]{display:none!important}
   .research-group{padding-top:7px;margin-bottom:22px}
   .research-group-title{font-size:9px;margin-bottom:3px;color:var(--muted)}
