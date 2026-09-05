@@ -32,23 +32,25 @@
 .year-axis { font-size: 11px; }
 
 /* Discursive copy can switch independently from light/dark mode.
-   Pink mode uses the exact web-role typographic language, while staying visible/readable. */
+   Pink mode borrows the web-role language, two points larger for readable copy. */
 html[data-copy-style="pink"] .site-bio,
 html[data-copy-style="pink"] .lead,
 html[data-copy-style="pink"] .prose,
 html[data-copy-style="pink"] .web-inspector-summary {
-  display: inline-block;
-  margin-left: 7px;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 10px;
-  font-weight: 400;
+  font-size: 12px;
   font-style: italic;
+  font-weight: 400;
   text-transform: lowercase;
-  color: #ff2bbd;
+  color: var(--prose-pink);
   opacity: 1;
-  transform: translateY(2px);
-  pointer-events: auto;
+  transform: none;
 }
+
+/* Bio is always a block below MICOL GELSI, never beside it. */
+.identity { display: block; }
+.site-name { display: inline-block; }
+.site-bio { display: block; margin-left: 0; }
 
 html[data-copy-style="plain"] .site-bio,
 html[data-copy-style="plain"] .lead,
@@ -58,9 +60,6 @@ html[data-copy-style="plain"] .web-inspector-summary {
   font-style: normal;
   font-weight: 400;
   color: inherit;
-  text-transform: none;
-  opacity: 1;
-  transform: none;
 }
 
 .site-name::before { content: '★ '; color: var(--signal); font-family: var(--mono); }
