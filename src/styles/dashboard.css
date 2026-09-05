@@ -111,7 +111,7 @@ body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar {display:non
   100%{transform:scale(1) rotateY(360deg)}
 }
 
-/* RESEARCH: generated atlas fills the whole panel instead of falling into one long column. */
+/* RESEARCH uses the existing scatter layout: no added padding, no inner scroll. */
 body[data-project-view] .work-list.is-research-map{
   overflow:hidden!important;
   padding:0!important;
@@ -119,69 +119,6 @@ body[data-project-view] .work-list.is-research-map{
   scrollbar-width:none!important;
 }
 body[data-project-view] .work-list.is-research-map::-webkit-scrollbar{display:none!important}
-body[data-project-view="research"] .research-atlas{
-  position:absolute;
-  inset:0;
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  grid-template-rows:repeat(3,minmax(0,1fr));
-  gap:0;
-  padding:0;
-  overflow:hidden;
-}
-body[data-project-view="research"] .research-group{
-  min-width:0;
-  min-height:0;
-  padding:14px 16px 12px;
-  border-right:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
-}
-body[data-project-view="research"] .research-group:nth-child(4n){border-right:0}
-body[data-project-view="research"] .research-group-title{
-  flex:0 0 auto;
-  margin:0 0 8px;
-  font-size:11px;
-  line-height:1.1;
-  font-weight:400;
-  color:var(--fg);
-}
-body[data-project-view="research"] .research-group-subtitle{
-  flex:0 0 auto;
-  margin:0 0 10px;
-  max-width:30ch;
-  font-size:9px;
-  line-height:1.25;
-  color:var(--muted);
-}
-body[data-project-view="research"] .research-project{
-  display:block;
-  width:100%;
-  margin:0 0 4px;
-  font-size:10px;
-  line-height:1.15;
-  white-space:normal;
-  overflow-wrap:anywhere;
-  text-decoration:none!important;
-}
-body[data-project-view="research"] .research-project.is-featured{color:var(--signal)}
-body[data-project-view="research"] .research-project:hover,
-body[data-project-view="research"] .research-project:focus-visible{
-  color:var(--signal)!important;
-  text-shadow:0 0 5px var(--signal-soft);
-}
-
-@media(max-width:1100px){
-  body[data-project-view="research"] .research-atlas{
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    grid-template-rows:repeat(4,minmax(0,1fr));
-  }
-  body[data-project-view="research"] .research-group:nth-child(4n){border-right:1px solid var(--line)}
-  body[data-project-view="research"] .research-group:nth-child(3n){border-right:0}
-}
 
 @media(max-width:760px){
   body[data-fixed-shell="true"],body[data-fixed-shell="true"] .shell{height:100dvh;overflow:hidden}
@@ -194,20 +131,6 @@ body[data-project-view="research"] .research-project:focus-visible{
   body[data-project-view] .view-switch{justify-self:end!important;gap:11px!important;font-size:9px;white-space:nowrap}
   body[data-project-view] .view-button{min-height:20px!important}
   body[data-project-view] .work-list.is-research-map{padding:0!important;overflow:hidden!important}
-  body[data-project-view="research"] .research-atlas{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    grid-template-rows:repeat(5,minmax(0,1fr));
-  }
-  body[data-project-view="research"] .research-group,
-  body[data-project-view="research"] .research-group:nth-child(3n),
-  body[data-project-view="research"] .research-group:nth-child(4n){
-    padding:8px 9px 7px;
-    border-right:1px solid var(--line);
-  }
-  body[data-project-view="research"] .research-group:nth-child(2n){border-right:0}
-  body[data-project-view="research"] .research-group-title{font-size:9px;margin-bottom:4px}
-  body[data-project-view="research"] .research-group-subtitle{font-size:7px;line-height:1.15;margin-bottom:5px}
-  body[data-project-view="research"] .research-project{font-size:8px;line-height:1.08;margin-bottom:2px}
   .year-avatar-star{left:12px;top:12px;width:clamp(96px,28vw,132px)}
 }
 
