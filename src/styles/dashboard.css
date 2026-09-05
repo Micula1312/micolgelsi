@@ -65,21 +65,20 @@ body[data-project-view] .work-list.is-year-plane {overflow-x:hidden!important;ov
 body[data-project-view] .work-list.is-year-plane.is-scrollable-year {overflow-x:auto!important}
 body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar {display:none!important;width:0!important;height:0!important}
 
-/* YEAR hover: the avatar becomes a large central arcade sprite. It belongs to
-   the active project row but is visually pulled into the middle of the panel. */
+/* YEAR hover: large arcade-style avatar, always pinned to the same top-left
+   corner of the Year panel. JS supplies exact panel coordinates. */
 body[data-project-view] .work-list.is-year-plane .work-row {perspective:900px}
 .year-avatar-star{
   position:fixed;
-  left:50%;
-  top:55%;
-  width:clamp(112px,15vw,210px);
+  width:clamp(118px,14vw,190px);
   aspect-ratio:1;
   z-index:80;
   display:block;
   opacity:0;
   visibility:hidden;
   pointer-events:none;
-  transform:translate(-50%,-50%) scale(.35) rotateY(-90deg);
+  transform:scale(.45) rotateY(-90deg);
+  transform-origin:center center;
   transform-style:preserve-3d;
   transition:opacity .14s linear,transform .28s cubic-bezier(.22,.61,.36,1),visibility 0s linear .28s;
   filter:drop-shadow(0 0 4px var(--signal)) drop-shadow(0 0 14px var(--signal-soft)) drop-shadow(0 0 28px var(--signal-faint));
@@ -91,7 +90,7 @@ body[data-project-view] .work-list.is-year-plane .work-row {perspective:900px}
 .work-row.has-year-avatar .year-avatar-star{
   opacity:1;
   visibility:visible;
-  transform:translate(-50%,-50%) scale(1) rotateY(0deg);
+  transform:scale(1) rotateY(0deg);
   transition-delay:0s;
   animation:year-avatar-spin 1.65s linear infinite;
 }
@@ -103,12 +102,15 @@ body[data-project-view] .work-list.is-year-plane .work-row {perspective:900px}
   filter:grayscale(.08) contrast(1.14) saturate(1.08);
   backface-visibility:visible;
 }
+.year-avatar-star video.year-avatar-star-media{
+  background:#000;
+}
 @keyframes year-avatar-spin{
-  0%{transform:translate(-50%,-50%) scale(1) rotateY(0deg)}
-  25%{transform:translate(-50%,-50%) scale(.97) rotateY(90deg)}
-  50%{transform:translate(-50%,-50%) scale(1) rotateY(180deg)}
-  75%{transform:translate(-50%,-50%) scale(.97) rotateY(270deg)}
-  100%{transform:translate(-50%,-50%) scale(1) rotateY(360deg)}
+  0%{transform:scale(1) rotateY(0deg)}
+  25%{transform:scale(.97) rotateY(90deg)}
+  50%{transform:scale(1) rotateY(180deg)}
+  75%{transform:scale(.97) rotateY(270deg)}
+  100%{transform:scale(1) rotateY(360deg)}
 }
 
 /* RESEARCH becomes an atlas: one research field, then every project that crosses it. */
@@ -142,11 +144,11 @@ body[data-project-view] .work-list.is-research-map::-webkit-scrollbar{display:no
   .research-group-title{font-size:9px;margin-bottom:3px;color:var(--muted)}
   .research-group-subtitle{font-size:7px;margin-bottom:8px}
   .research-project{font-size:9px;padding:3px 0 3px 8px}
-  .year-avatar-star{top:55%;width:clamp(94px,30vw,142px)}
+  .year-avatar-star{width:clamp(96px,28vw,132px)}
 }
 
 @media(prefers-reduced-motion:reduce){
   html[data-style="rgb"] a:not(.work-row):hover,html[data-style="rgb"] button:hover,html[data-style="rgb"] .view-button:hover,html[data-style="rgb"] .system-control button:hover{animation:none}
   body[data-project-view] .work-row.is-featured .work-title{animation:none;text-shadow:0 0 5px var(--signal-soft)}
-  .work-row.has-year-avatar .year-avatar-star{animation:none;transform:translate(-50%,-50%) scale(1)}
+  .work-row.has-year-avatar .year-avatar-star{animation:none;transform:scale(1)}
 }
