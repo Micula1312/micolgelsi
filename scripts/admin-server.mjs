@@ -2,7 +2,6 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
 
 const ROOT=process.cwd();
 const PROJECTS_ROOT=path.join(ROOT,'src','projects');
@@ -53,9 +52,9 @@ async function listProjects(){
   }
   return result.sort((a,b)=>a.title.localeCompare(b.title));
 }
-async function runImport(){
-  return await new Promise((resolve,reject)=>{const child=spawn(process.execPath,['scripts/import-content.mjs'],{cwd:ROOT,windowsHide:true});let output='';child.stdout.on('data',d=>output+=d);child.stderr.on('data',d=>output+=d);child.on('close',code=>code===0?resolve(output):reject(new Error(output||`Importer exited ${code}`)));});
-}
+const runNodeScript=script=>new Promise((resolve,reject)=>{const child=spawn(process.execPath,[script],{cwd:ROOT,windowsHide:true});let output='';child.stdout.on('data',d=>output+=d);child.stderr.on('data',d=>output+=d);child.on('close',code=>code===0?resolve(output):reject(new Error(output||`${script} exited ${code}`)));});
+async function runSync(){return await runNodeScript('scripts/sync-research-config.mjs');}
+async function runImport(){const sync=await runSync();const imported=await runNodeScript('scripts/import-content.mjs');return `${sync}${imported}`;}
 async function categories(){try{return JSON.parse(await fs.readFile(CONFIG_PATH,'utf8'));}catch{return[];}}
 
 const server=http.createServer(async(req,res)=>{
@@ -89,7 +88,7 @@ const server=http.createServer(async(req,res)=>{
       const kind=safe(url.searchParams.get('kind')),slug=safe(url.searchParams.get('slug')),rel=String(url.searchParams.get('rel')||'').replaceAll('\\','/');if(!['artistic','external'].includes(kind)||!slug||rel.includes('..'))return send(res,400,{error:'Invalid media'});await fs.unlink(path.join(MEDIA_ROOT,kind,slug,...rel.split('/')));return send(res,200,{ok:true});
     }
     if(req.method==='POST'&&url.pathname==='/api/categories'){
-      const body=await jsonBody(req);if(!Array.isArray(body.categories))return send(res,400,{error:'categories must be an array'});const clean=body.categories.map(item=>({key:safe(item.key).toLowerCase(),label:String(item.label||'').trim(),subtitle:String(item.subtitle||'').trim()})).filter(x=>x.key&&x.label);await fs.mkdir(path.dirname(CONFIG_PATH),{recursive:true});const text=JSON.stringify(clean,null,2)+'\n';await fs.writeFile(CONFIG_PATH,text,'utf8');await fs.writeFile(PUBLIC_CONFIG_PATH,text,'utf8');return send(res,200,{ok:true,categories:clean});
+      const body=await jsonBody(req);if(!Array.isArray(body.categories))return send(res,400,{error:'categories must be an array'});const clean=body.categories.map(item=>({key:safe(item.key).toLowerCase(),label:String(item.label||'').trim(),subtitle:String(item.subtitle||'').trim()})).filter(x=>x.key&&x.label);await fs.mkdir(path.dirname(CONFIG_PATH),{recursive:true});const text=JSON.stringify(clean,null,2)+'\n';await fs.writeFile(CONFIG_PATH,text,'utf8');await fs.writeFile(PUBLIC_CONFIG_PATH,text,'utf8');const synced=await runSync();return send(res,200,{ok:true,categories:clean,synced});
     }
     if(req.method==='POST'&&url.pathname==='/api/import')return send(res,200,{ok:true,output:await runImport()});
     send(res,404,{error:'Not found'});
