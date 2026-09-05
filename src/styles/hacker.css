@@ -6,6 +6,7 @@
   --signal-soft: rgba(57, 255, 20, .16);
   --signal-faint: rgba(57, 255, 20, .08);
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --prose-pink: #ff2bbd;
 }
 
 ::selection { background: var(--signal); color: #000; }
@@ -29,6 +30,17 @@
 .type-anchor,
 .research-anchor,
 .year-axis { font-size: 11px; }
+
+/* Discursive copy: Helvetica italic in the same pink language as the web-development accent. */
+.site-bio,
+.lead,
+.prose,
+.web-inspector-summary {
+  font-family: Helvetica, Arial, sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--prose-pink);
+}
 
 .site-name::before { content: '★ '; color: var(--signal); font-family: var(--mono); }
 #projects-heading::before { content: './'; color: var(--signal); font-family: var(--mono); }
@@ -62,27 +74,6 @@ html[data-style="rgb"] .work-list.is-year-plane .moment-dot { border-color: var(
 html[data-style="rgb"] .work-list.is-year-plane .timeline-end-top { color: var(--signal); }
 html[data-style="rgb"] .work-list.is-year-plane .moment-dot:hover { background: var(--signal); box-shadow: 0 0 9px var(--signal); }
 html[data-style="rgb"] .work-list.is-year-plane .moment-dot:hover .moment-label { border-color: transparent; box-shadow: 0 0 14px var(--signal-soft); }
-
-/* WEB DEVELOPMENT — editorial, light, intentionally softer than the system labels. */
-.web-role,
-.web-inspector-kicker,
-.web-inspector-visit {
-  font-family: Helvetica, Arial, sans-serif !important;
-  font-style: italic !important;
-  font-weight: 400 !important;
-  color: #ff4fc8 !important;
-  letter-spacing: 0 !important;
-}
-.web-role {
-  text-transform: lowercase;
-  animation: none !important;
-  transition: opacity .18s ease, transform .18s ease;
-}
-.is-external-project:hover .web-role,
-.is-external-project:focus-visible .web-role {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
 
 /* INTERNAL PAGES — same coordinate plane, but editorial spacing. */
 .eyebrow { margin: 8px 0 34px; }
