@@ -34,17 +34,13 @@
   observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
 
-/* YEAR VIEW — shared rotating avatar stage. The stage becomes visible as soon
-   as a project enters the existing .is-year-focus state; media loading can no
-   longer keep the star hidden. */
+/* YEAR VIEW — deliberately lightweight. No class MutationObserver, no polling,
+   no eager project requests: load one avatar only when the user hovers/focuses. */
 (() => {
   const base = '/portfolio';
   const cache = new Map();
-  const pending = new Map();
   let activeRow = null;
-  let focusObserver = null;
 
-  const getList = () => document.querySelector('#work-list');
   const withBase = value => {
     if (!value) return '';
     if (/^https?:\/\//i.test(value)) return value;
@@ -53,175 +49,109 @@
     return value;
   };
 
-  const ensureStage = () => {
-    const list = getList();
-    if (!list) return null;
-    let stage = list.querySelector(':scope > .year-avatar-star');
-    if (!stage) {
-      stage = document.createElement('span');
-      stage.className = 'year-avatar-star';
-      stage.setAttribute('aria-hidden', 'true');
-      list.appendChild(stage);
-    }
-    return stage;
-  };
+  const boot = () => {
+    const list = document.querySelector('#work-list');
+    if (!list) return;
+    const rows = [...list.querySelectorAll('.work-row')];
 
-  const forceVisible = stage => {
-    stage.classList.add('is-visible', 'is-loading');
-    stage.style.display = 'block';
-    stage.style.opacity = '1';
-    stage.style.visibility = 'visible';
-  };
+    const stage = document.createElement('span');
+    stage.className = 'year-avatar-star';
+    stage.setAttribute('aria-hidden', 'true');
+    list.appendChild(stage);
 
-  const projectHref = row => {
-    const raw = row?.getAttribute('href');
-    if (!raw || row?.dataset.external === 'true') return '';
-    try {
-      const url = new URL(raw, window.location.href);
-      return url.origin === window.location.origin ? url.href : '';
-    } catch { return ''; }
-  };
+    const hide = row => {
+      if (row && activeRow !== row) return;
+      activeRow = null;
+      stage.classList.remove('is-visible');
+      stage.style.background = 'transparent';
+      const video = stage.querySelector('video');
+      if (video && !video.paused) video.pause();
+    };
 
-  const findAvatar = async href => {
-    if (!href) return null;
-    if (cache.has(href)) return cache.get(href);
-    if (pending.has(href)) return pending.get(href);
+    const getAvatar = async row => {
+      if (row.dataset.external === 'true') return null;
+      const raw = row.getAttribute('href');
+      if (!raw) return null;
+      const href = new URL(raw, window.location.href).href;
+      if (cache.has(href)) return cache.get(href);
 
-    const job = fetch(href, { credentials: 'same-origin' })
-      .then(response => response.ok ? response.text() : '')
-      .then(html => {
-        if (!html) return null;
+      try {
+        const response = await fetch(href, { credentials: 'same-origin' });
+        if (!response.ok) return null;
+        const html = await response.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
         const media = doc.querySelector('[data-project-loader] .project-entry-media');
-        if (!media) return null;
-        const src = media.getAttribute('src');
+        const src = media?.getAttribute('src');
         if (!src) return null;
-        return {
+        const avatar = {
           src: new URL(withBase(src), window.location.origin).href,
           kind: media.tagName.toLowerCase() === 'video' ? 'video' : 'image'
         };
-      })
-      .catch(() => null)
-      .then(result => {
-        if (result) cache.set(href, result);
-        return result;
-      })
-      .finally(() => pending.delete(href));
-
-    pending.set(href, job);
-    return job;
-  };
-
-  const mountMedia = (stage, avatar) => {
-    if (stage.dataset.src === avatar.src && stage.firstElementChild) {
-      stage.classList.remove('is-loading');
-      const existing = stage.firstElementChild;
-      if (existing.tagName === 'VIDEO') {
-        existing.muted = true;
-        existing.loop = true;
-        existing.playsInline = true;
-        existing.play().catch(() => {});
+        cache.set(href, avatar);
+        return avatar;
+      } catch {
+        return null;
       }
-      return;
-    }
-
-    stage.replaceChildren();
-    stage.dataset.src = '';
-    const media = document.createElement(avatar.kind === 'video' ? 'video' : 'img');
-    media.className = 'year-avatar-star-media';
-
-    const loaded = () => {
-      stage.classList.remove('is-loading');
-      forceVisible(stage);
-      stage.classList.remove('is-loading');
     };
 
-    if (avatar.kind === 'video') {
-      media.muted = true;
-      media.defaultMuted = true;
-      media.loop = true;
-      media.autoplay = true;
-      media.playsInline = true;
-      media.preload = 'auto';
-      media.setAttribute('muted', '');
-      media.setAttribute('loop', '');
-      media.setAttribute('autoplay', '');
-      media.setAttribute('playsinline', '');
-      media.src = avatar.src;
-      const play = () => media.play().catch(() => {});
-      media.addEventListener('loadeddata', () => { loaded(); play(); });
-      media.addEventListener('canplay', () => { loaded(); play(); });
-      stage.appendChild(media);
-      media.load();
-      play();
-    } else {
-      media.alt = '';
-      media.decoding = 'async';
-      media.addEventListener('load', loaded, { once: true });
-      media.src = avatar.src;
-      stage.appendChild(media);
-    }
-
-    stage.dataset.src = avatar.src;
-  };
-
-  const showForRow = async row => {
-    const list = getList();
-    if (!list || list.dataset.view !== 'year' || !row?.classList.contains('is-year-focus')) return;
-
-    activeRow = row;
-    const stage = ensureStage();
-    if (!stage) return;
-
-    /* Crucial: reveal the star now, before any async media request. */
-    forceVisible(stage);
-
-    const avatar = await findAvatar(projectHref(row));
-    if (activeRow !== row || !row.classList.contains('is-year-focus') || getList()?.dataset.view !== 'year') return;
-
-    if (avatar) mountMedia(stage, avatar);
-    else stage.classList.remove('is-loading');
-  };
-
-  const hideStage = () => {
-    activeRow = null;
-    const stage = ensureStage();
-    if (!stage) return;
-    stage.classList.remove('is-visible', 'is-loading');
-    stage.style.opacity = '0';
-    stage.style.visibility = 'hidden';
-    const video = stage.querySelector('video');
-    if (video && !video.paused) video.pause();
-  };
-
-  const syncFromFocusState = () => {
-    const list = getList();
-    if (!list || list.dataset.view !== 'year') {
-      hideStage();
-      return;
-    }
-    const focused = list.querySelector('.work-row.is-year-focus');
-    if (focused) showForRow(focused);
-    else hideStage();
-  };
-
-  const boot = () => {
-    const list = getList();
-    if (!list) {
-      requestAnimationFrame(boot);
-      return;
-    }
-
-    ensureStage();
-    focusObserver?.disconnect();
-    focusObserver = new MutationObserver(mutations => {
-      if (mutations.some(m => m.type === 'attributes' && (m.attributeName === 'class' || m.attributeName === 'data-view'))) {
-        syncFromFocusState();
+    const mount = avatar => {
+      if (!avatar) return;
+      if (stage.dataset.src === avatar.src && stage.firstElementChild) {
+        const video = stage.querySelector('video');
+        if (video) video.play().catch(() => {});
+        return;
       }
+
+      stage.replaceChildren();
+      const media = document.createElement(avatar.kind === 'video' ? 'video' : 'img');
+      media.className = 'year-avatar-star-media';
+      if (avatar.kind === 'video') {
+        media.muted = true;
+        media.defaultMuted = true;
+        media.loop = true;
+        media.autoplay = true;
+        media.playsInline = true;
+        media.preload = 'metadata';
+        media.src = avatar.src;
+        stage.appendChild(media);
+        media.play().catch(() => {});
+      } else {
+        media.alt = '';
+        media.decoding = 'async';
+        media.src = avatar.src;
+        stage.appendChild(media);
+      }
+      stage.dataset.src = avatar.src;
+    };
+
+    const show = async row => {
+      if (list.dataset.view !== 'year' || row.dataset.external === 'true') return;
+      activeRow = row;
+      stage.style.background = 'var(--signal)';
+      stage.classList.add('is-visible');
+
+      const avatar = await getAvatar(row);
+      if (activeRow !== row || list.dataset.view !== 'year') return;
+      if (avatar) {
+        mount(avatar);
+        stage.style.background = 'transparent';
+      }
+    };
+
+    rows.forEach(row => {
+      row.addEventListener('mouseenter', () => show(row), { passive: true });
+      row.addEventListener('mouseleave', () => hide(row), { passive: true });
+      row.addEventListener('focus', () => show(row));
+      row.addEventListener('blur', () => hide(row));
     });
-    focusObserver.observe(list, { subtree: true, attributes: true, attributeFilter: ['class','data-view'] });
-    syncFromFocusState();
+
+    document.querySelectorAll('.view-button').forEach(button => {
+      button.addEventListener('click', () => {
+        if (button.dataset.view !== 'year') hide();
+      });
+    });
   };
 
-  boot();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  else boot();
 })();
