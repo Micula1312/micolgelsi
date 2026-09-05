@@ -17,6 +17,7 @@ medium:
 researchAreas:
   - urban-wilderness
   - generative-archives
+  - live-data-manipulation
 collaborators:
   - "Lucia Fontanelli"
   - "Olivia Teglia"

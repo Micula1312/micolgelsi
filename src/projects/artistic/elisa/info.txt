@@ -50,3 +50,5 @@ location: Technopolis City of Athens, Athens
 Elisa X Inota festival
 type: AV videomapping
 location: Inota Festival, Budapest
+
+AVATAR: videos/_source/Inota Final-small.mp4

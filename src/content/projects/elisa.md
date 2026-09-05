@@ -11,6 +11,7 @@ medium:
 researchAreas:
   - bodies-affects
   - surveillance-politics-of-visibility
+  - hydro-feminism
 collaborators:
   []
 artistsInvolved:

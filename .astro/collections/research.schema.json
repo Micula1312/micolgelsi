@@ -6,17 +6,7 @@
       "type": "string"
     },
     "key": {
-      "type": "string",
-      "enum": [
-        "live-data-manipulation",
-        "urban-wilderness",
-        "generative-archives",
-        "bodies-affects",
-        "more-than-human-relations",
-        "hydro-feminism",
-        "surveillance-politics-of-visibility",
-        "digital-access-inclusion"
-      ]
+      "type": "string"
     },
     "summary": {
       "type": "string"

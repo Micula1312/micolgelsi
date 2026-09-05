@@ -98,3 +98,5 @@ location: Ex Casa del Custode, Parco della Montagnola, Bologna
 curated by: Lucia Fontanelli, Olivia Teglia
 artists involved: Federico Falanga, Adriano Sorbello (Fl00ba), blondegeisha, Malincuore
 media: soft-data
+
+AVATAR: avatar.gif

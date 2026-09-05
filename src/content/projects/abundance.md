@@ -15,6 +15,7 @@ medium:
   - "party"
   - "workshop"
 researchAreas:
+  - hydro-feminism
   - bodies-affects
 collaborators:
   - "studioferrari"
