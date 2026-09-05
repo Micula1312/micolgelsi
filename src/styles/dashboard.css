@@ -65,11 +65,11 @@ body[data-project-view] .work-list.is-year-plane {overflow-x:hidden!important;ov
 body[data-project-view] .work-list.is-year-plane.is-scrollable-year {overflow-x:auto!important}
 body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar {display:none!important;width:0!important;height:0!important}
 
-/* YEAR hover: large arcade-style avatar, always pinned to the same top-left
-   corner of the Year panel. JS supplies exact panel coordinates. */
-body[data-project-view] .work-list.is-year-plane .work-row {perspective:900px}
+/* YEAR hover avatar: one shared stage, physically contained inside the panel. */
 .year-avatar-star{
-  position:fixed;
+  position:absolute;
+  left:18px;
+  top:18px;
   width:clamp(118px,14vw,190px);
   aspect-ratio:1;
   z-index:80;
@@ -84,10 +84,11 @@ body[data-project-view] .work-list.is-year-plane .work-row {perspective:900px}
   filter:drop-shadow(0 0 4px var(--signal)) drop-shadow(0 0 14px var(--signal-soft)) drop-shadow(0 0 28px var(--signal-faint));
   clip-path:polygon(50% 0%,61% 34%,98% 35%,68% 56%,79% 94%,50% 72%,21% 94%,32% 56%,2% 35%,39% 34%);
   overflow:hidden;
-  background:var(--bg);
+  background:transparent;
   will-change:transform;
+  perspective:900px;
 }
-.work-row.has-year-avatar .year-avatar-star{
+.year-avatar-star.is-visible{
   opacity:1;
   visibility:visible;
   transform:scale(1) rotateY(0deg);
@@ -95,16 +96,20 @@ body[data-project-view] .work-list.is-year-plane .work-row {perspective:900px}
   animation:year-avatar-spin 1.65s linear infinite;
 }
 .year-avatar-star-media{
+  position:absolute;
+  inset:0;
   display:block;
   width:100%;
   height:100%;
   object-fit:cover;
-  filter:grayscale(.08) contrast(1.14) saturate(1.08);
+  object-position:center;
+  opacity:1!important;
+  visibility:visible!important;
+  filter:grayscale(.08) contrast(1.18) saturate(1.08);
   backface-visibility:visible;
+  background:transparent;
 }
-.year-avatar-star video.year-avatar-star-media{
-  background:#000;
-}
+.year-avatar-star video.year-avatar-star-media{background:transparent}
 @keyframes year-avatar-spin{
   0%{transform:scale(1) rotateY(0deg)}
   25%{transform:scale(.97) rotateY(90deg)}
@@ -144,11 +149,11 @@ body[data-project-view] .work-list.is-research-map::-webkit-scrollbar{display:no
   .research-group-title{font-size:9px;margin-bottom:3px;color:var(--muted)}
   .research-group-subtitle{font-size:7px;margin-bottom:8px}
   .research-project{font-size:9px;padding:3px 0 3px 8px}
-  .year-avatar-star{width:clamp(96px,28vw,132px)}
+  .year-avatar-star{left:12px;top:12px;width:clamp(96px,28vw,132px)}
 }
 
 @media(prefers-reduced-motion:reduce){
   html[data-style="rgb"] a:not(.work-row):hover,html[data-style="rgb"] button:hover,html[data-style="rgb"] .view-button:hover,html[data-style="rgb"] .system-control button:hover{animation:none}
   body[data-project-view] .work-row.is-featured .work-title{animation:none;text-shadow:0 0 5px var(--signal-soft)}
-  .work-row.has-year-avatar .year-avatar-star{animation:none;transform:scale(1)}
+  .year-avatar-star.is-visible{animation:none;transform:scale(1)}
 }
