@@ -1,7 +1,10 @@
 node_modules/
 dist/
 .astro/
+media-source/
 **/_source/
+**/_sources/
+**/_sourcce/
 
 *.tif
 *.tiff
