@@ -100,16 +100,8 @@ html[data-copy-style="pink"] .lead b{
 
 /* Highlighted images become a horizontal carousel on click without trapping vertical scroll. */
 .media-photo,.media-grid figure{position:relative}
-.media-photo[data-featured-image],.media-grid figure[data-featured-image]{cursor:pointer}
-.media-photo[data-featured-image]::after,.media-grid figure[data-featured-image]::after{
-  content:'★';position:absolute;left:50%;top:50%;z-index:4;color:var(--signal);
-  font:clamp(18px,2vw,30px)/1 var(--mono);opacity:0;transform:translate(-50%,-50%) scale(.72);
-  text-shadow:0 0 6px var(--signal),0 0 16px var(--signal-soft);pointer-events:none;
-  transition:opacity .14s ease,transform .14s ease;
-}
-.media-photo[data-featured-image]:hover::after,.media-photo[data-featured-image]:focus-visible::after,
-.media-grid figure[data-featured-image]:hover::after,.media-grid figure[data-featured-image]:focus-visible::after{
-  opacity:1;transform:translate(-50%,-50%) scale(1);
+.media-photo[data-featured-image],.media-grid figure[data-featured-image]{
+  cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext x='16' y='23' text-anchor='middle' font-size='24' fill='%2339ff14' stroke='%23080808' stroke-width='.8' paint-order='stroke'%3E%E2%98%85%3C/text%3E%3C/svg%3E") 16 16,pointer;
 }
 .media-stream.is-carousel,.media-grid.is-carousel{
   display:flex!important;align-items:center;gap:clamp(8px,1.2vw,18px);
