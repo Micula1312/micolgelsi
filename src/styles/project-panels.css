@@ -140,7 +140,7 @@ body[data-project-detail="true"] .site-header{background:var(--bg)}
 :root{
   --type-mono-size:11px;
   --type-mono-leading:1.28;
-  --type-mono-weight:700;
+  --type-mono-weight:600;
   --type-mono-tracking:-.02em;
   --type-editorial:Georgia,"Times New Roman",serif;
   --type-editorial-size:var(--type-mono-size);

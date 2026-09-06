@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600&display=swap");
+
 /* Minimal hacker / programmer layer.
    The portfolio remains monochrome; fluorescent green is a system signal, never decoration. */
 
@@ -5,7 +7,7 @@
   --signal: #39ff14;
   --signal-soft: rgba(57, 255, 20, .16);
   --signal-faint: rgba(57, 255, 20, .08);
-  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --prose-pink: #ff2bbd;
 }
 
