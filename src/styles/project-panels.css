@@ -37,7 +37,8 @@
 }
 
 .project-body .prose{
-  max-width:66ch;
+  width:100%;
+  max-width:none;
   margin-bottom:0;
 }
 
