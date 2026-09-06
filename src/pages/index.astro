@@ -28,4 +28,77 @@ const clearGenerated=()=>{if(typeField)typeField.innerHTML='';if(yearAxis)yearAx
 const layoutYear=()=>{if(!yearTrack||!yearAxis)return;rows.forEach(row=>yearTrack.appendChild(row));const now=Date.now(),starts=rows.map(row=>parseTime(row.dataset.start,parseTime(row.dataset.year,now))).filter(Number.isFinite),ends=rows.map(row=>parseTime(row.dataset.end,parseTime(row.dataset.start,now))).filter(Number.isFinite),minTime=Math.min(...starts,...ends,now),maxTime=Math.max(...starts,...ends,now),range=Math.max(1,maxTime-minTime),minYear=new Date(minTime).getFullYear(),maxYear=new Date(maxTime).getFullYear(),yearCount=Math.max(1,maxYear-minYear+1),vertical=panelIsVertical(),trackWidth=vertical?Math.max(1500,yearCount*330):Math.max(list.clientWidth,960);list.classList.toggle('is-scrollable-year',vertical);list.style.setProperty('--year-width',`${trackWidth}px`);for(let year=minYear;year<=maxYear;year++){const stamp=Date.parse(`${year}-01-01`),left=((stamp-minTime)/range)*100,label=document.createElement('span');label.className='year-label';label.textContent=String(year);label.style.left=`${Math.max(0,Math.min(100,left))}%`;yearAxis.appendChild(label);for(let month=1;month<12;month++){const monthStamp=Date.parse(`${year}-${String(month+1).padStart(2,'0')}-01`);if(monthStamp<=minTime||monthStamp>=maxTime)continue;const monthLeft=((monthStamp-minTime)/range)*100,monthLabel=document.createElement('span');monthLabel.className='month-label';monthLabel.textContent=monthNames[month];monthLabel.style.left=`${Math.max(0,Math.min(100,monthLeft))}%`;yearAxis.appendChild(monthLabel);}}const ordered=[...rows].sort((a,b)=>{const as=parseTime(a.dataset.start,parseTime(a.dataset.year,now)),bs=parseTime(b.dataset.start,parseTime(b.dataset.year,now));return bs-as||byTitle(a,b)}),top=10,bottom=76,lanes=Math.max(1,ordered.length-1);ordered.forEach((row,index)=>{const startStamp=parseTime(row.dataset.start,parseTime(row.dataset.year,now)),endStamp=parseTime(row.dataset.end,startStamp),low=Math.min(startStamp,endStamp),high=Math.max(startStamp,endStamp),left=3+((low-minTime)/range)*93,width=Math.max(.9,((high-low)/range)*93),y=top+(index/lanes)*(bottom-top);row.style.setProperty('--left',`${left}%`);row.style.setProperty('--width',`${Math.min(96-left,width)}%`);row.style.setProperty('--y',`${y}%`);});requestAnimationFrame(()=>{list.scrollLeft=vertical?list.scrollWidth-list.clientWidth:0;});};
 const layoutType=()=>{rows.forEach(row=>list.appendChild(row));const types=['artistic','external'],labels={artistic:'Artistic',external:'Web development'},columnWidth=50;types.forEach((type,typeIndex)=>{if(typeField){const label=document.createElement('span');label.className='type-anchor';label.textContent=labels[type];label.style.left=`${typeIndex*columnWidth+columnWidth/2}%`;typeField.appendChild(label);}rows.filter(row=>(row.dataset.type||'artistic')===type).sort(byTitle).forEach((row,rowIndex)=>{row.style.setProperty('--x',`${typeIndex*columnWidth+columnWidth/2}%`);row.style.setProperty('--y',`${18+rowIndex*9}%`);});});},layoutResearch=()=>{rows.forEach(row=>list.appendChild(row));rows.forEach((row,index)=>{const keys=(row.dataset.research||'').split(',').filter(Boolean),coords=keys.map(key=>researchPoints[key]).filter(Boolean),base=coords.length?coords.reduce((acc,p)=>[acc[0]+p[0],acc[1]+p[1]],[0,0]).map(v=>v/coords.length):[50,50],jitterX=((index*19)%15)-7,jitterY=((index*23)%13)-6;row.style.setProperty('--x',`${Math.max(6,Math.min(92,base[0]+jitterX))}%`);row.style.setProperty('--y',`${Math.max(10,Math.min(90,base[1]+jitterY))}%`);});},setViewportMode=view=>{document.documentElement.dataset.projectView=view;document.body.dataset.projectView=view;};list.addEventListener('wheel',e=>{if(list.dataset.view!=='year'||!list.classList.contains('is-scrollable-year')||Math.abs(e.deltaY)<=Math.abs(e.deltaX)||list.scrollWidth<=list.clientWidth)return;e.preventDefault();list.scrollLeft+=e.deltaY;},{passive:false});const layout=(view,animate=true)=>{const first=new Map(rows.map(row=>[row,row.getBoundingClientRect()]));closeInspector();clearFocus();clearGenerated();resetRows();list.classList.toggle('is-year-plane',view==='year');list.classList.toggle('is-type-map',view==='type');list.classList.toggle('is-research-map',view==='research');if(view!=='year')list.classList.remove('is-scrollable-year');if(yearTrack)yearTrack.hidden=view!=='year';if(researchField)researchField.hidden=view!=='research';if(typeField)typeField.hidden=view!=='type';if(view==='year')layoutYear();if(view==='type')layoutType();if(view==='research')layoutResearch();list.dataset.view=view;setViewportMode(view);if(!animate||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;requestAnimationFrame(()=>rows.forEach(row=>{const before=first.get(row),after=row.getBoundingClientRect();if(!before)return;const dx=before.left-after.left,dy=before.top-after.top;if(!dx&&!dy)return;const finalTransform=getComputedStyle(row).transform,fromTransform=finalTransform==='none'?`translate(${dx}px, ${dy}px)`:`translate(${dx}px, ${dy}px) ${finalTransform}`;row.animate([{transform:fromTransform},{transform:finalTransform}],{duration:720,easing:'cubic-bezier(.22,.61,.36,1)'});}));};window.addEventListener('resize',()=>{if(list.dataset.view!=='year')return;clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{clearGenerated();layoutYear();},120);});buttons.forEach(button=>button.addEventListener('click',()=>{const view=button.dataset.view;if(!view||list.dataset.view===view)return;buttons.forEach(candidate=>{const active=candidate===button;candidate.classList.toggle('is-active',active);candidate.setAttribute('aria-pressed',String(active));});layout(view);}));layout('year',false);})();
 </script>
+<script is:inline>
+(() => {
+  /* iOS changes the viewport height while its browser bars move. Do not let those
+     height-only resize events rebuild the YEAR plane and reset horizontal scroll. */
+  let stableViewportWidth = window.innerWidth;
+  window.addEventListener('resize', event => {
+    const widthChanged = Math.abs(window.innerWidth - stableViewportWidth) > 1;
+    if (!widthChanged) event.stopImmediatePropagation();
+    else stableViewportWidth = window.innerWidth;
+  }, true);
+
+  const list = document.querySelector('#work-list');
+  if (!list) return;
+  const labels = {
+    'urban-wilderness': 'Urban Wilderness',
+    'more-than-human-relations': 'More-than-human Relations',
+    'interspecies': 'Interspecies',
+    'generative-archives': 'Generative Archives',
+    'digital-access-inclusion': 'Digital Access & Inclusion',
+    'technology-digitalization': 'Technology & Digitalization',
+    'eco-feminism': 'Eco-feminism',
+    'hydro-feminism': 'Hydro-feminism',
+    'bodies-affects': 'Bodies & Affects',
+    'body-freedom': 'Body Freedom',
+    'emotional-geographies': 'Emotional Geographies',
+    'pleasure-activism': 'Pleasure Activism',
+    'surveillance-politics-of-visibility': 'Surveillance & Politics of Visibility',
+    'live-data-manipulation': 'Live Data Manipulation'
+  };
+
+  const ensureResearchResults = () => {
+    if (list.dataset.view !== 'research') return;
+    let atlas = list.querySelector('.research-atlas');
+    if (atlas?.children.length) {
+      atlas.hidden = false;
+      return;
+    }
+    atlas ||= Object.assign(document.createElement('div'), { className: 'research-atlas' });
+    if (!atlas.isConnected) list.appendChild(atlas);
+    const rows = [...list.querySelectorAll('.work-row')];
+    const grouped = new Map();
+    rows.forEach(row => {
+      const keys = (row.dataset.research || '').split(',').map(key => key.trim()).filter(Boolean);
+      (keys.length ? keys : ['other']).forEach(key => {
+        if (!grouped.has(key)) grouped.set(key, []);
+        grouped.get(key).push(row);
+      });
+    });
+    grouped.forEach((projects, key) => {
+      const group = document.createElement('section');
+      group.className = 'research-group';
+      const heading = document.createElement('h2');
+      heading.className = 'research-group-title';
+      heading.textContent = `+ ${labels[key] || key.split('-').map(part => part[0]?.toUpperCase() + part.slice(1)).join(' ')}`;
+      group.appendChild(heading);
+      projects.sort((a, b) => (a.dataset.title || '').localeCompare(b.dataset.title || '')).forEach(row => {
+        const link = document.createElement('a');
+        link.className = `research-project${row.classList.contains('is-featured') ? ' is-featured' : ''}`;
+        link.href = row.getAttribute('href') || '#';
+        link.textContent = `↳ ${row.dataset.title || row.textContent.trim()}`;
+        group.appendChild(link);
+      });
+      atlas.appendChild(group);
+    });
+    atlas.hidden = false;
+  };
+
+  document.querySelector('[data-view="research"]')?.addEventListener('click', () => {
+    requestAnimationFrame(() => requestAnimationFrame(ensureResearchResults));
+  });
+  new MutationObserver(ensureResearchResults).observe(list, { attributes: true, attributeFilter: ['data-view'] });
+})();
+</script>
 </BaseLayout>
