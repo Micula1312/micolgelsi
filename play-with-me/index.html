@@ -1,0 +1,159 @@
+<!DOCTYPE html><html lang="en" data-style="rgb" data-theme="dark" data-copy-style="pink"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="Micol Gelsi — artist and researcher"><meta name="theme-color" content="#080808"><title>Play With Me — Micol Gelsi</title><link rel="stylesheet" href="/portfolio/_astro/BaseLayout.bucnCY3G.css"><link rel="stylesheet" href="/portfolio/_astro/play-with-me.BxvN0uLN.css"></head><body data-fixed-shell="true"><div class="shell"><header class="site-header"><div class="identity"><a class="site-name" href="/portfolio/" aria-label="Micol Gelsi">MICOL GELSI</a><p class="site-bio">Multimedia artist and researcher working across public and digital spaces.<br>Her practice brings found and reclaimed materials into dialogue with low-tech tools and digital technologies.<br>Through living archives, site-specific interventions and participatory methodologies, she explores collective memory, inclusion and access to digital culture.<br>Eco-systems, territories, liminality and power recur as fields of investigation.<br>She founded ASAP and BLIVET and is a member of Sound Studies Forum.</p></div><nav class="site-nav" aria-label="Main navigation"><a href="/portfolio/#projects">PROJECTS</a><a href="/portfolio/cv/micol-gelsi-CV.pdf" target="_blank" rel="noopener">CV</a><a href="/portfolio/play-with-me/" aria-current="page">PLAY WITH ME</a></nav></header><main class="page"><section class="board" aria-labelledby="play-title" data-astro-cid-cipss6jt><div class="board-toolbar" data-astro-cid-cipss6jt><div class="title-group" data-astro-cid-cipss6jt><span data-astro-cid-cipss6jt>PLAY WITH ME / 001</span><h1 id="play-title" data-astro-cid-cipss6jt>DRAW ON YOURSELF</h1></div><p data-astro-cid-cipss6jt>camera → draw → write → send</p></div><div class="play-panel" data-astro-cid-cipss6jt><div class="stage" data-stage data-astro-cid-cipss6jt><video autoplay muted playsinline data-video data-astro-cid-cipss6jt></video><div class="camera-fx" aria-hidden="true" data-astro-cid-cipss6jt></div><canvas data-canvas data-astro-cid-cipss6jt></canvas><div class="postcard-text" data-postcard aria-hidden="true" data-astro-cid-cipss6jt></div><div class="placeholder" data-placeholder data-astro-cid-cipss6jt><span class="camera-mark" data-astro-cid-cipss6jt>★</span><button type="button" data-camera data-astro-cid-cipss6jt>ALLOW CAMERA</button></div></div><div class="text-row" data-astro-cid-cipss6jt><label for="postcard-copy" data-astro-cid-cipss6jt>MESSAGE</label><input id="postcard-copy" type="text" maxlength="72" autocomplete="off" placeholder="TYPE SOMETHING FOR THE POSTCARD…" data-text data-astro-cid-cipss6jt></div><div class="tool-row" data-astro-cid-cipss6jt><div class="tool-group" data-astro-cid-cipss6jt><button type="button" data-clear data-astro-cid-cipss6jt>CLEAR</button><button type="button" data-undo data-astro-cid-cipss6jt>UNDO</button><label data-astro-cid-cipss6jt>BRUSH <input type="range" min="1" max="40" value="7" data-brush data-astro-cid-cipss6jt></label></div><button class="send" type="button" data-send data-astro-cid-cipss6jt>★ SEND ME</button></div><p class="note" data-note data-astro-cid-cipss6jt></p></div></section><script>
+    (() => {
+      const stage = document.querySelector('[data-stage]');
+      const video = document.querySelector('[data-video]');
+      const canvas = document.querySelector('[data-canvas]');
+      const placeholder = document.querySelector('[data-placeholder]');
+      const brush = document.querySelector('[data-brush]');
+      const note = document.querySelector('[data-note]');
+      const textInput = document.querySelector('[data-text]');
+      const postcard = document.querySelector('[data-postcard]');
+      const ctx = canvas?.getContext('2d');
+      if (!stage || !video || !canvas || !ctx) return;
+      let drawing = false, last = null, history = [];
+
+      const signal = () => getComputedStyle(document.documentElement).getPropertyValue('--signal').trim() || '#39ff14';
+      const resize = () => {
+        const r = stage.getBoundingClientRect(), dpr = devicePixelRatio || 1;
+        const snapshot = canvas.width && canvas.height ? canvas.toDataURL() : null;
+        canvas.width = Math.max(1, r.width * dpr);
+        canvas.height = Math.max(1, r.height * dpr);
+        canvas.style.width = `${r.width}px`;
+        canvas.style.height = `${r.height}px`;
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        if (snapshot) { const img = new Image(); img.onload = () => ctx.drawImage(img,0,0,r.width,r.height); img.src = snapshot; }
+      };
+      resize(); window.addEventListener('resize', resize);
+      const point = e => { const r=canvas.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top}; };
+      canvas.addEventListener('pointerdown', e=>{ history.push(canvas.toDataURL()); drawing=true; last=point(e); canvas.setPointerCapture(e.pointerId); });
+      canvas.addEventListener('pointermove', e=>{ if(!drawing)return; const n=point(e); ctx.strokeStyle=signal(); ctx.lineWidth=Number(brush?.value||7); ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(n.x,n.y); ctx.stroke(); last=n; });
+      canvas.addEventListener('pointerup', ()=>{ drawing=false; last=null; });
+      canvas.addEventListener('pointercancel', ()=>{ drawing=false; last=null; });
+
+      textInput?.addEventListener('input', () => {
+        if (postcard) postcard.textContent = textInput.value;
+      });
+
+      document.querySelector('[data-camera]')?.addEventListener('click', async()=>{
+        const cameraButton = document.querySelector('[data-camera]');
+        if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
+          note.textContent='camera unavailable — open this page directly over HTTPS.';
+          return;
+        }
+
+        cameraButton?.setAttribute('disabled', '');
+        if (cameraButton) cameraButton.textContent='OPENING CAMERA…';
+        note.textContent='';
+
+        try {
+          video.srcObject?.getTracks?.().forEach(track => track.stop());
+          let stream;
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({
+              video: { facingMode: { ideal: 'user' } },
+              audio: false
+            });
+          } catch (error) {
+            if (error?.name === 'OverconstrainedError' || error?.name === 'NotFoundError') {
+              stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            } else {
+              throw error;
+            }
+          }
+          video.srcObject = stream;
+          await video.play();
+          placeholder.hidden = true;
+          note.textContent='camera active ★';
+        } catch (error) {
+          const permissionBlocked = error?.name === 'NotAllowedError' || error?.name === 'SecurityError';
+          note.textContent = permissionBlocked
+            ? 'camera blocked — enable Camera for this browser in iPhone Settings, then reload.'
+            : `camera unavailable${error?.name ? ` (${error.name})` : ''} — try reloading the page.`;
+          cameraButton?.removeAttribute('disabled');
+          if (cameraButton) cameraButton.textContent='TRY CAMERA AGAIN';
+        }
+      });
+      document.querySelector('[data-clear]')?.addEventListener('click', ()=>{ history.push(canvas.toDataURL()); const r=canvas.getBoundingClientRect(); ctx.clearRect(0,0,r.width,r.height); });
+      document.querySelector('[data-undo]')?.addEventListener('click', ()=>{ const s=history.pop(); if(!s)return; const img=new Image(); img.onload=()=>{const r=canvas.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);ctx.drawImage(img,0,0,r.width,r.height)}; img.src=s; });
+      document.querySelector('[data-send]')?.addEventListener('click', async()=>{
+        const r=stage.getBoundingClientRect(), scale=2, out=document.createElement('canvas'); out.width=Math.round(r.width*scale); out.height=Math.round(r.height*scale); const o=out.getContext('2d');
+        o.save(); o.translate(out.width,0); o.scale(-1,1); o.filter='grayscale(1) contrast(1.45) brightness(.82)'; if(video.videoWidth)o.drawImage(video,0,0,out.width,out.height); else {o.fillStyle='#050505';o.fillRect(0,0,out.width,out.height);} o.restore(); o.filter='none';
+        o.save(); o.globalAlpha=.12; o.fillStyle=signal(); o.fillRect(0,0,out.width,out.height); o.restore();
+        o.drawImage(canvas,0,0,out.width,out.height);
+        const message=(textInput?.value||'').trim();
+        if(message){
+          const panelW=out.width*.36, margin=24*scale, x=out.width-panelW-margin, y=margin, h=out.height-margin*2;
+          o.save();
+          o.fillStyle='rgba(5,5,5,.72)';
+          o.fillRect(x,y,panelW,h);
+          o.strokeStyle='rgba(255,255,255,.34)';
+          o.lineWidth=1*scale;
+          o.strokeRect(x,y,panelW,h);
+          const pad=22*scale, size=Math.max(20,Math.min(42,r.width*.035))*scale;
+          o.fillStyle=signal();
+          o.font=`700 ${size}px Wingdings, "Segoe UI Symbol", sans-serif`;
+          o.textBaseline='top';
+          const words=message.split(/\s+/), lines=[]; let line=''; const maxWidth=panelW-pad*2;
+          words.forEach(word=>{const test=line?`${line} ${word}`:word;if(o.measureText(test).width>maxWidth&&line){lines.push(line);line=word}else line=test}); if(line)lines.push(line);
+          lines.slice(0,7).forEach((txt,i)=>o.fillText(txt,x+pad,y+pad+i*size*1.08,maxWidth));
+          o.restore();
+        }
+        const blob=await new Promise(res=>out.toBlob(res,'image/png')); if(!blob)return; const file=new File([blob],`play-with-me-${Date.now()}.png`,{type:'image/png'});
+        if(navigator.canShare?.({files:[file]})){ try{await navigator.share({files:[file],title:'★ DRAW ON YOURSELF',text:'send this sketch to micolg@gmail.com'}); note.textContent='shared ★'; return;}catch(e){if(e.name==='AbortError')return;} }
+        const url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url; a.download=file.name; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); location.href='mailto:micolg@gmail.com?subject=%E2%98%85%20DRAW%20ON%20YOURSELF&body=Attach%20the%20PNG%20that%20was%20just%20downloaded.'; note.textContent='PNG saved — attach it to the email that opened ★';
+      });
+    })();
+  </script></main></div><div class="system-controls" aria-label="Display settings"><div class="system-control"><span>Mode</span><button type="button" data-theme-toggle aria-label="Switch light or dark mode">Dark</button></div><div class="system-control"><span>Text</span><button type="button" data-copy-toggle aria-label="Switch discursive text style">Pink</button></div></div><script>
+      (() => {
+        const root = document.documentElement;
+        root.dataset.style = 'rgb';
+
+        const themeButton = document.querySelector('[data-theme-toggle]');
+        if (themeButton) {
+          const updateThemeLabel = () => {
+            themeButton.textContent = root.dataset.theme === 'dark' ? 'Dark' : 'Light';
+            themeButton.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
+          };
+          themeButton.addEventListener('click', () => {
+            root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+            updateThemeLabel();
+          });
+          updateThemeLabel();
+        }
+
+        const copyButton = document.querySelector('[data-copy-toggle]');
+        if (copyButton) {
+          const savedCopyStyle = localStorage.getItem('portfolio-copy-style');
+          if (savedCopyStyle === 'pink' || savedCopyStyle === 'plain') root.dataset.copyStyle = savedCopyStyle;
+          const updateCopyLabel = () => {
+            const pink = root.dataset.copyStyle !== 'plain';
+            copyButton.textContent = pink ? 'Pink' : 'Plain';
+            copyButton.setAttribute('aria-pressed', String(pink));
+          };
+          copyButton.addEventListener('click', () => {
+            root.dataset.copyStyle = root.dataset.copyStyle === 'plain' ? 'pink' : 'plain';
+            localStorage.setItem('portfolio-copy-style', root.dataset.copyStyle);
+            updateCopyLabel();
+          });
+          updateCopyLabel();
+        }
+
+        const bio = document.querySelector('[data-type-bio="true"]');
+        if (!bio) return;
+        let lines = [];
+        try { lines = JSON.parse(bio.dataset.bioLines || '[]'); } catch {}
+        if (!lines.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        bio.setAttribute('aria-label', lines.join(' '));
+        bio.innerHTML = '';
+        const stream = lines.flatMap((line, i) => [...line, ...(i < lines.length - 1 ? ['\n'] : [])]);
+        let i = 0;
+        const tick = () => {
+          const char = stream[i++];
+          if (char === '\n') bio.appendChild(document.createElement('br'));
+          else bio.appendChild(document.createTextNode(char));
+          if (i < stream.length) window.setTimeout(tick, char === ' ' ? 9 : 18 + Math.random() * 20);
+        };
+        window.setTimeout(tick, 180);
+      })();
+    </script><script src="/portfolio/base-path.js"></script><script src="/portfolio/research-layout.js"></script><script src="/portfolio/home-loader.js"></script><script src="/portfolio/play-save.js"></script></body></html>
