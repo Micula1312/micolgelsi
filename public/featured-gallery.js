@@ -3,55 +3,91 @@
   const galleries = [...document.querySelectorAll('[data-featured-gallery]')];
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  let scrollFrame = 0;
-  const paintProgress = () => {
-    scrollFrame = 0;
-    const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    body.style.setProperty('--project-scroll', String(Math.max(0, Math.min(1, window.scrollY / max))));
+  let frame = 0;
+  const scenes = [];
+
+  const documentTop = element => element.getBoundingClientRect().top + window.scrollY;
+
+  const measureScene = scene => {
+    const { wrapper, gallery } = scene;
+    gallery.style.removeProperty('height');
+    const galleryHeight = gallery.offsetHeight;
+    const distance = Math.max(0, gallery.scrollWidth - gallery.clientWidth);
+    const stickyTop = Number.parseFloat(getComputedStyle(gallery).top) || 0;
+
+    scene.distance = distance;
+    scene.start = documentTop(wrapper) - stickyTop;
+    wrapper.style.height = `${Math.ceil(galleryHeight + distance)}px`;
+    gallery.setAttribute(
+      'aria-label',
+      distance > 0
+        ? 'Highlighted gallery. Vertical scrolling moves the images horizontally.'
+        : 'Highlighted gallery.'
+    );
   };
-  const requestProgress = () => {
-    if (!scrollFrame) scrollFrame = requestAnimationFrame(paintProgress);
+
+  const paint = () => {
+    frame = 0;
+
+    const pageDistance = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    body.style.setProperty(
+      '--project-scroll',
+      String(Math.max(0, Math.min(1, window.scrollY / pageDistance)))
+    );
+
+    scenes.forEach(scene => {
+      const distance = scene.distance || 0;
+      if (!distance) {
+        scene.gallery.scrollLeft = 0;
+        return;
+      }
+      const progress = Math.max(0, Math.min(1, (window.scrollY - scene.start) / distance));
+      scene.gallery.scrollLeft = progress * distance;
+      scene.gallery.classList.toggle('is-running', progress > 0 && progress < 1);
+    });
   };
-  window.addEventListener('scroll', requestProgress, { passive: true });
-  window.addEventListener('resize', requestProgress, { passive: true });
-  paintProgress();
+
+  const requestPaint = () => {
+    if (!frame) frame = requestAnimationFrame(paint);
+  };
+
+  const measureAll = () => {
+    scenes.forEach(measureScene);
+    requestPaint();
+  };
 
   galleries.forEach(gallery => {
-    let running = false;
-    let animationFrame = 0;
-    let lastTime = 0;
+    const items = [...gallery.querySelectorAll('[data-featured-image]')];
+    if (items.length < 2 || reduced) return;
 
-    const animate = time => {
-      if (!running) return;
-      const elapsed = Math.min(32, time - (lastTime || time));
-      lastTime = time;
-      const rect = gallery.getBoundingClientRect();
-      if (rect.bottom > 0 && rect.top < window.innerHeight && gallery.scrollWidth > gallery.clientWidth) {
-        gallery.scrollLeft += elapsed * .045;
-        if (gallery.scrollLeft >= gallery.scrollWidth - gallery.clientWidth - 1) gallery.scrollLeft = 0;
-      }
-      animationFrame = requestAnimationFrame(animate);
-    };
+    const wrapper = document.createElement('div');
+    wrapper.className = 'featured-scroll-scene';
+    gallery.parentNode.insertBefore(wrapper, gallery);
+    wrapper.appendChild(gallery);
+    gallery.classList.add('is-scroll-gallery');
 
-    const toggle = () => {
-      gallery.classList.add('is-carousel');
-      running = !running && !reduced;
-      gallery.classList.toggle('is-running', running);
-      gallery.setAttribute('aria-label', running ? 'Highlighted gallery carousel playing' : 'Highlighted gallery carousel paused');
-      cancelAnimationFrame(animationFrame);
-      lastTime = 0;
-      if (running) animationFrame = requestAnimationFrame(animate);
-    };
-
-    gallery.addEventListener('click', event => {
-      if (!event.target.closest('[data-featured-image]')) return;
-      event.preventDefault();
-      toggle();
+    items.forEach(item => {
+      item.removeAttribute('role');
+      item.removeAttribute('tabindex');
+      item.removeAttribute('aria-label');
     });
-    gallery.addEventListener('keydown', event => {
-      if (!event.target.closest('[data-featured-image]') || !['Enter', ' '].includes(event.key)) return;
-      event.preventDefault();
-      toggle();
+
+    scenes.push({ wrapper, gallery, distance: 0, start: 0 });
+
+    gallery.querySelectorAll('img').forEach(image => {
+      if (!image.complete) image.addEventListener('load', measureAll, { once: true });
     });
   });
+
+  if (scenes.length) {
+    const observer = new ResizeObserver(measureAll);
+    scenes.forEach(scene => observer.observe(scene.gallery));
+    window.addEventListener('scroll', requestPaint, { passive: true });
+    window.addEventListener('resize', measureAll, { passive: true });
+    requestAnimationFrame(measureAll);
+  } else {
+    window.addEventListener('scroll', requestPaint, { passive: true });
+    window.addEventListener('resize', requestPaint, { passive: true });
+    paint();
+  }
 })();
