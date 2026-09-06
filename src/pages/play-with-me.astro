@@ -78,8 +78,43 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       });
 
       document.querySelector('[data-camera]')?.addEventListener('click', async()=>{
-        try { video.srcObject=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false}); placeholder.hidden=true; }
-        catch { note.textContent='camera permission denied — draw on the void.'; }
+        const cameraButton = document.querySelector('[data-camera]');
+        if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
+          note.textContent='camera unavailable — open this page directly over HTTPS.';
+          return;
+        }
+
+        cameraButton?.setAttribute('disabled', '');
+        if (cameraButton) cameraButton.textContent='OPENING CAMERA…';
+        note.textContent='';
+
+        try {
+          video.srcObject?.getTracks?.().forEach(track => track.stop());
+          let stream;
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({
+              video: { facingMode: { ideal: 'user' } },
+              audio: false
+            });
+          } catch (error) {
+            if (error?.name === 'OverconstrainedError' || error?.name === 'NotFoundError') {
+              stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            } else {
+              throw error;
+            }
+          }
+          video.srcObject = stream;
+          await video.play();
+          placeholder.hidden = true;
+          note.textContent='camera active ★';
+        } catch (error) {
+          const permissionBlocked = error?.name === 'NotAllowedError' || error?.name === 'SecurityError';
+          note.textContent = permissionBlocked
+            ? 'camera blocked — enable Camera for this browser in iPhone Settings, then reload.'
+            : `camera unavailable${error?.name ? ` (${error.name})` : ''} — try reloading the page.`;
+          cameraButton?.removeAttribute('disabled');
+          if (cameraButton) cameraButton.textContent='TRY CAMERA AGAIN';
+        }
       });
       document.querySelector('[data-clear]')?.addEventListener('click', ()=>{ history.push(canvas.toDataURL()); const r=canvas.getBoundingClientRect(); ctx.clearRect(0,0,r.width,r.height); });
       document.querySelector('[data-undo]')?.addEventListener('click', ()=>{ const s=history.pop(); if(!s)return; const img=new Image(); img.onload=()=>{const r=canvas.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);ctx.drawImage(img,0,0,r.width,r.height)}; img.src=s; });
