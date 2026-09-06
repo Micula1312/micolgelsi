@@ -8,7 +8,7 @@ endDate: "2026-10"
 medium:
   - "audiovisual performance"
 researchAreas:
-  - hydro-feminism
+  - eco-feminism
   - bodies-affects
   - surveillance-politics-of-visibility
   - live-data-manipulation
