@@ -40,7 +40,7 @@ html[data-style="rgb"] .work-row:hover .work-title::after { animation-name:none;
 
 body[data-fixed-shell="true"] {height:100dvh;overflow:hidden;overscroll-behavior:none}
 body[data-fixed-shell="true"] .shell {height:100dvh;display:flex;flex-direction:column;overflow:hidden}
-body[data-fixed-shell="true"] .site-header {flex:0 0 146px;min-height:146px;max-height:146px;overflow:hidden}
+body[data-fixed-shell="true"] .site-header {flex:0 0 auto;min-height:0;max-height:none;overflow:visible}
 body[data-fixed-shell="true"] .page {flex:1 1 auto;min-height:0;overflow:hidden;padding:12px 0 14px}
 body[data-fixed-shell="true"] .system-controls {bottom:12px}
 
@@ -81,7 +81,7 @@ body[data-project-view] .work-list.is-research-map::-webkit-scrollbar{display:no
 
 @media(max-width:760px){
   body[data-fixed-shell="true"],body[data-fixed-shell="true"] .shell{height:100dvh;overflow:hidden}
-  body[data-fixed-shell="true"] .site-header{flex-basis:118px;min-height:118px;max-height:118px}
+  body[data-fixed-shell="true"] .site-header{flex:0 0 auto;min-height:0;max-height:none;overflow:visible}
   body[data-fixed-shell="true"] .page{min-height:0;overflow:hidden;padding:8px 0 10px}
   body[data-project-view] .work-index,body[data-project-view] .work-list,body[data-project-view] .work-list.is-year-plane,body[data-project-view] .work-list.is-type-map,body[data-project-view] .work-list.is-research-map{min-height:0}
   body[data-project-view] .work-list .work-title{font-size:9px}
