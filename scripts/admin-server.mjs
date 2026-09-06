@@ -136,7 +136,8 @@ const server=http.createServer(async(req,res)=>{
         if(normalized(data.COVER)===rel){text=setSection(text,'COVER','');rolesCleared.push('cover');}
         if(rolesCleared.length)await fs.writeFile(infoPath,text,'utf8');
       }
-      return send(res,200,{ok:true,deleted:rel,rolesCleared});
+      const imported=await runImport();
+      return send(res,200,{ok:true,deleted:rel,rolesCleared,imported});
     }
     if(req.method==='POST'&&url.pathname==='/api/categories'){
       const body=await jsonBody(req);if(!Array.isArray(body.categories))return send(res,400,{error:'categories must be an array'});const clean=body.categories.map(item=>({key:safe(item.key).toLowerCase(),label:String(item.label||'').trim(),subtitle:String(item.subtitle||'').trim()})).filter(x=>x.key&&x.label);await fs.mkdir(path.dirname(CONFIG_PATH),{recursive:true});const text=JSON.stringify(clean,null,2)+'\n';await fs.writeFile(CONFIG_PATH,text,'utf8');await fs.writeFile(PUBLIC_CONFIG_PATH,text,'utf8');const synced=await runSync();return send(res,200,{ok:true,categories:clean,synced});
