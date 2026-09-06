@@ -1,5 +1,6 @@
 ---
 title: "#untamed-architecture X @ambient-rave <3"
+featured: true
 type: project
 displayType: "multimedia performance"
 year: "2025"
@@ -16,7 +17,7 @@ researchAreas:
   - generative-archives
   - live-data-manipulation
 collaborators:
-  - "Stiky VerdeGiuseppe di CapuaFederico RussoElisa CatalanoPaolo Rucci"
+  - "Stiky Verde Giuseppe di Capua Federico Russo Elisa Catalano Paolo Rucci"
 artistsInvolved:
   - "Stiky Verde"
   - "Giuseppe di Capua"
@@ -46,12 +47,21 @@ links:
 moments:
   - date: "2026-06-10"
     title: "#untamed-architecture X @ambient-rave <3"
-    type: "multimedia installation + performance"
+    type: "AV performance"
     location: "Acquario Romano / Casa dell’Architettura, Roma"
+    media: "/media/artistic/untamed-architectureXambient-rave/casa-architettura"
   - date: "2026-04-10"
     title: "#untamed-architecture X @ambient-rave <3"
-    type: "multimedia installation + performance"
+    type: "AV performance"
     location: "Fondazione Pastificio Cerere, Roma"
+    gallery:
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/CAVI AMIX.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/COME UN GLITTER.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/DAL BASSO.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/MIC SCALA 3.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/STELLA.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/TOTEMINI.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/pastificio/WhatsApp Image 2026-06-03 at 14.06.11.webp"
 works:
   []
 ---

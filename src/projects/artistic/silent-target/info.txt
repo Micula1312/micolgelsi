@@ -70,3 +70,5 @@ Silent Target — Videocittà
 type: interactive installation
 location: Roma
 media: videocitta
+
+COVER: cover.webp

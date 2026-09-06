@@ -1,43 +1,17 @@
-TITLE:
-Abundance
-
-AUTHOR:
-ASAP
-
+TITLE: Abundance
+AUTHOR: ASAP
 TEASER:
 https://www.youtube.com/watch?v=G4F5kCSM5JQ
 
-AVATAR:
-avatar.mp4
-
-FEATURED:
-yes
-
-START:
-2023-05-05
-
-END:
-2025-10-26
-
-TYPE:
-performance, installation
-
-MEDIUM:
-performance, party, workshop
-
-RESEARCH:
-hydro-feminism
-bodies-affects
-live-data-manipulation
-
-COLLABORATORS:
-studioferrari
-Bundabolo
-
-
-MAIN LINK:
-https://www.youtube.com/watch?v=G4F5kCSM5JQ
-
+AVATAR: avatar.mp4
+FEATURED: true
+START: 2023-05-05
+END: 2025-10-26
+TYPE: performance, installation
+MEDIUM: performance, party, workshop
+RESEARCH: hydro-feminism, bodies-affects, live-data-manipulation
+COLLABORATORS: studioferrariBundabolo
+MAIN LINK: https://www.youtube.com/watch?v=G4F5kCSM5JQ
 ARTISTS INVOLVED:
 Lucia Fontanelli
 Micol Gelsi
@@ -52,21 +26,12 @@ Malezachi
 
 CURATED BY:
 
-CREDITS:
-ASAP — Lucia Fontanelli, Micol Gelsi, Nina Lanzi, Olivia Teglia, Bianca Zueneli, Nico Guerzoni
-Caro Anderson — dancer, founder of Bundabolo, 
-studioferrari — artist studio
-Romina Thomas — DJ
-Filippo Bonelli (Girovelle Psicotroniche) — original music
-Malezachi — original music
-
+CREDITS: ASAP — Lucia Fontanelli, Micol Gelsi, Nina Lanzi, Olivia Teglia, Bianca Zueneli, Nico GuerzoniCaro Anderson — dancer, founder of Bundabolo, studioferrari — artist studioRomina Thomas — DJFilippo Bonelli (Girovelle Psicotroniche) — original musicMalezachi — original music
 PHOTO CREDITS:
 
-EXCERPT:
-ABUNDANCE is a tropical party and a dancing ritual celebrating bodies liberated from a mentality of scarcity. An ironic journey through a techno-materialist and new-age universe towards a new era.
+EXCERPT: ABUNDANCE is a tropical party and a dancing ritual celebrating bodies liberated from a mentality of scarcity. An ironic journey through a techno-materialist and new-age universe towards a new era.
 
-DESCRIPTION:
-A multidisciplinary performative project by ASAP, presented through performances, parties, workshops and installations between 2023 and 2025.
+DESCRIPTION: A multidisciplinary performative project by ASAP, presented through performances, parties, workshops and installations between 2023 and 2025.
 
 ABUNDANCE is conceived as a tropical party and a dancing ritual celebrating bodies liberated from a mentality of scarcity. An ironic journey through a techno-materialist and new-age universe towards a new era.
 
@@ -106,3 +71,37 @@ I AM ABUNDANCE
 location: Liminal Space, Roma
 media: lmnl
 url: https://www.instagram.com/p/DQXdGO1ACzW/?img_index=2
+
+STATUS: 
+COVER: 
+OUTPUTS: 2023-10-12
+ABUNDANCE — with studioferrari
+location: Granata, Bologna
+media: granata
+href: https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance,bologna/
+
+2024-01-26
+ABUNDANCE — COLLAGENE
+type: performance + dj set
+location: DAS – Dispositivo Arti Sperimentali, Bologna
+media: collagene
+href: https://zero.eu/it/eventi/299899-abundance,bologna/
+
+2025-06-14
+I AM ABUNDANCE
+type: workshop
+location: Alchemilla, Bologna
+media: alchemilla
+
+2025-06-14
+ABUNDANCE
+type: performance
+location: Palazzo Bronzo, Genova
+media: palazzo
+
+2025-09-14
+ABUNDANCE
+type: perfromance
+location: Liminal Space, Roma
+media: lmnl
+href: https://www.instagram.com/p/DQXdGO1ACzW/?img_index=2

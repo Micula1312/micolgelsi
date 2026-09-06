@@ -19,8 +19,7 @@ researchAreas:
   - bodies-affects
   - live-data-manipulation
 collaborators:
-  - "studioferrari"
-  - "Bundabolo"
+  - "studioferrariBundabolo"
 artistsInvolved:
   - "Lucia Fontanelli"
   - "Micol Gelsi"
@@ -40,13 +39,9 @@ credits:
   - "Nina Lanzi"
   - "Olivia Teglia"
   - "Bianca Zueneli"
-  - "Nico Guerzoni"
-  - "Caro Anderson — dancer"
+  - "Nico GuerzoniCaro Anderson — dancer"
   - "founder of Bundabolo"
-  - "studioferrari — artist studio"
-  - "Romina Thomas — DJ"
-  - "Filippo Bonelli (Girovelle Psicotroniche) — original music"
-  - "Malezachi — original music"
+  - "studioferrari — artist studioRomina Thomas — DJFilippo Bonelli (Girovelle Psicotroniche) — original musicMalezachi — original music"
 photoCredits:
   []
 avatar: "/media/artistic/abundance/avatar.mp4"
@@ -107,12 +102,13 @@ moments:
       - "/media/artistic/abundance/moments/alchemilla/image.webp"
       - "/media/artistic/abundance/moments/alchemilla/WhatsApp Image 2025-03-29 at 19.04.19.webp"
   - date: "2025-06-14"
-    title: "I AM ABUNDANCE"
+    title: "ABUNDANCE"
     type: "performance"
     location: "Palazzo Bronzo, Genova"
     media: "/media/artistic/abundance/palazzo"
   - date: "2025-09-14"
-    title: "I AM ABUNDANCE"
+    title: "ABUNDANCE"
+    type: "perfromance"
     location: "Liminal Space, Roma"
     media: "/media/artistic/abundance/lmnl"
     href: "https://www.instagram.com/p/DQXdGO1ACzW/?img_index=2"

@@ -1,13 +1,13 @@
 TITLE: #untamed-architecture X @ambient-rave <3
 AUTHOR: 
-FEATURED: 
+FEATURED: true
 START: 2025-12
 END: ongoing
 STATUS: 
 TYPE: multimedia performance
 MEDIUM: audiovisual performance, live media manipulation, sound, listening practice
 RESEARCH: urban-wilderness, generative-archives, live-data-manipulation
-COLLABORATORS: Stiky VerdeGiuseppe di CapuaFederico RussoElisa CatalanoPaolo Rucci
+COLLABORATORS: Stiky Verde Giuseppe di Capua Federico Russo Elisa Catalano Paolo Rucci
 ARTISTS INVOLVED:
 Stiky Verde
 Giuseppe di Capua
@@ -35,13 +35,15 @@ https://thearchiveoftheuntamed.xyz/
 
 OUTPUTS: 2026-06-10
 #untamed-architecture X @ambient-rave <3
-type: multimedia installation + performance
+type: AV performance
 location: Acquario Romano / Casa dell’Architettura, Roma
+media: casa-architettura
 
 2026-04-10
 #untamed-architecture X @ambient-rave <3
-type: multimedia installation + performance
+type: AV performance
 location: Fondazione Pastificio Cerere, Roma
+media: pastificio
 AVATAR: cover.mp4
 COVER: pastificio/WhatsApp Image 2026-06-03 at 14.06.11.webp
 MAIN LINK:
