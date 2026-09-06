@@ -61,7 +61,7 @@ body[data-project-view] .work-row.is-featured .timeline-mark {box-shadow:0 0 5px
 @keyframes featured-breathe {0%,100%{text-shadow:0 0 0 transparent;opacity:.82}50%{text-shadow:0 0 4px var(--signal),0 0 11px var(--signal-soft),0 0 20px var(--signal-faint);opacity:1}}
 
 /* YEAR scroll exists only when JS marks the panel vertical; the bar itself is never visible. */
-body[data-project-view] .work-list.is-year-plane {overflow-x:hidden!important;overflow-y:hidden!important;overscroll-behavior-x:contain;scrollbar-width:none!important;touch-action:pan-x}
+body[data-project-view] .work-list.is-year-plane {overflow-x:hidden!important;overflow-y:hidden!important;overscroll-behavior-x:contain;scrollbar-width:none!important;touch-action:pan-x;-webkit-overflow-scrolling:touch}
 body[data-project-view] .work-list.is-year-plane.is-scrollable-year {overflow-x:auto!important}
 body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar {display:none!important;width:0!important;height:0!important}
 
@@ -80,9 +80,11 @@ body[data-project-view] .work-list.is-research-map::-webkit-scrollbar{display:no
 @media(max-width:980px){.research-atlas{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 @media(max-width:760px){
-  body[data-fixed-shell="true"],body[data-fixed-shell="true"] .shell{height:100dvh;overflow:hidden}
-  body[data-fixed-shell="true"] .site-header{flex:0 0 auto;min-height:0;max-height:none;overflow:visible}
-  body[data-fixed-shell="true"] .page{min-height:0;overflow:hidden;padding:8px 0 10px}
+  body[data-fixed-shell="true"],body[data-fixed-shell="true"] .shell{height:100svh;min-height:100svh;max-height:100svh;overflow:hidden}
+  body[data-fixed-shell="true"] .site-header{flex:0 0 196px;height:196px;min-height:196px;max-height:196px;overflow:hidden;padding-bottom:12px;gap:10px}
+  body[data-fixed-shell="true"] .site-bio{min-height:8.1em;margin-top:12px;font-size:10.5px!important;line-height:1.28!important}
+  body[data-fixed-shell="true"] .site-nav{font-size:10px;line-height:1.15}
+  body[data-fixed-shell="true"] .page{flex:1 1 0;min-height:0;overflow:hidden;padding:8px 0 10px}
   body[data-project-view] .work-index,body[data-project-view] .work-list,body[data-project-view] .work-list.is-year-plane,body[data-project-view] .work-list.is-type-map,body[data-project-view] .work-list.is-research-map{min-height:0}
   body[data-project-view] .work-list .work-title{font-size:9px}
   body[data-project-view] .index-toolbar{grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important;align-items:start!important}
