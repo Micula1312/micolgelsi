@@ -24,7 +24,6 @@ credits:
   []
 photoCredits:
   []
-avatar: "/media/artistic/elisa/videos/_source/Inota Final-small.mp4"
 cover: "/media/artistic/elisa/cover.webp"
 gallery:
   []
