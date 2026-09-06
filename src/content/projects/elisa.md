@@ -5,13 +5,12 @@ type: project
 year: "2026"
 startDate: "2026-03"
 endDate: "2026-10"
-status: ongoing
 medium:
   - "audiovisual performance"
 researchAreas:
+  - hydro-feminism
   - bodies-affects
   - surveillance-politics-of-visibility
-  - hydro-feminism
   - live-data-manipulation
 collaborators:
   []
@@ -24,7 +23,6 @@ credits:
   []
 photoCredits:
   []
-cover: "/media/artistic/elisa/cover.webp"
 gallery:
   []
 videos:

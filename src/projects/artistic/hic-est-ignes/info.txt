@@ -4,7 +4,7 @@ START: 2023-09
 END: 2025-10
 STATUS: ongoing
 AVATAR: videos/performanceCLUSTER-2-.mp4
-COVER: images/_DSC6427.webp
+COVER: images/performanceCLUSTER.mp4
 RESEARCH: 
 MEDIUM: installation, av and fire performance
 EXCERPT: 

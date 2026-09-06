@@ -1,48 +1,26 @@
-TITLE:
-Elisa
-
-START:
-2026-03
-
-END:
-2026-10
-
-STATUS:
-ongoing
-
-TYPE:
-
-MEDIUM:
-audiovisual performance
-
-RESEARCH:
-bodies-affects
-surveillance-politics-of-visibility
-hydro-feminism
-live-data-manipulation
-
+TITLE: Elisa
+START: 2026-03
+END: 2026-10
+STATUS: 
+TYPE: 
+MEDIUM: audiovisual performance
+RESEARCH: hydro-feminism, bodies-affects, surveillance-politics-of-visibility, live-data-manipulation
 WITH:
 
 ARTISTS INVOLVED: 
 Beatrice Resta
 Benedetta Marino
 
-MAIN LINK:
-https://thearchiveoftheuntamed.xyz/reactive-archive/elisa/
-
+MAIN LINK: https://thearchiveoftheuntamed.xyz/reactive-archive/elisa/
 CURATED BY: Flyer 
 
-CREDITS:
-
-EXCERPT:
-
-DESCRIPTION: 
-The performance stems from a reflection on contemporary forms of control and the possibility of envisioning new forms of female emancipation. By exploring themes such as the relationship between the body, identity, and the construction of imagery, the work examines the cultural and technological mechanisms that shape our perception of reality. The figure of Aicha Kandisha serves as a bridge between myth and the present, prompting a reflection on the narratives that have historically shaped the female body. The reference to "hypnocracy" introduces a critique of the mechanisms through which images, language, and media steer desires and behaviors, suggesting a need to reclaim spaces for awareness and self-determination.
+CREDITS: 
+EXCERPT: 
+DESCRIPTION: The performance stems from a reflection on contemporary forms of control and the possibility of envisioning new forms of female emancipation. By exploring themes such as the relationship between the body, identity, and the construction of imagery, the work examines the cultural and technological mechanisms that shape our perception of reality. The figure of Aicha Kandisha serves as a bridge between myth and the present, prompting a reflection on the narratives that have historically shaped the female body. The reference to "hypnocracy" introduces a critique of the mechanisms through which images, language, and media steer desires and behaviors, suggesting a need to reclaim spaces for awareness and self-determination.
 
 LINKS:
 
-OUTPUTS:
-2024-06
+OUTPUTS: 2024-06
 Athens Digital Arts Festival.
 type: AV performance
 location: Technopolis City of Athens, Athens
@@ -51,6 +29,11 @@ location: Technopolis City of Athens, Athens
 Elisa X Inota festival
 type: AV videomapping
 location: Inota Festival, Budapest
-
-
 AVATAR: videos/_source/Inota Final-small.mp4
+AUTHOR:
+
+FEATURED:
+
+COVER:
+
+COLLABORATORS:

@@ -23,20 +23,12 @@ credits:
 photoCredits:
   []
 avatar: "/media/artistic/hic-est-ignes/videos/performanceCLUSTER-2-.mp4"
-cover: "/media/artistic/hic-est-ignes/images/_DSC6427.webp"
+cover: "/media/artistic/hic-est-ignes/images/performanceCLUSTER.mp4"
 gallery:
-  - "/media/artistic/hic-est-ignes/images/_DSC6407.webp"
   - "/media/artistic/hic-est-ignes/images/_DSC6408.webp"
-  - "/media/artistic/hic-est-ignes/images/_DSC6409.webp"
-  - "/media/artistic/hic-est-ignes/images/_DSC6414.webp"
-  - "/media/artistic/hic-est-ignes/images/_DSC6419.webp"
-  - "/media/artistic/hic-est-ignes/images/_DSC6421.webp"
   - "/media/artistic/hic-est-ignes/images/_DSC6424.webp"
   - "/media/artistic/hic-est-ignes/images/_DSC6427.webp"
   - "/media/artistic/hic-est-ignes/images/_DSC6431.webp"
-  - "/media/artistic/hic-est-ignes/images/_DSC6433.webp"
-  - "/media/artistic/hic-est-ignes/images/_DSC6435.webp"
-  - "/media/artistic/hic-est-ignes/images/_DSC6436.webp"
 videos:
   - "/media/artistic/hic-est-ignes/videos/performanceCLUSTER-2-.mp4"
   - "/media/artistic/hic-est-ignes/videos/VID_20230315_184906.mp4"
