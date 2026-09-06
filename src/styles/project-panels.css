@@ -257,3 +257,22 @@ html[data-style="rgb"] .system-control button{
     gap:6px!important;
   }
 }
+
+/* Native, inertia-driven YEAR navigation. JavaScript never captures touch gestures. */
+body[data-project-view] .work-list.is-year-plane.is-scrollable-year{
+  overflow-x:scroll!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-x!important;
+  overscroll-behavior-x:auto;
+  scroll-behavior:auto;
+  scroll-snap-type:none;
+  cursor:grab;
+}
+body[data-project-view] .work-list.is-year-plane.is-scrollable-year:active{cursor:grabbing}
+body[data-project-view] .work-list.is-year-plane.is-scrollable-year .year-track,
+body[data-project-view] .work-list.is-year-plane.is-scrollable-year .work-row{
+  touch-action:pan-x!important;
+  -webkit-user-select:none;
+  user-select:none;
+}
