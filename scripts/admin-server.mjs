@@ -119,7 +119,7 @@ const server=http.createServer(async(req,res)=>{
       return send(res,200,{ok:true});
     }
     if(req.method==='DELETE'&&url.pathname==='/api/media'){
-      const kind=safe(url.searchParams.get('kind')),slug=safe(url.searchParams.get('slug')),rel=String(url.searchParams.get('rel')||'').replaceAll('\\','/').replace(/^\\/+/, '');
+      const kind=safe(url.searchParams.get('kind')),slug=safe(url.searchParams.get('slug')),rel=String(url.searchParams.get('rel')||'').replaceAll('\\','/').split('/').filter(Boolean).join('/');
       if(!['artistic','external'].includes(kind)||!slug||!rel||rel.split('/').includes('..'))return send(res,400,{error:'Invalid media'});
       const projectMediaRoot=path.resolve(MEDIA_ROOT,kind,slug),target=path.resolve(projectMediaRoot,...rel.split('/'));
       if(!inside(projectMediaRoot,target)||target===projectMediaRoot)return send(res,400,{error:'Invalid media path'});
@@ -131,7 +131,7 @@ const server=http.createServer(async(req,res)=>{
       let rolesCleared=[];
       if(await exists(infoPath)){
         let text=await fs.readFile(infoPath,'utf8'),data=parseInfo(text);
-        const normalized=value=>String(value||'').replace(/^\.\\//,'').replace(/^\\/+/, '').replaceAll('\\','/');
+        const normalized=value=>String(value||'').replaceAll('\\','/').split('/').filter(Boolean).join('/');
         if(normalized(data.AVATAR)===rel){text=setSection(text,'AVATAR','');rolesCleared.push('avatar');}
         if(normalized(data.COVER)===rel){text=setSection(text,'COVER','');rolesCleared.push('cover');}
         if(rolesCleared.length)await fs.writeFile(infoPath,text,'utf8');
