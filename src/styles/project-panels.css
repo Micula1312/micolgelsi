@@ -97,3 +97,47 @@ html[data-copy-style="pink"] .lead b{
 @media print{
   .project-head,.project-body,.project-cover,.media-stream,.media-grid,.video-list,.project-moments,.project-links,.related{border:0}
 }
+
+/* Highlighted images become a horizontal carousel on click without trapping vertical scroll. */
+.media-photo,.media-grid figure{position:relative}
+.media-photo[data-featured-image],.media-grid figure[data-featured-image]{cursor:pointer}
+.media-photo[data-featured-image]::after,.media-grid figure[data-featured-image]::after{
+  content:'★';position:absolute;left:50%;top:50%;z-index:4;color:var(--signal);
+  font:clamp(18px,2vw,30px)/1 var(--mono);opacity:0;transform:translate(-50%,-50%) scale(.72);
+  text-shadow:0 0 6px var(--signal),0 0 16px var(--signal-soft);pointer-events:none;
+  transition:opacity .14s ease,transform .14s ease;
+}
+.media-photo[data-featured-image]:hover::after,.media-photo[data-featured-image]:focus-visible::after,
+.media-grid figure[data-featured-image]:hover::after,.media-grid figure[data-featured-image]:focus-visible::after{
+  opacity:1;transform:translate(-50%,-50%) scale(1);
+}
+.media-stream.is-carousel,.media-grid.is-carousel{
+  display:flex!important;align-items:center;gap:clamp(8px,1.2vw,18px);
+  overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:none;
+  scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;
+}
+.media-stream.is-carousel::-webkit-scrollbar,.media-grid.is-carousel::-webkit-scrollbar{display:none}
+.media-stream.is-carousel figure,.media-grid.is-carousel figure{
+  flex:0 0 min(78vw,1100px);width:min(78vw,1100px);min-height:0;grid-column:auto!important;scroll-snap-align:center;
+}
+.media-stream.is-carousel .media-photo img,.media-grid.is-carousel img{width:100%;max-height:76vh;object-fit:contain}
+.media-stream.is-carousel .media-video{display:flex;min-height:0}
+.media-stream.is-carousel .media-video video{width:100%;max-height:76vh;opacity:1;transform:none}
+.media-stream.is-running,.media-grid.is-running{border-color:color-mix(in srgb,var(--signal) 58%,var(--line))}
+
+/* The green field rises behind the black content panels as the page advances. */
+body[data-project-detail="true"]{--project-scroll:0;position:relative;isolation:isolate}
+body[data-project-detail="true"]::before{
+  content:'';position:fixed;inset:0;z-index:-1;background:var(--signal);
+  transform:scaleY(var(--project-scroll));transform-origin:center bottom;
+  will-change:transform;pointer-events:none;
+}
+body[data-project-detail="true"] .shell{position:relative;z-index:1}
+body[data-project-detail="true"] .site-header{background:var(--bg)}
+
+@media(max-width:760px){
+  .media-stream.is-carousel figure,.media-grid.is-carousel figure{flex-basis:84vw;width:84vw}
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-project-detail="true"]::before{will-change:auto}
+}
