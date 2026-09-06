@@ -42,67 +42,6 @@ const layout=(view,animate=true)=>{const first=new Map(rows.map(row=>[row,row.ge
     if (!widthChanged) event.stopImmediatePropagation();
     else stableViewportWidth = window.innerWidth;
   }, true);
-
-  const list = document.querySelector('#work-list');
-  if (!list) return;
-  const labels = {
-    'urban-wilderness': 'Urban Wilderness',
-    'more-than-human-relations': 'More-than-human Relations',
-    'interspecies': 'Interspecies',
-    'generative-archives': 'Generative Archives',
-    'digital-access-inclusion': 'Digital Access & Inclusion',
-    'technology-digitalization': 'Technology & Digitalization',
-    'eco-feminism': 'Eco-feminism',
-    'hydro-feminism': 'Hydro-feminism',
-    'bodies-affects': 'Bodies & Affects',
-    'body-freedom': 'Body Freedom',
-    'emotional-geographies': 'Emotional Geographies',
-    'pleasure-activism': 'Pleasure Activism',
-    'surveillance-politics-of-visibility': 'Surveillance & Politics of Visibility',
-    'live-data-manipulation': 'Live Data Manipulation'
-  };
-
-  const ensureResearchResults = () => {
-    if (list.dataset.view !== 'research') return;
-    let atlas = list.querySelector('.research-atlas');
-    if (atlas?.children.length) {
-      atlas.hidden = false;
-      return;
-    }
-    atlas ||= Object.assign(document.createElement('div'), { className: 'research-atlas' });
-    if (!atlas.isConnected) list.appendChild(atlas);
-    const rows = [...list.querySelectorAll('.work-row')];
-    const grouped = new Map();
-    rows.forEach(row => {
-      const keys = (row.dataset.research || '').split(',').map(key => key.trim()).filter(Boolean);
-      (keys.length ? keys : ['other']).forEach(key => {
-        if (!grouped.has(key)) grouped.set(key, []);
-        grouped.get(key).push(row);
-      });
-    });
-    grouped.forEach((projects, key) => {
-      const group = document.createElement('section');
-      group.className = 'research-group';
-      const heading = document.createElement('h2');
-      heading.className = 'research-group-title';
-      heading.textContent = `+ ${labels[key] || key.split('-').map(part => part[0]?.toUpperCase() + part.slice(1)).join(' ')}`;
-      group.appendChild(heading);
-      projects.sort((a, b) => (a.dataset.title || '').localeCompare(b.dataset.title || '')).forEach(row => {
-        const link = document.createElement('a');
-        link.className = `research-project${row.classList.contains('is-featured') ? ' is-featured' : ''}`;
-        link.href = row.getAttribute('href') || '#';
-        link.textContent = `↳ ${row.dataset.title || row.textContent.trim()}`;
-        group.appendChild(link);
-      });
-      atlas.appendChild(group);
-    });
-    atlas.hidden = false;
-  };
-
-  document.querySelector('[data-view="research"]')?.addEventListener('click', () => {
-    requestAnimationFrame(() => requestAnimationFrame(ensureResearchResults));
-  });
-  new MutationObserver(ensureResearchResults).observe(list, { attributes: true, attributeFilter: ['data-view'] });
 })();
 </script>
 </BaseLayout>
