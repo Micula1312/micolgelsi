@@ -68,13 +68,13 @@ html[data-copy-style="pink"] .web-inspector-summary b {
 /* Bio is always a block below MICOL GELSI, never beside it. */
 .identity { display: block; }
 .site-name { display: inline-block; }
-.site-bio { display: block; margin-left: 0; }
+.site-bio { display: block; margin-left: 0; min-height: 6.75em; }
 
 html[data-copy-style="plain"] .site-bio,
 html[data-copy-style="plain"] .lead,
 html[data-copy-style="plain"] .prose,
 html[data-copy-style="plain"] .web-inspector-summary {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--mono);
   font-style: normal;
   font-weight: 400;
   color: inherit;
