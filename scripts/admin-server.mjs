@@ -63,6 +63,11 @@ async function scanMedia(kind,slug,data={}){
   }
   await walk(root);return out.sort((a,b)=>a.rel.localeCompare(b.rel,undefined,{numeric:true}));
 }
+async function scanMomentFolders(kind,slug){
+  const root=path.join(MEDIA_ROOT,kind,slug,'moments');let entries=[];
+  try{entries=await fs.readdir(root,{withFileTypes:true});}catch{return[];}
+  return entries.filter(entry=>entry.isDirectory()&&!isAdminHiddenMediaDir(entry.name)).map(entry=>({name:entry.name,rel:`moments/${entry.name}`})).sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
+}
 async function listProjects(){
   const result=[];
   for(const kind of ['artistic','external']){
@@ -88,7 +93,7 @@ const server=http.createServer(async(req,res)=>{
     if(req.method==='GET'&&url.pathname==='/api/categories')return send(res,200,await categories());
     if(req.method==='GET'&&url.pathname==='/api/project'){
       const kind=safe(url.searchParams.get('kind')),slug=safe(url.searchParams.get('slug'));if(!['artistic','external'].includes(kind)||!slug)return send(res,400,{error:'Invalid project'});
-      const infoPath=path.join(PROJECTS_ROOT,kind,slug,'info.txt');const text=await fs.readFile(infoPath,'utf8'),data=parseInfo(text);return send(res,200,{kind,slug,text,data,media:await scanMedia(kind,slug,data)});
+      const infoPath=path.join(PROJECTS_ROOT,kind,slug,'info.txt');const text=await fs.readFile(infoPath,'utf8'),data=parseInfo(text);return send(res,200,{kind,slug,text,data,media:await scanMedia(kind,slug,data),momentFolders:await scanMomentFolders(kind,slug)});
     }
     if(req.method==='POST'&&url.pathname==='/api/project'){
       const body=await jsonBody(req),kind=safe(body.kind),slug=safe(body.slug);if(!['artistic','external'].includes(kind)||!slug)return send(res,400,{error:'Invalid project'});
@@ -106,6 +111,20 @@ const server=http.createServer(async(req,res)=>{
     if(req.method==='POST'&&url.pathname==='/api/media'){
       const kind=safe(url.searchParams.get('kind')),slug=safe(url.searchParams.get('slug')),bucket=safe(url.searchParams.get('bucket')||'images'),name=safe(url.searchParams.get('name'));if(!['artistic','external'].includes(kind)||!slug||!name)return send(res,400,{error:'Invalid media target'});
       const allowed=new Set(['images','videos','video','root']);if(!allowed.has(bucket))return send(res,400,{error:'Invalid bucket'});const dir=bucket==='root'?path.join(MEDIA_ROOT,kind,slug):path.join(MEDIA_ROOT,kind,slug,bucket);await fs.mkdir(dir,{recursive:true});await fs.writeFile(path.join(dir,name),await readBody(req));return send(res,200,{ok:true,name,bucket});
+    }
+    if(req.method==='POST'&&url.pathname==='/api/media-copy'){
+      const body=await jsonBody(req),kind=safe(body.kind),slug=safe(body.slug),rel=String(body.rel||'').replaceAll('\\','/').split('/').filter(Boolean).join('/');
+      if(!['artistic','external'].includes(kind)||!slug||!rel.startsWith('moments/')||rel.split('/').includes('..'))return send(res,400,{error:'Select an image from a Moment folder'});
+      const projectRoot=path.resolve(MEDIA_ROOT,kind,slug),source=path.resolve(projectRoot,...rel.split('/'));
+      if(!inside(projectRoot,source)||!(await fs.stat(source).catch(()=>null))?.isFile())return send(res,404,{error:'Media not found'});
+      const ext=path.extname(source).toLowerCase();
+      if(!['.jpg','.jpeg','.png','.webp','.gif','.avif'].includes(ext))return send(res,400,{error:'Only images can be highlighted'});
+      const destinationDir=path.join(projectRoot,'images');await fs.mkdir(destinationDir,{recursive:true});
+      const parsed=path.parse(path.basename(source));let destination=path.join(destinationDir,path.basename(source)),counter=2;
+      while(await exists(destination)){destination=path.join(destinationDir,`${parsed.name}-${counter++}${parsed.ext}`);}
+      await fs.copyFile(source,destination);
+      const imported=await runImport();
+      return send(res,200,{ok:true,source:rel,destination:`images/${path.basename(destination)}`,imported});
     }
     if(req.method==='POST'&&url.pathname==='/api/media-role'){
       const body=await jsonBody(req),kind=safe(body.kind),slug=safe(body.slug),rel=String(body.rel||'').replaceAll('\\','/');if(!['artistic','external'].includes(kind)||!slug||!rel||rel.includes('..'))return send(res,400,{error:'Invalid media'});
