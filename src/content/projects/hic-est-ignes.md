@@ -1,6 +1,7 @@
 ---
 title: "hic-est-ignes"
 author: "Blivet"
+mainLink: "https://docs.google.com/presentation/d/1MayLI20fjuo5zU1kjGJ5lTZ0EVvw1wYrymcOxY4wxIA/edit?usp=sharing"
 type: project
 displayType: "project"
 year: "2023"
@@ -11,7 +12,8 @@ medium:
   - "installation"
   - "av and fire performance"
 researchAreas:
-  []
+  - more-than-human-relations
+  - digital-access-inclusion
 collaborators:
   []
 artistsInvolved:
@@ -46,3 +48,6 @@ works:
   []
 ---
 
+Fire represents the profound force that enables the union of opposites and the ascent toward sublimation; it is the driving force behind Nature’s periodic regeneration.
+The work explores the effects arising from the ability to artificially generate the element of fire using technological devices, aiming to evoke in the viewer ancestral emotions linked to the sense of controlling natural forces.
+On a formal level, this symbolic and universal power is embodied by the sun—a centripetal element for both humanity and the world.

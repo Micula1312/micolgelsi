@@ -9,7 +9,7 @@ START: 2023-05-05
 END: 2025-10-26
 TYPE: performance, installation
 MEDIUM: performance, party, workshop
-RESEARCH: hydro-feminism, bodies-affects, live-data-manipulation
+RESEARCH: eco-feminism, bodies-affects, live-data-manipulation
 COLLABORATORS: studioferrariBundabolo
 MAIN LINK: https://www.youtube.com/watch?v=G4F5kCSM5JQ
 ARTISTS INVOLVED:
@@ -105,3 +105,9 @@ type: perfromance
 location: Liminal Space, Roma
 media: lmnl
 href: https://www.instagram.com/p/DQXdGO1ACzW/?img_index=2
+
+2025-11
+Campo Xs
+type: performance
+location: Campo XS, Genova
+media: moments/campo-xs

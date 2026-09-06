@@ -1,53 +1,27 @@
-TITLE:
-Silent Target
-
-AUTHOR:
-Blivet
-
+TITLE: Silent Target
+AUTHOR: Blivet
 TEASER:
 
-AVATAR:
-avatar.mp4
-
-START:
-2024-02
-
-END:
-2025-07
-
-STATUS:
-
-TYPE:
-interactive installation
-
-MEDIUM:
-interactive installation
-
-RESEARCH:
-surveillance-politics-of-visibility
-live-data-manipulation
-generative-archives
-
-COLLABORATORS:
-
-MAIN LINK:
-
+AVATAR: avatar.mp4
+START: 2024-02
+END: 2025-07
+STATUS: 
+TYPE: interactive installation
+MEDIUM: interactive installation
+RESEARCH: generative-archives, surveillance-politics-of-visibility, live-data-manipulation
+COLLABORATORS: 
+MAIN LINK: 
 ARTISTS INVOLVED:
 
 CURATED BY:
 Daniela Cotimbo
 
-CREDITS:
-Re:Humanism
-Hosted by Albumarte
-
+CREDITS: Re:HumanismHosted by Albumarte
 PHOTO CREDITS:
 
-EXCERPT:
-Silent Target is an interactive installation investigating visibility, privacy and the possibility of withdrawing from systems of constant observation.
+EXCERPT: Silent Target is an interactive installation investigating visibility, privacy and the possibility of withdrawing from systems of constant observation.
 
-DESCRIPTION:
-Silent Target investigates the contemporary imperative of constant visibility and the possibility of resisting systems of generalized observation.
+DESCRIPTION: Silent Target investigates the contemporary imperative of constant visibility and the possibility of resisting systems of generalized observation.
 
 The project draws on Pierre Zaoui's reflections on discretion as a political practice and form of resistance. Rather than proposing complete disappearance, it considers invisibility as something selective: the possibility of temporarily withdrawing from the continuous demand to be visible.
 
@@ -57,12 +31,10 @@ The project questions the right to hide: when the apparatus of observation is pl
 
 LINKS:
 
-OUTPUTS:
-2024
+OUTPUTS: 2024
 Silent Target — Re:Humanism
 type: interactive installation
 location: Albumarte, Roma
-curated by: Daniela Cotimbo
 media: albumarte
 
 2025
@@ -70,5 +42,5 @@ Silent Target — Videocittà
 type: interactive installation
 location: Roma
 media: videocitta
-
 COVER: cover.webp
+FEATURED:

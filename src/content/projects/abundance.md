@@ -15,7 +15,7 @@ medium:
   - "party"
   - "workshop"
 researchAreas:
-  - hydro-feminism
+  - eco-feminism
   - bodies-affects
   - live-data-manipulation
 collaborators:
@@ -112,6 +112,14 @@ moments:
     location: "Liminal Space, Roma"
     media: "/media/artistic/abundance/lmnl"
     href: "https://www.instagram.com/p/DQXdGO1ACzW/?img_index=2"
+  - date: "2025-11"
+    title: "Campo Xs"
+    type: "performance"
+    location: "Campo XS, Genova"
+    gallery:
+      - "/media/artistic/abundance/moments/campo-xs/20161130-DSCF5448.webp"
+      - "/media/artistic/abundance/moments/campo-xs/20161130-DSCF5499.webp"
+      - "/media/artistic/abundance/moments/campo-xs/20161130-DSCF5503.webp"
 works:
   []
 ---

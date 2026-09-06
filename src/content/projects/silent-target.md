@@ -10,9 +10,9 @@ summary: "Silent Target is an interactive installation investigating visibility,
 medium:
   - "interactive installation"
 researchAreas:
+  - generative-archives
   - surveillance-politics-of-visibility
   - live-data-manipulation
-  - generative-archives
 collaborators:
   []
 artistsInvolved:
@@ -20,8 +20,7 @@ artistsInvolved:
 curatedBy:
   - "Daniela Cotimbo"
 credits:
-  - "Re:Humanism"
-  - "Hosted by Albumarte"
+  - "Re:HumanismHosted by Albumarte"
 photoCredits:
   []
 avatar: "/media/artistic/silent-target/avatar.mp4"

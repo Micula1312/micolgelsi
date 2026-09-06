@@ -4,9 +4,9 @@ featured: true
 type: project
 displayType: "multimedia performance"
 year: "2025"
-startDate: "2025-12"
+startDate: "2025-07"
 status: ongoing
-summary: "A 30-minute multimedia performance exploring urban wilderness in the Aniene River Nature Reserve through the live manipulation of materials contained in the hyper-object Archive of the #Untamed, accompanied by the sonic narrative of Rome-based DJ and producer Stiky Verde."
+summary: "A 30-minute multimedia performance exploring urban wilderness in the Aniene River Nature Reserve through the live manipulation of materials in & from the hyper-object Archive of the #Untamed, accompanied by the sonic narrative of Rome-based DJ and producer Stiky Verde."
 medium:
   - "audiovisual performance"
   - "live media manipulation"
@@ -14,7 +14,7 @@ medium:
   - "listening practice"
 researchAreas:
   - urban-wilderness
-  - generative-archives
+  - more-than-human-relations
   - live-data-manipulation
 collaborators:
   - "Stiky Verde Giuseppe di Capua Federico Russo Elisa Catalano Paolo Rucci"
@@ -49,7 +49,11 @@ moments:
     title: "#untamed-architecture X @ambient-rave <3"
     type: "AV performance"
     location: "Acquario Romano / Casa dell’Architettura, Roma"
-    media: "/media/artistic/untamed-architectureXambient-rave/casa-architettura"
+    gallery:
+      - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3274.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3318.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3361.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3400.webp"
   - date: "2026-04-10"
     title: "#untamed-architecture X @ambient-rave <3"
     type: "AV performance"
@@ -66,12 +70,8 @@ works:
   []
 ---
 
-#untamed-architecture X @ambient-rave <3 is a multimedia performance developed from Archive of the #Untamed.
+A 30-minute multimedia performance unfolding within the physical space of the installation and exploring urban wilderness in the Aniene River Nature Reserve. Drawing on materials from the web-based Archive of the #Untamed, the artists improvise live with images, sounds and data. Like archivists, they place their own interpretative filters on these materials, making the construction of the narrative itself part of the work.
 
-The work reactivates “La passeggiata distensiva con Lilo”, a wild exploration through the Aniene River Nature Reserve, inside a new spatial and performative context. Images, recordings and archival traces contained in the hyper-object Archive of the #Untamed are manipulated live, transforming the archive from a repository into material for audiovisual action.
+The reconstructed walk can also be experienced from Lilo’s perspective, introducing a more-than-human point of view that shifts attention and orientation away from an exclusively human perception of the territory.
 
-The performance moves between human and more-than-human points of view: the walk is not only reconstructed as a route through urban wilderness, but can also be experienced from Lilo’s perspective. The invitation — “if the practice feels difficult, feel it from Lilo’s point of view” — shifts listening and orientation away from a solely human experience of the territory.
-
-The live manipulation of the archive unfolds together with the sonic narrative of Rome-based DJ and producer Stiky Verde. Sound, moving image and archival fragments generate a temporary environment in which landscape, memory and presence are continuously recomposed.
-
-Duration: 30 min.
+The performance features live video manipulation by Giuseppe Di Capua and Federico Russo, a sonic narrative by Rome-based DJ and producer Stiky Verde, and an audio-reactive choreographic light intervention by Elisa Catalano and Paolo Rucci.
