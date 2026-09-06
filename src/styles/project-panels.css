@@ -1,0 +1,99 @@
+/* Project pages share the dashboard's restrained panel grammar. */
+:root{
+  --project-panel-gap:12px;
+  --project-panel-pad:clamp(14px,1.8vw,28px);
+}
+
+.project-head,
+.project-body,
+.project-cover,
+.media-stream,
+.media-grid,
+.video-list,
+.project-moments,
+.project-links,
+.related{
+  border:1px solid var(--line);
+  background:var(--bg);
+}
+
+.project-head{
+  align-items:start;
+  margin-bottom:var(--project-panel-gap)!important;
+  padding:var(--project-panel-pad);
+}
+
+.project-head .lead{align-self:end}
+
+.project-cover{
+  margin:0 0 var(--project-panel-gap)!important;
+  overflow:hidden;
+}
+
+.project-body{
+  margin:0 0 var(--project-panel-gap)!important;
+  padding:var(--project-panel-pad);
+  align-items:start;
+}
+
+.project-body .prose{
+  max-width:66ch;
+  margin-bottom:0;
+}
+
+html[data-copy-style="pink"] .prose strong,
+html[data-copy-style="pink"] .prose b,
+html[data-copy-style="pink"] .lead strong,
+html[data-copy-style="pink"] .lead b{
+  font-family:var(--mono);
+  font-size:1em;
+  font-style:normal;
+  font-weight:700;
+  letter-spacing:-.025em;
+  text-transform:none;
+  text-shadow:
+    0 0 3px currentColor,
+    0 0 8px color-mix(in srgb,currentColor 68%,transparent),
+    0 0 16px color-mix(in srgb,currentColor 34%,transparent);
+}
+
+.project-body .project-facts{margin:0}
+.project-body .project-facts>div:first-child{border-top:0}
+
+.media-stream,
+.media-grid,
+.video-list{
+  margin:var(--project-panel-gap) 0!important;
+  padding:var(--project-panel-pad);
+}
+
+.project-moments,
+.project-links,
+.related{
+  margin-top:var(--project-panel-gap)!important;
+  padding:0 var(--project-panel-pad) var(--project-panel-pad);
+}
+
+.project-moments h2,
+.project-links h2,
+.related h2{
+  padding-top:12px!important;
+  padding-bottom:22px!important;
+}
+
+.project-moment:last-child,
+.project-links a:last-child{border-bottom:0}
+
+@media(max-width:760px){
+  :root{--project-panel-gap:8px;--project-panel-pad:12px}
+  .project-head,.project-body{gap:18px}
+  .project-head h1{overflow-wrap:anywhere}
+  .project-body .prose{max-width:none}
+  html[data-copy-style="pink"] .project-body .prose{font-size:11px;line-height:1.45}
+  .media-stream,.media-grid,.video-list{padding:8px}
+  .project-moments,.project-links,.related{padding-left:12px;padding-right:12px}
+}
+
+@media print{
+  .project-head,.project-body,.project-cover,.media-stream,.media-grid,.video-list,.project-moments,.project-links,.related{border:0}
+}
