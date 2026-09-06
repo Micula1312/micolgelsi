@@ -140,7 +140,7 @@ body[data-project-detail="true"] .site-header{background:var(--bg)}
 :root{
   --type-mono-size:11px;
   --type-mono-leading:1.28;
-  --type-mono-weight:400;
+  --type-mono-weight:700;
   --type-mono-tracking:-.02em;
   --type-editorial:Georgia,"Times New Roman",serif;
   --type-editorial-size:var(--type-mono-size);
@@ -158,6 +158,7 @@ body *::after{
   font-weight:var(--type-mono-weight)!important;
   line-height:var(--type-mono-leading)!important;
   letter-spacing:var(--type-mono-tracking)!important;
+  text-transform:uppercase!important;
 }
 
 html[data-copy-style="pink"] :is(.site-bio,.lead,.prose,.web-inspector-summary),
@@ -168,7 +169,7 @@ html[data-copy-style="pink"] :is(.site-bio,.lead,.prose,.web-inspector-summary) 
   font-weight:400!important;
   line-height:var(--type-editorial-leading)!important;
   letter-spacing:0!important;
-  text-transform:lowercase;
+  text-transform:lowercase!important;
   color:var(--prose-pink);
 }
 
