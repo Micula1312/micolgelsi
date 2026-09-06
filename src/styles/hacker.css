@@ -5,7 +5,7 @@
   --signal: #39ff14;
   --signal-soft: rgba(57, 255, 20, .16);
   --signal-faint: rgba(57, 255, 20, .08);
-  --mono: "Courier New", Courier, "Liberation Mono", monospace;
+  --mono: Consolas, "Lucida Console", Monaco, "Liberation Mono", monospace;
   --prose-pink: #ff2bbd;
 }
 
