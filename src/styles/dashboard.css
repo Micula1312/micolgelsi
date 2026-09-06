@@ -65,7 +65,10 @@ body[data-project-view] .work-list.is-year-plane {overflow-x:hidden!important;ov
 body[data-project-view] .work-list.is-year-plane.is-scrollable-year {overflow-x:auto!important}
 body[data-project-view] .work-list.is-year-plane::-webkit-scrollbar {display:none!important;width:0!important;height:0!important}
 
-/* RESEARCH becomes an atlas: one research field, then every project that crosses it. */
+/* RESEARCH becomes an atlas: one research field, then every project that crosses it.
+   Hide the legacy spatial map so categories and projects are rendered only once. */
+body[data-project-view] .work-list.is-research-map > .research-field,
+body[data-project-view] .work-list.is-research-map > .work-row{display:none!important}
 body[data-project-view] .work-list.is-research-map{overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:none!important;padding:14px 16px 64px}
 body[data-project-view] .work-list.is-research-map::-webkit-scrollbar{display:none!important}
 .research-atlas{position:relative!important;z-index:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 30px;align-content:start;width:100%;padding:4px 0 40px}
