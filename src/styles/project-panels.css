@@ -173,3 +173,87 @@ html[data-copy-style="pink"] :is(.site-bio,.lead,.prose,.web-inspector-summary) 
     --type-mono-size:10px;
   }
 }
+
+/* DIAGONAL SYSTEM CHROME
+   Identity anchors the upper-left; display controls answer from the lower-right. */
+.site-header,
+html[data-style="rgb"] .site-header{
+  border:1px solid var(--line)!important;
+  padding:12px!important;
+  margin-top:10px;
+  background:var(--bg);
+}
+
+.site-name,
+html[data-style="rgb"] .site-name{
+  display:inline-flex!important;
+  align-items:center;
+  width:max-content;
+  padding:3px 6px;
+  background:var(--signal);
+  color:#050505!important;
+  line-height:1!important;
+}
+
+.site-name::before,
+html[data-style="rgb"] .site-name::before{
+  color:#050505!important;
+}
+
+html[data-style="rgb"] .site-name:hover::after,
+html[data-style="rgb"] .site-name:focus-visible::after{
+  left:6px;
+  top:3px;
+  color:#050505!important;
+  text-shadow:none!important;
+}
+
+.system-controls,
+html[data-style="rgb"] .system-controls{
+  left:auto!important;
+  right:max(8px,env(safe-area-inset-right))!important;
+  bottom:max(8px,env(safe-area-inset-bottom))!important;
+  gap:8px!important;
+  padding:3px 5px!important;
+  border:0!important;
+  background:var(--rgb-b)!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+
+.system-control{
+  gap:4px!important;
+}
+
+.system-control>span{
+  color:rgba(255,255,255,.62)!important;
+}
+
+.system-control button,
+html[data-style="rgb"] .system-control button{
+  min-height:0!important;
+  color:#fff!important;
+}
+
+@media(max-width:760px){
+  .site-header,
+  html[data-style="rgb"] .site-header{
+    margin-top:8px;
+    padding:10px!important;
+  }
+
+  body[data-fixed-shell="true"] .site-header{
+    flex-basis:196px;
+    height:196px;
+    min-height:196px;
+    max-height:196px;
+  }
+
+  .system-controls,
+  html[data-style="rgb"] .system-controls{
+    right:max(6px,env(safe-area-inset-right))!important;
+    bottom:max(6px,env(safe-area-inset-bottom))!important;
+    padding:2px 4px!important;
+    gap:6px!important;
+  }
+}
