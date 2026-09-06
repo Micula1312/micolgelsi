@@ -8,7 +8,8 @@ startDate: "2023-09"
 endDate: "2025-10"
 status: ongoing
 medium:
-  []
+  - "installation"
+  - "av and fire performance"
 researchAreas:
   []
 collaborators:

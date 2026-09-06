@@ -6,7 +6,7 @@ STATUS: ongoing
 AVATAR: videos/performanceCLUSTER-2-.mp4
 COVER: images/_DSC6427.webp
 RESEARCH: 
-MEDIUM: 
+MEDIUM: installation, av and fire performance
 EXCERPT: 
 DESCRIPTION: 
 OUTPUTS: 
