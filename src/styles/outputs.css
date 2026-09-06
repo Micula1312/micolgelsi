@@ -6,9 +6,7 @@
 .project-moment>img{width:100%;max-height:220px;object-fit:cover;justify-self:end}
 .moment-gallery{display:flex;gap:6px;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:0}
 .moment-gallery::-webkit-scrollbar{display:none;width:0;height:0}
-.moment-thumb{position:relative;flex:0 0 92px;width:92px;height:64px;padding:0;border:0;background:transparent;cursor:pointer;overflow:hidden}
-.moment-thumb:not(.is-video)::after{content:'★';position:absolute;left:50%;top:50%;z-index:2;color:var(--signal);font:16px/1 var(--mono);transform:translate(-50%,-50%) scale(.7);opacity:0;text-shadow:0 0 5px var(--signal),0 0 12px var(--signal-soft);pointer-events:none;transition:opacity .12s ease,transform .12s ease}
-.moment-thumb:not(.is-video):hover::after,.moment-thumb:not(.is-video):focus-visible::after{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.moment-thumb{position:relative;flex:0 0 92px;width:92px;height:64px;padding:0;border:0;background:transparent;cursor:pointer;overflow:hidden}.moment-thumb:not(.is-video){cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext x='16' y='23' text-anchor='middle' font-size='24' fill='%2339ff14' stroke='%23080808' stroke-width='.8' paint-order='stroke'%3E%E2%98%85%3C/text%3E%3C/svg%3E") 16 16,pointer}
 .moment-thumb img,.moment-thumb video{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(.2);transition:filter .15s ease,opacity .15s ease}
 .moment-thumb:hover img,.moment-thumb:hover video{filter:none;opacity:.78}
 .moment-thumb.is-video{cursor:pointer}.moment-video-mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:24px;height:24px;border:1px solid rgba(255,255,255,.72);border-radius:50%;background:rgba(0,0,0,.52);color:#fff;font-size:9px;line-height:1;padding-left:2px;pointer-events:none}
