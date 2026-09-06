@@ -11,17 +11,18 @@ const relatedWorks=allWorks.filter(work=>entry.data.works.includes(work.id)||wor
 const worksByTitle=new Map(relatedWorks.map(work=>[work.data.title.toLowerCase(),work]));
 const typeLabel=entry.data.displayType;
 const base=import.meta.env.BASE_URL;
-const avatar=entry.data.avatar||'';
+const withBase=(src='')=>{const value=String(src);if(!value.startsWith('/')||value.startsWith('//')||value.startsWith(base))return value;return `${base}${value.replace(/^\/+/, '')}`;};
+const avatar=withBase(entry.data.avatar||'');
 const avatarIsVideo=/\.(?:mp4|webm|mov)(?:$|\?)/i.test(avatar);
-const cover=entry.data.cover||'';
+const cover=withBase(entry.data.cover||'');
 const coverIsVideo=/\.(?:mp4|webm|mov)(?:$|\?)/i.test(cover);
 const hasLoader=Boolean(avatar);
 const isSelf=(value='')=>/\bmicol\s+gelsi\b/i.test(String(value));
 const collaborators=entry.data.collaborators.filter(x=>!isSelf(x));
 const artistsInvolved=entry.data.artistsInvolved.filter(x=>!isSelf(x));
 const credits=entry.data.credits.filter(x=>!isSelf(x));
-const gallery=entry.data.gallery??[];
-const videos=entry.data.videos??[];
+const gallery=(entry.data.gallery??[]).map(withBase);
+const videos=(entry.data.videos??[]).map(withBase);
 const mediaSequence=[
   ...gallery.map((src,index)=>({kind:'image',src,index,position:(index+1)/(gallery.length+1)})),
   ...videos.map((src,index)=>({kind:'video',src,index,position:(index+1)/(videos.length+1)}))
@@ -42,7 +43,7 @@ const mediaSequence=[
     </aside>
   </div>
   {mediaSequence.length>0&&<section class="media-stream" data-media-stream>{mediaSequence.map((item,mediaIndex)=>item.kind==='image'?<figure class={`media-photo media-photo-${mediaIndex%5}`}><img src={item.src} alt={`${entry.data.title} — ${item.index+1}`} loading="lazy" /></figure>:<figure class="media-video" data-scroll-video><video src={item.src} muted loop playsinline preload="metadata"></video></figure>)}</section>}
-  {entry.data.moments.length>0&&<section class="project-moments"><h2>Outputs</h2>{entry.data.moments.map(moment=>{const relatedWork=worksByTitle.get(moment.title.toLowerCase());const outputType=moment.type||relatedWork?.data.displayType||'';return <div class="project-moment"><span class="output-date">{moment.date}</span><strong class="output-title">{moment.href?<a href={moment.href} target="_blank" rel="noopener noreferrer">{moment.title} ↗</a>:moment.title}</strong>{outputType&&<span class="output-type">{outputType}</span>}{moment.location&&<span class="output-location">{moment.location}</span>}{moment.gallery.length>0?<MomentGallery images={moment.gallery} title={moment.title}/>:moment.media&&(/\.(?:mp4|webm|mov)(?:$|\?)/i.test(moment.media)?<video class="moment-single-video" src={moment.media} controls playsinline preload="metadata"></video>:<img src={moment.media} alt="" loading="lazy" />)}</div>;})}</section>}
+  {entry.data.moments.length>0&&<section class="project-moments"><h2>Outputs</h2>{entry.data.moments.map(moment=>{const relatedWork=worksByTitle.get(moment.title.toLowerCase());const outputType=moment.type||relatedWork?.data.displayType||'';const momentMedia=withBase(moment.media||'');const momentGallery=(moment.gallery??[]).map(withBase);return <div class="project-moment"><span class="output-date">{moment.date}</span><strong class="output-title">{moment.href?<a href={moment.href} target="_blank" rel="noopener noreferrer">{moment.title} ↗</a>:moment.title}</strong>{outputType&&<span class="output-type">{outputType}</span>}{moment.location&&<span class="output-location">{moment.location}</span>}{momentGallery.length>0?<MomentGallery images={momentGallery} title={moment.title}/>:momentMedia&&(/\.(?:mp4|webm|mov)(?:$|\?)/i.test(momentMedia)?<video class="moment-single-video" src={momentMedia} controls playsinline preload="metadata"></video>:<img src={momentMedia} alt="" loading="lazy" />)}</div>;})}</section>}
   {entry.data.criticalTexts.length>0&&<section class="project-links project-reference-group"><h2>Critical texts</h2>{entry.data.criticalTexts.map(item=><a href={item.url} target="_blank" rel="noopener noreferrer">{item.label||item.url} ↗</a>)}</section>}
   {entry.data.publications.length>0&&<section class="project-links project-reference-group"><h2>Publications</h2>{entry.data.publications.map(item=><a href={item.url} target="_blank" rel="noopener noreferrer">{item.label||item.url} ↗</a>)}</section>}
   {entry.data.communication.length>0&&<section class="project-links project-reference-group"><h2>Communication</h2>{entry.data.communication.map(item=><a href={item.url} target="_blank" rel="noopener noreferrer">{item.label||item.url} ↗</a>)}</section>}
