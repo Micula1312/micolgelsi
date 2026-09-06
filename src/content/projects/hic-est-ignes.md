@@ -23,7 +23,7 @@ credits:
 photoCredits:
   []
 avatar: "/media/artistic/hic-est-ignes/videos/performanceCLUSTER-2-.mp4"
-cover: "/media/artistic/hic-est-ignes/images/performanceCLUSTER.mp4"
+cover: "/media/artistic/hic-est-ignes/images/_DSC6427.webp"
 gallery:
   - "/media/artistic/hic-est-ignes/images/_DSC6408.webp"
   - "/media/artistic/hic-est-ignes/images/_DSC6424.webp"
