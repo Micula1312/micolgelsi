@@ -16,6 +16,7 @@ const baseNoSlash = base.replace(/\/$/, '');
 const pathname = Astro.url.pathname.replace(baseNoSlash, '').replace(/\/$/, '') || '/';
 const isHome = pathname === '/';
 const fixedShell = ['/', '/play-with-me'].includes(pathname);
+const projectDetail = pathname.startsWith('/projects/') || pathname.startsWith('/exhibitions/');
 const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
 const bioLines = [
   'Artist and researcher working across performative and multimedia arts.',
@@ -34,7 +35,7 @@ const bioLines = [
     <meta name="theme-color" content="#080808" />
     <title>{title}</title>
   </head>
-  <body data-fixed-shell={fixedShell ? 'true' : undefined}>
+  <body data-fixed-shell={fixedShell ? 'true' : undefined} data-project-detail={projectDetail ? 'true' : undefined}>
     <div class="shell">
       <header class="site-header">
         <div class="identity">
@@ -120,5 +121,6 @@ const bioLines = [
     <script is:inline src={withBase('research-layout.js')}></script>
     <script is:inline src={withBase('home-loader.js')}></script>
     <script is:inline src={withBase('play-save.js')}></script>
+    {projectDetail&&<script is:inline src={withBase('featured-gallery.js')}></script>}
   </body>
 </html>
