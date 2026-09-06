@@ -7,7 +7,7 @@
   --rgb-r: #ff1744;
   --rgb-g: #00e676;
   --rgb-b: #2962ff;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 * { box-sizing: border-box; }
 html { background: var(--bg); color: var(--fg); }
