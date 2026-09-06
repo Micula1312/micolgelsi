@@ -143,8 +143,8 @@ body[data-project-detail="true"] .site-header{background:var(--bg)}
   --type-mono-weight:400;
   --type-mono-tracking:-.02em;
   --type-editorial:Georgia,"Times New Roman",serif;
-  --type-editorial-size:12px;
-  --type-editorial-leading:1.45;
+  --type-editorial-size:var(--type-mono-size);
+  --type-editorial-leading:var(--type-mono-leading);
 }
 
 html,
@@ -182,7 +182,5 @@ html[data-copy-style="pink"] :is(.site-bio,.lead,.prose,.web-inspector-summary) 
 @media(max-width:760px){
   :root{
     --type-mono-size:10px;
-    --type-editorial-size:10.5px;
-    --type-editorial-leading:1.38;
   }
 }
