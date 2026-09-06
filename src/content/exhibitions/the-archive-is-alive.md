@@ -25,7 +25,7 @@ credits:
   []
 photoCredits:
   []
-avatar: "/media/artistic/the-archive-is-alive/avatar.mp4"
+avatar: "/media/artistic/the-archive-is-alive/_source/avatar.mp4"
 cover: "/media/artistic/the-archive-is-alive/cover.webp"
 gallery:
   - "/media/artistic/the-archive-is-alive/images/1.webp"
