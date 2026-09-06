@@ -133,3 +133,56 @@ body[data-project-detail="true"] .site-header{background:var(--bg)}
 @media(prefers-reduced-motion:reduce){
   body[data-project-detail="true"]::before{will-change:auto}
 }
+
+/* TWO-TYPE SYSTEM
+   Every interface element shares one monospace voice.
+   Only discursive copy may switch to the pink editorial voice. */
+:root{
+  --type-mono-size:11px;
+  --type-mono-leading:1.28;
+  --type-mono-weight:400;
+  --type-mono-tracking:-.02em;
+  --type-editorial:Georgia,"Times New Roman",serif;
+  --type-editorial-size:12px;
+  --type-editorial-leading:1.45;
+}
+
+html,
+body,
+body *,
+body *::before,
+body *::after{
+  font-family:var(--mono)!important;
+  font-size:var(--type-mono-size);
+  font-style:normal;
+  font-weight:var(--type-mono-weight);
+  line-height:var(--type-mono-leading);
+  letter-spacing:var(--type-mono-tracking);
+}
+
+html[data-copy-style="pink"] :is(.site-bio,.lead,.prose,.web-inspector-summary),
+html[data-copy-style="pink"] :is(.site-bio,.lead,.prose,.web-inspector-summary) *{
+  font-family:var(--type-editorial)!important;
+  font-size:var(--type-editorial-size);
+  font-style:italic;
+  font-weight:400;
+  line-height:var(--type-editorial-leading);
+  letter-spacing:0;
+  text-transform:lowercase;
+  color:var(--prose-pink);
+}
+
+html[data-copy-style="pink"] :is(.site-bio,.lead,.prose,.web-inspector-summary) :is(strong,b){
+  font-family:var(--type-editorial)!important;
+  font-size:inherit;
+  font-style:inherit;
+  font-weight:400;
+}
+
+@media(max-width:760px){
+  :root{
+    --type-mono-size:10px;
+    --type-editorial-size:10.5px;
+    --type-editorial-leading:1.38;
+  }
+}
