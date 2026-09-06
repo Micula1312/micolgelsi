@@ -1,37 +1,13 @@
-TITLE:
-#untamed-architecture X @ambient-rave <3
-
-AUTHOR:
-
-FEATURED:
-yes
-
-START:
-2025-12
-
-END:
-ongoing
-
-STATUS:
-
-TYPE:
-multimedia performance
-
-MEDIUM:
-audiovisual performance, live media manipulation, sound, listening practice
-
-RESEARCH:
-urban-wilderness
-generative-archives
-live-data-manipulation
-
-COLLABORATORS:
-Stiky Verde
-Giuseppe di Capua
-Federico Russo
-Elisa Catalano
-Paolo Rucci
-
+TITLE: #untamed-architecture X @ambient-rave <3
+AUTHOR: 
+FEATURED: 
+START: 2025-12
+END: ongoing
+STATUS: 
+TYPE: multimedia performance
+MEDIUM: audiovisual performance, live media manipulation, sound, listening practice
+RESEARCH: urban-wilderness, generative-archives, live-data-manipulation
+COLLABORATORS: Stiky VerdeGiuseppe di CapuaFederico RussoElisa CatalanoPaolo Rucci
 ARTISTS INVOLVED:
 Stiky Verde
 Giuseppe di Capua
@@ -41,13 +17,10 @@ Paolo Rucci
 
 CURATED BY:
 
-CREDITS:
+CREDITS: 
+EXCERPT: A 30-minute multimedia performance exploring urban wilderness in the Aniene River Nature Reserve through the live manipulation of materials contained in the hyper-object Archive of the #Untamed, accompanied by the sonic narrative of Rome-based DJ and producer Stiky Verde.
 
-EXCERPT:
-A 30-minute multimedia performance exploring urban wilderness in the Aniene River Nature Reserve through the live manipulation of materials contained in the hyper-object Archive of the #Untamed, accompanied by the sonic narrative of Rome-based DJ and producer Stiky Verde.
-
-DESCRIPTION:
-#untamed-architecture X @ambient-rave <3 is a multimedia performance developed from Archive of the #Untamed.
+DESCRIPTION: #untamed-architecture X @ambient-rave <3 is a multimedia performance developed from Archive of the #Untamed.
 
 The work reactivates “La passeggiata distensiva con Lilo”, a wild exploration through the Aniene River Nature Reserve, inside a new spatial and performative context. Images, recordings and archival traces contained in the hyper-object Archive of the #Untamed are manipulated live, transforming the archive from a repository into material for audiovisual action.
 
@@ -60,19 +33,15 @@ Duration: 30 min.
 LINKS:
 https://thearchiveoftheuntamed.xyz/
 
-OUTPUTS:
-2026-06-10
+OUTPUTS: 2026-06-10
 #untamed-architecture X @ambient-rave <3
 type: multimedia installation + performance
 location: Acquario Romano / Casa dell’Architettura, Roma
-credits: Roma Contaminata
-media: casa-architetturaa
 
-2026
+2026-04-10
 #untamed-architecture X @ambient-rave <3
 type: multimedia installation + performance
 location: Fondazione Pastificio Cerere, Roma
-credits: Roma Diffusa
-media: pastificio
-AVATAR: _source/cover.mp4
+AVATAR: cover.mp4
 COVER: pastificio/WhatsApp Image 2026-06-03 at 14.06.11.webp
+MAIN LINK:
