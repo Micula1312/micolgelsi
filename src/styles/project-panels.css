@@ -289,3 +289,41 @@ body[data-project-view] .work-list.is-year-plane.is-scrollable-year .work-row{
   -webkit-user-select:none;
   user-select:none;
 }
+
+/* The animated home bio must never reflow the project viewport. */
+:root{--home-header-height:156px}
+
+body[data-fixed-shell="true"] .site-header,
+html[data-style="rgb"] body[data-fixed-shell="true"] .site-header{
+  box-sizing:border-box!important;
+  flex:0 0 var(--home-header-height)!important;
+  width:100%;
+  height:var(--home-header-height)!important;
+  min-height:var(--home-header-height)!important;
+  max-height:var(--home-header-height)!important;
+  overflow:hidden!important;
+  contain:layout paint;
+}
+
+body[data-fixed-shell="true"] .page{
+  flex:1 1 0!important;
+  min-height:0!important;
+  height:auto!important;
+}
+
+body[data-fixed-shell="true"] .work-index{
+  height:100%!important;
+  min-height:0!important;
+}
+
+@media(max-width:760px){
+  :root{--home-header-height:196px}
+
+  body[data-fixed-shell="true"] .site-header,
+  html[data-style="rgb"] body[data-fixed-shell="true"] .site-header{
+    flex-basis:var(--home-header-height)!important;
+    height:var(--home-header-height)!important;
+    min-height:var(--home-header-height)!important;
+    max-height:var(--home-header-height)!important;
+  }
+}
