@@ -21,8 +21,9 @@ const jsonBody=async req=>JSON.parse((await readBody(req,1024*1024*5)).toString(
 const exists=async p=>{try{await fs.access(p);return true;}catch{return false;}};
 const isAdminHiddenMediaDir=name=>{
   const normalized=String(name||'').toLowerCase().replace(/^[._\-\s]+/,'').replace(/[^a-z]/g,'');
-  return ADMIN_HIDDEN_MEDIA_DIRS.has(normalized);
+  return ADMIN_HIDDEN_MEDIA_DIRS.has(normalized)||normalized.startsWith('source');
 };
+const inside=(root,target)=>target===root||target.startsWith(root+path.sep);
 
 function parseInfo(text=''){
   const result={};let current=null;
@@ -118,7 +119,24 @@ const server=http.createServer(async(req,res)=>{
       return send(res,200,{ok:true});
     }
     if(req.method==='DELETE'&&url.pathname==='/api/media'){
-      const kind=safe(url.searchParams.get('kind')),slug=safe(url.searchParams.get('slug')),rel=String(url.searchParams.get('rel')||'').replaceAll('\\','/');if(!['artistic','external'].includes(kind)||!slug||rel.includes('..'))return send(res,400,{error:'Invalid media'});await fs.unlink(path.join(MEDIA_ROOT,kind,slug,...rel.split('/')));return send(res,200,{ok:true});
+      const kind=safe(url.searchParams.get('kind')),slug=safe(url.searchParams.get('slug')),rel=String(url.searchParams.get('rel')||'').replaceAll('\\','/').replace(/^\\/+/, '');
+      if(!['artistic','external'].includes(kind)||!slug||!rel||rel.split('/').includes('..'))return send(res,400,{error:'Invalid media'});
+      const projectMediaRoot=path.resolve(MEDIA_ROOT,kind,slug),target=path.resolve(projectMediaRoot,...rel.split('/'));
+      if(!inside(projectMediaRoot,target)||target===projectMediaRoot)return send(res,400,{error:'Invalid media path'});
+      const stat=await fs.stat(target).catch(()=>null);
+      if(!stat?.isFile())return send(res,404,{error:'Media not found'});
+      if(!Object.prototype.hasOwnProperty.call(MIME,path.extname(target).toLowerCase()))return send(res,400,{error:'Unsupported media type'});
+      await fs.unlink(target);
+      const infoPath=path.join(PROJECTS_ROOT,kind,slug,'info.txt');
+      let rolesCleared=[];
+      if(await exists(infoPath)){
+        let text=await fs.readFile(infoPath,'utf8'),data=parseInfo(text);
+        const normalized=value=>String(value||'').replace(/^\.\\//,'').replace(/^\\/+/, '').replaceAll('\\','/');
+        if(normalized(data.AVATAR)===rel){text=setSection(text,'AVATAR','');rolesCleared.push('avatar');}
+        if(normalized(data.COVER)===rel){text=setSection(text,'COVER','');rolesCleared.push('cover');}
+        if(rolesCleared.length)await fs.writeFile(infoPath,text,'utf8');
+      }
+      return send(res,200,{ok:true,deleted:rel,rolesCleared});
     }
     if(req.method==='POST'&&url.pathname==='/api/categories'){
       const body=await jsonBody(req);if(!Array.isArray(body.categories))return send(res,400,{error:'categories must be an array'});const clean=body.categories.map(item=>({key:safe(item.key).toLowerCase(),label:String(item.label||'').trim(),subtitle:String(item.subtitle||'').trim()})).filter(x=>x.key&&x.label);await fs.mkdir(path.dirname(CONFIG_PATH),{recursive:true});const text=JSON.stringify(clean,null,2)+'\n';await fs.writeFile(CONFIG_PATH,text,'utf8');await fs.writeFile(PUBLIC_CONFIG_PATH,text,'utf8');const synced=await runSync();return send(res,200,{ok:true,categories:clean,synced});
