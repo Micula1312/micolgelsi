@@ -727,3 +727,90 @@ html[data-style="rgb"] .system-controls{
 @media(prefers-reduced-motion:reduce){
   .project-head,.project-body,.project-cover,.media-stream,.media-grid,.video-list,.project-moments,.project-links,.related{transition:none}
 }
+
+
+/* ENTRY, SECOND CUT — fixed claim, rotating generator, two exits. */
+.entry-fixed{
+  position:absolute;
+  top:18px;
+  left:50%;
+  width:min(720px,70vw);
+  margin:0;
+  transform:translateX(-50%);
+  text-align:center;
+  color:var(--fg);
+}
+.entry-line[hidden]{display:none!important}
+.entry-line{position:relative;z-index:2}
+.entry-star{
+  position:relative;
+  z-index:2;
+  animation:entry-star-spin 8s linear infinite,entry-star-pulse 2.4s ease-in-out infinite;
+}
+.entry-instruction{position:relative;z-index:2}
+.entry-exits{
+  position:absolute;
+  right:20px;
+  bottom:18px;
+  left:20px;
+  z-index:3;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+}
+.entry-exits a,
+.entry-exits button{
+  appearance:none;
+  -webkit-appearance:none;
+  min-height:0!important;
+  border:0;
+  padding:0;
+  background:transparent;
+  color:var(--muted);
+  text-decoration:none;
+  cursor:pointer;
+}
+.entry-exits a:hover{color:var(--prose-pink)!important}
+.entry-exits button:hover{color:var(--signal)!important}
+.entry-star-trace{
+  z-index:0;
+  pointer-events:none;
+  transform:rotate(var(--trace-r));
+  animation:entry-trace-stay .7s cubic-bezier(.22,.61,.36,1) both;
+}
+@keyframes entry-star-spin{
+  from{transform:rotate(calc(var(--entry-step) * 47deg)) scale(calc(1 + var(--entry-step) * .08))}
+  to{transform:rotate(calc(360deg + var(--entry-step) * 47deg)) scale(calc(1 + var(--entry-step) * .08))}
+}
+@keyframes entry-trace-stay{
+  0%{opacity:0;filter:blur(8px);transform:scale(.2) rotate(var(--trace-r))}
+  100%{opacity:.22;filter:blur(0);transform:scale(1) rotate(var(--trace-r))}
+}
+@media(max-width:760px){
+  .entry-counter{top:14px;left:14px}
+  .entry-fixed{
+    top:42px;
+    width:calc(100vw - 28px);
+    font-size:9px!important;
+  }
+  .entry-line{
+    width:88vw;
+    margin-bottom:22px!important;
+  }
+  .entry-exits{
+    right:14px;
+    bottom:max(14px,env(safe-area-inset-bottom));
+    left:14px;
+    align-items:flex-end;
+  }
+  .entry-exits a,.entry-exits button{
+    width:47%;
+    font-size:8px!important;
+    line-height:1.25!important;
+  }
+  .entry-exits button{text-align:right}
+}
+@media(prefers-reduced-motion:reduce){
+  .entry-star{animation:none}
+}
