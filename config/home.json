@@ -7,7 +7,7 @@
     "She works with ASAP and BLIVET and is a member of Sound Studies Forum."
   ],
   "loader": {
-    "enabled": true,
+    "enabled": false,
     "fixedText": "PER FARE QUESTO STUPIDO PORTFOLIO…",
     "phrases": [
       "Ho consumato tutti i crediti di ChatGPT Plus.",
@@ -20,25 +20,6 @@
     "enterInstruction": "TOUCH TO ENTER",
     "radioLabel": "FUCK ALL — GO TO STIKY RADIO ↗",
     "radioUrl": "https://www.radioraheem.it/portaradio/portaradi0-w-sticky-verde/",
-    "skipLabel": "HO FRETTA — VAI AL PORTFOLIO ↘",
-    "fixedTextIt": "PER FARE QUESTO STUPIDO PORTFOLIO…",
-    "phrasesIt": [
-      "Ho consumato tutti i crediti di ChatGPT Plus.",
-      "Ho cambiato font più volte della mia bio.",
-      "Ho chiesto a una macchina di rendermi meno prevedibile.",
-      "Adesso puoi entrare. Forse."
-    ],
-    "instructionIt": "TOCCA LA STELLA CHE GIRA",
-    "againInstructionIt": "ANCORA",
-    "enterInstructionIt": "TOCCA PER ENTRARE",
-    "radioLabelIt": "FANCULO TUTTO — VAI ALLA RADIO DI STIKY ↗",
-    "skipLabelIt": "HO FRETTA — VAI AL PORTFOLIO ↘"
-  },
-  "bioIt": [
-    "Artista multimediale e ricercatrice attiva tra spazi pubblici e digitali.",
-    "La sua pratica mette in dialogo materiali trovati e di recupero con strumenti low-tech e tecnologie digitali.",
-    "Attraverso archivi viventi, interventi site-specific e metodologie partecipative, esplora memoria collettiva, inclusione e accesso alla cultura digitale.",
-    "Relazioni più-che-umane, sistemi ecologici e territori liminali ricorrono come campi d’indagine.",
-    "Collabora con ASAP e BLIVET ed è membro del Sound Studies Forum."
-  ]
+    "skipLabel": "HO FRETTA — VAI AL PORTFOLIO ↘"
+  }
 }
