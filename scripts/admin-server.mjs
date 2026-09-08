@@ -11,7 +11,7 @@ const HOME_CONFIG_PATH=path.join(ROOT,'config','home.json');
 const PUBLIC_CONFIG_PATH=path.join(ROOT,'public','research-areas.json');
 const UI_PATH=path.join(ROOT,'admin','index.html');
 const PORT=4310;
-const SECTION_NAMES=['TITLE','AUTHOR','TEASER','AVATAR','COVER','FEATURED','START','END','STATUS','TYPE','PRACTICE','ROLE','CLIENT','STACK','URL','MEDIUM','RESEARCH','WITH','COLLABORATORS','MAIN LINK','ARTISTS INVOLVED','CURATED BY','CREDITS','PHOTO CREDITS','EXCERPT','DESCRIPTION','SHORT','CRITICAL TEXTS','PUBLICATIONS','COMMUNICATION','LINKS','MOMENTS','OUTPUTS','PARENT','WORKS'];
+const SECTION_NAMES=['TITLE','AUTHOR','TEASER','AVATAR','COVER','COVER EMBED','RELATED','FEATURED','START','END','STATUS','TYPE','PRACTICE','ROLE','CLIENT','STACK','URL','MEDIUM','RESEARCH','WITH','COLLABORATORS','MAIN LINK','ARTISTS INVOLVED','CURATED BY','CREDITS','PHOTO CREDITS','EXCERPT','DESCRIPTION','SHORT','CRITICAL TEXTS','PUBLICATIONS','COMMUNICATION','LINKS','MOMENTS','OUTPUTS','PARENT','WORKS'];
 const MIME={'.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.gif':'image/gif','.avif':'image/avif','.mp4':'video/mp4','.webm':'video/webm','.mov':'video/quicktime'};
 const ADMIN_HIDDEN_MEDIA_DIRS=new Set(['source','sources','sourcce','sourcces']);
 
