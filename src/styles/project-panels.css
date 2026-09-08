@@ -926,3 +926,19 @@ html[data-copy-style="pink"] .bio-popup .site-bio{
   html[data-copy-style="pink"] .project-body .prose{font-size:clamp(17px,5.1vw,22px)!important;line-height:1.3!important}
   html[data-copy-style="pink"] .bio-popup .site-bio{font-size:17px!important;line-height:1.22!important}
 }
+
+/* Smaller gallery rhythm: images remain clickable without becoming full-page walls. */
+.media-stream,.media-grid{grid-template-columns:repeat(12,minmax(0,1fr))!important;align-items:start}
+.media-stream .media-photo,.media-grid figure{grid-column:span 4!important}
+.media-stream .media-photo:nth-of-type(4n+2),.media-grid figure:nth-child(4n+2){grid-column:span 5!important}
+.media-stream .media-photo:nth-of-type(4n+3),.media-grid figure:nth-child(4n+3){grid-column:span 3!important}
+.media-stream .media-photo img,.media-grid figure img{display:block;width:100%;height:min(42vw,560px);object-fit:contain;background:#050505}
+.project-cover-embed{position:relative;aspect-ratio:16/9;min-height:420px}
+.project-cover-embed iframe{display:block;width:100%;height:100%;border:0}
+.project-cover-embed>a{position:absolute;right:10px;bottom:10px;padding:5px 7px;background:var(--signal);color:#050505!important;text-decoration:none}
+@media(max-width:760px){
+  .media-stream,.media-grid{display:flex!important;gap:10px;overflow-x:auto;scroll-snap-type:x proximity}
+  .media-stream .media-photo,.media-grid figure{flex:0 0 72vw!important;width:72vw!important;scroll-snap-align:start}
+  .media-stream .media-photo img,.media-grid figure img{height:56vh}
+  .project-cover-embed{min-height:58vh;aspect-ratio:auto}
+}
