@@ -11,6 +11,16 @@
     "teaser": {
       "type": "string"
     },
+    "coverEmbed": {
+      "type": "string"
+    },
+    "related": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "mainLink": {
       "type": "string"
     },
