@@ -1,0 +1,25 @@
+{
+  "bio": [
+    "Multimedia artist and researcher working across public and digital spaces.",
+    "Her practice brings found and reclaimed materials into dialogue with low-tech tools and digital technologies.",
+    "Through living archives, site-specific interventions and participatory methodologies, she explores collective memory, inclusion and access to digital culture.",
+    "More-than-human relations, ecological systems and liminal territories recur as fields of investigation.",
+    "She works with ASAP and BLIVET and is a member of Sound Studies Forum."
+  ],
+  "loader": {
+    "enabled": true,
+    "fixedText": "PER FARE QUESTO STUPIDO PORTFOLIO…",
+    "phrases": [
+      "Ho consumato tutti i crediti di ChatGPT Plus.",
+      "Ho cambiato font più volte della mia bio.",
+      "Ho chiesto a una macchina di rendermi meno prevedibile.",
+      "Adesso puoi entrare. Forse."
+    ],
+    "instruction": "TOUCH THE SPINNING STAR",
+    "againInstruction": "AGAIN",
+    "enterInstruction": "TOUCH TO ENTER",
+    "radioLabel": "FUCK ALL — GO TO STIKY RADIO ↗",
+    "radioUrl": "https://www.radioraheem.it/portaradio/portaradi0-w-sticky-verde/",
+    "skipLabel": "HO FRETTA — VAI AL PORTFOLIO ↘"
+  }
+}
