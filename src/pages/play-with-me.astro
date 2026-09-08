@@ -20,12 +20,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="placeholder" data-placeholder>
           <span class="camera-mark">★</span>
           <button type="button" data-camera>ALLOW CAMERA</button>
+          <button type="button" data-text-mode>CONTINUE WITHOUT CAMERA →</button>
         </div>
       </div>
 
       <div class="text-row">
         <label for="postcard-copy">MESSAGE</label>
-        <input id="postcard-copy" type="text" maxlength="72" autocomplete="off" placeholder="TYPE SOMETHING FOR THE POSTCARD…" data-text />
+        <textarea id="postcard-copy" maxlength="600" autocomplete="off" placeholder="TYPE SOMETHING FOR THE POSTCARD… OR WRITE TO ME." data-text></textarea>
+      </div>
+      <div class="contact-row" data-contact-row>
+        <label>FROM <input type="text" autocomplete="name" placeholder="YOUR NAME" data-contact-name /></label>
+        <label>REPLY TO <input type="email" autocomplete="email" placeholder="YOUR EMAIL" data-contact-email /></label>
       </div>
 
       <div class="tool-row">
@@ -50,9 +55,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const note = document.querySelector('[data-note]');
       const textInput = document.querySelector('[data-text]');
       const postcard = document.querySelector('[data-postcard]');
+      const contactName = document.querySelector('[data-contact-name]');
+      const contactEmail = document.querySelector('[data-contact-email]');
       const ctx = canvas?.getContext('2d');
       if (!stage || !video || !canvas || !ctx) return;
-      let drawing = false, last = null, history = [];
+      let drawing = false, last = null, history = [], cameraActive = false;
+      const activateTextMode = (message='text mode active — write, draw or send me a message ★') => {
+        cameraActive=false;
+        video.srcObject?.getTracks?.().forEach(track=>track.stop());
+        video.srcObject=null;
+        placeholder.hidden=true;
+        stage.classList.add('is-text-mode');
+        note.textContent=message;
+        textInput?.focus();
+      };
+      document.querySelector('[data-text-mode]')?.addEventListener('click',()=>activateTextMode());
 
       const signal = () => getComputedStyle(document.documentElement).getPropertyValue('--signal').trim() || '#39ff14';
       const resize = () => {
@@ -80,7 +97,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       document.querySelector('[data-camera]')?.addEventListener('click', async()=>{
         const cameraButton = document.querySelector('[data-camera]');
         if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
-          note.textContent='camera unavailable — open this page directly over HTTPS.';
+          activateTextMode('camera unavailable — text/contact mode active ★');
           return;
         }
 
@@ -105,25 +122,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           }
           video.srcObject = stream;
           await video.play();
+          cameraActive = true;
+          stage.classList.remove('is-text-mode');
           placeholder.hidden = true;
           note.textContent='camera active ★';
         } catch (error) {
           const permissionBlocked = error?.name === 'NotAllowedError' || error?.name === 'SecurityError';
           note.textContent = permissionBlocked
-            ? 'camera blocked — enable Camera for this browser in iPhone Settings, then reload.'
-            : `camera unavailable${error?.name ? ` (${error.name})` : ''} — try reloading the page.`;
+            ? 'camera blocked — continuing in text/contact mode ★'
+            : `camera unavailable${error?.name ? ` (${error.name})` : ''} — continuing in text/contact mode ★`;
           cameraButton?.removeAttribute('disabled');
           if (cameraButton) cameraButton.textContent='TRY CAMERA AGAIN';
+          window.setTimeout(()=>activateTextMode(note.textContent),350);
         }
       });
       document.querySelector('[data-clear]')?.addEventListener('click', ()=>{ history.push(canvas.toDataURL()); const r=canvas.getBoundingClientRect(); ctx.clearRect(0,0,r.width,r.height); });
       document.querySelector('[data-undo]')?.addEventListener('click', ()=>{ const s=history.pop(); if(!s)return; const img=new Image(); img.onload=()=>{const r=canvas.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);ctx.drawImage(img,0,0,r.width,r.height)}; img.src=s; });
       document.querySelector('[data-send]')?.addEventListener('click', async()=>{
+        const message=(textInput?.value||'').trim();
+        if(!cameraActive){
+          if(!message){note.textContent='write me something first ★';textInput?.focus();return;}
+          const name=(contactName?.value||'').trim(),email=(contactEmail?.value||'').trim();
+          const body=[message,'',name?`From: ${name}`:'',email?`Reply to: ${email}`:'','Sent through PLAY WITH ME ★'].filter(Boolean).join('\n');
+          location.href=`mailto:micolg@gmail.com?subject=${encodeURIComponent('★ PLAY WITH ME / message')}&body=${encodeURIComponent(body)}`;
+          note.textContent='opening your email app ★';
+          return;
+        }
         const r=stage.getBoundingClientRect(), scale=2, out=document.createElement('canvas'); out.width=Math.round(r.width*scale); out.height=Math.round(r.height*scale); const o=out.getContext('2d');
         o.save(); o.translate(out.width,0); o.scale(-1,1); o.filter='grayscale(1) contrast(1.45) brightness(.82)'; if(video.videoWidth)o.drawImage(video,0,0,out.width,out.height); else {o.fillStyle='#050505';o.fillRect(0,0,out.width,out.height);} o.restore(); o.filter='none';
         o.save(); o.globalAlpha=.12; o.fillStyle=signal(); o.fillRect(0,0,out.width,out.height); o.restore();
         o.drawImage(canvas,0,0,out.width,out.height);
-        const message=(textInput?.value||'').trim();
         if(message){
           const panelW=out.width*.36, margin=24*scale, x=out.width-panelW-margin, y=margin, h=out.height-margin*2;
           o.save();
@@ -153,9 +181,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .board-toolbar{min-height:48px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:start;font-family:var(--mono);font-size:11px}.title-group{display:flex;gap:18px;align-items:baseline;min-width:0}.title-group>span,.board-toolbar p{color:var(--muted);margin:0}.title-group h1{font:inherit;font-weight:700;white-space:nowrap}.board-toolbar p{text-align:right}
     .play-panel{min-height:0;border:1px solid var(--line);padding:10px;display:grid;grid-template-rows:minmax(0,1fr) auto auto auto;overflow:hidden}.stage{position:relative;min-height:0;width:100%;height:100%;overflow:hidden;background:#050505;isolation:isolate}.stage video,.stage canvas,.camera-fx{position:absolute;inset:0;width:100%;height:100%}.stage video{object-fit:cover;transform:scaleX(-1);filter:grayscale(1) contrast(1.45) brightness(.82)}.camera-fx{z-index:1;pointer-events:none;background:linear-gradient(to bottom,transparent 0,rgba(255,255,255,.018) 48%,rgba(255,255,255,.07) 50%,transparent 52%),color-mix(in srgb,var(--signal) 11%,transparent);background-size:100% 5px,100% 100%;mix-blend-mode:screen}.camera-fx::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 90px rgba(0,0,0,.9);background:radial-gradient(circle at 50% 45%,transparent 34%,rgba(0,0,0,.35) 100%)}.stage canvas{z-index:2;touch-action:none;cursor:crosshair}
     .postcard-text{position:absolute;z-index:3;top:clamp(14px,2vw,26px);right:clamp(14px,2vw,26px);bottom:clamp(14px,2vw,26px);width:min(34%,420px);padding:clamp(16px,2vw,28px);display:flex;align-items:flex-start;background:color-mix(in srgb,#050505 74%,transparent);border:1px solid color-mix(in srgb,#fff 32%,transparent);color:var(--signal);font-family:Wingdings,"Segoe UI Symbol","Apple Symbols",sans-serif;font-size:clamp(22px,3.4vw,52px);font-weight:700;line-height:.96;letter-spacing:.015em;overflow-wrap:anywhere;text-shadow:0 0 8px color-mix(in srgb,var(--signal) 65%,transparent),0 0 20px color-mix(in srgb,var(--signal) 26%,transparent);pointer-events:none;overflow:hidden;backdrop-filter:blur(3px)}
-    .postcard-text:empty{opacity:0}.placeholder{position:absolute;inset:0;z-index:4;display:grid;place-content:center;gap:14px;text-align:center;background:#050505;color:#fff}.placeholder[hidden]{display:none}.camera-mark{font-size:clamp(42px,8vw,110px);line-height:1;color:var(--muted)}.placeholder button{border:0;background:none;color:inherit;padding:0;cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:700}
-    .text-row{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px;padding:9px 0 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:10px}.text-row label{color:var(--muted)}.text-row input{min-width:0;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;color:var(--fg);padding:4px 0;font:inherit;outline:0}.text-row input:focus{border-color:var(--signal)}.text-row input::placeholder{color:var(--muted)}
+    .postcard-text:empty{opacity:0}.placeholder{position:absolute;inset:0;z-index:4;display:grid;place-content:center;gap:14px;text-align:center;background:#050505;color:#fff}.placeholder[hidden]{display:none}.camera-mark{font-size:clamp(42px,8vw,110px);line-height:1;color:var(--muted)}.placeholder button{border:0;background:none;color:inherit;padding:0;cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:700}.placeholder [data-text-mode]{margin-top:12px;color:var(--signal)}
+    .stage.is-text-mode{background:radial-gradient(circle at 50% 46%,color-mix(in srgb,var(--signal) 12%,#050505),#050505 58%)}.stage.is-text-mode::before{content:'★';position:absolute;inset:0;display:grid;place-items:center;color:color-mix(in srgb,var(--signal) 26%,transparent);font-size:min(56vw,58vh)!important;line-height:1!important;transform:rotate(-12deg);text-shadow:0 0 80px color-mix(in srgb,var(--signal) 22%,transparent)}.stage.is-text-mode .postcard-text{left:clamp(14px,3vw,42px);right:clamp(14px,3vw,42px);width:auto;align-items:center;justify-content:center;text-align:center;font-size:clamp(34px,6vw,104px)!important}
+    .text-row{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:start;gap:12px;padding:10px 0 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:10px}.text-row label{padding-top:8px;color:var(--muted)}.text-row textarea{width:100%;min-height:62px;max-height:150px;resize:vertical;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;color:var(--fg);padding:6px 0;font:clamp(16px,2vw,30px)/1.12 Georgia,'Times New Roman',serif!important;font-style:italic!important;outline:0}.text-row textarea:focus{border-color:var(--signal);box-shadow:0 8px 18px -15px var(--signal)}.text-row textarea::placeholder{color:var(--muted)}
+    .contact-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:7px}.contact-row label{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;color:var(--muted)}.contact-row input{min-width:0;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--fg);padding:3px 0;outline:0}.contact-row input:focus{border-color:var(--signal)}
     .tool-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:9px 0 2px;font-family:var(--mono);font-size:11px}.tool-group{display:flex;align-items:center;gap:16px;min-width:0}.tool-row button{border:0;background:none;padding:0;cursor:pointer;font:inherit}.tool-row label{display:flex;align-items:center;gap:7px}.tool-row input{width:100px}.send{font-weight:700!important;white-space:nowrap}.note{min-height:1.2em;margin:3px 0 0;color:var(--muted);font-family:var(--mono);font-size:10px}
-    @media(max-width:760px){.board{padding:8px}.board-toolbar{min-height:58px;grid-template-columns:1fr;gap:3px}.title-group{display:grid;gap:2px}.title-group h1{white-space:normal}.board-toolbar p{text-align:left}.play-panel{padding:7px}.tool-row{align-items:flex-start;gap:8px}.tool-group{gap:8px;flex-wrap:wrap}.tool-row input{width:72px}.send{margin-left:auto}.camera-mark{font-size:46px}.postcard-text{top:12px;right:12px;bottom:12px;width:42%;padding:14px;font-size:clamp(20px,7vw,38px)}.text-row{gap:8px}}
+    @media(max-width:760px){.board{padding:8px;height:auto;min-height:calc(100dvh - 16px);overflow:visible}.board-toolbar{min-height:58px;grid-template-columns:1fr;gap:3px}.title-group{display:grid;gap:2px}.title-group h1{white-space:normal}.board-toolbar p{text-align:left}.play-panel{padding:7px;overflow:visible}.stage{min-height:52vh}.tool-row{align-items:flex-start;gap:8px}.tool-group{gap:8px;flex-wrap:wrap}.tool-row input{width:72px}.send{margin-left:auto}.camera-mark{font-size:46px}.postcard-text{top:12px;right:12px;bottom:12px;width:42%;padding:14px;font-size:clamp(20px,7vw,38px)}.stage.is-text-mode .postcard-text{left:12px;right:12px;width:auto;font-size:clamp(30px,10vw,54px)!important}.text-row{grid-template-columns:1fr;gap:2px}.text-row label{padding-top:4px}.text-row textarea{min-height:88px;font-size:20px!important}.contact-row{grid-template-columns:1fr}}
   </style>
 </BaseLayout>
