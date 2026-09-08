@@ -814,3 +814,43 @@ html[data-style="rgb"] .system-controls{
 @media(prefers-reduced-motion:reduce){
   .entry-star{animation:none}
 }
+
+/* SUNKEN VISUAL WELLS — a recessed stage inside every framed view. */
+.work-list,
+.project-head,
+.project-body,
+.project-cover,
+.media-stream,
+.media-grid,
+.video-list,
+.moment-gallery,
+.project-moments,
+.project-links,
+.related{
+  box-shadow:
+    inset 12px 14px 34px rgba(0,0,0,.64),
+    inset -8px -10px 26px color-mix(in srgb,var(--signal) 7%,transparent),
+    inset 0 0 0 1px color-mix(in srgb,var(--signal) 8%,transparent),
+    0 1px 0 color-mix(in srgb,var(--fg) 5%,transparent);
+}
+.work-list{
+  background:linear-gradient(145deg,color-mix(in srgb,#000 22%,transparent),transparent 42%,color-mix(in srgb,var(--signal) 2%,transparent));
+}
+html[data-theme="light"] .work-list,
+html[data-theme="light"] .project-head,
+html[data-theme="light"] .project-body,
+html[data-theme="light"] .project-cover,
+html[data-theme="light"] .media-stream,
+html[data-theme="light"] .media-grid,
+html[data-theme="light"] .video-list,
+html[data-theme="light"] .moment-gallery{
+  box-shadow:
+    inset 10px 12px 28px rgba(0,0,0,.18),
+    inset -7px -9px 22px color-mix(in srgb,var(--signal) 9%,transparent),
+    inset 0 0 0 1px color-mix(in srgb,var(--signal) 10%,transparent);
+}
+@media(max-width:760px){
+  .work-list,.project-head,.project-body,.project-cover,.media-stream,.media-grid,.video-list,.moment-gallery,.project-moments,.project-links,.related{
+    box-shadow:inset 7px 9px 22px rgba(0,0,0,.58),inset -5px -6px 16px color-mix(in srgb,var(--signal) 7%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--signal) 8%,transparent);
+  }
+}
