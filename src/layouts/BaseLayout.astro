@@ -23,7 +23,7 @@ const bioLines = homeConfig.bio;
 const loader = homeConfig.loader;
 ---
 <!doctype html>
-<html lang="en" data-style="rgb" data-theme="dark" data-copy-style="pink">
+<html lang="en" data-style="rgb" data-theme="dark" data-copy-style="pink" data-language="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -32,15 +32,15 @@ const loader = homeConfig.loader;
     <title>{title}</title>
   </head>
   <body data-fixed-shell={fixedShell ? 'true' : undefined} data-project-detail={projectDetail ? 'true' : undefined}>
-    {isHome && loader.enabled && <section class="entry-gate" data-entry-gate data-entry-lines={JSON.stringify(loader.phrases)} data-again-label={loader.againInstruction} data-enter-label={loader.enterInstruction} aria-label="Portfolio entrance">
+    {isHome && loader.enabled && <section class="entry-gate" data-entry-gate data-entry-lines={JSON.stringify(loader.phrases)} data-entry-lines-it={JSON.stringify(loader.phrasesIt??loader.phrases)} data-again-label={loader.againInstruction} data-again-label-it={loader.againInstructionIt??loader.againInstruction} data-enter-label={loader.enterInstruction} data-enter-label-it={loader.enterInstructionIt??loader.enterInstruction} aria-label="Portfolio entrance">
       <p class="entry-counter" data-entry-counter>00 / {String(loader.phrases.length).padStart(2, '0')}</p>
-      <p class="entry-fixed">{loader.fixedText}</p>
+      <p class="entry-fixed" data-en={loader.fixedText} data-it={loader.fixedTextIt??loader.fixedText}>{loader.fixedText}</p>
       <p class="entry-line" data-entry-line hidden></p>
       <button class="entry-star" type="button" data-entry-star aria-label="Generate a phrase">★</button>
-      <p class="entry-instruction" data-entry-instruction>{loader.instruction}</p>
+      <p class="entry-instruction" data-entry-instruction data-en={loader.instruction} data-it={loader.instructionIt??loader.instruction}>{loader.instruction}</p>
       <div class="entry-exits">
-        <a href={loader.radioUrl} target="_blank" rel="noopener noreferrer">{loader.radioLabel}</a>
-        <button type="button" data-entry-skip>{loader.skipLabel}</button>
+        <a href={loader.radioUrl} target="_blank" rel="noopener noreferrer" data-en={loader.radioLabel} data-it={loader.radioLabelIt??loader.radioLabel}>{loader.radioLabel}</a>
+        <button type="button" data-entry-skip data-en={loader.skipLabel} data-it={loader.skipLabelIt??loader.skipLabel}>{loader.skipLabel}</button>
       </div>
     </section>}
     <div class="shell">
@@ -49,14 +49,14 @@ const loader = homeConfig.loader;
           <a class="site-name" href={base} aria-label="Micol Gelsi — home">MICOL GELSI</a>
         </div>
         <nav class="site-nav" aria-label="Main navigation">
-          <a href={`${base}#projects`} aria-current={pathname === '/' ? 'page' : undefined}>PROJECTS</a>
+          <a href={`${base}#projects`} aria-current={pathname === '/' ? 'page' : undefined} data-en="PROJECTS" data-it="PROGETTI">PROJECTS</a>
           <a href={withBase('cv/micol-gelsi-CV.pdf')} target="_blank" rel="noopener">CV</a>
-          <a href={withBase('play-with-me/')} aria-current={pathname === '/play-with-me' ? 'page' : undefined}>PLAY WITH ME</a>
-          <button class="bio-trigger" type="button" data-bio-trigger aria-expanded="false" aria-controls="bio-popup">BLABLABIO +</button>
+          <a href={withBase('play-with-me/')} aria-current={pathname === '/play-with-me' ? 'page' : undefined} data-en="PLAY WITH ME" data-it="GIOCA CON ME">PLAY WITH ME</a>
+          <button class="bio-trigger" type="button" data-bio-trigger aria-expanded="false" aria-controls="bio-popup" data-en="BLABLABIO +" data-it="BLABLABIO +">BLABLABIO +</button>
         </nav>
         <aside class="bio-popup" id="bio-popup" data-bio-popup aria-hidden="true">
           <div class="bio-popup-copy" aria-live="polite">
-            {bioLines.map((line, index) => <p class="site-bio bio-popup-line" data-bio-line={index} hidden={index > 0}>{line}</p>)}
+            {bioLines.map((line, index) => <p class="site-bio bio-popup-line" data-bio-line={index} data-en={line} data-it={(homeConfig.bioIt??bioLines)[index]??line} hidden={index > 0}>{line}</p>)}
           </div>
           <div class="bio-popup-footer">
             <button class="bio-more" type="button" data-bio-more>BLA +</button>
@@ -71,12 +71,16 @@ const loader = homeConfig.loader;
 
     <div class="system-controls" aria-label="Display settings">
       <div class="system-control">
-        <span>Mode</span>
+        <span data-en="Mode" data-it="Modo">Mode</span>
         <button type="button" data-theme-toggle aria-label="Switch light or dark mode">Dark</button>
       </div>
       <div class="system-control">
-        <span>Text</span>
+        <span data-en="Text" data-it="Testo">Text</span>
         <button type="button" data-copy-toggle aria-label="Switch discursive text style">Pink</button>
+      </div>
+      <div class="system-control">
+        <span>Lang</span>
+        <button type="button" data-language-toggle aria-label="Switch Italian or English">EN</button>
       </div>
     </div>
 
@@ -114,6 +118,28 @@ const loader = homeConfig.loader;
           });
           updateCopyLabel();
         }
+
+        const languageButton = document.querySelector('[data-language-toggle]');
+        const translateInterface = () => {
+          const language = root.dataset.language === 'it' ? 'it' : 'en';
+          document.documentElement.lang = language;
+          document.querySelectorAll('[data-en][data-it]').forEach(element => {
+            element.textContent = element.dataset[language] || element.dataset.en || '';
+          });
+          if (languageButton) {
+            languageButton.textContent = language.toUpperCase();
+            languageButton.setAttribute('aria-pressed', String(language === 'it'));
+          }
+        };
+        const savedLanguage = localStorage.getItem('portfolio-language');
+        if (savedLanguage === 'it' || savedLanguage === 'en') root.dataset.language = savedLanguage;
+        languageButton?.addEventListener('click', () => {
+          root.dataset.language = root.dataset.language === 'it' ? 'en' : 'it';
+          localStorage.setItem('portfolio-language', root.dataset.language);
+          translateInterface();
+          window.dispatchEvent(new CustomEvent('portfolio-language-change', { detail: root.dataset.language }));
+        });
+        translateInterface();
 
         const bioTrigger = document.querySelector('[data-bio-trigger]');
         const bioPopup = document.querySelector('[data-bio-popup]');
@@ -171,7 +197,8 @@ const loader = homeConfig.loader;
           return;
         }
         let lines = [];
-        try { lines = JSON.parse(gate.dataset.entryLines || '[]'); } catch {}
+        const language = document.documentElement.dataset.language === 'it' ? 'it' : 'en';
+        try { lines = JSON.parse(language === 'it' ? (gate.dataset.entryLinesIt || gate.dataset.entryLines || '[]') : (gate.dataset.entryLines || '[]')); } catch {}
         const line = gate.querySelector('[data-entry-line]');
         const counter = gate.querySelector('[data-entry-counter]');
         const star = gate.querySelector('[data-entry-star]');
@@ -198,7 +225,7 @@ const loader = homeConfig.loader;
           }
           step += 1;
           if (counter) counter.textContent = `0${step} / 0${lines.length}`;
-          if (instruction) instruction.textContent = step === lines.length ? (gate.dataset.enterLabel || 'TOUCH TO ENTER') : (gate.dataset.againLabel || 'AGAIN');
+          if (instruction) { const italian=language==='it'; instruction.textContent = step === lines.length ? (italian?(gate.dataset.enterLabelIt||gate.dataset.enterLabel):(gate.dataset.enterLabel||'TOUCH TO ENTER')) : (italian?(gate.dataset.againLabelIt||gate.dataset.againLabel):(gate.dataset.againLabel||'AGAIN')); }
           gate.insertAdjacentHTML('beforeend', `<i class="entry-star-trace" style="--trace-x:${12 + Math.random() * 76}%;--trace-y:${14 + Math.random() * 70}%;--trace-r:${-40 + Math.random() * 80}deg">★</i>`);
         };
         star?.addEventListener('click', advance);
