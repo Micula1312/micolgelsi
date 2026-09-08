@@ -7,6 +7,7 @@ const ROOT=process.cwd();
 const PROJECTS_ROOT=path.join(ROOT,'src','projects');
 const MEDIA_ROOT=path.join(ROOT,'public','media');
 const CONFIG_PATH=path.join(ROOT,'config','research-areas.json');
+const HOME_CONFIG_PATH=path.join(ROOT,'config','home.json');
 const PUBLIC_CONFIG_PATH=path.join(ROOT,'public','research-areas.json');
 const UI_PATH=path.join(ROOT,'admin','index.html');
 const PORT=4310;
@@ -88,6 +89,30 @@ const server=http.createServer(async(req,res)=>{
     if(req.method==='GET'&&url.pathname.startsWith('/media/')){
       const rel=decodeURIComponent(url.pathname.replace(/^\/media\//,''));if(rel.includes('..'))return send(res,400,{error:'Invalid media path'});
       const file=path.join(MEDIA_ROOT,...rel.split('/'));const body=await fs.readFile(file);return send(res,200,body,MIME[path.extname(file).toLowerCase()]||'application/octet-stream');
+    }
+    if(req.method==='GET'&&url.pathname==='/api/home'){
+      const data=JSON.parse(await fs.readFile(HOME_CONFIG_PATH,'utf8'));return send(res,200,data);
+    }
+    if(req.method==='POST'&&url.pathname==='/api/home'){
+      const body=await jsonBody(req),previous=JSON.parse(await fs.readFile(HOME_CONFIG_PATH,'utf8').catch(()=>'{}'));
+      const string=value=>String(value??'').trim();
+      const clean={
+        bio:Array.isArray(body.bio)?body.bio.map(string).filter(Boolean):(previous.bio||[]),
+        loader:{
+          enabled:body.loader?.enabled!==false,
+          fixedText:string(body.loader?.fixedText),
+          phrases:Array.isArray(body.loader?.phrases)?body.loader.phrases.map(string).filter(Boolean):[],
+          instruction:string(body.loader?.instruction),
+          againInstruction:string(body.loader?.againInstruction),
+          enterInstruction:string(body.loader?.enterInstruction),
+          radioLabel:string(body.loader?.radioLabel),
+          radioUrl:string(body.loader?.radioUrl),
+          skipLabel:string(body.loader?.skipLabel)
+        }
+      };
+      if(!clean.bio.length)return send(res,400,{error:'Add at least one biography line'});
+      if(clean.loader.enabled&&!clean.loader.phrases.length)return send(res,400,{error:'Add at least one loader phrase'});
+      await fs.writeFile(HOME_CONFIG_PATH,JSON.stringify(clean,null,2)+'\n','utf8');return send(res,200,clean);
     }
     if(req.method==='GET'&&url.pathname==='/api/projects')return send(res,200,await listProjects());
     if(req.method==='GET'&&url.pathname==='/api/categories')return send(res,200,await categories());
