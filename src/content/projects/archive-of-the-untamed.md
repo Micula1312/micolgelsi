@@ -1,7 +1,6 @@
 ---
 title: "Archive of the #Untamed"
 mainLink: "https://thearchiveoftheuntamed.xyz/"
-featured: true
 type: project
 displayType: "project"
 year: "2024"
@@ -68,7 +67,7 @@ moments:
   - date: "2026-05"
     title: "Archive of the #Untamed — Conditions of Belonging: Joy"
     type: "multimedia installation"
-    location: "Museo dell'Altro e dell'Altrove di Metropoliz, Roma"
+    location: "IPER festival delle periferie, MaaM, Roma"
     gallery:
       - "/media/artistic/archive-of-the-untamed/moments/maam2/4400E7EC-9E0D-4AB3-A1FD-B8A8556AA26A.webp"
       - "/media/artistic/archive-of-the-untamed/moments/maam2/a.webp"
@@ -118,6 +117,19 @@ moments:
       - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5133.mp4"
       - "/media/artistic/archive-of-the-untamed/moments/soft-data/IMG_5143.mp4"
       - "/media/artistic/archive-of-the-untamed/moments/soft-data/photo_5960547809889469783_y.webp"
+  - date: "2025-10"
+    title: "Sottopontos"
+    type: "party"
+    location: "Sottoponte delle Valli"
+    gallery:
+      - "/media/artistic/archive-of-the-untamed/moments/sottopontos/IMG_6630.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/sottopontos/IMG_8132.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/sottopontos/IMG_8157.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/sottopontos/Micol Gelsi, Untamed - micro festival, 2025-2.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/sottopontos/unnamed (2).webp"
+      - "/media/artistic/archive-of-the-untamed/moments/sottopontos/unnamed (3).webp"
+      - "/media/artistic/archive-of-the-untamed/moments/sottopontos/unnamed-5.webp"
+      - "/media/artistic/archive-of-the-untamed/moments/sottopontos/Untamed-cover-6.webp"
 works:
   []
 ---
