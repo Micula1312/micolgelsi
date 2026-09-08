@@ -159,7 +159,7 @@ body *::after{
   font-weight:var(--type-mono-weight)!important;
   line-height:var(--type-mono-leading)!important;
   letter-spacing:var(--type-mono-tracking)!important;
-  text-transform:uppercase!important;
+  /*text-transform:uppercase!important;*/
 }
 
 html[data-copy-style="pink"] :is(.site-bio,.lead,.prose,.web-inspector-summary),
