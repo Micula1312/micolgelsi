@@ -10,6 +10,7 @@ import '../styles/scrollbars.css';
 import '../styles/header-clean.css';
 import '../styles/compat.css';
 import '../styles/project-panels.css';
+import homeConfig from '../../config/home.json';
 const { title = 'Micol Gelsi' } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const baseNoSlash = base.replace(/\/$/, '');
@@ -18,13 +19,8 @@ const isHome = pathname === '/';
 const fixedShell = ['/', '/play-with-me'].includes(pathname);
 const projectDetail = pathname.startsWith('/projects/') || pathname.startsWith('/exhibitions/');
 const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
-const bioLines = [
-  'Multimedia artist and researcher working across public and digital spaces.',
-  'Her practice brings found and reclaimed materials into dialogue with low-tech tools and digital technologies.',
-  'Through living archives, site-specific interventions and participatory methodologies, she explores collective memory, inclusion and access to digital culture.',
-  'More-than-human relations, ecological systems and liminal territories recur as fields of investigation.',
-  'She works with ASAP and BLIVET and is a member of Sound Studies Forum.'
-];
+const bioLines = homeConfig.bio;
+const loader = homeConfig.loader;
 ---
 <!doctype html>
 <html lang="en" data-style="rgb" data-theme="dark" data-copy-style="pink">
@@ -36,20 +32,15 @@ const bioLines = [
     <title>{title}</title>
   </head>
   <body data-fixed-shell={fixedShell ? 'true' : undefined} data-project-detail={projectDetail ? 'true' : undefined}>
-    {isHome && <section class="entry-gate" data-entry-gate data-entry-lines={JSON.stringify([
-      'Ho consumato tutti i crediti di ChatGPT Plus.',
-      'Ho cambiato font più volte della mia bio.',
-      'Ho chiesto a una macchina di rendermi meno prevedibile.',
-      'Adesso puoi entrare. Forse.'
-    ])} aria-label="Portfolio entrance">
-      <p class="entry-counter" data-entry-counter>00 / 04</p>
-      <p class="entry-fixed">PER FARE QUESTO STUPIDO PORTFOLIO…</p>
+    {isHome && loader.enabled && <section class="entry-gate" data-entry-gate data-entry-lines={JSON.stringify(loader.phrases)} data-again-label={loader.againInstruction} data-enter-label={loader.enterInstruction} aria-label="Portfolio entrance">
+      <p class="entry-counter" data-entry-counter>00 / {String(loader.phrases.length).padStart(2, '0')}</p>
+      <p class="entry-fixed">{loader.fixedText}</p>
       <p class="entry-line" data-entry-line hidden></p>
       <button class="entry-star" type="button" data-entry-star aria-label="Generate a phrase">★</button>
-      <p class="entry-instruction" data-entry-instruction>TOUCH THE SPINNING STAR</p>
+      <p class="entry-instruction" data-entry-instruction>{loader.instruction}</p>
       <div class="entry-exits">
-        <a href="https://www.radioraheem.it/portaradio/portaradi0-w-sticky-verde/" target="_blank" rel="noopener noreferrer">FUCK ALL — GO TO STIKY RADIO ↗</a>
-        <button type="button" data-entry-skip>HO FRETTA — VAI AL PORTFOLIO ↘</button>
+        <a href={loader.radioUrl} target="_blank" rel="noopener noreferrer">{loader.radioLabel}</a>
+        <button type="button" data-entry-skip>{loader.skipLabel}</button>
       </div>
     </section>}
     <div class="shell">
@@ -207,7 +198,7 @@ const bioLines = [
           }
           step += 1;
           if (counter) counter.textContent = `0${step} / 0${lines.length}`;
-          if (instruction) instruction.textContent = step === lines.length ? 'TOUCH TO ENTER' : 'AGAIN';
+          if (instruction) instruction.textContent = step === lines.length ? (gate.dataset.enterLabel || 'TOUCH TO ENTER') : (gate.dataset.againLabel || 'AGAIN');
           gate.insertAdjacentHTML('beforeend', `<i class="entry-star-trace" style="--trace-x:${12 + Math.random() * 76}%;--trace-y:${14 + Math.random() * 70}%;--trace-r:${-40 + Math.random() * 80}deg">★</i>`);
         };
         star?.addEventListener('click', advance);
