@@ -98,19 +98,28 @@ const server=http.createServer(async(req,res)=>{
       const string=value=>String(value??'').trim();
       const clean={
         bio:Array.isArray(body.bio)?body.bio.map(string).filter(Boolean):(previous.bio||[]),
+        bioIt:Array.isArray(body.bioIt)?body.bioIt.map(string).filter(Boolean):(previous.bioIt||[]),
         loader:{
           enabled:body.loader?.enabled!==false,
           fixedText:string(body.loader?.fixedText),
+          fixedTextIt:string(body.loader?.fixedTextIt),
           phrases:Array.isArray(body.loader?.phrases)?body.loader.phrases.map(string).filter(Boolean):[],
+          phrasesIt:Array.isArray(body.loader?.phrasesIt)?body.loader.phrasesIt.map(string).filter(Boolean):[],
           instruction:string(body.loader?.instruction),
+          instructionIt:string(body.loader?.instructionIt),
           againInstruction:string(body.loader?.againInstruction),
+          againInstructionIt:string(body.loader?.againInstructionIt),
           enterInstruction:string(body.loader?.enterInstruction),
+          enterInstructionIt:string(body.loader?.enterInstructionIt),
           radioLabel:string(body.loader?.radioLabel),
+          radioLabelIt:string(body.loader?.radioLabelIt),
           radioUrl:string(body.loader?.radioUrl),
-          skipLabel:string(body.loader?.skipLabel)
+          skipLabel:string(body.loader?.skipLabel),
+          skipLabelIt:string(body.loader?.skipLabelIt)
         }
       };
-      if(!clean.bio.length)return send(res,400,{error:'Add at least one biography line'});
+      if(!clean.bio.length)return send(res,400,{error:'Add at least one English biography line'});
+      if(clean.bioIt.length&&clean.bioIt.length!==clean.bio.length)return send(res,400,{error:'Italian and English biographies need the same number of lines'});
       if(clean.loader.enabled&&!clean.loader.phrases.length)return send(res,400,{error:'Add at least one loader phrase'});
       await fs.writeFile(HOME_CONFIG_PATH,JSON.stringify(clean,null,2)+'\n','utf8');return send(res,200,clean);
     }
