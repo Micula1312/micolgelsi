@@ -120,12 +120,35 @@ const loader = homeConfig.loader;
         }
 
         const languageButton = document.querySelector('[data-language-toggle]');
+        const uiTranslations = {
+          'Projects':'Progetti','Year':'Anno','Context':'Contesto','Research':'Ricerca',
+          'Artistic practice':'Pratica artistica','Web development':'Sviluppo web',
+          'Author':'Autrice','Type':'Tipologia','Start':'Inizio','End':'Fine','Status':'Stato',
+          'Medium':'Medium','Collaborators':'Collaborazioni','Link':'Link','visit ↗':'visita ↗',
+          'Artists involved':'Artisti coinvolti','Curated by':'A cura di','Credits':'Crediti',
+          'Photo credits':'Crediti fotografici','Outputs':'Output','Critical texts':'Testi critici',
+          'Publications':'Pubblicazioni','Communication':'Comunicazione','Links':'Link',
+          'loading / enter':'caricamento / entra','Dark':'Scuro','Light':'Chiaro','Pink':'Rosa','Plain':'Normale'
+        };
+        const translateTextNodes = language => {
+          const reverse = Object.fromEntries(Object.entries(uiTranslations).map(([en,it]) => [it,en]));
+          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+          let node;
+          while ((node = walker.nextNode())) {
+            if (node.parentElement?.closest('script,style,textarea,input,[data-en][data-it]')) continue;
+            const raw=node.nodeValue,trimmed=raw.trim();
+            if (!trimmed) continue;
+            const translated=language==='it'?uiTranslations[trimmed]:reverse[trimmed];
+            if (translated) node.nodeValue=raw.replace(trimmed,translated);
+          }
+        };
         const translateInterface = () => {
           const language = root.dataset.language === 'it' ? 'it' : 'en';
           document.documentElement.lang = language;
           document.querySelectorAll('[data-en][data-it]').forEach(element => {
             element.textContent = element.dataset[language] || element.dataset.en || '';
           });
+          translateTextNodes(language);
           if (languageButton) {
             languageButton.textContent = language.toUpperCase();
             languageButton.setAttribute('aria-pressed', String(language === 'it'));
