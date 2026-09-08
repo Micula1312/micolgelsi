@@ -637,3 +637,93 @@ body[data-fixed-shell="true"] .bio-popup-line{
     padding-top:7px!important;
   }
 }
+
+
+/* DEPTH SYSTEM
+   Three deliberately different planes: frame, inset archive, floating controls. */
+:root{
+  --depth-rim:inset 0 0 0 1px color-mix(in srgb,var(--signal) 5%,transparent),inset 0 0 22px color-mix(in srgb,var(--signal) 3%,transparent);
+  --depth-inset:inset 0 0 34px color-mix(in srgb,var(--signal) 7%,transparent),inset 0 0 8px color-mix(in srgb,#000 34%,transparent);
+  --depth-deep:inset 0 0 64px color-mix(in srgb,var(--signal) 9%,transparent),inset 0 0 18px color-mix(in srgb,#000 48%,transparent);
+  --depth-float:7px 7px 0 color-mix(in srgb,var(--signal) 15%,transparent);
+  --depth-blue:5px 5px 0 color-mix(in srgb,var(--rgb-b) 28%,transparent);
+}
+
+/* Level 1 — structural frames, almost flat. */
+.site-header,
+.work-index,
+.project-head,
+.project-body{
+  box-shadow:var(--depth-rim);
+}
+
+/* Level 2 — spaces containing navigable information. */
+body[data-project-view] .work-list,
+.project-facts,
+.project-moments,
+.project-links,
+.related{
+  box-shadow:var(--depth-inset);
+}
+
+/* Level 3 — image and moving-media wells. */
+.project-cover,
+.media-stream,
+.media-grid,
+.video-list,
+.moment-gallery{
+  box-shadow:var(--depth-deep);
+}
+
+/* Floating interface elements answer the inset planes. */
+.bio-popup{
+  box-shadow:var(--depth-float)!important;
+}
+.system-controls,
+html[data-style="rgb"] .system-controls{
+  box-shadow:var(--depth-blue)!important;
+}
+.web-inspector{
+  box-shadow:-9px 9px 0 color-mix(in srgb,var(--signal) 13%,transparent),-24px 0 60px rgba(0,0,0,.18);
+}
+
+/* Depth becomes perceptible through tiny changes, without moving the layout. */
+.project-head,
+.project-body,
+.project-cover,
+.media-stream,
+.media-grid,
+.video-list,
+.project-moments,
+.project-links,
+.related{
+  transition:box-shadow .28s ease,border-color .28s ease;
+}
+.project-head:hover,
+.project-body:hover{
+  box-shadow:inset 0 0 30px color-mix(in srgb,var(--signal) 6%,transparent);
+}
+.project-cover:hover,
+.media-stream:hover,
+.media-grid:hover,
+.video-list:hover,
+.project-moments:hover{
+  border-color:color-mix(in srgb,var(--signal) 38%,var(--line));
+  box-shadow:inset 0 0 74px color-mix(in srgb,var(--signal) 12%,transparent),inset 0 0 20px color-mix(in srgb,#000 52%,transparent);
+}
+.entry-gate{
+  box-shadow:inset 0 0 120px color-mix(in srgb,var(--signal) 7%,transparent);
+}
+
+@media(max-width:760px){
+  :root{
+    --depth-rim:inset 0 0 0 1px color-mix(in srgb,var(--signal) 5%,transparent),inset 0 0 14px color-mix(in srgb,var(--signal) 3%,transparent);
+    --depth-inset:inset 0 0 24px color-mix(in srgb,var(--signal) 7%,transparent),inset 0 0 6px color-mix(in srgb,#000 32%,transparent);
+    --depth-deep:inset 0 0 42px color-mix(in srgb,var(--signal) 9%,transparent),inset 0 0 12px color-mix(in srgb,#000 44%,transparent);
+    --depth-float:5px 5px 0 color-mix(in srgb,var(--signal) 17%,transparent);
+    --depth-blue:4px 4px 0 color-mix(in srgb,var(--rgb-b) 30%,transparent);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .project-head,.project-body,.project-cover,.media-stream,.media-grid,.video-list,.project-moments,.project-links,.related{transition:none}
+}
