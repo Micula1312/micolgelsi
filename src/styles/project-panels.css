@@ -567,3 +567,73 @@ html[data-style="rgb"] body[data-fixed-shell="true"] .site-header{
 @media(prefers-reduced-motion:reduce){
   .entry-star,.entry-star-trace,.entry-line.is-changing,.entry-gate.is-leaving{animation:none}
 }
+
+
+/* COMPACT BLABLABIO DROPDOWN — overrides the first popup draft. */
+.site-name{cursor:pointer}
+.bio-trigger{
+  appearance:none;
+  -webkit-appearance:none;
+  display:inline-flex;
+  align-items:center;
+  min-height:0!important;
+  border:0;
+  padding:0;
+  background:transparent;
+  color:var(--fg);
+  cursor:pointer;
+}
+.bio-trigger[aria-expanded="true"]{color:var(--signal)}
+.site-header>.bio-popup{
+  position:absolute;
+  z-index:8100;
+  top:calc(100% + 8px);
+  right:12px;
+  left:auto;
+  width:min(560px,calc(100vw - 44px));
+  max-height:min(70vh,440px);
+  box-sizing:border-box;
+  padding:12px;
+}
+.bio-popup-copy{
+  display:block!important;
+}
+.bio-popup-line,
+body[data-fixed-shell="true"] .bio-popup-line{
+  display:block;
+  min-height:0!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  max-width:none!important;
+}
+.bio-popup-line+.bio-popup-line{
+  margin-top:9px!important;
+  padding-top:9px!important;
+  border-top:1px solid color-mix(in srgb,var(--line) 65%,transparent);
+}
+.bio-popup-line[hidden],
+.bio-popup [hidden]{
+  display:none!important;
+}
+.bio-popup-footer{
+  margin-top:12px;
+  padding-top:8px;
+}
+@media(max-width:760px){
+  .site-nav{align-items:center}
+  .bio-trigger{font-size:10px!important}
+  .site-header>.bio-popup{
+    position:fixed;
+    top:94px;
+    right:10px;
+    left:10px;
+    width:auto;
+    max-height:calc(100svh - 112px);
+    padding:11px;
+  }
+  .bio-popup-line+.bio-popup-line{
+    margin-top:7px!important;
+    padding-top:7px!important;
+  }
+}
