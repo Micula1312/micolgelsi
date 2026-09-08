@@ -1,0 +1,46 @@
+---
+const { entries = [], base = '/' } = Astro.props;
+const withBase = (src = '') => {
+  const value = String(src);
+  if (!value.startsWith('/') || value.startsWith('//') || value.startsWith(base)) return value;
+  return `${base}${value.replace(/^\/+/, '')}`;
+};
+const route = entry => `${base}${entry.collection === 'exhibitions' ? 'exhibitions' : 'projects'}/${entry.id}/`;
+---
+{entries.length > 0 && <section class="related" data-related-projects>
+  <h2>Related projects</h2>
+  {entries.map(entry => {
+    const preview = withBase(entry.data.cover || entry.data.avatar || '');
+    const kind = /\.(?:mp4|webm|mov)(?:$|\?)/i.test(preview) ? 'video' : 'image';
+    return <a class="related-work" href={route(entry)} data-preview-src={preview} data-preview-kind={kind} data-preview-embed={entry.data.coverEmbed || ''}>
+      <strong>★ {entry.data.title}</strong><span>{entry.data.year || ''}</span>
+    </a>;
+  })}
+  <div class="related-preview" data-related-preview aria-hidden="true"></div>
+</section>}
+<style>
+  .related-preview{position:fixed;z-index:9500;width:min(38vw,520px);aspect-ratio:4/3;display:none;overflow:hidden;border:1px solid var(--line);background:var(--bg);pointer-events:none;box-shadow:13px 13px 0 color-mix(in srgb,var(--signal) 18%,transparent),0 24px 70px rgba(0,0,0,.62)}
+  .related-preview.is-visible{display:block}
+  .related-preview img,.related-preview video,.related-preview iframe{display:block;width:100%;height:100%;border:0;object-fit:cover}
+  @media(max-width:760px){.related-preview{display:none!important}}
+</style>
+<script is:inline>
+  document.addEventListener('DOMContentLoaded',()=>{
+    document.querySelectorAll('[data-related-projects]').forEach(section=>{
+      const preview=section.querySelector('[data-related-preview]');
+      if(!preview)return;
+      const move=event=>{const gap=18,w=preview.offsetWidth||420,h=preview.offsetHeight||315;preview.style.left=`${Math.min(innerWidth-w-gap,event.clientX+gap)}px`;preview.style.top=`${Math.min(innerHeight-h-gap,event.clientY+gap)}px`;};
+      section.querySelectorAll('[data-preview-src]').forEach(link=>{
+        link.addEventListener('pointerenter',event=>{
+          const src=link.dataset.previewSrc,embed=link.dataset.previewEmbed;
+          if(embed)preview.innerHTML=`<iframe src="${embed}" tabindex="-1"></iframe>`;
+          else if(src)preview.innerHTML=link.dataset.previewKind==='video'?`<video src="${src}" muted autoplay loop playsinline></video>`:`<img src="${src}" alt="">`;
+          else preview.innerHTML='<span style="display:grid;place-items:center;height:100%;color:var(--signal)">★</span>';
+          preview.classList.add('is-visible');move(event);
+        });
+        link.addEventListener('pointermove',move);
+        link.addEventListener('pointerleave',()=>{preview.classList.remove('is-visible');preview.innerHTML='';});
+      });
+    });
+  });
+</script>
