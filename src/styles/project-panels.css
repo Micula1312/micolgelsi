@@ -271,13 +271,13 @@ html[data-style="rgb"] .system-control button{
   }
 }
 
-/* Native, inertia-driven YEAR navigation. JavaScript never captures touch gestures. */
+/* YEAR uses the inertial Pointer Events controller defined on the homepage. */
 body[data-project-view] .work-list.is-year-plane.is-scrollable-year{
   overflow-x:scroll!important;
   overflow-y:hidden!important;
-  -webkit-overflow-scrolling:touch;
-  touch-action:pan-x!important;
-  overscroll-behavior-x:auto;
+  -webkit-overflow-scrolling:auto;
+  touch-action:none!important;
+  overscroll-behavior:contain;
   scroll-behavior:auto;
   scroll-snap-type:none;
   cursor:grab;
@@ -285,7 +285,7 @@ body[data-project-view] .work-list.is-year-plane.is-scrollable-year{
 body[data-project-view] .work-list.is-year-plane.is-scrollable-year:active{cursor:grabbing}
 body[data-project-view] .work-list.is-year-plane.is-scrollable-year .year-track,
 body[data-project-view] .work-list.is-year-plane.is-scrollable-year .work-row{
-  touch-action:pan-x!important;
+  touch-action:none!important;
   -webkit-user-select:none;
   user-select:none;
 }
@@ -326,4 +326,244 @@ body[data-fixed-shell="true"] .work-index{
     min-height:var(--home-header-height)!important;
     max-height:var(--home-header-height)!important;
   }
+}
+
+
+/* BIO REVEAL
+   The identity opens an overlay, so biography length never changes the dashboard. */
+.site-header{
+  position:relative;
+  z-index:8000;
+  overflow:visible!important;
+}
+.identity{position:relative}
+.site-name{
+  appearance:none;
+  -webkit-appearance:none;
+  border:0;
+  border-radius:0;
+  cursor:pointer;
+}
+.bio-popup{
+  position:absolute;
+  z-index:8100;
+  left:0;
+  top:calc(100% + 12px);
+  width:min(680px,calc(100vw - 44px));
+  max-height:min(62vh,520px);
+  overflow:auto;
+  padding:14px;
+  border:1px solid var(--line);
+  background:var(--bg);
+  box-shadow:10px 10px 0 color-mix(in srgb,var(--signal) 16%,transparent);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(-7px);
+  transition:opacity .18s ease,transform .22s cubic-bezier(.22,.61,.36,1),visibility 0s linear .22s;
+}
+.bio-popup.is-open{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translateY(0);
+  transition-delay:0s;
+}
+.bio-popup-copy{display:grid;gap:8px}
+.bio-popup-line{
+  margin:0!important;
+  max-width:64ch!important;
+  animation:bio-line-in .28s cubic-bezier(.22,.61,.36,1) both;
+}
+.bio-popup-footer{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px 16px;
+  margin-top:16px;
+  padding-top:9px;
+  border-top:1px solid var(--line);
+}
+.bio-more,.bio-close{
+  appearance:none;
+  -webkit-appearance:none;
+  border:0;
+  padding:0;
+  background:transparent;
+  color:var(--signal);
+  cursor:pointer;
+}
+.bio-close{margin-left:auto;color:var(--muted)}
+.bio-xoxox{color:var(--prose-pink)}
+.bio-contact{color:var(--signal);text-decoration:none}
+.bio-more:hover,.bio-close:hover,.bio-contact:hover{color:var(--prose-pink)!important}
+@keyframes bio-line-in{
+  from{opacity:0;transform:translateY(6px);filter:blur(3px)}
+  to{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+
+/* The popup replaces the former tall typing area. */
+:root{--home-header-height:64px}
+body[data-fixed-shell="true"] .site-header,
+html[data-style="rgb"] body[data-fixed-shell="true"] .site-header{
+  contain:layout!important;
+  overflow:visible!important;
+}
+
+@media(max-width:760px){
+  :root{--home-header-height:82px}
+  .bio-popup{
+    position:fixed;
+    left:10px;
+    right:10px;
+    top:98px;
+    width:auto;
+    max-height:calc(100svh - 118px);
+    padding:12px;
+    box-shadow:6px 6px 0 color-mix(in srgb,var(--signal) 18%,transparent);
+  }
+  .bio-popup-copy{gap:7px}
+  .bio-popup-footer{gap:9px 12px;margin-top:13px}
+  .bio-close{width:100%;margin-left:0;text-align:right}
+  body[data-fixed-shell="true"] .site-header,
+  html[data-style="rgb"] body[data-fixed-shell="true"] .site-header{
+    flex-basis:var(--home-header-height)!important;
+    height:var(--home-header-height)!important;
+    min-height:var(--home-header-height)!important;
+    max-height:var(--home-header-height)!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .bio-popup{transition:none}
+  .bio-popup-line{animation:none}
+}
+
+
+/* TWO LANES ON THE SHARED YEAR AXIS */
+.year-lanes{
+  position:absolute;
+  inset:0 0 52px;
+  z-index:0;
+  pointer-events:none;
+}
+.year-lanes::after{
+  content:'';
+  position:absolute;
+  left:0;
+  right:0;
+  top:52%;
+  border-top:1px dashed color-mix(in srgb,var(--line) 72%,transparent);
+}
+.year-lane-label{
+  position:sticky;
+  left:12px;
+  display:block;
+  width:max-content;
+  padding:2px 5px;
+  background:var(--bg);
+  color:var(--muted);
+  opacity:.68;
+}
+.year-lane-label.is-artistic{top:2%}
+.year-lane-label.is-web{top:53%}
+.work-list.is-year-plane .work-row[data-lane="external"] .timeline-mark{
+  background:var(--muted)!important;
+}
+.work-list.is-year-plane .work-row[data-lane="external"] .work-title{
+  color:var(--muted);
+}
+
+/* STAR-POWERED ENTRANCE */
+.entry-gate{
+  --entry-step:0;
+  position:fixed;
+  inset:0;
+  z-index:30000;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  place-items:center;
+  padding:max(18px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--fg);
+  isolation:isolate;
+}
+.entry-counter{position:absolute;top:18px;left:20px;margin:0;color:var(--muted)}
+.entry-line{
+  grid-row:1;
+  align-self:end;
+  width:min(760px,88vw);
+  margin:0 0 clamp(32px,7vh,74px)!important;
+  text-align:center;
+  font-family:var(--type-editorial)!important;
+  font-size:clamp(18px,3vw,42px)!important;
+  font-style:italic!important;
+  font-weight:400!important;
+  line-height:1.05!important;
+  letter-spacing:-.02em!important;
+  text-transform:lowercase!important;
+  color:var(--prose-pink)!important;
+}
+.entry-line.is-changing{animation:entry-line-pop .42s cubic-bezier(.22,.61,.36,1)}
+.entry-star{
+  grid-row:2;
+  align-self:center;
+  appearance:none;
+  -webkit-appearance:none;
+  width:clamp(112px,20vw,260px);
+  aspect-ratio:1;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:var(--signal);
+  font-size:clamp(92px,18vw,238px)!important;
+  line-height:1!important;
+  cursor:pointer;
+  transform:rotate(calc(var(--entry-step) * 47deg)) scale(calc(1 + var(--entry-step) * .08));
+  filter:drop-shadow(0 0 8px color-mix(in srgb,var(--signal) 55%,transparent));
+  transition:transform .48s cubic-bezier(.2,.8,.2,1),filter .2s ease;
+  animation:entry-star-pulse 2.4s ease-in-out infinite;
+}
+.entry-star:hover{filter:drop-shadow(0 0 18px var(--signal))}
+.entry-instruction{grid-row:3;margin:0 0 46px;color:var(--signal)}
+.entry-skip{
+  position:absolute;
+  right:20px;
+  bottom:18px;
+  appearance:none;
+  border:0;
+  padding:0;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+}
+.entry-star-trace{
+  position:absolute;
+  left:var(--trace-x);
+  top:var(--trace-y);
+  z-index:-1;
+  color:var(--signal);
+  opacity:.18;
+  font-size:clamp(20px,5vw,70px)!important;
+  font-style:normal;
+  animation:entry-trace 1.8s ease-out both;
+}
+.entry-gate.is-leaving{
+  pointer-events:none;
+  animation:entry-leave .62s cubic-bezier(.7,0,.84,0) both;
+}
+@keyframes entry-star-pulse{50%{filter:drop-shadow(0 0 22px var(--signal));opacity:.72}}
+@keyframes entry-line-pop{0%{opacity:0;filter:blur(8px);transform:translateY(12px)}100%{opacity:1;filter:blur(0);transform:none}}
+@keyframes entry-trace{0%{opacity:.35;transform:scale(.3) rotate(0)}100%{opacity:0;transform:scale(2.4) rotate(150deg)}}
+@keyframes entry-leave{0%{opacity:1;clip-path:inset(0)}100%{opacity:0;clip-path:inset(50% 0)}}
+
+@media(max-width:760px){
+  .year-lane-label{left:8px;padding:2px 4px;font-size:8px!important}
+  .entry-line{font-size:clamp(17px,7vw,29px)!important;margin-bottom:32px!important}
+  .entry-star{width:52vw;font-size:48vw!important}
+  .entry-instruction{margin-bottom:54px}
+  .entry-skip{right:14px;bottom:max(14px,env(safe-area-inset-bottom))}
+}
+@media(prefers-reduced-motion:reduce){
+  .entry-star,.entry-star-trace,.entry-line.is-changing,.entry-gate.is-leaving{animation:none}
 }
