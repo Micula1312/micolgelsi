@@ -854,3 +854,75 @@ html[data-theme="light"] .moment-gallery{
     box-shadow:inset 7px 9px 22px rgba(0,0,0,.58),inset -5px -6px 16px color-mix(in srgb,var(--signal) 7%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--signal) 8%,transparent);
   }
 }
+
+/* PINK = READING MODE — not merely a colour swap. */
+html[data-copy-style="pink"]{
+  --type-editorial-size:clamp(18px,1.45vw,28px);
+  --type-editorial-leading:1.22;
+}
+html[data-copy-style="pink"] .project-head{
+  grid-template-columns:1fr;
+  gap:clamp(26px,4vw,64px);
+}
+html[data-copy-style="pink"] .project-head .lead{
+  width:100%;
+  max-width:none;
+  font-size:clamp(30px,4.5vw,78px)!important;
+  line-height:.98!important;
+  letter-spacing:-.035em!important;
+  text-wrap:balance;
+}
+html[data-copy-style="pink"] .project-body{
+  grid-template-columns:minmax(0,1.7fr) minmax(270px,.55fr);
+  gap:clamp(34px,6vw,120px);
+}
+html[data-copy-style="pink"] .project-body .prose{
+  font-size:clamp(19px,1.65vw,31px)!important;
+  line-height:1.24!important;
+}
+html[data-copy-style="pink"] .bio-popup .site-bio{
+  font-size:clamp(18px,1.7vw,30px)!important;
+  line-height:1.18!important;
+}
+
+/* Stars behave like coordinates pinned to the recessed planes. */
+.project-head,.project-body,.project-cover,.media-stream,.media-grid,.video-list,.project-moments,.project-links,.related{position:relative}
+.project-head::before,
+.project-body::before,
+.project-cover::after,
+.media-stream::before,
+.media-grid::before,
+.video-list::before,
+.project-moments::before,
+.project-links::before,
+.related::before{
+  content:'★';
+  position:absolute;
+  z-index:3;
+  color:var(--signal);
+  font-family:var(--mono)!important;
+  font-size:11px!important;
+  line-height:1!important;
+  text-shadow:0 0 8px color-mix(in srgb,var(--signal) 65%,transparent);
+  pointer-events:none;
+}
+.project-head::before,.media-stream::before,.video-list::before,.project-links::before{top:8px;right:10px}
+.project-body::before,.media-grid::before,.project-moments::before,.related::before{right:10px;bottom:8px}
+.project-cover::after{left:10px;bottom:8px}
+.project-body .prose p::before{
+  content:'✦';
+  display:inline-block;
+  margin-right:.42em;
+  color:var(--signal);
+  font-family:var(--mono)!important;
+  font-size:.55em!important;
+  font-style:normal!important;
+  vertical-align:.18em;
+}
+@media(max-width:760px){
+  html[data-copy-style="pink"]{--type-editorial-size:16px;--type-editorial-leading:1.28}
+  html[data-copy-style="pink"] .project-head .lead{font-size:clamp(25px,8.4vw,42px)!important;line-height:1.02!important}
+  html[data-copy-style="pink"] .project-body{grid-template-columns:1fr;gap:30px}
+  html[data-copy-style="pink"] .project-body .prose{font-size:clamp(17px,5.1vw,22px)!important;line-height:1.3!important}
+  html[data-copy-style="pink"] .bio-popup .site-bio{font-size:17px!important;line-height:1.22!important}
+}
