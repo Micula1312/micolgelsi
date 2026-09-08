@@ -92,7 +92,8 @@ const loader = homeConfig.loader;
         const themeButton = document.querySelector('[data-theme-toggle]');
         if (themeButton) {
           const updateThemeLabel = () => {
-            themeButton.textContent = root.dataset.theme === 'dark' ? 'Dark' : 'Light';
+            const italian = root.dataset.language === 'it';
+            themeButton.textContent = root.dataset.theme === 'dark' ? (italian ? 'Scuro' : 'Dark') : (italian ? 'Chiaro' : 'Light');
             themeButton.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
           };
           themeButton.addEventListener('click', () => {
@@ -108,7 +109,8 @@ const loader = homeConfig.loader;
           if (savedCopyStyle === 'pink' || savedCopyStyle === 'plain') root.dataset.copyStyle = savedCopyStyle;
           const updateCopyLabel = () => {
             const pink = root.dataset.copyStyle !== 'plain';
-            copyButton.textContent = pink ? 'Pink' : 'Plain';
+            const italian = root.dataset.language === 'it';
+            copyButton.textContent = pink ? (italian ? 'Rosa' : 'Pink') : (italian ? 'Normale' : 'Plain');
             copyButton.setAttribute('aria-pressed', String(pink));
           };
           copyButton.addEventListener('click', () => {
@@ -122,7 +124,7 @@ const loader = homeConfig.loader;
         const languageButton = document.querySelector('[data-language-toggle]');
         const uiTranslations = {
           'Projects':'Progetti','Year':'Anno','Context':'Contesto','Research':'Ricerca',
-          'Artistic practice':'Pratica artistica','Web development':'Sviluppo web',
+          'Artistic':'Artistico','Artistic practice':'Pratica artistica','Web development':'Sviluppo web',
           'Author':'Autrice','Type':'Tipologia','Start':'Inizio','End':'Fine','Status':'Stato',
           'Medium':'Medium','Collaborators':'Collaborazioni','Link':'Link','visit ↗':'visita ↗',
           'Artists involved':'Artisti coinvolti','Curated by':'A cura di','Credits':'Crediti',
@@ -149,6 +151,14 @@ const loader = homeConfig.loader;
             element.textContent = element.dataset[language] || element.dataset.en || '';
           });
           translateTextNodes(language);
+          if (themeButton) {
+            const italian = language === 'it';
+            themeButton.textContent = root.dataset.theme === 'dark' ? (italian ? 'Scuro' : 'Dark') : (italian ? 'Chiaro' : 'Light');
+          }
+          if (copyButton) {
+            const italian = language === 'it';
+            copyButton.textContent = root.dataset.copyStyle !== 'plain' ? (italian ? 'Rosa' : 'Pink') : (italian ? 'Normale' : 'Plain');
+          }
           if (languageButton) {
             languageButton.textContent = language.toUpperCase();
             languageButton.setAttribute('aria-pressed', String(language === 'it'));
