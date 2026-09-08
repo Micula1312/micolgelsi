@@ -99,6 +99,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         return dingbats[code % dingbats.length] + '\uFE0E';
       }).join('');
 
+      const wrapCanvasText = (context, value, maxWidth) => {
+        const lines = [];
+        const segmenter = typeof Intl?.Segmenter === 'function'
+          ? new Intl.Segmenter(undefined, { granularity: 'grapheme' })
+          : null;
+        value.split('\n').forEach(paragraph => {
+          const glyphs = segmenter
+            ? [...segmenter.segment(paragraph)].map(part => part.segment)
+            : [...paragraph];
+          let line = '';
+          glyphs.forEach(glyph => {
+            const test = line + glyph;
+            if (line && context.measureText(test).width > maxWidth) {
+              lines.push(line.trimEnd());
+              line = glyph.trimStart();
+            } else {
+              line = test;
+            }
+          });
+          lines.push(line);
+        });
+        return lines;
+      };
+
       textInput?.addEventListener('focus', () => {
         if (!cameraActive && !stage.classList.contains('is-text-mode')) activateTextMode();
       });
@@ -171,9 +195,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           o.fillStyle=signal();
           o.font=`700 ${size}px "Apple Symbols", "Segoe UI Symbol", sans-serif`;
           o.textBaseline='top';
-          const words=asWingdings(message).split(/\s+/), lines=[]; let line=''; const maxWidth=panelW-pad*2;
-          words.forEach(word=>{const test=line?`${line} ${word}`:word;if(o.measureText(test).width>maxWidth&&line){lines.push(line);line=word}else line=test}); if(line)lines.push(line);
-          lines.slice(0,7).forEach((txt,i)=>o.fillText(txt,x+pad,y+pad+i*size*1.08,maxWidth));
+          const maxWidth=panelW-pad*2;
+          const lines=wrapCanvasText(o,asWingdings(message),maxWidth);
+          const lineHeight=size*1.08;
+          const maxLines=Math.max(1,Math.floor((h-pad*2)/lineHeight));
+          lines.slice(0,maxLines).forEach((txt,i)=>o.fillText(txt,x+pad,y+pad+i*lineHeight));
           o.restore();
         }
         const blob=await new Promise(res=>out.toBlob(res,'image/png')); if(!blob)return; const file=new File([blob],`play-with-me-${Date.now()}.png`,{type:'image/png'});
