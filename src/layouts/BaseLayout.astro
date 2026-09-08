@@ -36,6 +36,18 @@ const bioLines = [
     <title>{title}</title>
   </head>
   <body data-fixed-shell={fixedShell ? 'true' : undefined} data-project-detail={projectDetail ? 'true' : undefined}>
+    {isHome && <section class="entry-gate" data-entry-gate data-entry-lines={JSON.stringify([
+      'Per fare questo stupido portfolio',
+      'ho consumato tutti i crediti di ChatGPT Plus.',
+      'Ho cambiato idea circa quarantasette volte.',
+      'Tocca ancora la stella. Ormai ci sei.'
+    ])} aria-label="Portfolio entrance">
+      <p class="entry-counter" data-entry-counter>01 / 04</p>
+      <p class="entry-line" data-entry-line>Per fare questo stupido portfolio</p>
+      <button class="entry-star" type="button" data-entry-star aria-label="Continue">★</button>
+      <p class="entry-instruction" data-entry-instruction>TOUCH THE STAR</p>
+      <button class="entry-skip" type="button" data-entry-skip>SKIP THIS NONSENSE ↗</button>
+    </section>}
     <div class="shell">
       <header class="site-header">
         <div class="identity">
@@ -153,6 +165,49 @@ const bioLines = [
         updateBio();
       })();
     </script>
+    {isHome && <script is:inline>
+      (() => {
+        const gate = document.querySelector('[data-entry-gate]');
+        if (!gate) return;
+        const storageKey = 'portfolio-entry-v1';
+        if (sessionStorage.getItem(storageKey) === 'done') {
+          gate.remove();
+          return;
+        }
+        let lines = [];
+        try { lines = JSON.parse(gate.dataset.entryLines || '[]'); } catch {}
+        const line = gate.querySelector('[data-entry-line]');
+        const counter = gate.querySelector('[data-entry-counter]');
+        const star = gate.querySelector('[data-entry-star]');
+        const instruction = gate.querySelector('[data-entry-instruction]');
+        const skip = gate.querySelector('[data-entry-skip]');
+        let step = 0;
+        const enter = () => {
+          sessionStorage.setItem(storageKey, 'done');
+          gate.classList.add('is-leaving');
+          window.setTimeout(() => gate.remove(), 650);
+        };
+        const advance = () => {
+          step += 1;
+          gate.style.setProperty('--entry-step', String(step));
+          if (step >= lines.length) {
+            enter();
+            return;
+          }
+          if (line) {
+            line.classList.remove('is-changing');
+            void line.offsetWidth;
+            line.textContent = lines[step];
+            line.classList.add('is-changing');
+          }
+          if (counter) counter.textContent = `0${step + 1} / 0${lines.length}`;
+          if (instruction) instruction.textContent = step === lines.length - 1 ? 'ONE LAST TIME' : 'AGAIN';
+          gate.insertAdjacentHTML('beforeend', `<i class="entry-star-trace" style="--trace-x:${18 + Math.random() * 64}%;--trace-y:${15 + Math.random() * 70}%">★</i>`);
+        };
+        star?.addEventListener('click', advance);
+        skip?.addEventListener('click', enter);
+      })();
+    </script>}
     <script is:inline src={withBase('base-path.js')}></script>
     <script is:inline src={withBase('research-layout.js')}></script>
     <script is:inline src={withBase('home-loader.js')}></script>
