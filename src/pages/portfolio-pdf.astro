@@ -1,0 +1,101 @@
+---
+import { getCollection } from 'astro:content';
+
+const base=import.meta.env.BASE_URL;
+const withBase=(src='')=>{const value=String(src||'');if(!value.startsWith('/')||value.startsWith('//')||value.startsWith(base))return value;return `${base}${value.replace(/^\/+/, '')}`;};
+const projects=await getCollection('projects');
+const exhibitions=await getCollection('exhibitions');
+const works=await getCollection('works');
+const pool=[...projects,...exhibitions,...works]
+  .filter(entry=>entry.data.portfolio?.art)
+  .sort((a,b)=>Number(b.data.year||0)-Number(a.data.year||0)||a.data.title.localeCompare(b.data.title));
+const hrefFor=(entry)=>entry.collection==='projects'?`${base}projects/${entry.id}`:entry.collection==='exhibitions'?`${base}exhibitions/${entry.id}`:`${base}works/${entry.id}`;
+const coverFor=(entry)=>withBase(entry.data.cover||entry.data.gallery?.[0]||entry.data.avatar||'');
+const secondImageFor=(entry)=>withBase((entry.data.gallery||[]).find(src=>withBase(src)!==coverFor(entry))||'');
+const isVideo=(src='')=>/\.(mp4|webm|mov)(?:$|\?)/i.test(src);
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Micol Gelsi — Selected Portfolio</title>
+<style>
+  :root{--ink:#0b0b0b;--paper:#f7f7f3;--signal:#39ff14;--muted:#6d6d6d;--line:#b8b8b2;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+  *{box-sizing:border-box}
+  html{background:#d8d8d4;color:var(--ink)} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#d8d8d4}
+  a{color:inherit}.toolbar{position:fixed;z-index:50;top:12px;right:12px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:min(720px,calc(100vw - 24px))}
+  button{border:1px solid #111;background:#fff;color:#111;padding:8px 10px;font:10px var(--mono);text-transform:uppercase;cursor:pointer}button:hover{background:var(--signal)}
+  .hint{position:fixed;z-index:49;left:12px;bottom:12px;background:#111;color:#fff;padding:7px 9px;font:9px/1.35 var(--mono);max-width:310px}
+  .book{width:210mm;margin:18px auto 60px}.page{position:relative;width:210mm;min-height:297mm;background:var(--paper);padding:14mm;page-break-after:always;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.18)}
+  .cover-page{display:flex;flex-direction:column;justify-content:space-between}.cover-title{font:700 clamp(36px,7vw,76px)/.9 var(--mono);text-transform:uppercase;letter-spacing:-.07em;max-width:160mm}.cover-sub{max-width:105mm;font-size:17px;line-height:1.25}.cover-meta{display:grid;grid-template-columns:1fr 1fr;gap:8mm;border-top:1px solid var(--ink);padding-top:5mm;font:10px/1.4 var(--mono)}
+  .index-title,.section-label{font:10px var(--mono);text-transform:uppercase;letter-spacing:.08em}.index-list{margin-top:20mm;border-top:1px solid var(--ink)}.index-row{display:grid;grid-template-columns:18mm 1fr 24mm;gap:6mm;padding:3.5mm 0;border-bottom:1px solid var(--line);text-decoration:none}.index-row strong{font-size:16px}.index-row span{font:10px var(--mono);color:var(--muted)}
+  .project-page{display:grid;grid-template-rows:auto 1fr auto;gap:8mm}.project-head{display:grid;grid-template-columns:1fr auto;gap:8mm;align-items:start;border-bottom:1px solid var(--ink);padding-bottom:4mm}.project-title{margin:0;font:700 27px/.96 var(--mono);text-transform:uppercase;letter-spacing:-.04em}.project-kicker{text-align:right;font:9px/1.35 var(--mono);text-transform:uppercase;color:var(--muted)}
+  .project-main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(55mm,.75fr);gap:8mm;min-height:0}.visual{min-height:135mm;display:grid;place-items:center;background:#ecece7;overflow:hidden}.visual img,.visual video{width:100%;height:100%;object-fit:cover}.project-copy{display:flex;flex-direction:column;gap:7mm}.summary{font-size:14px;line-height:1.35;margin:0}.facts{margin-top:auto;border-top:1px solid var(--ink)}.fact{display:grid;grid-template-columns:22mm 1fr;gap:3mm;padding:2.5mm 0;border-bottom:1px solid var(--line);font-size:10px;line-height:1.35}.fact b{font:8px var(--mono);text-transform:uppercase;color:var(--muted)}
+  .project-foot{display:flex;justify-content:space-between;gap:8mm;align-items:end;font:8.5px/1.35 var(--mono);text-transform:uppercase}.project-foot a{text-decoration:underline;text-underline-offset:2px}.page-no{color:var(--muted)}
+  .project-page[draggable="true"]{cursor:grab}.project-page.dragging{opacity:.35}.project-page.drop-before{outline:4px solid var(--signal);outline-offset:-4px}
+  .project-page.is-hidden{display:none}.editor-badge{position:absolute;top:6mm;right:6mm;z-index:3;display:none;background:var(--signal);padding:4px 6px;font:8px var(--mono)}body.editing .project-page .editor-badge{display:block}
+  .hidden-panel{position:fixed;z-index:48;right:12px;top:56px;width:280px;max-height:calc(100vh - 90px);overflow:auto;background:#111;color:#fff;border:1px solid #333;padding:10px;display:none}.hidden-panel.open{display:block}.hidden-panel h2{font:10px var(--mono);margin:0 0 8px;text-transform:uppercase}.toggle-row{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;padding:6px 0;border-top:1px solid #333;font:10px/1.25 var(--mono)}.toggle-row input{margin:1px 0 0}
+  @media(max-width:900px){.book{width:100%;margin:0}.page{width:100%;min-height:100vh;padding:20px;box-shadow:none}.project-main{grid-template-columns:1fr}.visual{min-height:52vh}.toolbar{position:sticky;top:0;padding:8px;background:#d8d8d4;right:auto}.hint{display:none}}
+  @page{size:A4 portrait;margin:0}
+  @media print{html,body{background:#fff}.toolbar,.hint,.hidden-panel,.editor-badge{display:none!important}.book{width:auto;margin:0}.page{width:210mm;height:297mm;min-height:297mm;margin:0;box-shadow:none;break-after:page;page-break-after:always}.page:last-child{break-after:auto;page-break-after:auto}.project-page{cursor:default}.visual video{display:none}.visual video+img{display:block}}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button type="button" id="editBtn">EDIT ORDER</button>
+  <button type="button" id="selectBtn">SELECT PROJECTS</button>
+  <button type="button" id="resetBtn">RESET</button>
+  <button type="button" id="printBtn">PRINT / SAVE PDF</button>
+</div>
+<div class="hint">Drag pages in EDIT ORDER. SELECT PROJECTS hides/shows works. Your setup is saved in this browser.</div>
+<div class="hidden-panel" id="hiddenPanel"><h2>Portfolio selection</h2><div id="toggleList"></div></div>
+<main class="book" id="book">
+  <section class="page cover-page">
+    <div><div class="section-label">Selected portfolio / 2026</div><h1 class="cover-title">Micol<br/>Gelsi</h1></div>
+    <p class="cover-sub">Multimedia artist and researcher. A practice moving between public and digital spaces, web archives, site-specificity, participation and low-tech systems.</p>
+    <div class="cover-meta"><div>ROME / BOLOGNA<br/>ITALY</div><div><a href="https://micolgelsi.com" target="_blank" rel="noopener noreferrer">micolgelsi.com ↗</a><br/>MULTIMEDIA ART / RESEARCH / WEB</div></div>
+  </section>
+  <section class="page index-page" id="indexPage"><div class="index-title">Selected works</div><div class="index-list" id="indexList"></div></section>
+  <div id="projectPages">
+  {pool.map((entry,i)=>{
+    const cover=coverFor(entry);const second=secondImageFor(entry);const href=hrefFor(entry);const year=entry.data.year||'';const type=entry.data.displayType||entry.collection.replace(/s$/,'');
+    const facts=[
+      ['Type',type],['Year',String(year||'')],['Medium',(entry.data.medium||[]).join(', ')],['Research',(entry.data.researchAreas||[]).join(', ')],['Collaborators',(entry.data.collaborators||[]).join(', ')]
+    ].filter(([,value])=>value);
+    return <section class="page project-page" draggable="false" data-id={`${entry.collection}:${entry.id}`} data-title={entry.data.title} data-year={year} data-type={type} id={`work-${entry.id}`}>
+      <span class="editor-badge">DRAG PAGE</span>
+      <header class="project-head"><h2 class="project-title">{entry.data.title}</h2><div class="project-kicker">{type}<br/>{year}</div></header>
+      <div class="project-main">
+        <div class="visual">{cover?(isVideo(cover)?<><video src={cover} muted loop playsinline autoplay></video>{second&&<img src={second} alt="" style="display:none"/>}</>:<img src={cover} alt=""/>):<div class="section-label">NO COVER</div>}</div>
+        <div class="project-copy"><p class="summary">{entry.data.summary||'Selected work from Micol Gelsi’s artistic and research practice.'}</p><div class="facts">{facts.map(([label,value])=><div class="fact"><b>{label}</b><span>{value}</span></div>)}</div></div>
+      </div>
+      <footer class="project-foot"><div>{entry.data.mainLink?<a href={entry.data.mainLink} target="_blank" rel="noopener noreferrer">PROJECT LINK ↗</a>:<a href={href} target="_blank" rel="noopener noreferrer">FULL PROJECT ONLINE ↗</a>}</div><div class="page-no">{String(i+3).padStart(2,'0')}</div></footer>
+    </section>;
+  })}
+  </div>
+  <section class="page cover-page end-page"><div><div class="section-label">Contact</div><h2 class="cover-title">KEEP<br/>IN TOUCH</h2></div><div class="cover-meta"><div>Micol Gelsi<br/>Multimedia artist & researcher</div><div><a href="https://micolgelsi.com" target="_blank" rel="noopener noreferrer">micolgelsi.com ↗</a><br/><a href="mailto:micol.gelsi@gmail.com">micol.gelsi@gmail.com ↗</a></div></div></section>
+</main>
+<script is:inline>
+(()=>{
+  const KEY='micol-portfolio-pdf-v1';
+  const body=document.body,pagesHost=document.getElementById('projectPages'),indexList=document.getElementById('indexList'),panel=document.getElementById('hiddenPanel'),toggleList=document.getElementById('toggleList');
+  const pages=()=>[...pagesHost.querySelectorAll('.project-page')];
+  const defaults=()=>({order:pages().map(p=>p.dataset.id),hidden:[]});
+  const read=()=>{try{return {...defaults(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return defaults()}};
+  let state=read(),dragged=null;
+  function persist(){localStorage.setItem(KEY,JSON.stringify(state));}
+  function applyOrder(){const map=new Map(pages().map(p=>[p.dataset.id,p]));for(const id of state.order||[]){const p=map.get(id);if(p){pagesHost.appendChild(p);map.delete(id)}}for(const p of map.values())pagesHost.appendChild(p);state.order=pages().map(p=>p.dataset.id);}
+  function render(){applyOrder();const hidden=new Set(state.hidden||[]);pages().forEach(p=>p.classList.toggle('is-hidden',hidden.has(p.dataset.id)));indexList.innerHTML='';toggleList.innerHTML='';let n=3;pages().forEach(p=>{const visible=!hidden.has(p.dataset.id);if(visible){const a=document.createElement('a');a.className='index-row';a.href='#'+p.id;a.innerHTML=`<span>${String(n++).padStart(2,'0')}</span><strong>${p.dataset.title}</strong><span>${p.dataset.year||''}<br>${p.dataset.type||''}</span>`;indexList.appendChild(a);p.querySelector('.page-no').textContent=String(n-1).padStart(2,'0');}const label=document.createElement('label');label.className='toggle-row';label.innerHTML=`<input type="checkbox" ${visible?'checked':''}><span>${p.dataset.title}<br><small>${p.dataset.year||''} · ${p.dataset.type||''}</small></span>`;label.querySelector('input').onchange=e=>{const set=new Set(state.hidden||[]);e.target.checked?set.delete(p.dataset.id):set.add(p.dataset.id);state.hidden=[...set];persist();render();};toggleList.appendChild(label)});}
+  document.getElementById('editBtn').onclick=()=>{body.classList.toggle('editing');const on=body.classList.contains('editing');pages().forEach(p=>p.draggable=on);document.getElementById('editBtn').textContent=on?'DONE ORDER':'EDIT ORDER';};
+  document.getElementById('selectBtn').onclick=()=>panel.classList.toggle('open');
+  document.getElementById('resetBtn').onclick=()=>{localStorage.removeItem(KEY);state=defaults();render();};
+  document.getElementById('printBtn').onclick=()=>window.print();
+  pagesHost.addEventListener('dragstart',e=>{const p=e.target.closest('.project-page');if(!p||!body.classList.contains('editing'))return;dragged=p;p.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+  pagesHost.addEventListener('dragend',()=>{pages().forEach(p=>p.classList.remove('dragging','drop-before'));dragged=null;state.order=pages().map(p=>p.dataset.id);persist();render();});
+  pagesHost.addEventListener('dragover',e=>{if(!dragged)return;e.preventDefault();const target=e.target.closest('.project-page');if(!target||target===dragged)return;pages().forEach(p=>p.classList.remove('drop-before'));target.classList.add('drop-before');const rect=target.getBoundingClientRect();if(e.clientY<rect.top+rect.height/2)pagesHost.insertBefore(dragged,target);else pagesHost.insertBefore(dragged,target.nextSibling);});
+  render();
+})();
+</script>
+</body>
+</html>
