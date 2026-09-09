@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import postsData from '../../config/blob.json';
+
+type BlobPost={id:string;title:string;date:string;themes:string[];body:string};
+const posts=(postsData as BlobPost[]).slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+const formatDate=(value:string)=>{if(!value)return'';const date=new Date(`${value}T12:00:00`);return Number.isNaN(date.getTime())?String(value):new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'short',year:'numeric'}).format(date);};
+---
+<BaseLayout title="Blob — Micol Gelsi">
+  <section class="blob-shell" aria-labelledby="blob-title">
+    <header class="blob-head"><h1 id="blob-title">./BLOB</h1><span>{posts.length} {posts.length===1?'entry':'entries'}</span></header>
+    {posts.length===0
+      ? <div class="blob-empty">NO BLOBS YET_</div>
+      : <div class="blob-field">
+          {posts.map((post,index)=><article class="blob-window" style={`--i:${index}`} tabindex="0">
+            <div class="blob-window-bar"><span>★ {post.title||'UNTITLED'}</span><span>{formatDate(post.date)}</span></div>
+            <div class="blob-window-copy">{String(post.body||'').split(/\n{2,}/).map(paragraph=><p>{paragraph}</p>)}</div>
+            {Array.isArray(post.themes)&&post.themes.length>0&&<footer>{post.themes.map(theme=><span>#{theme}</span>)}</footer>}
+          </article>)}
+        </div>}
+  </section>
+  <style>
+    .blob-shell{min-height:70vh;border:1px solid var(--line);padding:12px;box-shadow:inset 0 0 18px color-mix(in srgb,var(--signal) 7%,transparent),inset 0 0 46px color-mix(in srgb,var(--signal) 3%,transparent)}
+    .blob-head{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:10px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:10px}.blob-head h1{font-size:11px}.blob-head h1::first-letter{color:var(--signal)}
+    .blob-field{position:relative;min-height:68vh;padding:28px 3vw 90px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));align-items:start;gap:14px}
+    .blob-window{position:relative;z-index:calc(1 + var(--i));grid-column:span 5;margin-top:calc((var(--i) % 3) * 28px);transform:translateX(calc((var(--i) % 2) * 5vw));border:1px solid var(--line);background:var(--bg);box-shadow:4px 4px 0 color-mix(in srgb,var(--line) 68%,transparent);min-width:0;transition:transform .16s ease,border-color .16s ease}
+    .blob-window:nth-child(3n){grid-column:5 / span 6;transform:translateX(-2vw)}.blob-window:nth-child(4n){grid-column:2 / span 5}.blob-window:hover,.blob-window:focus-visible{z-index:60;border-color:var(--signal);transform:translateY(-3px)}
+    .blob-window-bar{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding:7px 9px;font:700 9px/1.2 var(--mono);text-transform:uppercase}.blob-window-bar span:first-child{color:var(--signal)}
+    .blob-window-copy{padding:13px 14px 16px;font-family:Georgia,'Times New Roman',serif;font-size:12px;font-style:italic;line-height:1.45;color:var(--prose-pink)}.blob-window-copy p{margin:0 0 .9em}.blob-window-copy p:last-child{margin-bottom:0}
+    .blob-window footer{display:flex;gap:7px;flex-wrap:wrap;padding:7px 9px;border-top:1px solid var(--line);font:8px/1.2 var(--mono);color:var(--muted)}
+    .blob-empty{padding:48px 0;color:var(--muted);font:10px var(--mono)}
+    @media(max-width:760px){.blob-shell{padding:9px}.blob-field{display:block;padding:20px 0 54px}.blob-window,.blob-window:nth-child(3n),.blob-window:nth-child(4n){width:min(92%,520px);margin:0 0 -10px;transform:none!important}.blob-window:nth-child(even){margin-left:auto}.blob-window-copy{font-size:11px}.blob-window-bar{font-size:8px}}
+  </style>
+  <script is:inline>
+    (()=>{let z=80;document.querySelectorAll('.blob-window').forEach(win=>win.addEventListener('pointerdown',()=>{win.style.zIndex=String(++z);}));})();
+  </script>
+</BaseLayout>

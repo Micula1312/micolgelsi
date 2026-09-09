@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BLOB ADMIN</title>
+<style>
+:root{--bg:#080808;--fg:#f4f4f4;--muted:#858585;--line:#2d2d2d;--signal:#39ff14;--panel:#0e0e0e;font-family:Arial,Helvetica,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-size:13px}button,input,textarea{font:inherit;color:inherit;background:transparent;border:1px solid var(--line)}button{cursor:pointer;padding:7px 10px}button:hover{border-color:var(--signal);color:var(--signal)}input,textarea{width:100%;padding:8px}textarea{resize:vertical;min-height:280px}.app{display:grid;grid-template-columns:250px minmax(0,1fr);height:100vh}.side{border-right:1px solid var(--line);overflow:auto}.top{position:sticky;top:0;background:var(--bg);padding:14px;border-bottom:1px solid var(--line);z-index:2}.brand{font:12px ui-monospace,monospace}.brand b{color:var(--signal)}.hint{font:9px/1.35 ui-monospace,monospace;color:var(--muted);margin-top:7px}.list{padding:8px}.item{width:100%;display:block;text-align:left;border:0;border-bottom:1px solid var(--line);padding:9px 6px}.item.is-active{color:var(--signal)}.item small{display:block;color:var(--muted);font:9px ui-monospace,monospace;margin-top:3px}.editor{overflow:auto}.head{position:sticky;top:0;z-index:2;background:var(--bg);display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}h1{font-size:18px;margin:0}.actions{display:flex;gap:7px}.form{padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}label{font:9px ui-monospace,monospace;text-transform:uppercase;color:var(--muted)}.tax{border:1px solid var(--line);background:var(--panel);padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;grid-column:1/-1}.status{position:sticky;bottom:0;padding:8px 16px;border-top:1px solid var(--line);background:var(--bg);font:9px ui-monospace,monospace;color:var(--muted)}.status.ok{color:var(--signal)}@media(max-width:760px){.app{grid-template-columns:1fr;height:auto}.side{border-right:0;border-bottom:1px solid var(--line);max-height:34vh}.form,.tax{grid-template-columns:1fr}.field.full,.tax{grid-column:1}.editor{overflow:visible}.head{top:0}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side"><div class="top"><div class="brand"><b>★</b> BLOB ADMIN</div><div class="hint">public route: /portfolio/blob/<br>not linked in site navigation</div><button id="newBtn" style="margin-top:10px">+ new post</button></div><div id="list" class="list"></div></aside>
+<main class="editor"><div class="head"><h1 id="title">New blob</h1><div class="actions"><button id="deleteBtn">delete</button><button id="saveBtn">save</button></div></div>
+<div class="form">
+<div class="field full"><label>Title</label><input id="postTitle" placeholder="Untitled blob"></div>
+<div class="tax"><div class="field"><label>Date · taxonomy</label><input id="date" type="date"></div><div class="field"><label>Theme · taxonomy</label><input id="themes" placeholder="water, archive, bodies"></div></div>
+<div class="field full"><label>Text</label><textarea id="body" placeholder="Write the post…"></textarea></div>
+</div><div class="status" id="status">ready</div></main>
+</div>
+<script>
+let posts=[],active=null;const $=s=>document.querySelector(s),status=(m,ok=false)=>{$('#status').textContent=m;$('#status').classList.toggle('ok',ok)};
+const slug=s=>(s||'blob').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'blob';
+function renderList(){const host=$('#list');host.innerHTML='';[...posts].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))).forEach(post=>{const b=document.createElement('button');b.className='item'+(post.id===active?' is-active':'');b.innerHTML=`${post.title||'Untitled'}<small>${post.date||'no date'} · ${(post.themes||[]).join(', ')||'no theme'}</small>`;b.onclick=()=>select(post.id);host.appendChild(b)});}
+function select(id){active=id;const post=posts.find(p=>p.id===id)||{title:'',date:'',themes:[],body:''};$('#title').textContent=post.title||'New blob';$('#postTitle').value=post.title||'';$('#date').value=post.date||'';$('#themes').value=(post.themes||[]).join(', ');$('#body').value=post.body||'';renderList();}
+function fresh(){active=null;$('#title').textContent='New blob';$('#postTitle').value='';$('#date').value=new Date().toISOString().slice(0,10);$('#themes').value='';$('#body').value='';renderList();$('#postTitle').focus();}
+async function load(){status('loading…');const r=await fetch('/api/blob');posts=await r.json();renderList();posts.length?select(posts[0].id):fresh();status('ready');}
+async function save(){const title=$('#postTitle').value.trim()||'Untitled blob',existing=posts.find(p=>p.id===active),base=existing?.id||`${$('#date').value||new Date().toISOString().slice(0,10)}-${slug(title)}`;const post={id:base,title,date:$('#date').value,themes:$('#themes').value.split(',').map(x=>x.trim()).filter(Boolean),body:$('#body').value.trim()};status('saving…');const r=await fetch('/api/blob',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(post)});if(!r.ok){status((await r.json()).error||'save failed');return}posts=await r.json();active=post.id;renderList();select(active);status('saved',true)}
+async function remove(){if(!active)return fresh();if(!confirm('Delete this blob?'))return;status('deleting…');const r=await fetch(`/api/blob?id=${encodeURIComponent(active)}`,{method:'DELETE'});posts=await r.json();active=null;posts.length?select(posts[0].id):fresh();status('deleted',true)}
+$('#newBtn').onclick=fresh;$('#saveBtn').onclick=save;$('#deleteBtn').onclick=remove;load().catch(e=>status(e.message));
+</script>
+</body></html>
