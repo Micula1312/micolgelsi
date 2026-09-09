@@ -1,6 +1,6 @@
 TITLE: The Archive Is Alive!
 AUTHOR: 
-AVATAR: videos/1.mp4
+AVATAR: avatar.mp4
 FEATURED: true
 START: 2026-04
 END: 2026-06
@@ -47,7 +47,7 @@ Residency output — Spazio Contact, Rome, May 2026
 COMMUNICATION:
 Dario Chillemi — The Archive Is Alive! | https://dariochillemi.com/tour/
 
-COVER: images/119.webp
+COVER: media/119.webp
 STATUS: 
 MAIN LINK: 
 COLLABORATORS: Giuseppe Di Capua and Federico Russo

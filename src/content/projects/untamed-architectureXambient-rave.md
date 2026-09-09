@@ -38,8 +38,6 @@ gallery:
   []
 videos:
   []
-media:
-  []
 criticalTexts:
   []
 publications:
