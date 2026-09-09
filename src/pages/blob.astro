@@ -2,8 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import postsData from '../../config/blob.json';
 
-const posts=[...postsData].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
-const formatDate=value=>{if(!value)return'';const date=new Date(`${value}T12:00:00`);return Number.isNaN(date.getTime())?String(value):new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'short',year:'numeric'}).format(date);};
+type BlobPost={id:string;title:string;date:string;themes:string[];body:string};
+const posts=(postsData as BlobPost[]).slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+const formatDate=(value:string)=>{if(!value)return'';const date=new Date(`${value}T12:00:00`);return Number.isNaN(date.getTime())?String(value):new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'short',year:'numeric'}).format(date);};
 ---
 <BaseLayout title="Blob — Micol Gelsi">
   <section class="blob-shell" aria-labelledby="blob-title">
