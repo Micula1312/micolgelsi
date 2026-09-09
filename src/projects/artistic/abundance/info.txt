@@ -76,6 +76,7 @@ STATUS:
 COVER: 
 OUTPUTS: 2023-10-12
 ABUNDANCE — with studioferrari
+type: installation + dj set
 location: Granata, Bologna
 media: granata
 href: https://zero.eu/it/eventi/281435-asap-studioferrari-aboundance,bologna/
@@ -110,4 +111,7 @@ href: https://www.instagram.com/p/DQXdGO1ACzW/?img_index=2
 Campo Xs
 type: performance
 location: Campo XS, Genova
-media: moments/campo-xs
+media: campo-xs
+COVER EMBED:
+
+RELATED:

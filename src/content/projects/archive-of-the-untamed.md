@@ -31,7 +31,7 @@ credits:
 photoCredits:
   []
 avatar: "/media/artistic/archive-of-the-untamed/avatar.gif"
-cover: "/media/artistic/archive-of-the-untamed/cover.webp"
+cover: "/media/artistic/archive-of-the-untamed/moments/pastificio/55111816315_0d54a85315_k.webp"
 gallery:
   []
 videos:

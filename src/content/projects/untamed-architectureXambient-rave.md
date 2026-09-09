@@ -27,7 +27,9 @@ artistsInvolved:
 curatedBy:
   []
 credits:
-  []
+  - "Foto di Giorgia Pinzauti"
+  - "Raffaele"
+  - "Casa del''Architettura"
 photoCredits:
   []
 avatar: "/media/artistic/untamed-architectureXambient-rave/avatar.mp4"

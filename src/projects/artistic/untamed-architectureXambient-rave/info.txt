@@ -17,7 +17,7 @@ Paolo Rucci
 
 CURATED BY:
 
-CREDITS: 
+CREDITS: Foto di Giorgia Pinzauti, Raffaele, Casa del''Architettura
 EXCERPT: A multimedia performance exploring urban wilderness in the Aniene River Nature Reserve through the live manipulation of materials in & from the hyper-object Archive of the #Untamed, accompanied by the sonic narrative of Rome-based DJ and producer Stiky Verde.
 
 DESCRIPTION: A 30-minute multimedia performance unfolding within the physical space of the installation and exploring urban wilderness in the Aniene River Nature Reserve. Drawing on materials from the web-based Archive of the #Untamed, the artists improvise live with images, sounds and data. Like archivists, they place their own interpretative filters on these materials, making the construction of the narrative itself part of the work.
@@ -39,7 +39,7 @@ media: casa-architetturaa
 type: AV performance
 location: Fondazione Pastificio Cerere, Roma
 media: pastificio
-AVATAR: videos/WhatsApp Video 2026-06-14 at 16.01.55.mp4
+AVATAR: avatar.mp4
 COVER: cover.mp4
 MAIN LINK: 
 COVER EMBED: 

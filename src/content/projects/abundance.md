@@ -62,6 +62,7 @@ links:
 moments:
   - date: "2023-10-12"
     title: "ABUNDANCE — with studioferrari"
+    type: "installation + dj set"
     location: "Granata, Bologna"
     gallery:
       - "/media/artistic/abundance/moments/granata/ASAP_Granata_1.6.1.webp"

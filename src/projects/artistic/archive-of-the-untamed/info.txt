@@ -42,9 +42,7 @@ Professione Architetto — Roma Contaminata | https://www.professionearchitetto.
 Esquilino’s Weblog — Roma Contaminata Village | https://blog-esquilino.com/2026/06/12/12-e-13-6-26-roma-contaminata-village-allacquario-romano-casa-dellarchitettura/
 ViviRoma — Roma Contaminata / The Archive of the #Untamed | https://www.viviroma.it/index.php?Itemid=188&bulletinid=22294&groupid=216&option=com_community&task=viewbulletin&view=groups
 
-
 LINKS:
-
 
 OUTPUTS: 2026-05
 Archive of the #Untamed — Conditions of Belonging: Joy
@@ -76,4 +74,6 @@ type: party
 location: Sottoponte delle Valli
 media: sottopontos
 AVATAR: avatar.gif
-COVER:
+COVER: moments/pastificio/55111816315_0d54a85315_k.webp
+COVER EMBED: 
+RELATED:
