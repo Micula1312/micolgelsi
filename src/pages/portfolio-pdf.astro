@@ -35,16 +35,41 @@ const isVideo=(src='')=>/\.(mp4|webm|mov)(?:$|\?)/i.test(src);
   .page::before{content:"";position:absolute;left:11mm;right:11mm;top:10mm;border-top:1px solid var(--line);pointer-events:none}.page::after{content:"";position:absolute;left:11mm;right:11mm;bottom:10mm;border-top:1px solid var(--line);pointer-events:none}
   .corner{position:absolute;font:8px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.07em}.corner.tl{top:4mm;left:11mm}.corner.tr{top:4mm;right:11mm}.corner.bl{bottom:4mm;left:11mm}.corner.br{bottom:4mm;right:11mm}
   .cover-page{display:grid;grid-template-columns:1.6fr .8fr;gap:12mm;align-items:stretch}.cover-left{display:flex;flex-direction:column;justify-content:space-between;padding-top:10mm;padding-bottom:10mm}.cover-title{margin:0;font:800 clamp(58px,8vw,118px)/.78 var(--mono);text-transform:uppercase;letter-spacing:-.09em}.cover-title .pink{font-family:var(--serif);font-style:italic;font-weight:400;text-transform:none;color:var(--pink);letter-spacing:-.045em}.cover-sub{font:14px/1.34 var(--mono);max-width:145mm;margin:0}.cover-right{border-left:1px solid var(--line);padding:13mm 0 12mm 9mm;display:flex;flex-direction:column;justify-content:space-between}.cover-meta{font:9px/1.45 var(--mono);text-transform:uppercase}.signal-word{font:italic 28px/.95 var(--serif);color:var(--signal);max-width:58mm}.star{font-size:28px;color:var(--signal)}
-  .index-page{padding-top:22mm}.index-head{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid var(--fg);padding-bottom:5mm}.index-head h2{font:800 38px/.9 var(--mono);margin:0;text-transform:uppercase;letter-spacing:-.055em}.index-head em{font:18px var(--serif);color:var(--pink)}.index-list{display:grid;grid-template-columns:1fr 1fr;column-gap:14mm;margin-top:8mm}.index-row{display:grid;grid-template-columns:13mm 1fr auto;gap:5mm;padding:3.3mm 0;border-bottom:1px solid var(--line);text-decoration:none;align-items:baseline}.index-row strong{font:700 14px/1.05 var(--mono);text-transform:uppercase}.index-row span{font:8px var(--mono);color:var(--muted);text-transform:uppercase}.index-row:hover strong{color:var(--signal)}
+
+  .index-page{padding-top:20mm;padding-bottom:17mm;display:grid;grid-template-rows:auto 1fr;gap:5mm}
+  .index-head{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid var(--fg);padding-bottom:4mm}
+  .index-head h2{font:800 38px/.88 var(--mono);margin:0;text-transform:uppercase;letter-spacing:-.06em}
+  .index-head em{font:italic 18px var(--serif);color:var(--pink);padding-bottom:1mm}
+  .year-index{position:relative;min-height:0;height:100%;overflow:hidden}
+  .year-index-axis{position:absolute;left:0;right:0;bottom:18mm;height:1px;background:var(--fg)}
+  .year-index-axis::before,.year-index-axis::after{content:"";position:absolute;top:-2px;width:5px;height:5px;border-radius:50%;background:var(--signal)}.year-index-axis::before{left:0}.year-index-axis::after{right:0}
+  .year-guide{position:absolute;top:5mm;bottom:18mm;width:1px;background:linear-gradient(to bottom,transparent 0,var(--line) 18%,var(--line) 82%,transparent 100%);pointer-events:none}
+  .year-guide::after{content:"";position:absolute;bottom:-2px;left:-2px;width:5px;height:5px;border-radius:50%;background:var(--bg);border:1px solid var(--muted)}
+  .year-label{position:absolute;bottom:10mm;transform:translateX(-50%);font:800 10px/1 var(--mono);letter-spacing:-.03em;color:var(--fg)}
+  .year-label small{display:block;margin-top:2mm;font:italic 8px/1 var(--serif);color:var(--muted);text-align:center}
+  .timeline-entry{--entry-accent:var(--fg);position:absolute;z-index:3;width:min(54mm,20%);min-width:35mm;text-decoration:none;color:var(--fg);transform:translateX(-50%);padding:0 2mm 2mm 0}
+  .timeline-entry:hover .timeline-title{color:var(--signal)}
+  .timeline-entry.is-work{--entry-accent:var(--signal)}
+  .timeline-entry.is-exhibition{--entry-accent:var(--pink)}
+  .timeline-meta{display:flex;gap:2mm;align-items:baseline;margin-bottom:1.5mm;font:7px/1 var(--mono);text-transform:uppercase;color:var(--muted);white-space:nowrap}
+  .timeline-number{color:var(--pink);font-weight:800}.timeline-kind{color:var(--entry-accent)}
+  .timeline-title{display:block;font:800 clamp(12px,1.25vw,17px)/.92 var(--mono);text-transform:uppercase;letter-spacing:-.045em;transition:color .16s ease;overflow-wrap:anywhere}
+  .timeline-type{display:block;margin-top:1.8mm;font:italic 8px/1.15 var(--serif);color:var(--muted);text-transform:none}
+  .timeline-stem{position:absolute;left:50%;top:calc(100% + 2mm);width:1px;background:var(--line);pointer-events:none}
+  .timeline-stem::after{content:"✦";position:absolute;left:0;bottom:-4px;transform:translate(-50%,50%);font:11px/1 var(--mono);color:var(--entry-accent);background:var(--bg)}
+  .timeline-legend{position:absolute;right:0;bottom:3mm;display:flex;gap:5mm;font:7px/1 var(--mono);text-transform:uppercase;color:var(--muted)}
+  .timeline-legend span::before{content:"✦";margin-right:1.5mm}.timeline-legend .legend-project::before{color:var(--fg)}.timeline-legend .legend-exhibition::before{color:var(--pink)}.timeline-legend .legend-work::before{color:var(--signal)}
+  .timeline-empty{position:absolute;inset:0;display:grid;place-items:center;font:10px var(--mono);color:var(--muted)}
+
   .project-page{display:grid;grid-template-rows:auto 1fr auto;gap:5mm;padding-top:18mm;padding-bottom:16mm}.project-head{display:grid;grid-template-columns:1fr auto;gap:9mm;align-items:end}.project-title{margin:0;font:800 30px/.88 var(--mono);text-transform:uppercase;letter-spacing:-.055em}.project-kicker{text-align:right;font:8px/1.35 var(--mono);text-transform:uppercase;color:var(--muted)}
   .project-main{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(58mm,.7fr);gap:7mm;min-height:0}.visual{position:relative;min-height:132mm;overflow:hidden;background:#0d0d0d;border:1px solid var(--line)}.visual img,.visual video{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88) contrast(1.06)}.visual::after{content:"✦";position:absolute;right:5mm;bottom:4mm;color:var(--signal);font-size:18px;mix-blend-mode:difference}.project-copy{display:flex;flex-direction:column;border-left:1px solid var(--line);padding-left:6mm}.summary{font-size:12px;line-height:1.36;margin:0 0 6mm}.summary::first-letter{font-family:var(--serif);font-style:italic;color:var(--pink);font-size:22px}.facts{margin-top:auto}.fact{display:grid;grid-template-columns:21mm 1fr;gap:3mm;padding:2.2mm 0;border-top:1px solid var(--line);font-size:9px;line-height:1.3}.fact b{font:7px var(--mono);text-transform:uppercase;color:var(--muted)}
   .project-foot{display:flex;justify-content:space-between;gap:8mm;align-items:end;font:8px/1.3 var(--mono);text-transform:uppercase}.project-foot a{text-decoration:none;color:var(--signal)}.project-foot a:hover{font-style:italic}.page-no{color:var(--pink)}
   .project-page[draggable="true"]{cursor:grab}.project-page.dragging{opacity:.34}.project-page.drop-before{outline:3px solid var(--signal);outline-offset:-3px}.project-page.is-hidden{display:none}.editor-badge{position:absolute;top:12mm;right:11mm;z-index:3;display:none;background:var(--signal);color:#000;padding:4px 6px;font:8px var(--mono)}body.editing .project-page .editor-badge{display:block}
   .hidden-panel{position:fixed;z-index:58;right:12px;top:56px;width:360px;max-height:calc(100vh - 92px);overflow:auto;background:#050505;color:var(--fg);border:1px solid var(--line);padding:11px;display:none}.hidden-panel.open{display:block}.hidden-panel h2{font:10px var(--mono);margin:0 0 8px;text-transform:uppercase}.group-label{margin:12px 0 4px;padding-top:8px;border-top:1px solid var(--line);font:italic 13px var(--serif);color:var(--pink)}.toggle-row{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;padding:6px 0;border-top:1px solid #222;font:9px/1.25 var(--mono)}.toggle-row input{margin:1px 0 0}.toggle-row small{color:var(--muted)}
   .empty-note{font:10px/1.4 var(--mono);color:var(--muted);padding:8mm 0}
-  @media(max-width:1000px){.book{width:100%;margin:0}.page{width:100%;min-height:100vh;padding:18px}.toolbar{position:sticky;top:0;padding:8px;background:#161616;right:auto}.hint{display:none}.cover-page,.project-main{grid-template-columns:1fr}.cover-right,.project-copy{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:12px}.visual{min-height:52vh}.index-list{grid-template-columns:1fr}.page::before,.page::after,.corner{display:none}}
+  @media(max-width:1000px){.book{width:100%;margin:0}.page{width:100%;min-height:100vh;padding:18px}.toolbar{position:sticky;top:0;padding:8px;background:#161616;right:auto}.hint{display:none}.cover-page,.project-main{grid-template-columns:1fr}.cover-right,.project-copy{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:12px}.visual{min-height:52vh}.page::before,.page::after,.corner{display:none}.index-page{display:block}.index-head{margin-bottom:20px}.year-index{height:auto;min-height:0;overflow:visible}.year-index-axis,.year-guide,.year-label,.timeline-legend{display:none}.timeline-entry{position:relative!important;left:auto!important;top:auto!important;width:100%;min-width:0;transform:none;padding:12px 0;border-bottom:1px solid var(--line)}.timeline-stem{display:none}}
   @page{size:A4 landscape;margin:0}
-  @media print{html,body{background:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}.toolbar,.hint,.hidden-panel,.editor-badge{display:none!important}.book{width:auto;margin:0}.page{width:297mm;height:210mm;min-height:210mm;margin:0;box-shadow:none;break-after:page;page-break-after:always}.page:last-child{break-after:auto;page-break-after:auto}.project-page{cursor:default}.visual video{display:none}.visual video+img{display:block}}
+  @media print{html,body{background:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}.toolbar,.hint,.hidden-panel,.editor-badge{display:none!important}.book{width:auto;margin:0}.page{width:297mm;height:210mm;min-height:210mm;margin:0;box-shadow:none;break-after:page;page-break-after:always}.page:last-child{break-after:auto;page-break-after:auto}.project-page{cursor:default}.visual video{display:none}.visual video+img{display:block}.timeline-entry{color:var(--fg)!important;text-decoration:none!important}}
 </style>
 </head>
 <body>
@@ -63,15 +88,16 @@ const isVideo=(src='')=>/\.(mp4|webm|mov)(?:$|\?)/i.test(src);
     <div class="cover-right"><div class="star">✦</div><div class="signal-word">the archive is alive</div><div class="cover-meta"><a href="https://micolgelsi.com" target="_blank" rel="noopener noreferrer">micolgelsi.com ↗</a><br/>ART / RESEARCH / WEB<br/>SELECTED PORTFOLIO</div></div>
   </section>
   <section class="page index-page" id="indexPage">
-    <span class="corner tl">Index</span><span class="corner tr">selected projects</span><span class="corner bl">interactive links active</span><span class="corner br">✦</span>
-    <div class="index-head"><h2>Selected<br/>Projects</h2><em>five by default</em></div><div class="index-list" id="indexList"></div>
+    <span class="corner tl">Index / Year view</span><span class="corner tr">selected projects</span><span class="corner bl">interactive links active</span><span class="corner br">✦</span>
+    <div class="index-head"><h2>Selected<br/>Projects</h2><em>year / selected practice</em></div>
+    <div class="year-index" id="indexList"></div>
   </section>
   <div id="projectPages">
   {pool.map((entry,i)=>{
-    const cover=coverFor(entry);const second=secondImageFor(entry);const href=hrefFor(entry);const year=entry.data.year||'';const type=entry.data.displayType||entry.collection.replace(/s$/,'');const itemKind=entry.collection==='works'?'work':'project';
+    const cover=coverFor(entry);const second=secondImageFor(entry);const href=hrefFor(entry);const year=entry.data.year||'';const type=entry.data.displayType||entry.collection.replace(/s$/,'');const itemKind=entry.collection==='works'?'work':'project';const collectionKind=entry.collection==='exhibitions'?'exhibition':itemKind;
     const facts=[['Type',type],['Year',String(year||'')],['Medium',(entry.data.medium||[]).join(', ')],['Research',(entry.data.researchAreas||[]).join(', ')],['With',(entry.data.collaborators||[]).join(', ')]].filter(([,value])=>value);
-    return <section class="page project-page" draggable="false" data-id={`${entry.collection}:${entry.id}`} data-kind={itemKind} data-title={entry.data.title} data-year={year} data-type={type} id={`work-${entry.collection}-${entry.id}`}>
-      <span class="corner tl">{itemKind}</span><span class="corner tr">{year}</span><span class="corner bl">Micol Gelsi</span><span class="corner br">{String(i+3).padStart(2,'0')}</span><span class="editor-badge">DRAG PAGE</span>
+    return <section class="page project-page" draggable="false" data-id={`${entry.collection}:${entry.id}`} data-kind={itemKind} data-collection-kind={collectionKind} data-title={entry.data.title} data-year={year} data-type={type} id={`work-${entry.collection}-${entry.id}`}>
+      <span class="corner tl">{collectionKind}</span><span class="corner tr">{year}</span><span class="corner bl">Micol Gelsi</span><span class="corner br">{String(i+3).padStart(2,'0')}</span><span class="editor-badge">DRAG PAGE</span>
       <header class="project-head"><h2 class="project-title">{entry.data.title}</h2><div class="project-kicker">{type}<br/>{year}</div></header>
       <div class="project-main">
         <div class="visual">{cover?(isVideo(cover)?<><video src={cover} muted loop playsinline autoplay></video>{second&&<img src={second} alt="" style="display:none"/>}</>:<img src={cover} alt=""/>):<div class="empty-note">NO COVER SELECTED</div>}</div>
@@ -94,7 +120,53 @@ const isVideo=(src='')=>/\.(mp4|webm|mov)(?:$|\?)/i.test(src);
   function persist(){localStorage.setItem(KEY,JSON.stringify(state));}
   function applyOrder(){const map=new Map(pages().map(p=>[p.dataset.id,p]));for(const id of state.order||[]){const p=map.get(id);if(p){pagesHost.appendChild(p);map.delete(id)}}for(const p of map.values())pagesHost.appendChild(p);state.order=pages().map(p=>p.dataset.id);}
   function addGroup(title){const el=document.createElement('div');el.className='group-label';el.textContent=title;toggleList.appendChild(el);}
-  function render(){applyOrder();const hidden=new Set(state.hidden||[]);pages().forEach(p=>p.classList.toggle('is-hidden',hidden.has(p.dataset.id)));indexList.innerHTML='';toggleList.innerHTML='';let n=3;const visiblePages=pages().filter(p=>!hidden.has(p.dataset.id));visiblePages.forEach(p=>{const a=document.createElement('a');a.className='index-row';a.href='#'+p.id;a.innerHTML=`<span>${String(n).padStart(2,'0')}</span><strong>${p.dataset.title}</strong><span>${p.dataset.year||''}<br>${p.dataset.type||''}</span>`;indexList.appendChild(a);p.querySelector('.page-no').textContent=String(n++).padStart(2,'0');});
+  function renderTimeline(visiblePages){
+    indexList.innerHTML='';
+    if(!visiblePages.length){const empty=document.createElement('div');empty.className='timeline-empty';empty.textContent='SELECT AT LEAST ONE PROJECT';indexList.appendChild(empty);return;}
+    const parsedYears=visiblePages.map(p=>Number.parseInt(p.dataset.year||'',10)).filter(Number.isFinite);
+    const fallbackYear=new Date().getFullYear();
+    const minYear=parsedYears.length?Math.min(...parsedYears):fallbackYear;
+    const maxYear=parsedYears.length?Math.max(...parsedYears):fallbackYear;
+    const sameYear=minYear===maxYear;
+    const xForYear=year=>sameYear?50:7+((year-minYear)/(maxYear-minYear))*86;
+    const axis=document.createElement('div');axis.className='year-index-axis';indexList.appendChild(axis);
+    for(let year=minYear;year<=maxYear;year++){
+      const x=xForYear(year),guide=document.createElement('div'),label=document.createElement('div');
+      guide.className='year-guide';guide.style.left=`${x}%`;
+      label.className='year-label';label.style.left=`${x}%`;label.innerHTML=`${year}<small>${year===maxYear?'NOW':'YEAR'}</small>`;
+      indexList.appendChild(guide);indexList.appendChild(label);
+    }
+    const grouped=new Map();
+    visiblePages.forEach(p=>{const y=Number.parseInt(p.dataset.year||'',10);const key=Number.isFinite(y)?y:fallbackYear;if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push(p);});
+    let pageNo=3;
+    const topSlots=[7,34,18,49,27,57,12,42,23,53];
+    [...grouped.entries()].sort((a,b)=>a[0]-b[0]).forEach(([year,group])=>{
+      group.forEach((p,slot)=>{
+        const entry=document.createElement('a'),kind=p.dataset.collectionKind||p.dataset.kind||'project';
+        entry.className=`timeline-entry is-${kind}`;entry.href='#'+p.id;
+        let x=xForYear(year);
+        if(sameYear&&group.length>1)x=12+(slot*(76/Math.max(1,group.length-1)));
+        else if(group.length>1){const spread=Math.min(7,12/group.length);x+=(slot-(group.length-1)/2)*spread;}
+        const top=topSlots[slot%topSlots.length];
+        entry.style.left=`${Math.max(5,Math.min(95,x))}%`;entry.style.top=`${top}%`;
+        const type=p.dataset.type||kind;
+        entry.innerHTML=`<span class="timeline-meta"><span class="timeline-number">${String(pageNo).padStart(2,'0')}</span><span class="timeline-kind">${kind}</span><span>${year}</span></span><strong class="timeline-title">${p.dataset.title}</strong><span class="timeline-type">${type}</span><span class="timeline-stem"></span>`;
+        indexList.appendChild(entry);
+        requestAnimationFrame(()=>{const axisY=axis.offsetTop,entryBottom=entry.offsetTop+entry.offsetHeight,stem=entry.querySelector('.timeline-stem');if(stem)stem.style.height=`${Math.max(8,axisY-entryBottom)}px`;});
+        pageNo++;
+      });
+    });
+    const legend=document.createElement('div');legend.className='timeline-legend';legend.innerHTML='<span class="legend-project">project</span><span class="legend-exhibition">exhibition</span><span class="legend-work">work</span>';indexList.appendChild(legend);
+  }
+  function render(){
+    applyOrder();
+    const hidden=new Set(state.hidden||[]);
+    pages().forEach(p=>p.classList.toggle('is-hidden',hidden.has(p.dataset.id)));
+    toggleList.innerHTML='';
+    let n=3;
+    const visiblePages=pages().filter(p=>!hidden.has(p.dataset.id));
+    visiblePages.forEach(p=>{p.querySelector('.page-no').textContent=String(n++).padStart(2,'0');});
+    renderTimeline(visiblePages);
     ['project','work'].forEach(kind=>{const group=pages().filter(p=>p.dataset.kind===kind);if(!group.length)return;addGroup(kind==='project'?'PROJECTS / EXHIBITIONS':'WORKS / COMMERCIAL ADD-ONS');group.forEach(p=>{const visible=!hidden.has(p.dataset.id),label=document.createElement('label');label.className='toggle-row';label.innerHTML=`<input type="checkbox" ${visible?'checked':''}><span>${p.dataset.title}<br><small>${p.dataset.year||''} · ${p.dataset.type||''}</small></span>`;label.querySelector('input').onchange=e=>{const set=new Set(state.hidden||[]);e.target.checked?set.delete(p.dataset.id):set.add(p.dataset.id);state.hidden=[...set];persist();render();};toggleList.appendChild(label);});});
   }
   document.getElementById('editBtn').onclick=()=>{body.classList.toggle('editing');const on=body.classList.contains('editing');pages().forEach(p=>p.draggable=on);document.getElementById('editBtn').textContent=on?'DONE ORDER':'EDIT ORDER';};
@@ -104,6 +176,7 @@ const isVideo=(src='')=>/\.(mp4|webm|mov)(?:$|\?)/i.test(src);
   pagesHost.addEventListener('dragstart',e=>{const p=e.target.closest('.project-page');if(!p||!body.classList.contains('editing'))return;dragged=p;p.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
   pagesHost.addEventListener('dragend',()=>{pages().forEach(p=>p.classList.remove('dragging','drop-before'));dragged=null;state.order=pages().map(p=>p.dataset.id);persist();render();});
   pagesHost.addEventListener('dragover',e=>{if(!dragged)return;e.preventDefault();const target=e.target.closest('.project-page');if(!target||target===dragged)return;pages().forEach(p=>p.classList.remove('drop-before'));target.classList.add('drop-before');const rect=target.getBoundingClientRect();if(e.clientY<rect.top+rect.height/2)pagesHost.insertBefore(dragged,target);else pagesHost.insertBefore(dragged,target.nextSibling);});
+  window.addEventListener('resize',()=>renderTimeline(pages().filter(p=>!new Set(state.hidden||[]).has(p.dataset.id))));
   render();
 })();
 </script>
