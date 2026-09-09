@@ -30,14 +30,12 @@ credits:
   []
 photoCredits:
   []
-avatar: "/media/artistic/untamed-architectureXambient-rave/videos/WhatsApp Video 2026-06-14 at 16.01.55.mp4"
+avatar: "/media/artistic/untamed-architectureXambient-rave/avatar.mp4"
 cover: "/media/artistic/untamed-architectureXambient-rave/cover.mp4"
 gallery:
   []
 videos:
-  - "/media/artistic/untamed-architectureXambient-rave/videos/WhatsApp Video 2026-06-14 at 16.01.55.mp4"
-  - "/media/artistic/untamed-architectureXambient-rave/videos/WhatsApp Video 2026-06-14 at 16.01.58.mp4"
-  - "/media/artistic/untamed-architectureXambient-rave/videos/WhatsApp Video 2026-06-14 at 16.02.02.mp4"
+  []
 criticalTexts:
   []
 publications:
@@ -56,6 +54,8 @@ moments:
       - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3318.webp"
       - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3361.webp"
       - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/_DDB3400.webp"
+      - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/WhatsApp Video 2026-06-14 at 16.01.58.mp4"
+      - "/media/artistic/untamed-architectureXambient-rave/casa-architetturaa/WhatsApp Video 2026-06-14 at 16.02.02.mp4"
   - date: "2026-04-10"
     title: "#untamed-architecture X @ambient-rave <3"
     type: "AV performance"
