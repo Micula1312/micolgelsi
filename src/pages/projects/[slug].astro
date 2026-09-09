@@ -4,7 +4,12 @@ import TeaserEmbed from '../../components/TeaserEmbed.astro';
 import MomentGallery from '../../components/MomentGallery.astro';
 import RelatedProjects from '../../components/RelatedProjects.astro';
 import { getCollection, render } from 'astro:content';
-export async function getStaticPaths(){const projects=await getCollection('projects');return projects.map(entry=>({params:{slug:entry.id},props:{entry}}));}
+
+export async function getStaticPaths(){
+  const projects=await getCollection('projects');
+  return projects.map(entry=>({params:{slug:entry.id},props:{entry}}));
+}
+
 const {entry}=Astro.props;
 const {Content}=await render(entry);
 const allWorks=await getCollection('works');
@@ -15,73 +20,75 @@ const worksByTitle=new Map(relatedWorks.map(work=>[work.data.title.toLowerCase()
 const typeLabel=entry.data.displayType;
 const base=import.meta.env.BASE_URL;
 const withBase=(src='')=>{const value=String(src);if(!value.startsWith('/')||value.startsWith('//')||value.startsWith(base))return value;return `${base}${value.replace(/^\/+/, '')}`;};
+const isVideo=(src='')=>/\.(?:mp4|webm|mov)(?:$|\?)/i.test(String(src||''));
 const avatar=withBase(entry.data.avatar||'');
-const avatarIsVideo=/\.(?:mp4|webm|mov)(?:$|\?)/i.test(avatar);
+const avatarIsVideo=isVideo(avatar);
 const cover=withBase(entry.data.cover||'');
-const coverIsVideo=/\.(?:mp4|webm|mov)(?:$|\?)/i.test(cover);
+const coverIsVideo=isVideo(cover);
 const hasLoader=Boolean(avatar);
 const isSelf=(value='')=>/\bmicol\s+gelsi\b/i.test(String(value));
 const collaborators=entry.data.collaborators.filter(x=>!isSelf(x));
 const artistsInvolved=entry.data.artistsInvolved.filter(x=>!isSelf(x));
 const credits=entry.data.credits.filter(x=>!isSelf(x));
-const gallery=(entry.data.gallery??[]).map(withBase);
-const videos=(entry.data.videos??[]).map(withBase);
-const mediaSequence=[
-  ...gallery.map((src,index)=>({kind:'image',src,index,position:(index+1)/(gallery.length+1)})),
-  ...videos.map((src,index)=>({kind:'video',src,index,position:(index+1)/(videos.length+1)}))
-].sort((a,b)=>a.position-b.position||(a.kind==='video'?1:-1));
+const legacyMedia=[...(entry.data.gallery??[]),...(entry.data.videos??[])];
+const unifiedMedia=((entry.data.media??[]).length?entry.data.media:legacyMedia).map(withBase);
+const mediaSequence=unifiedMedia.map((src,index)=>({src,index,kind:isVideo(src)?'video':'image'}));
 ---
 <BaseLayout title={`${entry.data.title} — Micol Gelsi`}>
   {hasLoader&&<div class="project-entry-loader" data-project-loader aria-hidden="true">
     {avatarIsVideo?<video class="project-entry-media" data-project-loader-video src={avatar} muted playsinline autoplay preload="auto"></video>:<img class="project-entry-media" src={avatar} alt="" />}
     <div class="project-entry-signal"><span>{entry.data.title}</span><span>loading / enter</span></div>
   </div>}
+
   <div class="eyebrow"><a href={`${base}#projects`}>Projects</a>{typeLabel&&<> · <span>{typeLabel}</span></>}{entry.data.year&&<> · <span>{entry.data.year}</span></>}</div>
   <section class="project-head"><h1>{entry.data.title}</h1>{entry.data.summary&&<p class="lead">{entry.data.summary}</p>}</section>
+
   {entry.data.coverEmbed?<figure class="project-cover project-cover-embed"><iframe src={entry.data.coverEmbed} title={`${entry.data.title} — interactive cover`} loading="lazy" allow="autoplay; fullscreen; clipboard-read; clipboard-write"></iframe><a href={entry.data.coverEmbed} target="_blank" rel="noopener noreferrer">OPEN FULL PAGE ↗</a></figure>:entry.data.teaser?<TeaserEmbed url={entry.data.teaser} title={`${entry.data.title} — teaser`} />:cover&&<figure class="project-cover">{coverIsVideo?<video src={cover} muted loop playsinline autoplay controls preload="metadata"></video>:<img src={cover} alt="" />}</figure>}
+
   <div class="project-body">
     <article class="prose"><Content /></article>
     <aside class="project-facts">
-      {entry.data.author&&<div><span>Author</span>{entry.data.author}</div>}{typeLabel&&<div><span>Type</span>{typeLabel}</div>}{entry.data.startDate&&<div><span>Start</span>{entry.data.startDate}</div>}{entry.data.endDate&&<div><span>End</span>{entry.data.endDate}</div>}{entry.data.status&&<div><span>Status</span>{entry.data.status}</div>}{entry.data.medium.length>0&&<div><span>Medium</span>{entry.data.medium.join(', ')}</div>}{entry.data.researchAreas.length>0&&<div><span>Research</span>{entry.data.researchAreas.join(', ')}</div>}{collaborators.length>0&&<div><span>Collaborators</span>{collaborators.join(', ')}</div>}{entry.data.mainLink&&<div><span>Link</span><a href={entry.data.mainLink} target="_blank" rel="noopener noreferrer">visit ↗</a></div>}{artistsInvolved.length>0&&<div><span>Artists involved</span>{artistsInvolved.join(', ')}</div>}{entry.data.curatedBy.length>0&&<div><span>Curated by</span>{entry.data.curatedBy.join(', ')}</div>}{credits.length>0&&<div><span>Credits</span>{credits.join(', ')}</div>}{entry.data.photoCredits.length>0&&<div><span>Photo credits</span>{entry.data.photoCredits.join(', ')}</div>}
+      {entry.data.author&&<div><span>Author</span>{entry.data.author}</div>}
+      {typeLabel&&<div><span>Type</span>{typeLabel}</div>}
+      {entry.data.startDate&&<div><span>Start</span>{entry.data.startDate}</div>}
+      {entry.data.endDate&&<div><span>End</span>{entry.data.endDate}</div>}
+      {entry.data.status&&<div><span>Status</span>{entry.data.status}</div>}
+      {entry.data.medium.length>0&&<div><span>Medium</span>{entry.data.medium.join(', ')}</div>}
+      {entry.data.researchAreas.length>0&&<div><span>Research</span>{entry.data.researchAreas.join(', ')}</div>}
+      {collaborators.length>0&&<div><span>Collaborators</span>{collaborators.join(', ')}</div>}
+      {entry.data.mainLink&&<div><span>Link</span><a href={entry.data.mainLink} target="_blank" rel="noopener noreferrer">visit ↗</a></div>}
+      {artistsInvolved.length>0&&<div><span>Artists involved</span>{artistsInvolved.join(', ')}</div>}
+      {entry.data.curatedBy.length>0&&<div><span>Curated by</span>{entry.data.curatedBy.join(', ')}</div>}
+      {credits.length>0&&<div><span>Credits</span>{credits.join(', ')}</div>}
+      {entry.data.photoCredits.length>0&&<div><span>Photo credits</span>{entry.data.photoCredits.join(', ')}</div>}
     </aside>
   </div>
-  {mediaSequence.length>0&&<section class="media-stream" data-media-stream data-featured-gallery>{mediaSequence.map((item,mediaIndex)=>item.kind==='image'?<figure class={`media-photo media-photo-${mediaIndex%5}`} data-featured-image><img src={item.src} alt={`${entry.data.title} — ${item.index+1}`} loading="lazy" /></figure>:<figure class="media-video" data-scroll-video><video src={item.src} muted loop playsinline preload="metadata"></video></figure>)}</section>}
-  {entry.data.moments.length>0&&<section class="project-moments"><h2>Outputs</h2>{entry.data.moments.map(moment=>{const relatedWork=worksByTitle.get(moment.title.toLowerCase());const outputType=moment.type||relatedWork?.data.displayType||'';const momentMedia=withBase(moment.media||'');const momentGallery=(moment.gallery??[]).map(withBase);return <div class="project-moment"><span class="output-date">{moment.date}</span><strong class="output-title">{moment.href?<a href={moment.href} target="_blank" rel="noopener noreferrer">{moment.title} ↗</a>:moment.title}</strong>{outputType&&<span class="output-type">{outputType}</span>}{moment.location&&<span class="output-location">{moment.location}</span>}{momentGallery.length>0?<MomentGallery images={momentGallery} title={moment.title}/>:momentMedia&&(/\.(?:mp4|webm|mov)(?:$|\?)/i.test(momentMedia)?<video class="moment-single-video" src={momentMedia} controls playsinline preload="metadata"></video>:<img src={momentMedia} alt="" loading="lazy" />)}</div>;})}</section>}
+
+  {mediaSequence.length>0&&<section class="media-stream" data-featured-gallery>
+    {mediaSequence.map(item=>item.kind==='image'
+      ?<figure class={`media-item media-item-${item.index%8}`}><img src={item.src} alt={`${entry.data.title} — ${item.index+1}`} loading="lazy" /></figure>
+      :<figure class={`media-item media-item-${item.index%8} media-item-video`}><video src={item.src} muted loop playsinline controls preload="metadata"></video><span class="media-video-mark">▶</span></figure>
+    )}
+  </section>}
+
+  {entry.data.moments.length>0&&<section class="project-moments"><h2>Outputs</h2>{entry.data.moments.map(moment=>{const relatedWork=worksByTitle.get(moment.title.toLowerCase());const outputType=moment.type||relatedWork?.data.displayType||'';const momentMedia=withBase(moment.media||'');const momentGallery=(moment.gallery??[]).map(withBase);return <div class="project-moment"><span class="output-date">{moment.date}</span><strong class="output-title">{moment.href?<a href={moment.href} target="_blank" rel="noopener noreferrer">{moment.title} ↗</a>:moment.title}</strong>{outputType&&<span class="output-type">{outputType}</span>}{moment.location&&<span class="output-location">{moment.location}</span>}{momentGallery.length>0?<MomentGallery images={momentGallery} title={moment.title}/>:momentMedia&&(isVideo(momentMedia)?<video class="moment-single-video" src={momentMedia} controls playsinline preload="metadata"></video>:<img src={momentMedia} alt="" loading="lazy" />)}</div>;})}</section>}
+
   {entry.data.criticalTexts.length>0&&<section class="project-links project-reference-group"><h2>Critical texts</h2>{entry.data.criticalTexts.map(item=><a href={item.url} target="_blank" rel="noopener noreferrer">{item.label||item.url} ↗</a>)}</section>}
   {entry.data.publications.length>0&&<section class="project-links project-reference-group"><h2>Publications</h2>{entry.data.publications.map(item=><a href={item.url} target="_blank" rel="noopener noreferrer">{item.label||item.url} ↗</a>)}</section>}
   {entry.data.communication.length>0&&<section class="project-links project-reference-group"><h2>Communication</h2>{entry.data.communication.map(item=><a href={item.url} target="_blank" rel="noopener noreferrer">{item.label||item.url} ↗</a>)}</section>}
   {entry.data.links.length>0&&<section class="project-links"><h2>Links</h2>{entry.data.links.map(link=><a href={link} target="_blank" rel="noopener noreferrer">{link} ↗</a>)}</section>}
   <RelatedProjects entries={relatedProjects} base={base} />
+
   <style>
-    .project-entry-loader{position:fixed;inset:0;z-index:10000;background:var(--bg);display:grid;place-items:center;overflow:hidden;opacity:1;visibility:visible;pointer-events:all;transition:opacity .22s linear,visibility 0s linear .22s}.project-entry-loader.is-leaving{opacity:0;visibility:hidden}.project-entry-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.25);animation:entry-avatar 3s cubic-bezier(.22,.61,.36,1) both}.project-entry-loader::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 3px,color-mix(in srgb,var(--signal) 9%,transparent) 3px 4px);pointer-events:none}.project-entry-signal{position:absolute;left:16px;bottom:16px;right:16px;z-index:2;display:flex;justify-content:space-between;gap:20px;font-family:var(--mono);font-size:10px;text-transform:uppercase;color:var(--signal);mix-blend-mode:difference}.project-cover{margin:28px 0 48px}.project-cover img,.project-cover video{display:block;width:100%;max-height:82vh;object-fit:cover;background:#000}.project-facts{font-size:11px;line-height:1.28}.project-facts>div{display:grid;grid-template-columns:minmax(72px,.75fr) minmax(0,1.6fr);gap:12px;padding:6px 0;border-top:1px solid var(--line)}.project-facts>div:last-child{border-bottom:1px solid var(--line)}.project-facts span{font-family:var(--mono);font-size:9px;line-height:1.2;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.project-facts a{text-decoration:underline;text-underline-offset:.16em;text-decoration-color:var(--signal)}.project-reference-group a{display:block}.moment-single-video{width:100%;max-height:360px;object-fit:contain;background:#000}
-    .media-stream{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(10px,1.2vw,18px);align-items:center;margin:72px 0 96px}.media-stream figure{margin:0}.media-photo{grid-column:span 6}.media-photo-2{grid-column:span 12}.media-photo-4{grid-column:3 / span 8}.media-photo img{width:100%;height:auto;object-fit:contain}.media-video{grid-column:1 / -1;display:flex;justify-content:center;align-items:center;min-height:min(76vh,780px);overflow:visible}.media-video video{display:block;width:min(72%,1050px);max-height:78vh;object-fit:contain;background:#000;transform:scale(.96);filter:grayscale(.35) contrast(1.08);opacity:.72;transition:width .52s cubic-bezier(.22,.61,.36,1),transform .52s cubic-bezier(.22,.61,.36,1),filter .35s ease,opacity .35s ease,box-shadow .35s ease}.media-video.is-active video{width:min(100%,1500px);transform:scale(1);filter:grayscale(0) contrast(1);opacity:1;box-shadow:0 0 0 1px var(--line)}
-    @keyframes entry-avatar{0%{transform:scale(1.08);opacity:0;filter:grayscale(1) contrast(1.7)}10%{opacity:1}58%{transform:scale(1);opacity:1;filter:grayscale(.45) contrast(1.3)}100%{transform:scale(1.015);opacity:1;filter:grayscale(0) contrast(1)}}@media(max-width:760px){.project-entry-signal{left:10px;right:10px;bottom:10px;font-size:8px}.project-cover{margin:20px 0 36px}.project-facts{font-size:10px}.project-facts>div{grid-template-columns:82px minmax(0,1fr);gap:8px}.project-facts span{font-size:8px}.media-stream{gap:10px;margin:48px 0 72px}.media-photo,.media-photo-2,.media-photo-4{grid-column:1 / -1}.media-video{min-height:62vh}.media-video video{width:88%;max-height:72vh}.media-video.is-active video{width:100%}}@media(prefers-reduced-motion:reduce){.project-entry-media{animation:none}.media-video video{transition:none}}
+    .project-entry-loader{position:fixed;inset:0;z-index:10000;background:var(--bg);display:grid;place-items:center;overflow:hidden;opacity:1;visibility:visible;pointer-events:all;transition:opacity .22s linear,visibility 0s linear .22s}.project-entry-loader.is-leaving{opacity:0;visibility:hidden}.project-entry-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.25);animation:entry-avatar 3s cubic-bezier(.22,.61,.36,1) both}.project-entry-loader::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 3px,color-mix(in srgb,var(--signal) 9%,transparent) 3px 4px);pointer-events:none}.project-entry-signal{position:absolute;left:16px;bottom:16px;right:16px;z-index:2;display:flex;justify-content:space-between;gap:20px;font-family:var(--mono);font-size:10px;text-transform:uppercase;color:var(--signal);mix-blend-mode:difference}
+    .project-cover{margin:28px 0 48px}.project-cover img,.project-cover video{display:block;width:100%;max-height:82vh;object-fit:cover;background:#000}.project-facts{font-size:11px;line-height:1.28}.project-facts>div{display:grid;grid-template-columns:minmax(72px,.75fr) minmax(0,1.6fr);gap:12px;padding:6px 0;border-top:1px solid var(--line)}.project-facts>div:last-child{border-bottom:1px solid var(--line)}.project-facts span{font-family:var(--mono);font-size:9px;line-height:1.2;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.project-facts a{text-decoration:underline;text-underline-offset:.16em;text-decoration-color:var(--signal)}.project-reference-group a{display:block}.moment-single-video{width:100%;max-height:360px;object-fit:contain;background:#000}
+
+    .media-stream{display:flex;flex-wrap:wrap;align-items:flex-start;align-content:flex-start;gap:3px 4px;margin:56px 0 88px;width:100%;overflow:hidden}.media-stream figure{margin:0;position:relative;flex:0 0 auto;line-height:0}.media-item{width:11.5%}.media-item-1{width:8%}.media-item-2{width:14%}.media-item-3{width:9.5%}.media-item-4{width:12.5%}.media-item-5{width:7%}.media-item-6{width:15%}.media-item-7{width:10%}.media-item img,.media-item video{display:block;width:100%;height:auto;max-height:190px;object-fit:contain;background:#000}.media-item-video video{max-height:165px}.media-video-mark{position:absolute;right:4px;bottom:4px;display:grid;place-items:center;width:18px;height:18px;background:rgba(0,0,0,.72);color:var(--signal);font:9px/1 var(--mono);pointer-events:none}
+
+    @keyframes entry-avatar{0%{transform:scale(1.08);opacity:0;filter:grayscale(1) contrast(1.7)}10%{opacity:1}58%{transform:scale(1);opacity:1;filter:grayscale(.45) contrast(1.3)}100%{transform:scale(1.015);opacity:1;filter:grayscale(0) contrast(1)}}
+    @media(max-width:760px){.project-entry-signal{left:10px;right:10px;bottom:10px;font-size:8px}.project-cover{margin:20px 0 36px}.project-facts{font-size:10px}.project-facts>div{grid-template-columns:82px minmax(0,1fr);gap:8px}.project-facts span{font-size:8px}.media-stream{gap:3px;margin:38px 0 64px}.media-item,.media-item-2,.media-item-4,.media-item-6{width:28%}.media-item-1,.media-item-3,.media-item-5,.media-item-7{width:20%}.media-item img,.media-item video{max-height:150px}}
+    @media(prefers-reduced-motion:reduce){.project-entry-media{animation:none}}
   </style>
-  {hasLoader&&<script is:inline>document.addEventListener('DOMContentLoaded',()=>{const loader=document.querySelector('[data-project-loader]');if(!loader)return;const video=loader.querySelector('[data-project-loader-video]');document.body.style.overflow='hidden';let closed=false,removeTimer;const closeLoader=()=>{if(closed)return;closed=true;loader.classList.add('is-leaving');document.body.style.overflow='';removeTimer=window.setTimeout(()=>loader.remove(),280);};if(video){video.muted=true;video.currentTime=0;const start=()=>{video.play().catch(()=>{});const duration=Number.isFinite(video.duration)&&video.duration>0?Math.min(3000,video.duration*1000):3000;window.setTimeout(closeLoader,duration);};video.addEventListener('ended',closeLoader,{once:true});if(video.readyState>=1)start();else video.addEventListener('loadedmetadata',start,{once:true});window.setTimeout(closeLoader,4200);}else{window.setTimeout(closeLoader,820);}});</script>}
-  <script is:inline>
-    document.addEventListener('DOMContentLoaded',()=>{
-      const items=[...document.querySelectorAll('[data-scroll-video]')];
-      if(!items.length)return;
-      const videos=items.map(item=>item.querySelector('video')).filter(Boolean);
-      videos.forEach(video=>{video.muted=true;video.loop=true;video.playsInline=true;});
-      let active=null,raf=0;
-      const deactivate=item=>{if(!item)return;item.classList.remove('is-active');const video=item.querySelector('video');if(video&&!video.paused)video.pause();};
-      const update=()=>{
-        raf=0;
-        const viewportCenter=window.innerHeight/2;
-        let closest=null,closestDistance=Infinity;
-        items.forEach(item=>{const rect=item.getBoundingClientRect();const center=rect.top+rect.height/2;const distance=Math.abs(center-viewportCenter);if(rect.bottom>0&&rect.top<window.innerHeight&&distance<closestDistance){closest=item;closestDistance=distance;}});
-        const threshold=Math.min(window.innerHeight*.24,220);
-        const next=closest&&closestDistance<=threshold?closest:null;
-        if(next===active)return;
-        deactivate(active);active=next;
-        if(active){active.classList.add('is-active');const video=active.querySelector('video');if(video){if(video.ended||video.currentTime>=video.duration-0.05)video.currentTime=0;video.play().catch(()=>{});}}
-      };
-      const requestUpdate=()=>{if(!raf)raf=requestAnimationFrame(update);};
-      window.addEventListener('scroll',requestUpdate,{passive:true});
-      window.addEventListener('resize',requestUpdate,{passive:true});
-      document.addEventListener('visibilitychange',()=>{if(document.hidden)deactivate(active);else requestUpdate();});
-      requestUpdate();
-    });
-  </script>
+
+  {hasLoader&&<script is:inline>document.addEventListener('DOMContentLoaded',()=>{const loader=document.querySelector('[data-project-loader]');if(!loader)return;const video=loader.querySelector('[data-project-loader-video]');document.body.style.overflow='hidden';let closed=false;const closeLoader=()=>{if(closed)return;closed=true;loader.classList.add('is-leaving');document.body.style.overflow='';window.setTimeout(()=>loader.remove(),280);};if(video){video.muted=true;video.currentTime=0;const start=()=>{video.play().catch(()=>{});const duration=Number.isFinite(video.duration)&&video.duration>0?Math.min(3000,video.duration*1000):3000;window.setTimeout(closeLoader,duration);};video.addEventListener('ended',closeLoader,{once:true});if(video.readyState>=1)start();else video.addEventListener('loadedmetadata',start,{once:true});window.setTimeout(closeLoader,4200);}else{window.setTimeout(closeLoader,820);}});</script>}
 </BaseLayout>
