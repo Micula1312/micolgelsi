@@ -1,5 +1,42 @@
 (()=>{
   const base='/portfolio';
+
+  const bindUnifiedMediaGallery=()=>{
+    document.querySelectorAll('[data-featured-gallery]').forEach(gallery=>{
+      if(gallery.dataset.runtimeLightboxBound==='true')return;
+      gallery.dataset.runtimeLightboxBound='true';
+      const title=document.querySelector('.project-head h1')?.textContent?.trim()||'';
+      const figures=[...gallery.querySelectorAll(':scope > figure')];
+      const media=figures.map(figure=>{
+        const element=figure.querySelector('img,video');
+        return element?.currentSrc||element?.getAttribute('src')||'';
+      }).filter(Boolean);
+      figures.forEach((figure,index)=>{
+        const element=figure.querySelector('img,video');
+        if(!element)return;
+        figure.setAttribute('role','button');
+        figure.setAttribute('tabindex','0');
+        figure.setAttribute('aria-label',`Open media ${index+1} of ${media.length}`);
+        const activate=event=>{
+          if(event?.type==='click'&&event.target?.closest('a,button'))return;
+          document.dispatchEvent(new CustomEvent('portfolio:open-media',{detail:{media,title,index}}));
+        };
+        figure.addEventListener('click',activate);
+        figure.addEventListener('keydown',event=>{
+          if(!['Enter',' '].includes(event.key))return;
+          event.preventDefault();
+          activate(event);
+        });
+      });
+    });
+  };
+
+  const bootGlobal=()=>{
+    bindUnifiedMediaGallery();
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootGlobal,{once:true});
+  else bootGlobal();
+
   const cleanPath=location.pathname.replace(/\/$/,'')||'/';
   if(![base,`${base}/`].includes(cleanPath))return;
 
@@ -25,21 +62,37 @@
   const preload=src=>new Promise(resolve=>{const i=new Image();i.onload=()=>resolve(src);i.onerror=()=>resolve(null);i.src=src;});
   const nextFrame=()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
 
+  let yearObserver=null;
   const compactMobileYear=()=>{
     const list=document.querySelector('#work-list');
     if(!list||window.innerWidth>760||list.dataset.view!=='year')return;
-    const years=Math.max(1,list.querySelectorAll('.year-label').length);
-    const compactWidth=Math.max(
-      Math.ceil(list.clientWidth*1.35),
-      Math.min(820,years*260),
-      560
-    );
-    list.style.setProperty('--year-width',`${compactWidth}px`);
-    list.classList.toggle('is-scrollable-year',compactWidth>list.clientWidth+1);
-    requestAnimationFrame(()=>{
-      const max=Math.max(0,list.scrollWidth-list.clientWidth);
-      list.scrollLeft=max;
-    });
+    const track=list.querySelector('[data-year-track]');
+    const rowYears=[...list.querySelectorAll('.work-row')].map(row=>(row.dataset.year||'').match(/\d{4}/)?.[0]).filter(Boolean);
+    const yearCount=new Set(rowYears).size;
+    if(yearCount<=1){
+      const width=Math.max(1,list.clientWidth);
+      list.style.setProperty('--year-width',`${width}px`,'important');
+      list.classList.remove('is-scrollable-year');
+      list.style.setProperty('overflow-x','hidden','important');
+      if(track)track.style.setProperty('width','100%','important');
+      if(list.scrollLeft!==0)list.scrollLeft=0;
+      return;
+    }
+    if(track)track.style.removeProperty('width');
+    list.style.removeProperty('overflow-x');
+  };
+
+  const installYearGuard=()=>{
+    const list=document.querySelector('#work-list');
+    if(!list||window.innerWidth>760)return;
+    compactMobileYear();
+    yearObserver?.disconnect();
+    yearObserver=new MutationObserver(()=>requestAnimationFrame(compactMobileYear));
+    yearObserver.observe(list,{attributes:true,attributeFilter:['class','style']});
+    const track=list.querySelector('[data-year-track]');
+    if(track)yearObserver.observe(track,{attributes:true,attributeFilter:['style']});
+    setTimeout(compactMobileYear,120);
+    setTimeout(compactMobileYear,420);
   };
 
   let stableWidth=window.innerWidth;
@@ -47,16 +100,16 @@
     const changed=Math.abs(window.innerWidth-stableWidth)>2;
     if(!changed)return;
     stableWidth=window.innerWidth;
-    requestAnimationFrame(()=>requestAnimationFrame(compactMobileYear));
+    requestAnimationFrame(()=>requestAnimationFrame(installYearGuard));
   },{passive:true});
-  window.addEventListener('orientationchange',()=>setTimeout(compactMobileYear,180),{passive:true});
+  window.addEventListener('orientationchange',()=>setTimeout(installYearGuard,180),{passive:true});
 
   const waitForLayout=async()=>{
     try{if(document.fonts?.ready)await document.fonts.ready;}catch{}
     await nextFrame();
     await new Promise(resolve=>setTimeout(resolve,80));
     await nextFrame();
-    compactMobileYear();
+    installYearGuard();
     await nextFrame();
   };
   const leave=async()=>{
@@ -81,6 +134,5 @@
     setTimeout(tick,step);
   }).catch(leave);
 
-  // Never trap the page if Safari stalls on an asset/font event.
   setTimeout(()=>{if(overlay.isConnected)leave();},1800);
 })();
