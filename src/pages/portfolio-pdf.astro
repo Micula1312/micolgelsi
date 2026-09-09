@@ -8,10 +8,8 @@ const exhibitions=await getCollection('exhibitions');
 const works=await getCollection('works');
 
 const projectPool=[...projects,...exhibitions]
-  .filter(entry=>entry.data.portfolio?.art)
   .sort((a,b)=>Number(b.data.year||0)-Number(a.data.year||0)||a.data.title.localeCompare(b.data.title));
-const workPool=works
-  .filter(entry=>entry.data.portfolio?.art)
+const workPool=[...works]
   .sort((a,b)=>Number(b.data.year||0)-Number(a.data.year||0)||a.data.title.localeCompare(b.data.title));
 const pool=[...projectPool,...workPool];
 const defaultVisibleIds=projectPool.slice(0,5).map(entry=>`${entry.collection}:${entry.id}`);
@@ -42,7 +40,7 @@ const isVideo=(src='')=>/\.(mp4|webm|mov)(?:$|\?)/i.test(src);
   .project-main{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(58mm,.7fr);gap:7mm;min-height:0}.visual{position:relative;min-height:132mm;overflow:hidden;background:#0d0d0d;border:1px solid var(--line)}.visual img,.visual video{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88) contrast(1.06)}.visual::after{content:"✦";position:absolute;right:5mm;bottom:4mm;color:var(--signal);font-size:18px;mix-blend-mode:difference}.project-copy{display:flex;flex-direction:column;border-left:1px solid var(--line);padding-left:6mm}.summary{font-size:12px;line-height:1.36;margin:0 0 6mm}.summary::first-letter{font-family:var(--serif);font-style:italic;color:var(--pink);font-size:22px}.facts{margin-top:auto}.fact{display:grid;grid-template-columns:21mm 1fr;gap:3mm;padding:2.2mm 0;border-top:1px solid var(--line);font-size:9px;line-height:1.3}.fact b{font:7px var(--mono);text-transform:uppercase;color:var(--muted)}
   .project-foot{display:flex;justify-content:space-between;gap:8mm;align-items:end;font:8px/1.3 var(--mono);text-transform:uppercase}.project-foot a{text-decoration:none;color:var(--signal)}.project-foot a:hover{font-style:italic}.page-no{color:var(--pink)}
   .project-page[draggable="true"]{cursor:grab}.project-page.dragging{opacity:.34}.project-page.drop-before{outline:3px solid var(--signal);outline-offset:-3px}.project-page.is-hidden{display:none}.editor-badge{position:absolute;top:12mm;right:11mm;z-index:3;display:none;background:var(--signal);color:#000;padding:4px 6px;font:8px var(--mono)}body.editing .project-page .editor-badge{display:block}
-  .hidden-panel{position:fixed;z-index:58;right:12px;top:56px;width:320px;max-height:calc(100vh - 92px);overflow:auto;background:#050505;color:var(--fg);border:1px solid var(--line);padding:11px;display:none}.hidden-panel.open{display:block}.hidden-panel h2{font:10px var(--mono);margin:0 0 8px;text-transform:uppercase}.group-label{margin:12px 0 4px;padding-top:8px;border-top:1px solid var(--line);font:italic 13px var(--serif);color:var(--pink)}.toggle-row{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;padding:6px 0;border-top:1px solid #222;font:9px/1.25 var(--mono)}.toggle-row input{margin:1px 0 0}.toggle-row small{color:var(--muted)}
+  .hidden-panel{position:fixed;z-index:58;right:12px;top:56px;width:360px;max-height:calc(100vh - 92px);overflow:auto;background:#050505;color:var(--fg);border:1px solid var(--line);padding:11px;display:none}.hidden-panel.open{display:block}.hidden-panel h2{font:10px var(--mono);margin:0 0 8px;text-transform:uppercase}.group-label{margin:12px 0 4px;padding-top:8px;border-top:1px solid var(--line);font:italic 13px var(--serif);color:var(--pink)}.toggle-row{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;padding:6px 0;border-top:1px solid #222;font:9px/1.25 var(--mono)}.toggle-row input{margin:1px 0 0}.toggle-row small{color:var(--muted)}
   .empty-note{font:10px/1.4 var(--mono);color:var(--muted);padding:8mm 0}
   @media(max-width:1000px){.book{width:100%;margin:0}.page{width:100%;min-height:100vh;padding:18px}.toolbar{position:sticky;top:0;padding:8px;background:#161616;right:auto}.hint{display:none}.cover-page,.project-main{grid-template-columns:1fr}.cover-right,.project-copy{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:12px}.visual{min-height:52vh}.index-list{grid-template-columns:1fr}.page::before,.page::after,.corner{display:none}}
   @page{size:A4 landscape;margin:0}
@@ -56,7 +54,7 @@ const isVideo=(src='')=>/\.(mp4|webm|mov)(?:$|\?)/i.test(src);
   <button type="button" id="resetBtn">DEFAULT 5</button>
   <button type="button" id="printBtn">PRINT / SAVE PDF</button>
 </div>
-<div class="hint">Default = 5 artistic projects. Works stay off until you explicitly add them for a more commercial portfolio.</div>
+<div class="hint">Default = 5 projects. SELECT ITEMS lets you freely mix projects, exhibitions and works.</div>
 <div class="hidden-panel" id="hiddenPanel"><h2>Portfolio selection</h2><div id="toggleList"></div></div>
 <main class="book" id="book">
   <section class="page cover-page">
@@ -87,7 +85,7 @@ const isVideo=(src='')=>/\.(mp4|webm|mov)(?:$|\?)/i.test(src);
 </main>
 <script is:inline define:vars={{ defaultVisibleIds }}>
 (()=>{
-  const KEY='micol-portfolio-pdf-v2';
+  const KEY='micol-portfolio-pdf-v3';
   const body=document.body,pagesHost=document.getElementById('projectPages'),indexList=document.getElementById('indexList'),panel=document.getElementById('hiddenPanel'),toggleList=document.getElementById('toggleList');
   const pages=()=>[...pagesHost.querySelectorAll('.project-page')];
   const defaultState=()=>({order:pages().map(p=>p.dataset.id),hidden:pages().filter(p=>!defaultVisibleIds.includes(p.dataset.id)).map(p=>p.dataset.id)});
