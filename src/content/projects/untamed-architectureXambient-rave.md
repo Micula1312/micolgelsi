@@ -6,7 +6,7 @@ displayType: "multimedia performance"
 year: "2025"
 startDate: "2025-07"
 status: ongoing
-summary: "A 30-minute multimedia performance exploring urban wilderness in the Aniene River Nature Reserve through the live manipulation of materials in & from the hyper-object Archive of the #Untamed, accompanied by the sonic narrative of Rome-based DJ and producer Stiky Verde."
+summary: "A multimedia performance exploring urban wilderness in the Aniene River Nature Reserve through the live manipulation of materials in & from the hyper-object Archive of the #Untamed, accompanied by the sonic narrative of Rome-based DJ and producer Stiky Verde."
 medium:
   - "audiovisual performance"
   - "live media manipulation"
@@ -30,12 +30,14 @@ credits:
   []
 photoCredits:
   []
-avatar: "/media/artistic/untamed-architectureXambient-rave/cover.mp4"
-cover: "/media/artistic/untamed-architectureXambient-rave/pastificio/WhatsApp Image 2026-06-03 at 14.06.11.webp"
+avatar: "/media/artistic/untamed-architectureXambient-rave/videos/WhatsApp Video 2026-06-14 at 16.01.55.mp4"
+cover: "/media/artistic/untamed-architectureXambient-rave/cover.mp4"
 gallery:
   []
 videos:
-  []
+  - "/media/artistic/untamed-architectureXambient-rave/videos/WhatsApp Video 2026-06-14 at 16.01.55.mp4"
+  - "/media/artistic/untamed-architectureXambient-rave/videos/WhatsApp Video 2026-06-14 at 16.01.58.mp4"
+  - "/media/artistic/untamed-architectureXambient-rave/videos/WhatsApp Video 2026-06-14 at 16.02.02.mp4"
 criticalTexts:
   []
 publications:

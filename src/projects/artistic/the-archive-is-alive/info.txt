@@ -1,7 +1,7 @@
 TITLE: The Archive Is Alive!
 AUTHOR: 
 AVATAR: avatar.mp4
-FEATURED: 
+FEATURED: true
 START: 2026-04
 END: 2026-06
 TYPE: exhibition
@@ -50,6 +50,8 @@ Dario Chillemi — The Archive Is Alive! | https://dariochillemi.com/tour/
 COVER: images/119.webp
 STATUS: 
 MAIN LINK: 
-COLLABORATORS: 
-CREDITS: 
-OUTPUTS:
+COLLABORATORS: Giuseppe Di Capua and Federico Russo
+CREDITS: Foto di Sara Scognamillo
+OUTPUTS: 
+COVER EMBED: 
+RELATED:

@@ -1,5 +1,6 @@
 ---
 title: "The Archive Is Alive!"
+featured: true
 type: exhibition
 displayType: "exhibition"
 year: "2026"
@@ -15,14 +16,14 @@ researchAreas:
   - surveillance-politics-of-visibility
   - live-data-manipulation
 collaborators:
-  []
+  - "Giuseppe Di Capua and Federico Russo"
 artistsInvolved:
   - "Giuseppe di Capua"
   - "Federico Russo"
 curatedBy:
   []
 credits:
-  []
+  - "Foto di Sara Scognamillo"
 photoCredits:
   []
 avatar: "/media/artistic/the-archive-is-alive/avatar.mp4"
