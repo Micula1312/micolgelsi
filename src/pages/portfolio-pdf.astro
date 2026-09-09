@@ -17,6 +17,7 @@ const hrefFor=(entry)=>entry.collection==='projects'?`${base}projects/${entry.id
 const coverFor=(entry)=>withBase(entry.data.cover||entry.data.gallery?.[0]||entry.data.avatar||'');
 const secondImageFor=(entry)=>withBase((entry.data.gallery||[]).find(src=>withBase(src)!==coverFor(entry))||'');
 const isVideo=(src='')=>/\.(mp4|webm|mov)(?:$|\?)/i.test(src);
+const momentMedia=(moment)=>withBase(moment.gallery?.[0]||moment.media||'');
 ---
 <!doctype html>
 <html lang="en">
@@ -26,158 +27,76 @@ const isVideo=(src='')=>/\.(mp4|webm|mov)(?:$|\?)/i.test(src);
 <title>Micol Gelsi — Selected Portfolio</title>
 <style>
   :root{--bg:#050505;--fg:#f3f3f0;--signal:#39ff14;--pink:#ff2bbd;--cyan:#67e8f9;--muted:#8a8a86;--line:#323232;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,"Roboto Mono","IBM Plex Mono",monospace;--serif:Georgia,"Times New Roman",serif}
-  *{box-sizing:border-box}
-  html,body{margin:0;background:#161616;color:var(--fg)}body{font-family:Arial,Helvetica,sans-serif}
-  a{color:inherit}.toolbar{position:fixed;z-index:60;top:12px;right:12px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:min(900px,calc(100vw - 24px))}
+  *{box-sizing:border-box}html,body{margin:0;background:#161616;color:var(--fg)}body{font-family:Arial,Helvetica,sans-serif}a{color:inherit}
+  .toolbar{position:fixed;z-index:60;top:12px;right:12px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:min(900px,calc(100vw - 24px))}
   button{border:1px solid var(--line);background:#090909;color:var(--fg);padding:8px 10px;font:9px var(--mono);text-transform:uppercase;cursor:pointer}button:hover{border-color:var(--signal);color:var(--signal)}
-  .hint{position:fixed;z-index:59;left:12px;bottom:12px;background:var(--signal);color:#000;padding:7px 9px;font:9px/1.3 var(--mono);max-width:360px}
+  .hint{position:fixed;z-index:59;left:12px;bottom:12px;background:var(--signal);color:#000;padding:7px 9px;font:9px/1.3 var(--mono);max-width:390px}
   .book{width:297mm;margin:18px auto 60px}.page{position:relative;width:297mm;min-height:210mm;background:var(--bg);padding:10mm 11mm;page-break-after:always;overflow:hidden;box-shadow:0 8px 34px rgba(0,0,0,.34)}
   .page::before{content:"";position:absolute;left:11mm;right:11mm;top:10mm;border-top:1px solid var(--line);pointer-events:none}.page::after{content:"";position:absolute;left:11mm;right:11mm;bottom:10mm;border-top:1px solid var(--line);pointer-events:none}
   .corner{position:absolute;font:8px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.07em}.corner.tl{top:4mm;left:11mm}.corner.tr{top:4mm;right:11mm}.corner.bl{bottom:4mm;left:11mm}.corner.br{bottom:4mm;right:11mm}
   .cover-page{display:grid;grid-template-columns:1.6fr .8fr;gap:12mm;align-items:stretch}.cover-left{display:flex;flex-direction:column;justify-content:space-between;padding-top:10mm;padding-bottom:10mm}.cover-title{margin:0;font:800 clamp(58px,8vw,118px)/.78 var(--mono);text-transform:uppercase;letter-spacing:-.09em}.cover-title .pink{font-family:var(--serif);font-style:italic;font-weight:400;text-transform:none;color:var(--pink);letter-spacing:-.045em}.cover-sub{font:14px/1.34 var(--mono);max-width:145mm;margin:0}.cover-right{border-left:1px solid var(--line);padding:13mm 0 12mm 9mm;display:flex;flex-direction:column;justify-content:space-between}.cover-meta{font:9px/1.45 var(--mono);text-transform:uppercase}.signal-word{font:italic 28px/.95 var(--serif);color:var(--signal);max-width:58mm}.star{font-size:28px;color:var(--signal)}
 
-  .index-page{padding-top:20mm;padding-bottom:17mm;display:grid;grid-template-rows:auto 1fr;gap:5mm}
-  .index-head{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid var(--fg);padding-bottom:4mm}
-  .index-head h2{font:800 38px/.88 var(--mono);margin:0;text-transform:uppercase;letter-spacing:-.06em}
-  .index-head em{font:italic 18px var(--serif);color:var(--pink);padding-bottom:1mm}
-  .year-index{position:relative;min-height:0;height:100%;overflow:hidden}
-  .year-index-axis{position:absolute;left:0;right:0;bottom:18mm;height:1px;background:var(--fg)}
-  .year-index-axis::before,.year-index-axis::after{content:"";position:absolute;top:-2px;width:5px;height:5px;border-radius:50%;background:var(--signal)}.year-index-axis::before{left:0}.year-index-axis::after{right:0}
-  .year-guide{position:absolute;top:5mm;bottom:18mm;width:1px;background:linear-gradient(to bottom,transparent 0,var(--line) 18%,var(--line) 82%,transparent 100%);pointer-events:none}
-  .year-guide::after{content:"";position:absolute;bottom:-2px;left:-2px;width:5px;height:5px;border-radius:50%;background:var(--bg);border:1px solid var(--muted)}
-  .year-label{position:absolute;bottom:10mm;transform:translateX(-50%);font:800 10px/1 var(--mono);letter-spacing:-.03em;color:var(--fg)}
-  .year-label small{display:block;margin-top:2mm;font:italic 8px/1 var(--serif);color:var(--muted);text-align:center}
-  .timeline-entry{--entry-accent:var(--fg);position:absolute;z-index:3;width:min(54mm,20%);min-width:35mm;text-decoration:none;color:var(--fg);transform:translateX(-50%);padding:0 2mm 2mm 0}
-  .timeline-entry:hover .timeline-title{color:var(--signal)}
-  .timeline-entry.is-work{--entry-accent:var(--signal)}
-  .timeline-entry.is-exhibition{--entry-accent:var(--pink)}
-  .timeline-meta{display:flex;gap:2mm;align-items:baseline;margin-bottom:1.5mm;font:7px/1 var(--mono);text-transform:uppercase;color:var(--muted);white-space:nowrap}
-  .timeline-number{color:var(--pink);font-weight:800}.timeline-kind{color:var(--entry-accent)}
-  .timeline-title{display:block;font:800 clamp(12px,1.25vw,17px)/.92 var(--mono);text-transform:uppercase;letter-spacing:-.045em;transition:color .16s ease;overflow-wrap:anywhere}
-  .timeline-type{display:block;margin-top:1.8mm;font:italic 8px/1.15 var(--serif);color:var(--muted);text-transform:none}
-  .timeline-stem{position:absolute;left:50%;top:calc(100% + 2mm);width:1px;background:var(--line);pointer-events:none}
-  .timeline-stem::after{content:"✦";position:absolute;left:0;bottom:-4px;transform:translate(-50%,50%);font:11px/1 var(--mono);color:var(--entry-accent);background:var(--bg)}
-  .timeline-legend{position:absolute;right:0;bottom:3mm;display:flex;gap:5mm;font:7px/1 var(--mono);text-transform:uppercase;color:var(--muted)}
-  .timeline-legend span::before{content:"✦";margin-right:1.5mm}.timeline-legend .legend-project::before{color:var(--fg)}.timeline-legend .legend-exhibition::before{color:var(--pink)}.timeline-legend .legend-work::before{color:var(--signal)}
-  .timeline-empty{position:absolute;inset:0;display:grid;place-items:center;font:10px var(--mono);color:var(--muted)}
+  .index-page{padding-top:20mm;padding-bottom:17mm;display:grid;grid-template-rows:auto 1fr;gap:5mm}.index-head{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid var(--fg);padding-bottom:4mm}.index-head h2{font:800 38px/.88 var(--mono);margin:0;text-transform:uppercase;letter-spacing:-.06em}.index-head em{font:italic 18px var(--serif);color:var(--pink);padding-bottom:1mm}.year-index{position:relative;min-height:0;height:100%;overflow:hidden}.year-index-axis{position:absolute;left:0;right:0;bottom:18mm;height:1px;background:var(--fg)}.year-index-axis::before,.year-index-axis::after{content:"";position:absolute;top:-2px;width:5px;height:5px;border-radius:50%;background:var(--signal)}.year-index-axis::before{left:0}.year-index-axis::after{right:0}.year-guide{position:absolute;top:5mm;bottom:18mm;width:1px;background:linear-gradient(to bottom,transparent 0,var(--line) 18%,var(--line) 82%,transparent 100%);pointer-events:none}.year-guide::after{content:"";position:absolute;bottom:-2px;left:-2px;width:5px;height:5px;border-radius:50%;background:var(--bg);border:1px solid var(--muted)}.year-label{position:absolute;bottom:10mm;transform:translateX(-50%);font:800 10px/1 var(--mono);color:var(--fg)}.year-label small{display:block;margin-top:2mm;font:italic 8px/1 var(--serif);color:var(--muted);text-align:center}.timeline-entry{--entry-accent:var(--fg);position:absolute;z-index:3;width:min(54mm,20%);min-width:35mm;text-decoration:none;color:var(--fg);transform:translateX(-50%);padding:0 2mm 2mm 0}.timeline-entry:hover .timeline-title{color:var(--signal)}.timeline-entry.is-work{--entry-accent:var(--signal)}.timeline-entry.is-exhibition{--entry-accent:var(--pink)}.timeline-meta{display:flex;gap:2mm;align-items:baseline;margin-bottom:1.5mm;font:7px/1 var(--mono);text-transform:uppercase;color:var(--muted);white-space:nowrap}.timeline-number{color:var(--pink);font-weight:800}.timeline-kind{color:var(--entry-accent)}.timeline-title{display:block;font:800 clamp(12px,1.25vw,17px)/.92 var(--mono);text-transform:uppercase;letter-spacing:-.045em;overflow-wrap:anywhere}.timeline-type{display:block;margin-top:1.8mm;font:italic 8px/1.15 var(--serif);color:var(--muted)}.timeline-stem{position:absolute;left:50%;top:calc(100% + 2mm);width:1px;background:var(--line)}.timeline-stem::after{content:"✦";position:absolute;left:0;bottom:-4px;transform:translate(-50%,50%);font:11px/1 var(--mono);color:var(--entry-accent);background:var(--bg)}.timeline-legend{position:absolute;right:0;bottom:3mm;display:flex;gap:5mm;font:7px/1 var(--mono);text-transform:uppercase;color:var(--muted)}.timeline-legend span::before{content:"✦";margin-right:1.5mm}.timeline-legend .legend-project::before{color:var(--fg)}.timeline-legend .legend-exhibition::before{color:var(--pink)}.timeline-legend .legend-work::before{color:var(--signal)}.timeline-empty{position:absolute;inset:0;display:grid;place-items:center;font:10px var(--mono);color:var(--muted)}
 
-  .project-page{display:grid;grid-template-rows:auto 1fr auto;gap:5mm;padding-top:18mm;padding-bottom:16mm}.project-head{display:grid;grid-template-columns:1fr auto;gap:9mm;align-items:end}.project-title{margin:0;font:800 30px/.88 var(--mono);text-transform:uppercase;letter-spacing:-.055em}.project-kicker{text-align:right;font:8px/1.35 var(--mono);text-transform:uppercase;color:var(--muted)}
-  .project-main{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(58mm,.7fr);gap:7mm;min-height:0}.visual{position:relative;min-height:132mm;overflow:hidden;background:#0d0d0d;border:1px solid var(--line)}.visual img,.visual video{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88) contrast(1.06)}.visual::after{content:"✦";position:absolute;right:5mm;bottom:4mm;color:var(--signal);font-size:18px;mix-blend-mode:difference}.project-copy{display:flex;flex-direction:column;border-left:1px solid var(--line);padding-left:6mm}.summary{font-size:12px;line-height:1.36;margin:0 0 6mm}.summary::first-letter{font-family:var(--serif);font-style:italic;color:var(--pink);font-size:22px}.facts{margin-top:auto}.fact{display:grid;grid-template-columns:21mm 1fr;gap:3mm;padding:2.2mm 0;border-top:1px solid var(--line);font-size:9px;line-height:1.3}.fact b{font:7px var(--mono);text-transform:uppercase;color:var(--muted)}
-  .project-foot{display:flex;justify-content:space-between;gap:8mm;align-items:end;font:8px/1.3 var(--mono);text-transform:uppercase}.project-foot a{text-decoration:none;color:var(--signal)}.project-foot a:hover{font-style:italic}.page-no{color:var(--pink)}
-  .project-page[draggable="true"]{cursor:grab}.project-page.dragging{opacity:.34}.project-page.drop-before{outline:3px solid var(--signal);outline-offset:-3px}.project-page.is-hidden{display:none}.editor-badge{position:absolute;top:12mm;right:11mm;z-index:3;display:none;background:var(--signal);color:#000;padding:4px 6px;font:8px var(--mono)}body.editing .project-page .editor-badge{display:block}
-  .hidden-panel{position:fixed;z-index:58;right:12px;top:56px;width:360px;max-height:calc(100vh - 92px);overflow:auto;background:#050505;color:var(--fg);border:1px solid var(--line);padding:11px;display:none}.hidden-panel.open{display:block}.hidden-panel h2{font:10px var(--mono);margin:0 0 8px;text-transform:uppercase}.group-label{margin:12px 0 4px;padding-top:8px;border-top:1px solid var(--line);font:italic 13px var(--serif);color:var(--pink)}.toggle-row{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;padding:6px 0;border-top:1px solid #222;font:9px/1.25 var(--mono)}.toggle-row input{margin:1px 0 0}.toggle-row small{color:var(--muted)}
-  .empty-note{font:10px/1.4 var(--mono);color:var(--muted);padding:8mm 0}
-  @media(max-width:1000px){.book{width:100%;margin:0}.page{width:100%;min-height:100vh;padding:18px}.toolbar{position:sticky;top:0;padding:8px;background:#161616;right:auto}.hint{display:none}.cover-page,.project-main{grid-template-columns:1fr}.cover-right,.project-copy{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:12px}.visual{min-height:52vh}.page::before,.page::after,.corner{display:none}.index-page{display:block}.index-head{margin-bottom:20px}.year-index{height:auto;min-height:0;overflow:visible}.year-index-axis,.year-guide,.year-label,.timeline-legend{display:none}.timeline-entry{position:relative!important;left:auto!important;top:auto!important;width:100%;min-width:0;transform:none;padding:12px 0;border-bottom:1px solid var(--line)}.timeline-stem{display:none}}
+  .project-set.is-hidden{display:none}.project-overview{display:grid;grid-template-rows:auto 1fr auto;gap:5mm;padding-top:18mm;padding-bottom:16mm}.project-head{display:grid;grid-template-columns:1fr auto;gap:9mm;align-items:end}.project-title{margin:0;font:800 30px/.88 var(--mono);text-transform:uppercase;letter-spacing:-.055em}.project-kicker{text-align:right;font:8px/1.35 var(--mono);text-transform:uppercase;color:var(--muted)}.project-main{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(58mm,.7fr);gap:7mm;min-height:0}.visual{position:relative;min-height:132mm;overflow:hidden;background:#0d0d0d;border:1px solid var(--line)}.visual img,.visual video{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88) contrast(1.06)}.visual::after{content:"✦";position:absolute;right:5mm;bottom:4mm;color:var(--signal);font-size:18px;mix-blend-mode:difference}.project-copy{display:flex;flex-direction:column;border-left:1px solid var(--line);padding-left:6mm}.summary{font-size:12px;line-height:1.36;margin:0 0 6mm}.summary::first-letter{font-family:var(--serif);font-style:italic;color:var(--pink);font-size:22px}.facts{margin-top:auto}.fact{display:grid;grid-template-columns:21mm 1fr;gap:3mm;padding:2.2mm 0;border-top:1px solid var(--line);font-size:9px;line-height:1.3}.fact b{font:7px var(--mono);text-transform:uppercase;color:var(--muted)}.project-foot{display:flex;justify-content:space-between;gap:8mm;align-items:end;font:8px/1.3 var(--mono);text-transform:uppercase}.project-foot a{text-decoration:none;color:var(--signal)}.page-no{color:var(--pink)}
+
+  .visual-page{padding-top:17mm;padding-bottom:16mm;display:grid;grid-template-rows:auto 1fr;gap:5mm}.visual-head{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid var(--fg);padding-bottom:3mm}.visual-head h3{margin:0;font:800 22px/.9 var(--mono);text-transform:uppercase;letter-spacing:-.05em}.visual-head em{font:italic 13px var(--serif);color:var(--pink)}.visual-layout{min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 62mm;gap:6mm}.visual-layout.gallery-only{grid-template-columns:1fr}.media-mosaic{min-height:0;height:100%;display:grid;grid-template-columns:1.25fr .85fr .85fr;grid-template-rows:1fr 1fr;gap:3mm}.media-tile{position:relative;overflow:hidden;background:#0c0c0c;border:1px solid var(--line);min-height:0}.media-tile:first-child{grid-row:1/3}.media-tile img,.media-tile video{width:100%;height:100%;display:block;object-fit:cover}.media-tile:nth-child(4n+2) img,.media-tile:nth-child(4n+2) video{object-position:center 30%}.media-label{position:absolute;left:3mm;bottom:3mm;background:#050505;color:var(--fg);padding:2mm 2.5mm;font:7px/1 var(--mono);text-transform:uppercase;border:1px solid var(--line)}.media-label.video{color:var(--signal)}.moments-list{border-left:1px solid var(--line);padding-left:5mm;overflow:hidden}.moments-list h4{margin:0 0 4mm;font:italic 16px/1 var(--serif);color:var(--signal)}.moment-row{padding:3mm 0;border-top:1px solid var(--line)}.moment-date{font:7px/1 var(--mono);color:var(--pink);text-transform:uppercase}.moment-title{display:block;margin-top:1mm;font:800 10px/1 var(--mono);text-transform:uppercase}.moment-meta{display:block;margin-top:1mm;font:7px/1.2 var(--mono);color:var(--muted)}.visual-empty{display:grid;place-items:center;height:100%;border:1px solid var(--line);font:10px var(--mono);color:var(--muted)}
+
+  .project-set[draggable="true"]{cursor:grab}.project-set.dragging{opacity:.34}.project-set.drop-before{outline:3px solid var(--signal);outline-offset:-3px}.editor-badge{position:absolute;top:12mm;right:11mm;z-index:3;display:none;background:var(--signal);color:#000;padding:4px 6px;font:8px var(--mono)}body.editing .project-set .editor-badge{display:block}.hidden-panel{position:fixed;z-index:58;right:12px;top:56px;width:360px;max-height:calc(100vh - 92px);overflow:auto;background:#050505;color:var(--fg);border:1px solid var(--line);padding:11px;display:none}.hidden-panel.open{display:block}.hidden-panel h2{font:10px var(--mono);margin:0 0 8px;text-transform:uppercase}.group-label{margin:12px 0 4px;padding-top:8px;border-top:1px solid var(--line);font:italic 13px var(--serif);color:var(--pink)}.toggle-row{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;padding:6px 0;border-top:1px solid #222;font:9px/1.25 var(--mono)}.toggle-row input{margin:1px 0 0}.toggle-row small{color:var(--muted)}.empty-note{font:10px/1.4 var(--mono);color:var(--muted);padding:8mm 0}
+  @media(max-width:1000px){.book{width:100%;margin:0}.page{width:100%;min-height:100vh;padding:18px}.toolbar{position:sticky;top:0;padding:8px;background:#161616;right:auto}.hint{display:none}.cover-page,.project-main,.visual-layout{grid-template-columns:1fr}.cover-right,.project-copy,.moments-list{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:12px}.visual{min-height:52vh}.media-mosaic{min-height:70vh}.page::before,.page::after,.corner{display:none}.index-page{display:block}.index-head{margin-bottom:20px}.year-index{height:auto;overflow:visible}.year-index-axis,.year-guide,.year-label,.timeline-legend{display:none}.timeline-entry{position:relative!important;left:auto!important;top:auto!important;width:100%;transform:none;padding:12px 0;border-bottom:1px solid var(--line)}.timeline-stem{display:none}}
   @page{size:A4 landscape;margin:0}
-  @media print{html,body{background:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}.toolbar,.hint,.hidden-panel,.editor-badge{display:none!important}.book{width:auto;margin:0}.page{width:297mm;height:210mm;min-height:210mm;margin:0;box-shadow:none;break-after:page;page-break-after:always}.page:last-child{break-after:auto;page-break-after:auto}.project-page{cursor:default}.visual video{display:none}.visual video+img{display:block}.timeline-entry{color:var(--fg)!important;text-decoration:none!important}}
+  @media print{html,body{background:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}.toolbar,.hint,.hidden-panel,.editor-badge{display:none!important}.book{width:auto;margin:0}.page{width:297mm;height:210mm;min-height:210mm;margin:0;box-shadow:none;break-after:page;page-break-after:always}.page:last-child{break-after:auto;page-break-after:auto}.project-set{cursor:default}.visual video,.media-tile video{display:none}.timeline-entry{color:var(--fg)!important;text-decoration:none!important}}
 </style>
 </head>
 <body>
-<div class="toolbar">
-  <button type="button" id="editBtn">EDIT ORDER</button>
-  <button type="button" id="selectBtn">SELECT ITEMS</button>
-  <button type="button" id="resetBtn">DEFAULT 5</button>
-  <button type="button" id="printBtn">PRINT / SAVE PDF</button>
-</div>
-<div class="hint">Default = 5 projects. SELECT ITEMS lets you freely mix projects, exhibitions and works.</div>
+<div class="toolbar"><button type="button" id="editBtn">EDIT ORDER</button><button type="button" id="selectBtn">SELECT ITEMS</button><button type="button" id="resetBtn">DEFAULT 5</button><button type="button" id="printBtn">PRINT / SAVE PDF</button></div>
+<div class="hint">Each selected item = 2 pages: overview + gallery / moments.</div>
 <div class="hidden-panel" id="hiddenPanel"><h2>Portfolio selection</h2><div id="toggleList"></div></div>
 <main class="book" id="book">
-  <section class="page cover-page">
-    <span class="corner tl">Micol Gelsi / portfolio</span><span class="corner tr">2026</span><span class="corner bl">Rome ↔ Bologna</span><span class="corner br">selected practice</span>
-    <div class="cover-left"><h1 class="cover-title">Micol<br/><span class="pink">Gelsi</span></h1><p class="cover-sub">MULTIMEDIA ARTIST AND RESEARCHER. PUBLIC + DIGITAL SPACES / WEB ARCHIVES / SITE-SPECIFICITY / PARTICIPATION / LOW-TECH SYSTEMS.</p></div>
-    <div class="cover-right"><div class="star">✦</div><div class="signal-word">the archive is alive</div><div class="cover-meta"><a href="https://micolgelsi.com" target="_blank" rel="noopener noreferrer">micolgelsi.com ↗</a><br/>ART / RESEARCH / WEB<br/>SELECTED PORTFOLIO</div></div>
-  </section>
-  <section class="page index-page" id="indexPage">
-    <span class="corner tl">Index / Year view</span><span class="corner tr">selected projects</span><span class="corner bl">interactive links active</span><span class="corner br">✦</span>
-    <div class="index-head"><h2>Selected<br/>Projects</h2><em>year / selected practice</em></div>
-    <div class="year-index" id="indexList"></div>
-  </section>
+  <section class="page cover-page"><span class="corner tl">Micol Gelsi / portfolio</span><span class="corner tr">2026</span><span class="corner bl">Rome ↔ Bologna</span><span class="corner br">selected practice</span><div class="cover-left"><h1 class="cover-title">Micol<br/><span class="pink">Gelsi</span></h1><p class="cover-sub">MULTIMEDIA ARTIST AND RESEARCHER. PUBLIC + DIGITAL SPACES / WEB ARCHIVES / SITE-SPECIFICITY / PARTICIPATION / LOW-TECH SYSTEMS.</p></div><div class="cover-right"><div class="star">✦</div><div class="signal-word">the archive is alive</div><div class="cover-meta"><a href="https://micolgelsi.com" target="_blank" rel="noopener noreferrer">micolgelsi.com ↗</a><br/>ART / RESEARCH / WEB<br/>SELECTED PORTFOLIO</div></div></section>
+  <section class="page index-page" id="indexPage"><span class="corner tl">Index / Year view</span><span class="corner tr">selected projects</span><span class="corner bl">interactive links active</span><span class="corner br">✦</span><div class="index-head"><h2>Selected<br/>Projects</h2><em>year / selected practice</em></div><div class="year-index" id="indexList"></div></section>
   <div id="projectPages">
-  {pool.map((entry,i)=>{
+  {pool.map((entry)=>{
     const cover=coverFor(entry);const second=secondImageFor(entry);const href=hrefFor(entry);const year=entry.data.year||'';const type=entry.data.displayType||entry.collection.replace(/s$/,'');const itemKind=entry.collection==='works'?'work':'project';const collectionKind=entry.collection==='exhibitions'?'exhibition':itemKind;
     const facts=[['Type',type],['Year',String(year||'')],['Medium',(entry.data.medium||[]).join(', ')],['Research',(entry.data.researchAreas||[]).join(', ')],['With',(entry.data.collaborators||[]).join(', ')]].filter(([,value])=>value);
-    return <section class="page project-page" draggable="false" data-id={`${entry.collection}:${entry.id}`} data-kind={itemKind} data-collection-kind={collectionKind} data-title={entry.data.title} data-year={year} data-type={type} id={`work-${entry.collection}-${entry.id}`}>
-      <span class="corner tl">{collectionKind}</span><span class="corner tr">{year}</span><span class="corner bl">Micol Gelsi</span><span class="corner br">{String(i+3).padStart(2,'0')}</span><span class="editor-badge">DRAG PAGE</span>
-      <header class="project-head"><h2 class="project-title">{entry.data.title}</h2><div class="project-kicker">{type}<br/>{year}</div></header>
-      <div class="project-main">
-        <div class="visual">{cover?(isVideo(cover)?<><video src={cover} muted loop playsinline autoplay></video>{second&&<img src={second} alt="" style="display:none"/>}</>:<img src={cover} alt=""/>):<div class="empty-note">NO COVER SELECTED</div>}</div>
-        <div class="project-copy"><p class="summary">{entry.data.summary||'Selected work from Micol Gelsi’s artistic and research practice.'}</p><div class="facts">{facts.map(([label,value])=><div class="fact"><b>{label}</b><span>{value}</span></div>)}</div></div>
-      </div>
-      <footer class="project-foot"><div>{entry.data.mainLink?<a href={entry.data.mainLink} target="_blank" rel="noopener noreferrer">PROJECT LINK ↗</a>:<a href={href} target="_blank" rel="noopener noreferrer">FULL PROJECT ONLINE ↗</a>}</div><div class="page-no">{String(i+3).padStart(2,'0')}</div></footer>
-    </section>;
+    const moments=(entry.data.moments||[]).filter(m=>m.title);
+    const momentVisuals=moments.map(m=>({src:momentMedia(m),label:m.title,href:m.href||''})).filter(m=>m.src).slice(0,5);
+    const galleryVisuals=[...(entry.data.gallery||[]),...(entry.data.videos||[])].map(src=>withBase(src)).filter(Boolean).slice(0,6).map((src,idx)=>({src,label:isVideo(src)?`Video ${idx+1}`:`Gallery ${idx+1}`,href:isVideo(src)?src:''}));
+    const visuals=momentVisuals.length?momentVisuals:galleryVisuals;
+    return <div class="project-set" draggable="false" data-id={`${entry.collection}:${entry.id}`} data-kind={itemKind} data-collection-kind={collectionKind} data-title={entry.data.title} data-year={year} data-type={type}>
+      <section class="page project-overview" id={`work-${entry.collection}-${entry.id}`}>
+        <span class="corner tl">{collectionKind}</span><span class="corner tr">{year}</span><span class="corner bl">Micol Gelsi</span><span class="corner br overview-no">--</span><span class="editor-badge">DRAG PROJECT</span>
+        <header class="project-head"><h2 class="project-title">{entry.data.title}</h2><div class="project-kicker">{type}<br/>{year}</div></header>
+        <div class="project-main"><div class="visual">{cover?(isVideo(cover)?<><video src={cover} muted loop playsinline autoplay></video>{second&&<img src={second} alt="" style="display:none"/>}</>:<img src={cover} alt=""/>):<div class="empty-note">NO COVER SELECTED</div>}</div><div class="project-copy"><p class="summary">{entry.data.summary||'Selected work from Micol Gelsi’s artistic and research practice.'}</p><div class="facts">{facts.map(([label,value])=><div class="fact"><b>{label}</b><span>{value}</span></div>)}</div></div></div>
+        <footer class="project-foot"><div>{entry.data.mainLink?<a href={entry.data.mainLink} target="_blank" rel="noopener noreferrer">PROJECT LINK ↗</a>:<a href={href} target="_blank" rel="noopener noreferrer">FULL PROJECT ONLINE ↗</a>}</div><div class="page-no overview-no">--</div></footer>
+      </section>
+      <section class="page visual-page">
+        <span class="corner tl">{collectionKind} / visual notes</span><span class="corner tr">{year}</span><span class="corner bl">gallery / moments</span><span class="corner br visual-no">--</span>
+        <div class="visual-head"><h3>{entry.data.title}</h3><em>{moments.length?'moments / traces':'gallery / moving image'}</em></div>
+        <div class={`visual-layout ${moments.length?'':'gallery-only'}`}>
+          {visuals.length?<div class="media-mosaic">{visuals.map(v=><div class="media-tile">{isVideo(v.src)?<><video src={v.src} muted loop playsinline autoplay></video><a class="media-label video" href={v.href||v.src} target="_blank" rel="noopener noreferrer">VIDEO ↗</a></>:<><img src={v.src} alt=""/><span class="media-label">{v.label}</span></>}</div>)}</div>:<div class="visual-empty">NO GALLERY MEDIA YET</div>}
+          {moments.length>0&&<aside class="moments-list"><h4>moments</h4>{moments.slice(0,8).map(m=><div class="moment-row"><span class="moment-date">{m.date||year}</span><strong class="moment-title">{m.title}</strong>{(m.location||m.type)&&<span class="moment-meta">{[m.location,m.type].filter(Boolean).join(' / ')}</span>}</div>)}</aside>}
+        </div>
+      </section>
+    </div>;
   })}
   </div>
   <section class="page cover-page end-page"><span class="corner tl">Contact</span><span class="corner tr">Micol Gelsi</span><span class="corner bl">Rome / Italy</span><span class="corner br">✦</span><div class="cover-left"><h2 class="cover-title">Keep<br/><span class="pink">in touch</span></h2></div><div class="cover-right"><div class="signal-word">play with me</div><div class="cover-meta"><a href="https://micolgelsi.com" target="_blank" rel="noopener noreferrer">micolgelsi.com ↗</a><br/><a href="mailto:micol.gelsi@gmail.com">micol.gelsi@gmail.com ↗</a><br/><br/>MULTIMEDIA ART / RESEARCH / WEB</div></div></section>
 </main>
 <script is:inline define:vars={{ defaultVisibleIds }}>
 (()=>{
-  const KEY='micol-portfolio-pdf-v3';
+  const KEY='micol-portfolio-pdf-v4';
   const body=document.body,pagesHost=document.getElementById('projectPages'),indexList=document.getElementById('indexList'),panel=document.getElementById('hiddenPanel'),toggleList=document.getElementById('toggleList');
-  const pages=()=>[...pagesHost.querySelectorAll('.project-page')];
-  const defaultState=()=>({order:pages().map(p=>p.dataset.id),hidden:pages().filter(p=>!defaultVisibleIds.includes(p.dataset.id)).map(p=>p.dataset.id)});
-  const read=()=>{try{return {...defaultState(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return defaultState()}};
-  let state=read(),dragged=null;
+  const sets=()=>[...pagesHost.querySelectorAll('.project-set')];
+  const defaultState=()=>({order:sets().map(p=>p.dataset.id),hidden:sets().filter(p=>!defaultVisibleIds.includes(p.dataset.id)).map(p=>p.dataset.id)});
+  const read=()=>{try{return {...defaultState(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return defaultState()}};let state=read(),dragged=null;
   function persist(){localStorage.setItem(KEY,JSON.stringify(state));}
-  function applyOrder(){const map=new Map(pages().map(p=>[p.dataset.id,p]));for(const id of state.order||[]){const p=map.get(id);if(p){pagesHost.appendChild(p);map.delete(id)}}for(const p of map.values())pagesHost.appendChild(p);state.order=pages().map(p=>p.dataset.id);}
+  function applyOrder(){const map=new Map(sets().map(p=>[p.dataset.id,p]));for(const id of state.order||[]){const p=map.get(id);if(p){pagesHost.appendChild(p);map.delete(id)}}for(const p of map.values())pagesHost.appendChild(p);state.order=sets().map(p=>p.dataset.id);}
   function addGroup(title){const el=document.createElement('div');el.className='group-label';el.textContent=title;toggleList.appendChild(el);}
-  function renderTimeline(visiblePages){
-    indexList.innerHTML='';
-    if(!visiblePages.length){const empty=document.createElement('div');empty.className='timeline-empty';empty.textContent='SELECT AT LEAST ONE PROJECT';indexList.appendChild(empty);return;}
-    const parsedYears=visiblePages.map(p=>Number.parseInt(p.dataset.year||'',10)).filter(Number.isFinite);
-    const fallbackYear=new Date().getFullYear();
-    const minYear=parsedYears.length?Math.min(...parsedYears):fallbackYear;
-    const maxYear=parsedYears.length?Math.max(...parsedYears):fallbackYear;
-    const sameYear=minYear===maxYear;
-    const xForYear=year=>sameYear?50:7+((year-minYear)/(maxYear-minYear))*86;
-    const axis=document.createElement('div');axis.className='year-index-axis';indexList.appendChild(axis);
-    for(let year=minYear;year<=maxYear;year++){
-      const x=xForYear(year),guide=document.createElement('div'),label=document.createElement('div');
-      guide.className='year-guide';guide.style.left=`${x}%`;
-      label.className='year-label';label.style.left=`${x}%`;label.innerHTML=`${year}<small>${year===maxYear?'NOW':'YEAR'}</small>`;
-      indexList.appendChild(guide);indexList.appendChild(label);
-    }
-    const grouped=new Map();
-    visiblePages.forEach(p=>{const y=Number.parseInt(p.dataset.year||'',10);const key=Number.isFinite(y)?y:fallbackYear;if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push(p);});
-    let pageNo=3;
-    const topSlots=[7,34,18,49,27,57,12,42,23,53];
-    [...grouped.entries()].sort((a,b)=>a[0]-b[0]).forEach(([year,group])=>{
-      group.forEach((p,slot)=>{
-        const entry=document.createElement('a'),kind=p.dataset.collectionKind||p.dataset.kind||'project';
-        entry.className=`timeline-entry is-${kind}`;entry.href='#'+p.id;
-        let x=xForYear(year);
-        if(sameYear&&group.length>1)x=12+(slot*(76/Math.max(1,group.length-1)));
-        else if(group.length>1){const spread=Math.min(7,12/group.length);x+=(slot-(group.length-1)/2)*spread;}
-        const top=topSlots[slot%topSlots.length];
-        entry.style.left=`${Math.max(5,Math.min(95,x))}%`;entry.style.top=`${top}%`;
-        const type=p.dataset.type||kind;
-        entry.innerHTML=`<span class="timeline-meta"><span class="timeline-number">${String(pageNo).padStart(2,'0')}</span><span class="timeline-kind">${kind}</span><span>${year}</span></span><strong class="timeline-title">${p.dataset.title}</strong><span class="timeline-type">${type}</span><span class="timeline-stem"></span>`;
-        indexList.appendChild(entry);
-        requestAnimationFrame(()=>{const axisY=axis.offsetTop,entryBottom=entry.offsetTop+entry.offsetHeight,stem=entry.querySelector('.timeline-stem');if(stem)stem.style.height=`${Math.max(8,axisY-entryBottom)}px`;});
-        pageNo++;
-      });
-    });
-    const legend=document.createElement('div');legend.className='timeline-legend';legend.innerHTML='<span class="legend-project">project</span><span class="legend-exhibition">exhibition</span><span class="legend-work">work</span>';indexList.appendChild(legend);
-  }
-  function render(){
-    applyOrder();
-    const hidden=new Set(state.hidden||[]);
-    pages().forEach(p=>p.classList.toggle('is-hidden',hidden.has(p.dataset.id)));
-    toggleList.innerHTML='';
-    let n=3;
-    const visiblePages=pages().filter(p=>!hidden.has(p.dataset.id));
-    visiblePages.forEach(p=>{p.querySelector('.page-no').textContent=String(n++).padStart(2,'0');});
-    renderTimeline(visiblePages);
-    ['project','work'].forEach(kind=>{const group=pages().filter(p=>p.dataset.kind===kind);if(!group.length)return;addGroup(kind==='project'?'PROJECTS / EXHIBITIONS':'WORKS / COMMERCIAL ADD-ONS');group.forEach(p=>{const visible=!hidden.has(p.dataset.id),label=document.createElement('label');label.className='toggle-row';label.innerHTML=`<input type="checkbox" ${visible?'checked':''}><span>${p.dataset.title}<br><small>${p.dataset.year||''} · ${p.dataset.type||''}</small></span>`;label.querySelector('input').onchange=e=>{const set=new Set(state.hidden||[]);e.target.checked?set.delete(p.dataset.id):set.add(p.dataset.id);state.hidden=[...set];persist();render();};toggleList.appendChild(label);});});
-  }
-  document.getElementById('editBtn').onclick=()=>{body.classList.toggle('editing');const on=body.classList.contains('editing');pages().forEach(p=>p.draggable=on);document.getElementById('editBtn').textContent=on?'DONE ORDER':'EDIT ORDER';};
-  document.getElementById('selectBtn').onclick=()=>panel.classList.toggle('open');
-  document.getElementById('resetBtn').onclick=()=>{localStorage.removeItem(KEY);state=defaultState();render();};
-  document.getElementById('printBtn').onclick=()=>window.print();
-  pagesHost.addEventListener('dragstart',e=>{const p=e.target.closest('.project-page');if(!p||!body.classList.contains('editing'))return;dragged=p;p.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
-  pagesHost.addEventListener('dragend',()=>{pages().forEach(p=>p.classList.remove('dragging','drop-before'));dragged=null;state.order=pages().map(p=>p.dataset.id);persist();render();});
-  pagesHost.addEventListener('dragover',e=>{if(!dragged)return;e.preventDefault();const target=e.target.closest('.project-page');if(!target||target===dragged)return;pages().forEach(p=>p.classList.remove('drop-before'));target.classList.add('drop-before');const rect=target.getBoundingClientRect();if(e.clientY<rect.top+rect.height/2)pagesHost.insertBefore(dragged,target);else pagesHost.insertBefore(dragged,target.nextSibling);});
-  window.addEventListener('resize',()=>renderTimeline(pages().filter(p=>!new Set(state.hidden||[]).has(p.dataset.id))));
-  render();
+  function renderTimeline(visible){indexList.innerHTML='';if(!visible.length){indexList.innerHTML='<div class="timeline-empty">SELECT AT LEAST ONE PROJECT</div>';return;}const ys=visible.map(p=>parseInt(p.dataset.year||'',10)).filter(Number.isFinite),fallback=new Date().getFullYear(),min=ys.length?Math.min(...ys):fallback,max=ys.length?Math.max(...ys):fallback,same=min===max,xFor=y=>same?50:7+((y-min)/(max-min))*86;const axis=document.createElement('div');axis.className='year-index-axis';indexList.appendChild(axis);for(let y=min;y<=max;y++){const x=xFor(y),g=document.createElement('div'),l=document.createElement('div');g.className='year-guide';g.style.left=`${x}%`;l.className='year-label';l.style.left=`${x}%`;l.innerHTML=`${y}<small>${y===max?'NOW':'YEAR'}</small>`;indexList.append(g,l);}const grouped=new Map();visible.forEach(p=>{const y=parseInt(p.dataset.year||'',10),k=Number.isFinite(y)?y:fallback;if(!grouped.has(k))grouped.set(k,[]);grouped.get(k).push(p)});let pageNo=3;const slots=[7,34,18,49,27,57,12,42];[...grouped.entries()].sort((a,b)=>a[0]-b[0]).forEach(([y,group])=>group.forEach((p,slot)=>{const a=document.createElement('a'),kind=p.dataset.collectionKind||p.dataset.kind||'project';a.className=`timeline-entry is-${kind}`;a.href='#'+p.querySelector('.project-overview').id;let x=xFor(y);if(same&&group.length>1)x=12+(slot*(76/Math.max(1,group.length-1)));else if(group.length>1)x+=(slot-(group.length-1)/2)*Math.min(7,12/group.length);a.style.left=`${Math.max(5,Math.min(95,x))}%`;a.style.top=`${slots[slot%slots.length]}%`;a.innerHTML=`<span class="timeline-meta"><span class="timeline-number">${String(pageNo).padStart(2,'0')}–${String(pageNo+1).padStart(2,'0')}</span><span class="timeline-kind">${kind}</span><span>${y}</span></span><strong class="timeline-title">${p.dataset.title}</strong><span class="timeline-type">${p.dataset.type||kind}</span><span class="timeline-stem"></span>`;indexList.appendChild(a);requestAnimationFrame(()=>{const stem=a.querySelector('.timeline-stem');if(stem)stem.style.height=`${Math.max(8,axis.offsetTop-(a.offsetTop+a.offsetHeight))}px`;});pageNo+=2;}));const legend=document.createElement('div');legend.className='timeline-legend';legend.innerHTML='<span class="legend-project">project</span><span class="legend-exhibition">exhibition</span><span class="legend-work">work</span>';indexList.appendChild(legend);}
+  function render(){applyOrder();const hidden=new Set(state.hidden||[]);sets().forEach(p=>p.classList.toggle('is-hidden',hidden.has(p.dataset.id)));toggleList.innerHTML='';let n=3;const visible=sets().filter(p=>!hidden.has(p.dataset.id));visible.forEach(p=>{p.querySelectorAll('.overview-no').forEach(el=>el.textContent=String(n).padStart(2,'0'));p.querySelectorAll('.visual-no').forEach(el=>el.textContent=String(n+1).padStart(2,'0'));n+=2;});renderTimeline(visible);['project','work'].forEach(kind=>{const group=sets().filter(p=>p.dataset.kind===kind);if(!group.length)return;addGroup(kind==='project'?'PROJECTS / EXHIBITIONS':'WORKS / COMMERCIAL ADD-ONS');group.forEach(p=>{const visible=!hidden.has(p.dataset.id),label=document.createElement('label');label.className='toggle-row';label.innerHTML=`<input type="checkbox" ${visible?'checked':''}><span>${p.dataset.title}<br><small>${p.dataset.year||''} · ${p.dataset.type||''} · 2 pages</small></span>`;label.querySelector('input').onchange=e=>{const set=new Set(state.hidden||[]);e.target.checked?set.delete(p.dataset.id):set.add(p.dataset.id);state.hidden=[...set];persist();render();};toggleList.appendChild(label);});});}
+  document.getElementById('editBtn').onclick=()=>{body.classList.toggle('editing');const on=body.classList.contains('editing');sets().forEach(p=>p.draggable=on);document.getElementById('editBtn').textContent=on?'DONE ORDER':'EDIT ORDER';};document.getElementById('selectBtn').onclick=()=>panel.classList.toggle('open');document.getElementById('resetBtn').onclick=()=>{localStorage.removeItem(KEY);state=defaultState();render();};document.getElementById('printBtn').onclick=()=>window.print();
+  pagesHost.addEventListener('dragstart',e=>{const p=e.target.closest('.project-set');if(!p||!body.classList.contains('editing'))return;dragged=p;p.classList.add('dragging');e.dataTransfer.effectAllowed='move';});pagesHost.addEventListener('dragend',()=>{sets().forEach(p=>p.classList.remove('dragging','drop-before'));dragged=null;state.order=sets().map(p=>p.dataset.id);persist();render();});pagesHost.addEventListener('dragover',e=>{if(!dragged)return;e.preventDefault();const target=e.target.closest('.project-set');if(!target||target===dragged)return;sets().forEach(p=>p.classList.remove('drop-before'));target.classList.add('drop-before');const rect=target.getBoundingClientRect();if(e.clientY<rect.top+rect.height/2)pagesHost.insertBefore(dragged,target);else pagesHost.insertBefore(dragged,target.nextSibling);});window.addEventListener('resize',()=>renderTimeline(sets().filter(p=>!new Set(state.hidden||[]).has(p.dataset.id))));render();
 })();
 </script>
 </body>
