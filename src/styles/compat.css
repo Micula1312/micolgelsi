@@ -39,9 +39,11 @@ body[data-project-view="type"] .work-list.is-type-map .type-field::after {
   line-height:1.15;
   color:var(--muted);
   white-space:nowrap;
+  transform:none;
+  text-align:left;
 }
-body[data-project-view="type"] .work-list.is-type-map .type-field::before { content:'Artistic practice'; left:26%; transform:translateX(-50%); }
-body[data-project-view="type"] .work-list.is-type-map .type-field::after { content:'Web development'; right:13%; transform:translateX(50%); }
+body[data-project-view="type"] .work-list.is-type-map .type-field::before { content:'Artistic practice'; left:15%; }
+body[data-project-view="type"] .work-list.is-type-map .type-field::after { content:'Web development'; left:61%; right:auto; }
 body[data-project-view="type"] .work-list.is-type-map .type-anchor { display:none !important; }
 
 @media (max-width: 760px) {
@@ -136,7 +138,7 @@ body[data-project-view="type"] .work-list.is-type-map .type-anchor { display:non
     transform:none;
   }
   body[data-project-view="type"] .work-list.is-type-map .type-field::before { left:10px; }
-  body[data-project-view="type"] .work-list.is-type-map .type-field::after { right:10px; text-align:left; }
+  body[data-project-view="type"] .work-list.is-type-map .type-field::after { left:calc(50% + 6px); right:auto; }
   .work-list.is-type-map .work-row {
     position: relative !important;
     left: auto !important;
