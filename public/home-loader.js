@@ -24,10 +24,39 @@
   const frames=[`${base}/home-loader/01.webp`,`${base}/home-loader/02.webp`,`${base}/home-loader/03.webp`];
   const preload=src=>new Promise(resolve=>{const i=new Image();i.onload=()=>resolve(src);i.onerror=()=>resolve(null);i.src=src;});
   const nextFrame=()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+
+  const compactMobileYear=()=>{
+    const list=document.querySelector('#work-list');
+    if(!list||window.innerWidth>760||list.dataset.view!=='year')return;
+    const years=Math.max(1,list.querySelectorAll('.year-label').length);
+    const compactWidth=Math.max(
+      Math.ceil(list.clientWidth*1.35),
+      Math.min(820,years*260),
+      560
+    );
+    list.style.setProperty('--year-width',`${compactWidth}px`);
+    list.classList.toggle('is-scrollable-year',compactWidth>list.clientWidth+1);
+    requestAnimationFrame(()=>{
+      const max=Math.max(0,list.scrollWidth-list.clientWidth);
+      list.scrollLeft=max;
+    });
+  };
+
+  let stableWidth=window.innerWidth;
+  window.addEventListener('resize',()=>{
+    const changed=Math.abs(window.innerWidth-stableWidth)>2;
+    if(!changed)return;
+    stableWidth=window.innerWidth;
+    requestAnimationFrame(()=>requestAnimationFrame(compactMobileYear));
+  },{passive:true});
+  window.addEventListener('orientationchange',()=>setTimeout(compactMobileYear,180),{passive:true});
+
   const waitForLayout=async()=>{
     try{if(document.fonts?.ready)await document.fonts.ready;}catch{}
     await nextFrame();
     await new Promise(resolve=>setTimeout(resolve,80));
+    await nextFrame();
+    compactMobileYear();
     await nextFrame();
   };
   const leave=async()=>{
