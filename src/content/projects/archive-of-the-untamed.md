@@ -31,10 +31,12 @@ credits:
 photoCredits:
   []
 avatar: "/media/artistic/archive-of-the-untamed/avatar.gif"
-cover: "/media/artistic/archive-of-the-untamed/moments/pastificio/55111816315_0d54a85315_k.webp"
+cover: "/media/artistic/archive-of-the-untamed/moments/sottopontos/IMG_6630.webp"
 gallery:
   []
 videos:
+  []
+media:
   []
 criticalTexts:
   - label: "IMPURE — Giorgia Pinzauti"

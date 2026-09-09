@@ -114,6 +114,13 @@
     "cover": {
       "type": "string"
     },
+    "media": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "gallery": {
       "default": [],
       "type": "array",

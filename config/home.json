@@ -6,20 +6,23 @@
     "More-than-human relations, ecological systems and liminal territories recur as fields of investigation.",
     "She works with ASAP and BLIVET and is a member of Sound Studies Forum."
   ],
+  "bioIt": [],
   "loader": {
     "enabled": false,
-    "fixedText": "PER FARE QUESTO STUPIDO PORTFOLIO…",
-    "phrases": [
-      "Ho consumato tutti i crediti di ChatGPT Plus.",
-      "Mi sto asoltando : Investire Semplicemente S3: Ep #3 - \"La nascita di un imprenditore\", con Paolo Secondino",
-      "Ho attraversato svariate crisi identitarie.",
-      "Ho chiesto a una macchina di rendermi meno..."
-    ],
+    "fixedText": "WELCOME IN MY DIGITAL SPACE",
+    "fixedTextIt": "",
+    "phrases": [],
+    "phrasesIt": [],
     "instruction": "TOUCH THE SPINNING STAR",
+    "instructionIt": "",
     "againInstruction": "AGAIN",
+    "againInstructionIt": "",
     "enterInstruction": "TOUCH TO ENTER",
+    "enterInstructionIt": "",
     "radioLabel": "FUCK ALL — GO TO STIKY RADIO ↗",
+    "radioLabelIt": "",
     "radioUrl": "https://www.radioraheem.it/portaradio/portaradi0-w-sticky-verde/",
-    "skipLabel": "HO FRETTA — VAI AL PORTFOLIO ↘"
+    "skipLabel": "HO FRETTA — VAI AL PORTFOLIO ↘",
+    "skipLabelIt": ""
   }
 }

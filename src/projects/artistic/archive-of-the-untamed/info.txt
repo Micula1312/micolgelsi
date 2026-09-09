@@ -74,6 +74,6 @@ type: party
 location: Sottoponte delle Valli
 media: sottopontos
 AVATAR: avatar.gif
-COVER: moments/pastificio/55111816315_0d54a85315_k.webp
+COVER: moments/sottopontos/IMG_6630.webp
 COVER EMBED: 
 RELATED:

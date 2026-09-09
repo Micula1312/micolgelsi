@@ -113,6 +113,13 @@
     "avatar": {
       "type": "string"
     },
+    "media": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "moments": {
       "default": [],
       "type": "array",
