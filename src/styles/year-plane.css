@@ -45,6 +45,14 @@
 html[data-style="rgb"] .work-list.is-year-plane .timeline-mark{background:var(--fg)}html[data-style="rgb"] .work-list.is-year-plane .work-row.is-year-focus .timeline-mark{background:var(--signal)!important}html[data-style="rgb"] .work-list.is-year-plane .moment-dot{border-color:var(--signal)}
 html[data-style="native"] .year-axis,html[data-style="native"] .year-side-label{display:none!important}
 
-@media(max-width:760px){.work-list.is-year-plane .year-track{width:min(max(100%,var(--year-width,100%)),155vw)!important}.work-list.is-year-plane .year-axis{left:36px;right:26px;bottom:24px}.work-list.is-year-plane .work-title{font-size:12px}.work-list.is-year-plane .project-badges{display:none}.work-list.is-year-plane .year-axis .month-label{font-size:6px}.project-legend{font-size:7px}}
+@media(max-width:760px){
+  .work-list.is-year-plane .year-track{width:min(max(100%,var(--year-width,100%)),155vw)!important}
+  .work-list.is-year-plane .year-axis{left:36px;right:26px;bottom:24px}
+  .work-list.is-year-plane .work-title{font-size:12px}
+  .work-list.is-year-plane .project-badges{display:none}
+  .work-list.is-year-plane .year-axis .month-label{font-size:6px}
+  .work-list.is-year-plane .work-row::before{left:-6px;top:-18px;bottom:-18px;width:calc(100% + 12px)}
+  .project-legend{font-size:7px}
+}
 @media(prefers-reduced-motion:reduce){.work-list.is-year-plane .work-title{will-change:auto}.work-list.is-year-plane .work-row,.work-list.is-year-plane .timeline-mark{transition:none}}
 @media print{.year-axis,.year-side-label,.project-legend{display:none!important}}
