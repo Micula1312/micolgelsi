@@ -37,13 +37,9 @@
       }
     },
     "year": {
-      "anyOf": [
-        {
-          "type": "number"
-        },
-        {
-          "type": "string"
-        }
+      "type": [
+        "number",
+        "string"
       ]
     },
     "startDate": {

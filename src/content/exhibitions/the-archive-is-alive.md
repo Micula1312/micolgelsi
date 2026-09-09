@@ -26,7 +26,7 @@ credits:
   - "Foto di Sara Scognamillo"
 photoCredits:
   []
-avatar: "/media/artistic/the-archive-is-alive/avatar.mp4"
+avatar: "/media/artistic/the-archive-is-alive/videos/1.mp4"
 cover: "/media/artistic/the-archive-is-alive/images/119.webp"
 gallery:
   - "/media/artistic/the-archive-is-alive/images/1.webp"

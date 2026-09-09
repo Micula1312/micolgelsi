@@ -1,6 +1,6 @@
 TITLE: The Archive Is Alive!
 AUTHOR: 
-AVATAR: avatar.mp4
+AVATAR: videos/1.mp4
 FEATURED: true
 START: 2026-04
 END: 2026-06
