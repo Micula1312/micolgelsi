@@ -50,7 +50,7 @@ html[data-style="native"] .year-axis,html[data-style="native"] .year-side-label{
   .work-list.is-year-plane .year-axis{left:36px;right:26px;bottom:24px}
   .work-list.is-year-plane .work-title{font-size:12px}
   .work-list.is-year-plane .project-badges{display:none}
-  .work-list.is-year-plane .year-axis .month-label{font-size:6px}
+  .work-list.is-year-plane .year-axis .month-label{display:none!important}
   .work-list.is-year-plane .work-row::before{left:-6px;top:-18px;bottom:-18px;width:calc(100% + 12px)}
   .project-legend{font-size:7px}
 }
