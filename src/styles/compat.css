@@ -105,12 +105,28 @@ button, input, textarea, select { font: inherit; }
     padding: 44px 10px 18px;
     overflow: hidden !important;
   }
-  .work-list.is-type-map .type-field { display: block !important; }
-  .work-list.is-type-map .type-anchor {
-    top: 10px !important;
-    font-size: 9px !important;
-    max-width: 44%;
+  body[data-project-view="type"] .work-list.is-type-map .year-lanes { display:none !important; }
+  body[data-project-view="type"] .work-list.is-type-map .type-field {
+    display:block !important;
+    position:absolute !important;
+    inset:0 !important;
+    pointer-events:none;
+    z-index:5;
   }
+  body[data-project-view="type"] .work-list.is-type-map .type-field::before,
+  body[data-project-view="type"] .work-list.is-type-map .type-field::after {
+    position:absolute;
+    top:10px;
+    width:calc(50% - 16px);
+    font-family:var(--mono);
+    font-size:9px;
+    line-height:1.15;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  body[data-project-view="type"] .work-list.is-type-map .type-field::before { content:'Artistic practice'; left:10px; }
+  body[data-project-view="type"] .work-list.is-type-map .type-field::after { content:'Web development'; right:10px; text-align:left; }
+  .work-list.is-type-map .type-anchor { display:none !important; }
   .work-list.is-type-map .work-row {
     position: relative !important;
     left: auto !important;
