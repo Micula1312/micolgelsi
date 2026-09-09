@@ -45,6 +45,7 @@ body[data-fixed-shell="true"] .page {flex:1 1 auto;min-height:0;overflow:hidden;
 body[data-fixed-shell="true"] .system-controls {bottom:12px}
 
 body[data-project-view] .work-index {position:relative;height:100%;min-height:0;border:1px solid var(--line);overflow:hidden;padding:12px}
+html[data-style="rgb"] body[data-project-view] .work-index{box-shadow:inset 0 0 18px color-mix(in srgb,var(--signal) 8%,transparent),inset 0 0 46px color-mix(in srgb,var(--signal) 3%,transparent)}
 body[data-project-view] .index-toolbar {position:relative;z-index:20;margin:0;min-height:28px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:14px}
 body[data-project-view] .view-switch{justify-self:end;display:flex;gap:18px;white-space:nowrap}
 body[data-project-view] .work-list,
