@@ -57,6 +57,9 @@ html[data-style="rgb"] body[data-project-view] .work-list::before,
 html[data-style="rgb"] body[data-project-view] .work-list::after,
 html[data-style="rgb"] body[data-project-view] .year-track{box-shadow:none!important;filter:none!important}
 
+/* Context reuses the same lane labels as Year; hide the generated duplicate anchors. */
+body[data-project-view="type"] .type-anchor{display:none!important}
+
 /* Smaller project names across all three visualizations. */
 body[data-project-view] .work-list .work-title {font-size:10px;letter-spacing:.015em;line-height:1.08}
 
