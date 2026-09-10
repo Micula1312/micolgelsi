@@ -1,0 +1,323 @@
+<!DOCTYPE html><html lang="en" data-style="rgb" data-theme="dark" data-copy-style="pink" data-language="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="Micol Gelsi — artist and researcher"><meta name="theme-color" content="#080808"><title>Play With Me — Micol Gelsi</title><link rel="stylesheet" href="/portfolio/_astro/BaseLayout.K1Quosif.css"><link rel="stylesheet" href="/portfolio/_astro/play-with-me.GJxl6v7o.css"></head><body data-fixed-shell="true"><div class="shell"><header class="site-header"><div class="identity"><a class="site-name" href="/portfolio/" aria-label="Micol Gelsi — home">MICOL GELSI</a></div><nav class="site-nav" aria-label="Main navigation"><a href="/portfolio/#projects" data-en="PROJECTS" data-it="PROGETTI">PROJECTS</a><a href="/portfolio/cv/micol-gelsi-CV.pdf" target="_blank" rel="noopener">CV</a><a href="/portfolio/play-with-me/" aria-current="page" data-en="PLAY WITH ME" data-it="GIOCA CON ME">PLAY WITH ME</a><button class="bio-trigger" type="button" data-bio-trigger aria-expanded="false" aria-controls="bio-popup" data-en="BLABLABIO +" data-it="BLABLABIO +">BLABLABIO +</button></nav><aside class="bio-popup" id="bio-popup" data-bio-popup aria-hidden="true"><div class="bio-popup-copy" aria-live="polite"><p class="site-bio bio-popup-line" data-bio-line="0" data-en="Multimedia artist and researcher working across public and digital spaces." data-it="Multimedia artist and researcher working across public and digital spaces.">Multimedia artist and researcher working across public and digital spaces.</p><p class="site-bio bio-popup-line" data-bio-line="1" data-en="Her practice brings found and reclaimed materials into dialogue with low-tech tools and digital technologies." data-it="Her practice brings found and reclaimed materials into dialogue with low-tech tools and digital technologies." hidden>Her practice brings found and reclaimed materials into dialogue with low-tech tools and digital technologies.</p><p class="site-bio bio-popup-line" data-bio-line="2" data-en="Through living archives, site-specific interventions and participatory methodologies, she explores collective memory, inclusion and access to digital culture." data-it="Through living archives, site-specific interventions and participatory methodologies, she explores collective memory, inclusion and access to digital culture." hidden>Through living archives, site-specific interventions and participatory methodologies, she explores collective memory, inclusion and access to digital culture.</p><p class="site-bio bio-popup-line" data-bio-line="3" data-en="More-than-human relations, ecological systems and liminal territories recur as fields of investigation." data-it="More-than-human relations, ecological systems and liminal territories recur as fields of investigation." hidden>More-than-human relations, ecological systems and liminal territories recur as fields of investigation.</p><p class="site-bio bio-popup-line" data-bio-line="4" data-en="She works with ASAP and BLIVET and is a member of Sound Studies Forum." data-it="She works with ASAP and BLIVET and is a member of Sound Studies Forum." hidden>She works with ASAP and BLIVET and is a member of Sound Studies Forum.</p></div><div class="bio-popup-footer"><button class="bio-more" type="button" data-bio-more>BLA +</button><span class="bio-xoxox" data-bio-xoxox hidden>XOXOX</span><a class="bio-contact" data-bio-contact href="/portfolio/play-with-me/" hidden>KEEP IN TOUCH ↗</a><button class="bio-close" type="button" data-bio-close aria-label="Close biography">ENOUGH FOR NOW ×</button></div></aside></header><main class="page"><section class="board" aria-labelledby="play-title" data-astro-cid-cipss6jt><div class="board-toolbar" data-astro-cid-cipss6jt><div class="title-group" data-astro-cid-cipss6jt><span data-astro-cid-cipss6jt>PLAY WITH ME / 001</span><h1 id="play-title" data-astro-cid-cipss6jt>DRAW ON YOURSELF</h1></div><p data-astro-cid-cipss6jt>camera → draw → write → send</p></div><div class="play-panel" data-astro-cid-cipss6jt><div class="text-row" data-astro-cid-cipss6jt><label for="postcard-copy" data-astro-cid-cipss6jt>MESSAGE</label><textarea id="postcard-copy" maxlength="600" autocomplete="off" placeholder="TYPE SOMETHING FOR THE POSTCARD… OR WRITE TO ME." data-text data-astro-cid-cipss6jt></textarea></div><div class="stage" data-stage data-astro-cid-cipss6jt><video autoplay muted playsinline data-video data-astro-cid-cipss6jt></video><div class="camera-fx" aria-hidden="true" data-astro-cid-cipss6jt></div><canvas data-canvas data-astro-cid-cipss6jt></canvas><div class="postcard-text" data-postcard aria-hidden="true" data-astro-cid-cipss6jt></div><div class="placeholder" data-placeholder data-astro-cid-cipss6jt><span class="camera-mark" data-astro-cid-cipss6jt>★</span><button type="button" data-camera data-astro-cid-cipss6jt>ALLOW CAMERA</button><button type="button" data-text-mode data-astro-cid-cipss6jt>CONTINUE WITHOUT CAMERA →</button></div></div><div class="contact-row" data-contact-row data-astro-cid-cipss6jt><label data-astro-cid-cipss6jt>FROM <input type="text" autocomplete="name" placeholder="YOUR NAME" data-contact-name data-astro-cid-cipss6jt></label><label data-astro-cid-cipss6jt>REPLY TO <input type="email" autocomplete="email" placeholder="YOUR EMAIL" data-contact-email data-astro-cid-cipss6jt></label></div><div class="tool-row" data-astro-cid-cipss6jt><div class="tool-group" data-astro-cid-cipss6jt><button type="button" data-clear data-astro-cid-cipss6jt>CLEAR</button><button type="button" data-undo data-astro-cid-cipss6jt>UNDO</button><label data-astro-cid-cipss6jt>BRUSH <input type="range" min="1" max="40" value="7" data-brush data-astro-cid-cipss6jt></label></div><button class="send" type="button" data-send data-astro-cid-cipss6jt>★ SEND ME</button></div><p class="note" data-note data-astro-cid-cipss6jt></p></div></section><script>
+    (() => {
+      const stage = document.querySelector('[data-stage]');
+      const video = document.querySelector('[data-video]');
+      const canvas = document.querySelector('[data-canvas]');
+      const placeholder = document.querySelector('[data-placeholder]');
+      const brush = document.querySelector('[data-brush]');
+      const note = document.querySelector('[data-note]');
+      const textInput = document.querySelector('[data-text]');
+      const postcard = document.querySelector('[data-postcard]');
+      const contactName = document.querySelector('[data-contact-name]');
+      const contactEmail = document.querySelector('[data-contact-email]');
+      const ctx = canvas?.getContext('2d');
+      if (!stage || !video || !canvas || !ctx) return;
+      let drawing = false, last = null, history = [], cameraActive = false;
+      const activateTextMode = (message='text mode active — write, draw or send me a message ★') => {
+        cameraActive=false;
+        video.srcObject?.getTracks?.().forEach(track=>track.stop());
+        video.srcObject=null;
+        placeholder.hidden=true;
+        stage.classList.add('is-text-mode');
+        note.textContent=message;
+        textInput?.focus();
+      };
+      document.querySelector('[data-text-mode]')?.addEventListener('click',()=>activateTextMode());
+
+      const signal = () => getComputedStyle(document.documentElement).getPropertyValue('--signal').trim() || '#39ff14';
+      const resize = () => {
+        const r = stage.getBoundingClientRect(), dpr = devicePixelRatio || 1;
+        const snapshot = canvas.width && canvas.height ? canvas.toDataURL() : null;
+        canvas.width = Math.max(1, r.width * dpr);
+        canvas.height = Math.max(1, r.height * dpr);
+        canvas.style.width = `${r.width}px`;
+        canvas.style.height = `${r.height}px`;
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        if (snapshot) { const img = new Image(); img.onload = () => ctx.drawImage(img,0,0,r.width,r.height); img.src = snapshot; }
+      };
+      resize(); window.addEventListener('resize', resize);
+      const point = e => { const r=canvas.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top}; };
+      canvas.addEventListener('pointerdown', e=>{ history.push(canvas.toDataURL()); drawing=true; last=point(e); canvas.setPointerCapture(e.pointerId); });
+      canvas.addEventListener('pointermove', e=>{ if(!drawing)return; const n=point(e); ctx.strokeStyle=signal(); ctx.lineWidth=Number(brush?.value||7); ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(n.x,n.y); ctx.stroke(); last=n; });
+      canvas.addEventListener('pointerup', ()=>{ drawing=false; last=null; });
+      canvas.addEventListener('pointercancel', ()=>{ drawing=false; last=null; });
+
+      // Wingdings is not installed on iOS. Convert letters to stable Unicode
+      // dingbats so the postcard keeps its symbolic look on every device.
+      const dingbats = ['✣','✤','✥','✦','✧','★','☆','●','○','◆','◇','■','□','▲','△','▼','▽','♠','♣','♥','♦','✓','✕','➜'];
+      const asWingdings = value => [...value].map(char => {
+        if (/\s/.test(char)) return char;
+        const code = char.toLowerCase().codePointAt(0) || 0;
+        return dingbats[code % dingbats.length] + '\uFE0E';
+      }).join('');
+
+      const wrapCanvasText = (context, value, maxWidth) => {
+        const lines = [];
+        const segmenter = typeof Intl?.Segmenter === 'function'
+          ? new Intl.Segmenter(undefined, { granularity: 'grapheme' })
+          : null;
+        value.split('\n').forEach(paragraph => {
+          const glyphs = segmenter
+            ? [...segmenter.segment(paragraph)].map(part => part.segment)
+            : [...paragraph];
+          let line = '';
+          glyphs.forEach(glyph => {
+            const test = line + glyph;
+            if (line && context.measureText(test).width > maxWidth) {
+              lines.push(line.trimEnd());
+              line = glyph.trimStart();
+            } else {
+              line = test;
+            }
+          });
+          lines.push(line);
+        });
+        return lines;
+      };
+
+      textInput?.addEventListener('focus', () => {
+        if (!cameraActive && !stage.classList.contains('is-text-mode')) activateTextMode();
+      });
+      textInput?.addEventListener('input', () => {
+        if (!cameraActive && !stage.classList.contains('is-text-mode')) activateTextMode();
+        if (postcard) postcard.textContent = asWingdings(textInput.value);
+      });
+
+      document.querySelector('[data-camera]')?.addEventListener('click', async()=>{
+        const cameraButton = document.querySelector('[data-camera]');
+        if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
+          activateTextMode('camera unavailable — text/contact mode active ★');
+          return;
+        }
+
+        cameraButton?.setAttribute('disabled', '');
+        if (cameraButton) cameraButton.textContent='OPENING CAMERA…';
+        note.textContent='';
+
+        try {
+          video.srcObject?.getTracks?.().forEach(track => track.stop());
+          let stream;
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({
+              video: { facingMode: { ideal: 'user' } },
+              audio: false
+            });
+          } catch (error) {
+            if (error?.name === 'OverconstrainedError' || error?.name === 'NotFoundError') {
+              stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            } else {
+              throw error;
+            }
+          }
+          video.srcObject = stream;
+          await video.play();
+          cameraActive = true;
+          stage.classList.remove('is-text-mode');
+          placeholder.hidden = true;
+          note.textContent='camera active ★';
+        } catch (error) {
+          const permissionBlocked = error?.name === 'NotAllowedError' || error?.name === 'SecurityError';
+          note.textContent = permissionBlocked
+            ? 'camera blocked — continuing in text/contact mode ★'
+            : `camera unavailable${error?.name ? ` (${error.name})` : ''} — continuing in text/contact mode ★`;
+          cameraButton?.removeAttribute('disabled');
+          if (cameraButton) cameraButton.textContent='TRY CAMERA AGAIN';
+          window.setTimeout(()=>activateTextMode(note.textContent),350);
+        }
+      });
+      document.querySelector('[data-clear]')?.addEventListener('click', ()=>{ history.push(canvas.toDataURL()); const r=canvas.getBoundingClientRect(); ctx.clearRect(0,0,r.width,r.height); });
+      document.querySelector('[data-undo]')?.addEventListener('click', ()=>{ const s=history.pop(); if(!s)return; const img=new Image(); img.onload=()=>{const r=canvas.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);ctx.drawImage(img,0,0,r.width,r.height)}; img.src=s; });
+      document.querySelector('[data-send]')?.addEventListener('click', async()=>{
+        const message=(textInput?.value||'').trim();
+        if(!message){note.textContent='write me something first ★';textInput?.focus();return;}
+        const name=(contactName?.value||'').trim(),email=(contactEmail?.value||'').trim();
+        const r=stage.getBoundingClientRect(), scale=2, out=document.createElement('canvas'); out.width=Math.round(r.width*scale); out.height=Math.round(r.height*scale); const o=out.getContext('2d');
+        o.save(); o.translate(out.width,0); o.scale(-1,1); o.filter='grayscale(1) contrast(1.45) brightness(.82)'; if(video.videoWidth)o.drawImage(video,0,0,out.width,out.height); else {o.fillStyle='#050505';o.fillRect(0,0,out.width,out.height);} o.restore(); o.filter='none';
+        o.save(); o.globalAlpha=.12; o.fillStyle=signal(); o.fillRect(0,0,out.width,out.height); o.restore();
+        o.drawImage(canvas,0,0,out.width,out.height);
+        if(message){
+          const panelW=out.width*.36, margin=24*scale, x=out.width-panelW-margin, y=margin, h=out.height-margin*2;
+          o.save();
+          o.fillStyle='rgba(5,5,5,.72)';
+          o.fillRect(x,y,panelW,h);
+          o.strokeStyle='rgba(255,255,255,.34)';
+          o.lineWidth=1*scale;
+          o.strokeRect(x,y,panelW,h);
+          const pad=12*scale, size=Math.max(15,Math.min(30,r.width*.026))*scale;
+          const metaSize=Math.max(8,Math.min(12,r.width*.011))*scale;
+          const metaLine=metaSize*1.35;
+          const metaRows=5;
+          const metaHeight=metaLine*metaRows+pad;
+          o.fillStyle=signal();
+          o.font=`700 ${size}px "Apple Symbols", "Segoe UI Symbol", sans-serif`;
+          o.textBaseline='top';
+          const maxWidth=panelW-pad*2;
+          const lines=wrapCanvasText(o,asWingdings(message),maxWidth);
+          const lineHeight=size*1.08;
+          const maxLines=Math.max(1,Math.floor((h-pad*2-metaHeight)/lineHeight));
+          lines.slice(0,maxLines).forEach((txt,i)=>o.fillText(txt,x+pad,y+pad+i*lineHeight));
+
+          const metaY=y+h-pad-metaHeight+metaLine;
+          o.strokeStyle='rgba(255,255,255,.34)';
+          o.beginPath();
+          o.moveTo(x+pad,metaY-metaLine*.65);
+          o.lineTo(x+panelW-pad,metaY-metaLine*.65);
+          o.stroke();
+          o.fillStyle='rgba(255,255,255,.82)';
+          o.font=`700 ${metaSize}px ui-monospace, Menlo, Monaco, monospace`;
+          o.fillText('FROM',x+pad,metaY);
+          o.font=`400 ${metaSize}px ui-monospace, Menlo, Monaco, monospace`;
+          o.fillText(name || 'ANONYMOUS',x+pad,metaY+metaLine);
+          o.fillText(email || 'NO REPLY ADDRESS',x+pad,metaY+metaLine*2);
+          o.font=`700 ${metaSize}px ui-monospace, Menlo, Monaco, monospace`;
+          o.fillText('TO',x+pad,metaY+metaLine*3);
+          o.font=`400 ${metaSize}px ui-monospace, Menlo, Monaco, monospace`;
+          o.fillText('MICOL GELSI · micolg@gmail.com',x+pad,metaY+metaLine*4,maxWidth);
+          o.restore();
+        }
+        const blob=await new Promise(res=>out.toBlob(res,'image/png')); if(!blob)return; const file=new File([blob],`play-with-me-${Date.now()}.png`,{type:'image/png'});
+        if(navigator.canShare?.({files:[file]})){ try{
+          const shareText=[message,name?`From: ${name}`:'',email?`Reply to: ${email}`:'','Send to: micolg@gmail.com'].filter(Boolean).join('\n');
+          await navigator.share({files:[file],title:'★ PLAY WITH ME / postcard',text:shareText});
+          note.textContent='postcard shared ★'; return;
+        }catch(e){if(e.name==='AbortError')return;} }
+        const url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url; a.download=file.name; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); location.href='mailto:micolg@gmail.com?subject=%E2%98%85%20DRAW%20ON%20YOURSELF&body=Attach%20the%20PNG%20that%20was%20just%20downloaded.'; note.textContent='PNG saved — attach it to the email that opened ★';
+      });
+    })();
+  </script></main></div><div class="system-controls" aria-label="Display settings"><div class="system-control"><span data-en="Mode" data-it="Modo">Mode</span><button type="button" data-theme-toggle aria-label="Switch light or dark mode">Dark</button></div><div class="system-control"><span data-en="Text" data-it="Testo">Text</span><button type="button" data-copy-toggle aria-label="Switch discursive text style">Pink</button></div><div class="system-control"><span>Lang</span><button type="button" data-language-toggle aria-label="Switch Italian or English">EN</button></div></div><script>
+      (() => {
+        const root = document.documentElement;
+        root.dataset.style = 'rgb';
+
+        const themeButton = document.querySelector('[data-theme-toggle]');
+        if (themeButton) {
+          const updateThemeLabel = () => {
+            const italian = root.dataset.language === 'it';
+            themeButton.textContent = root.dataset.theme === 'dark' ? (italian ? 'Scuro' : 'Dark') : (italian ? 'Chiaro' : 'Light');
+            themeButton.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
+          };
+          themeButton.addEventListener('click', () => {
+            root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+            updateThemeLabel();
+          });
+          updateThemeLabel();
+        }
+
+        const copyButton = document.querySelector('[data-copy-toggle]');
+        if (copyButton) {
+          const savedCopyStyle = localStorage.getItem('portfolio-copy-style');
+          if (savedCopyStyle === 'pink' || savedCopyStyle === 'plain') root.dataset.copyStyle = savedCopyStyle;
+          const updateCopyLabel = () => {
+            const pink = root.dataset.copyStyle !== 'plain';
+            const italian = root.dataset.language === 'it';
+            copyButton.textContent = pink ? (italian ? 'Rosa' : 'Pink') : (italian ? 'Normale' : 'Plain');
+            copyButton.setAttribute('aria-pressed', String(pink));
+          };
+          copyButton.addEventListener('click', () => {
+            root.dataset.copyStyle = root.dataset.copyStyle === 'plain' ? 'pink' : 'plain';
+            localStorage.setItem('portfolio-copy-style', root.dataset.copyStyle);
+            updateCopyLabel();
+          });
+          updateCopyLabel();
+        }
+
+        const languageButton = document.querySelector('[data-language-toggle]');
+        const uiTranslations = {
+          'Projects':'Progetti','Year':'Anno','Context':'Contesto','Research':'Ricerca',
+          'Artistic':'Artistico','Artistic practice':'Pratica artistica','Web development':'Sviluppo web',
+          'Author':'Autrice','Type':'Tipologia','Start':'Inizio','End':'Fine','Status':'Stato',
+          'Medium':'Medium','Collaborators':'Collaborazioni','Link':'Link','visit ↗':'visita ↗',
+          'Artists involved':'Artisti coinvolti','Curated by':'A cura di','Credits':'Crediti',
+          'Photo credits':'Crediti fotografici','Outputs':'Output','Critical texts':'Testi critici',
+          'Publications':'Pubblicazioni','Communication':'Comunicazione','Links':'Link',
+          'loading / enter':'caricamento / entra','Dark':'Scuro','Light':'Chiaro','Pink':'Rosa','Plain':'Normale'
+        };
+        const translateTextNodes = language => {
+          const reverse = Object.fromEntries(Object.entries(uiTranslations).map(([en,it]) => [it,en]));
+          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+          let node;
+          while ((node = walker.nextNode())) {
+            if (node.parentElement?.closest('script,style,textarea,input,[data-en][data-it]')) continue;
+            const raw=node.nodeValue,trimmed=raw.trim();
+            if (!trimmed) continue;
+            const translated=language==='it'?uiTranslations[trimmed]:reverse[trimmed];
+            if (translated) node.nodeValue=raw.replace(trimmed,translated);
+          }
+        };
+        const translateInterface = () => {
+          const language = root.dataset.language === 'it' ? 'it' : 'en';
+          document.documentElement.lang = language;
+          document.querySelectorAll('[data-en][data-it]').forEach(element => {
+            element.textContent = element.dataset[language] || element.dataset.en || '';
+          });
+          translateTextNodes(language);
+          if (themeButton) {
+            const italian = language === 'it';
+            themeButton.textContent = root.dataset.theme === 'dark' ? (italian ? 'Scuro' : 'Dark') : (italian ? 'Chiaro' : 'Light');
+          }
+          if (copyButton) {
+            const italian = language === 'it';
+            copyButton.textContent = root.dataset.copyStyle !== 'plain' ? (italian ? 'Rosa' : 'Pink') : (italian ? 'Normale' : 'Plain');
+          }
+          if (languageButton) {
+            languageButton.textContent = language.toUpperCase();
+            languageButton.setAttribute('aria-pressed', String(language === 'it'));
+          }
+        };
+        const savedLanguage = localStorage.getItem('portfolio-language');
+        if (savedLanguage === 'it' || savedLanguage === 'en') root.dataset.language = savedLanguage;
+        languageButton?.addEventListener('click', () => {
+          root.dataset.language = root.dataset.language === 'it' ? 'en' : 'it';
+          localStorage.setItem('portfolio-language', root.dataset.language);
+          translateInterface();
+          window.dispatchEvent(new CustomEvent('portfolio-language-change', { detail: root.dataset.language }));
+        });
+        translateInterface();
+
+        const bioTrigger = document.querySelector('[data-bio-trigger]');
+        const bioPopup = document.querySelector('[data-bio-popup]');
+        const bioMore = document.querySelector('[data-bio-more]');
+        const bioClose = document.querySelector('[data-bio-close]');
+        const bioLines = [...document.querySelectorAll('[data-bio-line]')];
+        const bioXoxox = document.querySelector('[data-bio-xoxox]');
+        const bioContact = document.querySelector('[data-bio-contact]');
+        if (!bioTrigger || !bioPopup || !bioLines.length) return;
+        let visibleLines = 1;
+        const updateBio = () => {
+          bioLines.forEach((line, index) => { line.hidden = index >= visibleLines; });
+          const complete = visibleLines >= bioLines.length;
+          if (bioMore) {
+            bioMore.hidden = complete;
+            bioMore.textContent = ['BLA +', 'BLA BLA +', 'BLA BLA BLA +', 'BLA BLA BLA BLA +'][Math.min(visibleLines - 1, 3)];
+          }
+          if (bioXoxox) bioXoxox.hidden = !complete;
+          if (bioContact) bioContact.hidden = !complete;
+        };
+        const openBio = () => {
+          bioPopup.classList.add('is-open');
+          bioPopup.setAttribute('aria-hidden', 'false');
+          bioTrigger.setAttribute('aria-expanded', 'true');
+          updateBio();
+        };
+        const closeBio = () => {
+          bioPopup.classList.remove('is-open');
+          bioPopup.setAttribute('aria-hidden', 'true');
+          bioTrigger.setAttribute('aria-expanded', 'false');
+          visibleLines = 1;
+          window.setTimeout(updateBio, 220);
+        };
+        bioTrigger.addEventListener('click', () => bioPopup.classList.contains('is-open') ? closeBio() : openBio());
+        bioMore?.addEventListener('click', () => {
+          visibleLines = Math.min(bioLines.length, visibleLines + 1);
+          updateBio();
+        });
+        bioClose?.addEventListener('click', closeBio);
+        document.addEventListener('keydown', event => { if (event.key === 'Escape') closeBio(); });
+        document.addEventListener('pointerdown', event => {
+          if (!bioPopup.classList.contains('is-open') || bioPopup.contains(event.target) || bioTrigger.contains(event.target)) return;
+          closeBio();
+        });
+        updateBio();
+      })();
+    </script><script src="/portfolio/base-path.js"></script><script src="/portfolio/research-layout.js"></script><script src="/portfolio/home-loader.js"></script><script src="/portfolio/play-save.js"></script></body></html>
