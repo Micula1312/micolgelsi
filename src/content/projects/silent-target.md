@@ -20,7 +20,7 @@ artistsInvolved:
 curatedBy:
   - "Daniela Cotimbo"
 credits:
-  - "Re:HumanismHosted by Albumarte"
+  - "Re:Humanism — hosted by Albumarte"
 photoCredits:
   []
 avatar: "/media/artistic/silent-target/avatar.mp4"
