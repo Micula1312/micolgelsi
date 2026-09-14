@@ -3,7 +3,7 @@ AUTHOR: ASAP
 TEASER:
 https://www.youtube.com/watch?v=G4F5kCSM5JQ
 
-AVATAR: avatar.mp4
+AVATAR: moments/collagene/collagene 26.01 (38) (1).webp
 FEATURED: true
 START: 2023-05-05
 END: 2025-10-26
@@ -73,7 +73,7 @@ media: lmnl
 url: https://www.instagram.com/p/DQXdGO1ACzW/?img_index=2
 
 STATUS: 
-COVER: 
+COVER: moments/collagene/collagene 26.01 (38) (1).webp
 OUTPUTS: 2023-10-12
 ABUNDANCE — with studioferrari
 type: installation + dj set
@@ -112,6 +112,5 @@ Campo Xs
 type: performance
 location: Campo XS, Genova
 media: campo-xs
-COVER EMBED:
-
+COVER EMBED: 
 RELATED:

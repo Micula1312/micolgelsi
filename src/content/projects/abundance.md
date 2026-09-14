@@ -44,12 +44,11 @@ credits:
   - "studioferrari — artist studioRomina Thomas — DJFilippo Bonelli (Girovelle Psicotroniche) — original musicMalezachi — original music"
 photoCredits:
   []
-avatar: "/media/artistic/abundance/avatar.mp4"
+avatar: "/media/artistic/abundance/moments/collagene/collagene 26.01 (38) (1).webp"
+cover: "/media/artistic/abundance/moments/collagene/collagene 26.01 (38) (1).webp"
 gallery:
   []
 videos:
-  []
-media:
   []
 criticalTexts:
   []
@@ -117,12 +116,34 @@ moments:
     title: "ABUNDANCE"
     type: "performance"
     location: "Palazzo Bronzo, Genova"
-    media: "/media/artistic/abundance/palazzo"
+    gallery:
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 15.49.40.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 15.50.12.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 15.51.09.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 15.53.01.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 15.53.18.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 15.53.26.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 15.54.38.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 15.56.41.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 15.57.48.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 15.58.47.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 16.00.03.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 16.00.45.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 16.01.54.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 16.03.12.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 16.04.46.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 16.06.25.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 16.07.42.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 16.09.27.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 16.10.00.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 16.11.18.png"
+      - "/media/artistic/abundance/moments/palazzo/Screenshot 2025-07-03 alle 16.12.50.png"
   - date: "2025-09-14"
     title: "ABUNDANCE"
     type: "perfromance"
     location: "Liminal Space, Roma"
-    media: "/media/artistic/abundance/lmnl"
+    gallery:
+      - "/media/artistic/abundance/moments/lmnl/Screenshot 2025-07-03 alle 15.51.09.png"
     href: "https://www.instagram.com/p/DQXdGO1ACzW/?img_index=2"
   - date: "2025-11"
     title: "Campo Xs"
