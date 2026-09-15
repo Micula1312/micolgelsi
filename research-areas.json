@@ -1,0 +1,52 @@
+[
+  {
+    "key": "urban-wilderness",
+    "label": "Urban Wilderness",
+    "subtitle": "contested territories, spontaneous ecologies and unplanned forms of life"
+  },
+  {
+    "key": "more-than-human-relations",
+    "label": "More-than-human Relations",
+    "subtitle": "interspecies encounters, decentered agency and multispecies perception"
+  },
+  {
+    "key": "generative-archives",
+    "label": "Generative Archives",
+    "subtitle": "protocols, mutable memory and narrative production"
+  },
+  {
+    "key": "digital-access-inclusion",
+    "label": "Digital Access & Inclusion",
+    "subtitle": "interfaces, mediated participation and technological agency"
+  },
+  {
+    "key": "eco-feminism",
+    "label": "Eco-feminism",
+    "subtitle": "situated care, ecological interdependence and embodied knowledge"
+  },
+  {
+    "key": "hydro-feminism",
+    "label": "Hydro-feminism",
+    "subtitle": "water, bodies, permeability and relational ecologies"
+  },
+  {
+    "key": "bodies-affects",
+    "label": "Bodies & Affects",
+    "subtitle": "sensation, presence and performative encounters"
+  },
+  {
+    "key": "surveillance-politics-of-visibility",
+    "label": "Surveillance & Politics of Visibility",
+    "subtitle": "exposure, recognition and systems of control"
+  },
+  {
+    "key": "live-data-manipulation",
+    "label": "Live Data Manipulation",
+    "subtitle": "real-time systems, responsive environments and audiovisual improvisation"
+  },
+  {
+    "key": "materia-technology",
+    "label": "Materials & Technologies",
+    "subtitle": "found and reclaimed materials, low-tech tools and digital processes"
+  }
+]
