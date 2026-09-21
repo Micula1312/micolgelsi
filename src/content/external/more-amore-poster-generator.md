@@ -1,6 +1,7 @@
 ---
 title: "More Amore Poster Generator"
 kind: "poster generator / visual communication"
+timelineLabel: "dynamic template"
 practice: "web-development"
 client: "More Amore"
 role: "Creative development"
