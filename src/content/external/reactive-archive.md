@@ -1,6 +1,7 @@
 ---
 title: "Reactive Archive"
 kind: "net art / browser-based artwork"
+timelineLabel: "generative interface"
 practice: "web-development"
 role: "Net artist & creative developer"
 stack: ["Astro", "Three.js", "WebGL"]
