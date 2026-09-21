@@ -1,6 +1,7 @@
 ---
 title: "LOOP Logo Lab"
 kind: "identity system / generative interface"
+timelineLabel: "generative interface"
 practice: "web-development"
 client: "Bianca / LOOP"
 role: "Creative development"
