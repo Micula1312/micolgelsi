@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import projects from '../data/lab-projects.json';
+---
+
+<BaseLayout title="Lab — Micol Gelsi">
+  <section class="lab" aria-labelledby="lab-title">
+    <header class="lab-intro">
+      <p class="lab-index">./01—{String(projects.length).padStart(2, '0')}</p>
+      <h1 id="lab-title">GENERATIVE<br /><em>interfaces</em> ★</h1>
+      <p class="lab-lead" data-en="A living collection of tools, prototypes and interfaces. The code stays on GitHub; here the systems can be opened, tested and used." data-it="Una raccolta viva di strumenti, prototipi e interfacce. Il codice resta su GitHub; qui i sistemi si possono aprire, provare e usare.">
+        A living collection of tools, prototypes and interfaces. The code stays on GitHub; here the systems can be opened, tested and used.
+      </p>
+      <a class="github-profile" href="https://github.com/Micula1312" target="_blank" rel="noopener noreferrer">GITHUB / MICULA1312 ↗</a>
+    </header>
+
+    <ol class="lab-list">
+      {projects.map((project, index) => (
+        <li class="lab-card" style={`--lab-accent:${project.accent}`}>
+          <div class="lab-card-head">
+            <span class="lab-number">{String(index + 1).padStart(2, '0')}</span>
+            <span class="lab-status">{project.status}</span>
+          </div>
+          <div class="lab-preview" aria-hidden="true">
+            <span class="preview-title">{project.title}</span>
+            <span class="preview-star">★</span>
+            <span class="preview-grid"></span>
+          </div>
+          <div class="lab-copy">
+            <p class="lab-type" data-en={project.type} data-it={project.typeIt}>{project.type}</p>
+            <h2>{project.title}</h2>
+            <p data-en={project.description} data-it={project.descriptionIt}>{project.description}</p>
+            <ul class="lab-stack" aria-label="Technologies">
+              {project.stack.map(item => <li>{item}</li>)}
+            </ul>
+          </div>
+          <div class="lab-actions">
+            <button type="button" class="lab-launch" data-preview={project.demo} data-title={project.title}>
+              <span data-en="OPEN INTERFACE" data-it="APRI INTERFACCIA">OPEN INTERFACE</span> ↗
+            </button>
+            <a href={project.repository} target="_blank" rel="noopener noreferrer">VIEW CODE ↗</a>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <div class="lab-viewer" data-lab-viewer hidden>
+    <div class="lab-viewer-bar">
+      <p><span class="viewer-dot"></span><span data-viewer-title>LAB</span></p>
+      <div>
+        <a data-viewer-external href="#" target="_blank" rel="noopener noreferrer">NEW TAB ↗</a>
+        <button type="button" data-viewer-close aria-label="Close interface">CLOSE ×</button>
+      </div>
+    </div>
+    <div class="lab-viewer-stage">
+      <p class="viewer-loading">LOADING INTERFACE ★</p>
+      <iframe data-viewer-frame title="Generative interface preview" loading="lazy" allow="camera; microphone; fullscreen; clipboard-write"></iframe>
+    </div>
+  </div>
+
+  <style>
+    .lab{padding:clamp(76px,10vw,130px) clamp(16px,3vw,44px) 96px;min-height:100vh}.lab-intro{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,.6fr);gap:20px;border-bottom:1px solid var(--line);padding-bottom:clamp(30px,5vw,70px);position:relative}.lab-index{position:absolute;top:-24px;left:0;margin:0;font:9px/1 var(--mono);color:var(--muted)}.lab-intro h1{margin:0;font:800 clamp(42px,8.5vw,126px)/.78 var(--mono);letter-spacing:-.075em;text-transform:uppercase}.lab-intro h1 em{font-family:Georgia,'Times New Roman',serif;font-weight:400;text-transform:none;color:#ff2bbd}.lab-lead{align-self:end;margin:0 0 32px;max-width:42ch;font-size:clamp(12px,1.2vw,16px);line-height:1.45}.github-profile{position:absolute;right:0;bottom:0;padding:9px 0;font:9px/1 var(--mono);color:#39ff14;text-decoration:none}.lab-list{list-style:none;margin:0;padding:0}.lab-card{display:grid;grid-template-columns:54px minmax(200px,.8fr) minmax(300px,1.25fr) minmax(130px,.35fr);gap:clamp(14px,2.4vw,38px);padding:34px 0;border-bottom:1px solid var(--line);align-items:stretch;position:relative}.lab-card::before{content:'';position:absolute;inset:0;background:var(--lab-accent);transform:scaleY(0);transform-origin:bottom;transition:transform .35s cubic-bezier(.22,.61,.36,1);opacity:.08;pointer-events:none}.lab-card:hover::before{transform:scaleY(1)}.lab-card-head{display:flex;flex-direction:column;justify-content:space-between;position:relative;z-index:1}.lab-number{font:800 22px/1 var(--mono);color:var(--lab-accent)}.lab-status{writing-mode:vertical-rl;transform:rotate(180deg);font:8px/1 var(--mono);text-transform:uppercase;color:var(--muted)}.lab-preview{min-height:210px;border:1px solid var(--line);position:relative;overflow:hidden;background:var(--bg);isolation:isolate}.lab-preview::before,.lab-preview::after{content:'';position:absolute;background:var(--lab-accent);opacity:.9}.lab-preview::before{width:72%;height:1px;left:14%;top:50%;transform:rotate(-18deg)}.lab-preview::after{width:1px;height:74%;left:50%;top:13%;transform:rotate(22deg)}.preview-title{position:absolute;left:10px;bottom:9px;z-index:2;font:800 clamp(18px,2.5vw,38px)/.86 var(--mono);text-transform:uppercase;max-width:90%;mix-blend-mode:difference;color:#fff}.preview-star{position:absolute;right:10%;top:12%;z-index:2;font-size:34px;color:var(--lab-accent);animation:labSpin 8s linear infinite}.preview-grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:22px 22px;opacity:.3}@keyframes labSpin{to{transform:rotate(360deg)}}.lab-copy{position:relative;z-index:1;display:flex;flex-direction:column}.lab-type{margin:0 0 8px!important;font:italic 12px/1.2 Georgia,'Times New Roman',serif!important;color:#ff2bbd!important}.lab-copy h2{margin:0 0 14px;font:800 clamp(25px,3.1vw,50px)/.9 var(--mono);letter-spacing:-.05em;text-transform:uppercase}.lab-copy>p{margin:0;max-width:56ch;font-size:12px;line-height:1.5;color:var(--muted)}.lab-stack{display:flex;gap:5px;flex-wrap:wrap;list-style:none;margin:auto 0 0;padding:22px 0 0}.lab-stack li{padding:4px 6px;border:1px solid var(--line);font:8px/1 var(--mono);text-transform:uppercase}.lab-actions{display:flex;flex-direction:column;justify-content:flex-end;gap:7px;position:relative;z-index:1}.lab-actions button,.lab-actions a{width:100%;border:1px solid var(--line);background:transparent;color:var(--fg);padding:10px;text-align:left;text-decoration:none;font:9px/1 var(--mono);cursor:pointer}.lab-actions .lab-launch{background:var(--lab-accent);border-color:var(--lab-accent);color:#050505}.lab-viewer[hidden]{display:none}.lab-viewer{position:fixed;inset:0;z-index:10000;background:#050505;display:grid;grid-template-rows:44px 1fr}.lab-viewer-bar{display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid #333;color:#f5f5f2;font:9px/1 var(--mono)}.lab-viewer-bar p{display:flex;align-items:center;gap:8px;margin:0}.lab-viewer-bar>div{display:flex;align-items:center;gap:8px}.lab-viewer-bar a,.lab-viewer-bar button{font:inherit;color:inherit;background:transparent;border:1px solid #444;padding:6px 8px;text-decoration:none;cursor:pointer}.viewer-dot{width:7px;height:7px;border-radius:50%;background:#39ff14;box-shadow:0 0 12px #39ff14}.lab-viewer-stage{position:relative;min-height:0}.lab-viewer iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:white;z-index:2}.viewer-loading{position:absolute;inset:0;display:grid;place-items:center;margin:0;color:#39ff14;font:10px/1 var(--mono)}body.lab-open{overflow:hidden}@media(max-width:900px){.lab-intro{grid-template-columns:1fr}.lab-lead{margin-top:10px;padding-bottom:16px}.lab-card{grid-template-columns:38px 1fr}.lab-preview{grid-column:2;min-height:180px}.lab-copy,.lab-actions{grid-column:2}.lab-actions{display:grid;grid-template-columns:1fr 1fr}.lab-status{display:none}}@media(max-width:540px){.lab{padding-left:12px;padding-right:12px}.lab-intro h1{font-size:44px}.lab-card{grid-template-columns:28px 1fr;gap:10px}.lab-actions{grid-template-columns:1fr}.lab-preview{min-height:150px}}@media(prefers-reduced-motion:reduce){.preview-star{animation:none}.lab-card::before{transition:none}}
+  </style>
+
+  <script is:inline>
+    (() => {
+      const viewer = document.querySelector('[data-lab-viewer]');
+      const frame = viewer?.querySelector('[data-viewer-frame]');
+      const title = viewer?.querySelector('[data-viewer-title]');
+      const external = viewer?.querySelector('[data-viewer-external]');
+      const close = () => {
+        if (!viewer || !frame) return;
+        viewer.hidden = true;
+        frame.removeAttribute('src');
+        document.body.classList.remove('lab-open');
+      };
+      document.querySelectorAll('[data-preview]').forEach(button => button.addEventListener('click', () => {
+        if (!viewer || !frame) return;
+        const url = button.dataset.preview;
+        viewer.hidden = false;
+        frame.src = url;
+        if (title) title.textContent = button.dataset.title || 'LAB';
+        if (external) external.href = url;
+        document.body.classList.add('lab-open');
+      }));
+      viewer?.querySelector('[data-viewer-close]')?.addEventListener('click', close);
+      document.addEventListener('keydown', event => { if (event.key === 'Escape' && !viewer?.hidden) close(); });
+    })();
+  </script>
+</BaseLayout>
