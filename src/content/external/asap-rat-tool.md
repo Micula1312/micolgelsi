@@ -10,7 +10,7 @@ year: 2026
 startDate: "09-2026"
 endDate: "ongoing"
 url: "https://micula1312.github.io/asap-rat-tool/"
-summary: "Generative visual system for composing maps, rats, places, captions, strobes and identity outputs for social and spatial communication."
+summary: "Generative visual system for social and spatial communication for the new Circolo Arci EX CASA del CUSTODE in Bologna"
 themes: ["digital", "interface"]
 researchAreas: ["technology-digitalization"]
 ---
