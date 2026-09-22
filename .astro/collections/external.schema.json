@@ -22,6 +22,10 @@
       "default": "web-development",
       "type": "string"
     },
+    "timelineLabel": {
+      "default": "website",
+      "type": "string"
+    },
     "client": {
       "type": "string"
     },
