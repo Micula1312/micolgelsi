@@ -3,7 +3,7 @@ title: "LOOP Logo Lab"
 kind: "identity system / generative interface"
 practice: "web-development"
 timelineLabel: "generative interface"
-showOnHomepage: true
+showOnHomepage: false
 role: "Creative development"
 client: "LOOP corporate identity"
 stack:
@@ -27,6 +27,12 @@ curatedBy:
 credits:
   []
 photoCredits:
+  []
+media:
+  []
+gallery:
+  []
+videos:
   []
 moments:
   []

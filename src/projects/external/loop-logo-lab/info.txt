@@ -1,7 +1,7 @@
 TITLE: LOOP Logo Lab
 TYPE: identity system / generative interface
 TIMELINE LABEL: generative interface
-HOMEPAGE: true
+HOMEPAGE: false
 PRACTICE: web-development
 ROLE: Creative development
 CLIENT: LOOP corporate identity
@@ -12,5 +12,24 @@ END: 07-2026
 STATUS: completed
 RESEARCH: technology-digitalization
 EXCERPT: Generative identity laboratory for transforming the LOOP gesture in a variants of shapes
-DESCRIPTION:
-OUTPUTS:
+DESCRIPTION: 
+OUTPUTS: 
+AUTHOR:
+
+FEATURED:
+
+MEDIUM:
+
+MAIN LINK:
+
+AVATAR:
+
+COVER:
+
+COVER EMBED:
+
+RELATED:
+
+COLLABORATORS:
+
+CREDITS:

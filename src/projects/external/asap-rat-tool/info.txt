@@ -7,10 +7,29 @@ ROLE: Multimedia design & creative development
 CLIENT: ASAP / Ex Casa del Custode
 STACK: p5.js, Canvas, JavaScript
 URL: https://micula1312.github.io/asap-rat-tool/
-START: 09-2026
+START: 06-2026
 END: ongoing
 STATUS: ongoing
 RESEARCH: technology-digitalization
 EXCERPT: Generative visual system for social and spatial communication for the new Circolo Arci EX CASA del CUSTODE in Bologna
-DESCRIPTION:
-OUTPUTS:
+DESCRIPTION: 
+OUTPUTS: 
+AUTHOR:
+
+FEATURED:
+
+MEDIUM:
+
+MAIN LINK:
+
+AVATAR:
+
+COVER:
+
+COVER EMBED:
+
+RELATED:
+
+COLLABORATORS:
+
+CREDITS:

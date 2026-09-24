@@ -12,7 +12,7 @@ stack:
   - "JavaScript"
 url: "https://micula1312.github.io/asap-rat-tool/"
 year: "2026"
-startDate: "09-2026"
+startDate: "06-2026"
 status: ongoing
 summary: "Generative visual system for social and spatial communication for the new Circolo Arci EX CASA del CUSTODE in Bologna"
 researchAreas:
@@ -26,6 +26,12 @@ curatedBy:
 credits:
   []
 photoCredits:
+  []
+media:
+  []
+gallery:
+  []
+videos:
   []
 moments:
   []

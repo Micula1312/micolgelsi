@@ -8,9 +8,19 @@ CLIENT: More Amor Crew
 STACK: Three.js, GSAP, Vite
 URL: https://micula1312.github.io/more-amore-poster-generator/
 START: 08-2026
-END: 09-2026
+END: on going
 STATUS: completed
 RESEARCH: technology-digitalization
 EXCERPT: Live editor for composing typographic 3D flyers through editable event fields, spatial transformations, material presets and print-ready PNG export.
-DESCRIPTION:
-OUTPUTS:
+DESCRIPTION: 
+OUTPUTS: 
+AUTHOR: 
+FEATURED: 
+MEDIUM: 
+MAIN LINK: 
+AVATAR: 
+COVER: 
+COVER EMBED: 
+RELATED: 
+COLLABORATORS: 
+CREDITS:
