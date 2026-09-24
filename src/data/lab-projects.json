@@ -1,16 +1,19 @@
 [
   {
-    "id": "loop-logo-lab",
-    "title": "LOOP Logo Lab",
-    "type": "identity system / generative interface",
-    "typeIt": "sistema d’identità / interfaccia generativa",
-    "description": "An identity laboratory for transforming the LOOP gesture through material presets, geometry, erosion and layout systems, with saved variants and PNG export.",
-    "descriptionIt": "Un laboratorio d’identità per trasformare il gesto LOOP attraverso preset materici, geometria, erosione e sistemi di layout, con varianti salvate ed export PNG.",
-    "stack": ["Canvas", "SVG", "JavaScript"],
-    "repository": "https://github.com/Micula1312/biancosangue/tree/logo-lab",
-    "demo": "https://htmlpreview.github.io/?https://github.com/Micula1312/biancosangue/blob/logo-lab/logo-lab.html",
-    "status": "prototype",
-    "accent": "#b4c9fe"
+    "id": "lab-media-reactive-engine",
+    "title": "Lab Media Reactive Engine",
+    "type": "audiovisual engine / live media system",
+    "typeIt": "motore audiovisivo / sistema media live",
+    "description": "A locally developed media engine for reactive audiovisual environments, live control and the DJ console workflow.",
+    "descriptionIt": "Un motore media sviluppato in locale per ambienti audiovisivi reattivi, controllo live e workflow della DJ console.",
+    "stack": [
+      "Python",
+      "real-time media"
+    ],
+    "repository": "https://github.com/Micula1312/media-reactive-engine/tree/feature/dj-console",
+    "demo": "",
+    "status": "research prototype",
+    "accent": "#39ff14"
   },
   {
     "id": "more-amore",
@@ -19,7 +22,11 @@
     "typeIt": "generatore di poster / comunicazione visiva",
     "description": "A live editor for composing typographic 3D flyers: editable event fields, spatial transformations, material presets, reusable layouts and print-ready PNG export.",
     "descriptionIt": "Un editor live per comporre flyer tipografici 3D: campi evento modificabili, trasformazioni spaziali, preset materici, layout riutilizzabili ed export PNG.",
-    "stack": ["Three.js", "GSAP", "Vite"],
+    "stack": [
+      "Three.js",
+      "GSAP",
+      "Vite"
+    ],
     "repository": "https://github.com/Micula1312/more-amore-poster-generator",
     "demo": "https://micula1312.github.io/more-amore-poster-generator/",
     "status": "work in progress",
@@ -32,23 +39,31 @@
     "typeIt": "identità visiva / motore cartografico",
     "description": "A generative visual system for ASAP and Ex Casa del Custode: editable maps, rats, places, captions, strobes and identity outputs made for social and spatial communication.",
     "descriptionIt": "Un sistema visivo generativo per ASAP ed Ex Casa del Custode: mappe, ratti, luoghi, didascalie, strobo e output d’identità modificabili per la comunicazione social e spaziale.",
-    "stack": ["p5.js", "Canvas", "JavaScript"],
+    "stack": [
+      "p5.js",
+      "Canvas",
+      "JavaScript"
+    ],
     "repository": "https://github.com/Micula1312/asap-rat-tool",
     "demo": "https://micula1312.github.io/asap-rat-tool/",
     "status": "active tool",
     "accent": "#dfff00"
   },
   {
-    "id": "lab-media-reactive-engine",
-    "title": "Lab Media Reactive Engine",
-    "type": "audiovisual engine / live media system",
-    "typeIt": "motore audiovisivo / sistema media live",
-    "description": "A locally developed media engine for reactive audiovisual environments, live control and the DJ console workflow.",
-    "descriptionIt": "Un motore media sviluppato in locale per ambienti audiovisivi reattivi, controllo live e workflow della DJ console.",
-    "stack": ["Python", "real-time media"],
-    "repository": "https://github.com/Micula1312/media-reactive-engine/tree/feature/dj-console",
-    "demo": "",
-    "status": "research prototype",
-    "accent": "#39ff14"
+    "id": "loop-logo-lab",
+    "title": "LOOP Logo Lab",
+    "type": "identity system / generative interface",
+    "typeIt": "sistema d’identità / interfaccia generativa",
+    "description": "An identity laboratory for transforming the LOOP gesture through material presets, geometry, erosion and layout systems, with saved variants and PNG export.",
+    "descriptionIt": "Un laboratorio d’identità per trasformare il gesto LOOP attraverso preset materici, geometria, erosione e sistemi di layout, con varianti salvate ed export PNG.",
+    "stack": [
+      "Canvas",
+      "SVG",
+      "JavaScript"
+    ],
+    "repository": "https://github.com/Micula1312/biancosangue/tree/logo-lab",
+    "demo": "https://htmlpreview.github.io/?https://github.com/Micula1312/biancosangue/blob/logo-lab/logo-lab.html",
+    "status": "prototype",
+    "accent": "#b4c9fe"
   }
 ]

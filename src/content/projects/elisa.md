@@ -1,5 +1,6 @@
 ---
 title: "Elisa"
+coverEmbed: "https://thearchiveoftheuntamed.xyz/reactive-archive/elisa/"
 mainLink: "https://thearchiveoftheuntamed.xyz/reactive-archive/elisa/"
 type: project
 year: "2026"
@@ -13,7 +14,7 @@ researchAreas:
   - surveillance-politics-of-visibility
   - live-data-manipulation
 collaborators:
-  []
+  - "Beatrice Resta Benedetta Marino"
 artistsInvolved:
   - "Beatrice Resta"
   - "Benedetta Marino"
@@ -26,8 +27,6 @@ photoCredits:
 gallery:
   []
 videos:
-  []
-media:
   []
 criticalTexts:
   []

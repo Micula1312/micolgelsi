@@ -33,4 +33,21 @@ AVATAR: videos/_source/Inota Final-small.mp4
 AUTHOR: 
 FEATURED: 
 COVER: 
-COLLABORATORS:
+COLLABORATORS: Beatrice Resta Benedetta Marino
+HOMEPAGE: true
+
+TIMELINE LABEL: website
+
+CLIENT:
+
+ROLE:
+
+STACK:
+
+URL:
+
+PRACTICE: web-development
+
+COVER EMBED: https://thearchiveoftheuntamed.xyz/reactive-archive/elisa/
+
+RELATED:
