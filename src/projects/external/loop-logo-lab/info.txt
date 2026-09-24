@@ -1,0 +1,16 @@
+TITLE: LOOP Logo Lab
+TYPE: identity system / generative interface
+TIMELINE LABEL: generative interface
+HOMEPAGE: true
+PRACTICE: web-development
+ROLE: Creative development
+CLIENT: LOOP corporate identity
+STACK: Canvas, SVG, JavaScript
+URL: https://htmlpreview.github.io/?https://github.com/Micula1312/biancosangue/blob/logo-lab/logo-lab.html
+START: 06-2026
+END: 07-2026
+STATUS: completed
+RESEARCH: technology-digitalization
+EXCERPT: Generative identity laboratory for transforming the LOOP gesture in a variants of shapes
+DESCRIPTION:
+OUTPUTS:

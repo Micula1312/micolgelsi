@@ -8,10 +8,11 @@ const PROJECTS_ROOT=path.join(ROOT,'src','projects');
 const MEDIA_ROOT=path.join(ROOT,'public','media');
 const CONFIG_PATH=path.join(ROOT,'config','research-areas.json');
 const HOME_CONFIG_PATH=path.join(ROOT,'config','home.json');
+const LAB_CONFIG_PATH=path.join(ROOT,'src','data','lab-projects.json');
 const PUBLIC_CONFIG_PATH=path.join(ROOT,'public','research-areas.json');
 const UI_PATH=path.join(ROOT,'admin','index.html');
 const PORT=4310;
-const SECTION_NAMES=['TITLE','AUTHOR','TEASER','AVATAR','COVER','COVER EMBED','RELATED','FEATURED','START','END','STATUS','TYPE','PRACTICE','ROLE','CLIENT','STACK','URL','MEDIUM','RESEARCH','WITH','COLLABORATORS','MAIN LINK','ARTISTS INVOLVED','CURATED BY','CREDITS','PHOTO CREDITS','EXCERPT','DESCRIPTION','SHORT','CRITICAL TEXTS','PUBLICATIONS','COMMUNICATION','LINKS','MOMENTS','OUTPUTS','PARENT','WORKS'];
+const SECTION_NAMES=['TITLE','AUTHOR','TEASER','AVATAR','COVER','COVER EMBED','RELATED','FEATURED','HOMEPAGE','START','END','STATUS','TYPE','PRACTICE','TIMELINE LABEL','ROLE','CLIENT','STACK','URL','MEDIUM','RESEARCH','WITH','COLLABORATORS','MAIN LINK','ARTISTS INVOLVED','CURATED BY','CREDITS','PHOTO CREDITS','EXCERPT','DESCRIPTION','SHORT','CRITICAL TEXTS','PUBLICATIONS','COMMUNICATION','LINKS','MOMENTS','OUTPUTS','PARENT','WORKS'];
 const MIME={'.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.gif':'image/gif','.avif':'image/avif','.mp4':'video/mp4','.webm':'video/webm','.mov':'video/quicktime'};
 const ADMIN_HIDDEN_MEDIA_DIRS=new Set(['source','sources','sourcce','sourcces']);
 
@@ -73,7 +74,7 @@ async function listProjects(){
   const result=[];
   for(const kind of ['artistic','external']){
     const root=path.join(PROJECTS_ROOT,kind);let entries=[];try{entries=await fs.readdir(root,{withFileTypes:true});}catch{}
-    for(const e of entries.filter(e=>e.isDirectory()&&!e.name.startsWith('_'))){const infoPath=path.join(root,e.name,'info.txt');if(!(await exists(infoPath)))continue;const text=await fs.readFile(infoPath,'utf8'),data=parseInfo(text);result.push({kind,slug:e.name,title:data.TITLE||e.name,type:data.TYPE||'',research:(data.RESEARCH||'').split(/[,;\n]/).map(x=>x.trim()).filter(Boolean)});}
+    for(const e of entries.filter(e=>e.isDirectory()&&!e.name.startsWith('_'))){const infoPath=path.join(root,e.name,'info.txt');if(!(await exists(infoPath)))continue;const text=await fs.readFile(infoPath,'utf8'),data=parseInfo(text);result.push({kind,slug:e.name,title:data.TITLE||e.name,type:data.TYPE||'',homepage:!/^\s*(?:false|no|0|off)\s*$/i.test(data.HOMEPAGE||'true'),research:(data.RESEARCH||'').split(/[,;\n]/).map(x=>x.trim()).filter(Boolean)});}
   }
   return result.sort((a,b)=>a.title.localeCompare(b.title));
 }
@@ -92,6 +93,27 @@ const server=http.createServer(async(req,res)=>{
     }
     if(req.method==='GET'&&url.pathname==='/api/home'){
       const data=JSON.parse(await fs.readFile(HOME_CONFIG_PATH,'utf8'));return send(res,200,data);
+    }
+    if(req.method==='GET'&&url.pathname==='/api/lab'){
+      const projects=JSON.parse(await fs.readFile(LAB_CONFIG_PATH,'utf8').catch(()=>'[]'));return send(res,200,{projects});
+    }
+    if(req.method==='POST'&&url.pathname==='/api/lab'){
+      const body=await jsonBody(req);if(!Array.isArray(body.projects))return send(res,400,{error:'projects must be an array'});
+      const clean=body.projects.map((item,index)=>({
+        id:safe(item.id||item.title||`lab-${index+1}`).toLowerCase(),
+        title:String(item.title||'Untitled LAB project').trim(),
+        type:String(item.type||'generative interface').trim(),
+        typeIt:String(item.typeIt||'interfaccia generativa').trim(),
+        description:String(item.description||'').trim(),
+        descriptionIt:String(item.descriptionIt||'').trim(),
+        stack:Array.isArray(item.stack)?item.stack.map(value=>String(value).trim()).filter(Boolean):String(item.stack||'').split(',').map(value=>value.trim()).filter(Boolean),
+        repository:String(item.repository||'').trim(),
+        demo:String(item.demo||'').trim(),
+        status:String(item.status||'prototype').trim(),
+        accent:/^#[0-9a-f]{6}$/i.test(String(item.accent||''))?String(item.accent):'#39ff14'
+      })).filter(item=>item.id&&item.title);
+      if(new Set(clean.map(item=>item.id)).size!==clean.length)return send(res,400,{error:'Every LAB project needs a unique ID'});
+      await fs.writeFile(LAB_CONFIG_PATH,JSON.stringify(clean,null,2)+'\n','utf8');return send(res,200,{ok:true,projects:clean});
     }
     if(req.method==='POST'&&url.pathname==='/api/home'){
       const body=await jsonBody(req),previous=JSON.parse(await fs.readFile(HOME_CONFIG_PATH,'utf8').catch(()=>'{}'));
@@ -140,7 +162,9 @@ const server=http.createServer(async(req,res)=>{
     if(req.method==='POST'&&url.pathname==='/api/create'){
       const body=await jsonBody(req),kind=['artistic','external'].includes(body.kind)?body.kind:'artistic',slug=safe(body.slug||body.title);if(!slug)return send(res,400,{error:'Slug required'});
       const dir=path.join(PROJECTS_ROOT,kind,slug);if(await exists(dir))return send(res,409,{error:'Project already exists'});await fs.mkdir(dir,{recursive:true});await fs.mkdir(path.join(MEDIA_ROOT,kind,slug,'images'),{recursive:true});await fs.mkdir(path.join(MEDIA_ROOT,kind,slug,'videos'),{recursive:true});
-      const text=`TITLE: ${body.title||slug}\nTYPE: ${kind==='external'?'website':'project'}\nSTART: \nEND: ongoing\nSTATUS: ongoing\nAVATAR: \nCOVER: \nRESEARCH: \nMEDIUM: \nEXCERPT: \nDESCRIPTION: \nOUTPUTS: \n`;await fs.writeFile(path.join(dir,'info.txt'),text,'utf8');return send(res,200,{ok:true,kind,slug});
+      const text=kind==='external'
+        ?`TITLE: ${body.title||slug}\nTYPE: website\nTIMELINE LABEL: website\nHOMEPAGE: true\nPRACTICE: web-development\nROLE: Web development\nCLIENT: \nSTACK: \nURL: \nSTART: \nEND: ongoing\nSTATUS: ongoing\nRESEARCH: \nEXCERPT: \nDESCRIPTION: \nOUTPUTS: \n`
+        :`TITLE: ${body.title||slug}\nTYPE: project\nSTART: \nEND: ongoing\nSTATUS: ongoing\nAVATAR: \nCOVER: \nRESEARCH: \nMEDIUM: \nEXCERPT: \nDESCRIPTION: \nOUTPUTS: \n`;await fs.writeFile(path.join(dir,'info.txt'),text,'utf8');return send(res,200,{ok:true,kind,slug});
     }
     if(req.method==='POST'&&url.pathname==='/api/media'){
       const kind=safe(url.searchParams.get('kind')),slug=safe(url.searchParams.get('slug')),bucket=safe(url.searchParams.get('bucket')||'images'),name=safe(url.searchParams.get('name'));if(!['artistic','external'].includes(kind)||!slug||!name)return send(res,400,{error:'Invalid media target'});

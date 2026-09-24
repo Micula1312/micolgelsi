@@ -9,6 +9,12 @@ STATUS:
 TYPE:
 website
 
+TIMELINE LABEL:
+website
+
+HOMEPAGE:
+true
+
 PRACTICE:
 web-development
 

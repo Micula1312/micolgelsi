@@ -26,6 +26,10 @@
       "default": "website",
       "type": "string"
     },
+    "showOnHomepage": {
+      "default": true,
+      "type": "boolean"
+    },
     "client": {
       "type": "string"
     },

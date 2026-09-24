@@ -1,0 +1,16 @@
+TITLE: More Amore Poster Generator
+TYPE: poster generator / visual communication
+TIMELINE LABEL: dynamic template
+HOMEPAGE: true
+PRACTICE: web-development
+ROLE: Creative development
+CLIENT: More Amor Crew
+STACK: Three.js, GSAP, Vite
+URL: https://micula1312.github.io/more-amore-poster-generator/
+START: 08-2026
+END: 09-2026
+STATUS: completed
+RESEARCH: technology-digitalization
+EXCERPT: Live editor for composing typographic 3D flyers through editable event fields, spatial transformations, material presets and print-ready PNG export.
+DESCRIPTION:
+OUTPUTS:

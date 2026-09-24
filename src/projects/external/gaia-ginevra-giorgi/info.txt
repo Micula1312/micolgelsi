@@ -1,0 +1,16 @@
+TITLE: Gaia Ginevra Giorgi Website
+TYPE: website
+TIMELINE LABEL: website
+HOMEPAGE: true
+PRACTICE: web-development
+ROLE: Web development
+CLIENT: Gaia Ginevra Giorgi
+STACK: WordPress, ACF
+URL: https://gaiaginevragiorgi.xyz
+START: 2025-03
+END: 2025-10
+STATUS: completed
+RESEARCH:
+EXCERPT: External digital project.
+DESCRIPTION:
+OUTPUTS:

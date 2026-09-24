@@ -9,7 +9,7 @@ const inferResearch=(item)=>{if(item.data.researchAreas?.length)return item.data
 const normalizeExternalUrl=(value='')=>{const url=String(value).trim();if(!url)return'';if(/^https?:\/\//i.test(url))return url;if(url.startsWith('//'))return`https:${url}`;return`https://${url.replace(/^\/+/, '')}`;};
 const defaultFeatured=new Set(['abundance','archive-of-the-untamed','the-archive-is-alive','untamed-architectureXambient-rave']);
 const normalize=(item)=>{const year=item.data.year!=null?String(item.data.year):'—',yearMatch=year.match(/\d{4}/),yearGroup=yearMatch?.[0]??year,lane=item.collection==='external'?'external':'artistic',start=item.data.startDate??yearMatch?.[0]??'',end=item.data.endDate??(item.data.status==='ongoing'?'ongoing':yearMatch?.[0]??''),externalUrl=item.collection==='external'?normalizeExternalUrl(item.data.url):'',featured=Boolean(item.data.featured)||defaultFeatured.has(item.id);return{...item,yearGroup,lane,start,end,featured,researchAreas:inferResearch(item),href:externalUrl||`/${item.collection}/${item.id}/`,externalLink:Boolean(externalUrl)};};
-const items=[...projects,...exhibitions,...external].map(normalize);
+const items=[...projects,...exhibitions,...external.filter(item=>item.data.showOnHomepage!==false)].map(normalize);
 const researchAreas=[['urban-wilderness','Urban Wilderness'],['generative-archives','Generative Archives'],['interspecies','Interspecies'],['technology-digitalization','Technology & Digitalization'],['emotional-geographies','Emotional Geographies'],['eco-feminism','Eco-feminism'],['pleasure-activism','Pleasure Activism'],['body-freedom','Body freedom']];
 ---
 <BaseLayout title="Micol Gelsi">

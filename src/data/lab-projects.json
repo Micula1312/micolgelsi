@@ -39,15 +39,15 @@
     "accent": "#dfff00"
   },
   {
-    "id": "reactive-archive",
-    "title": "Reactive Archive",
-    "type": "interactive archive / audiovisual system",
-    "typeIt": "archivio interattivo / sistema audiovisivo",
-    "description": "A navigable audiovisual archive that treats media as a reactive environment rather than a static catalogue, connecting scenes, spatial interfaces and live interaction.",
-    "descriptionIt": "Un archivio audiovisivo navigabile che tratta i media come ambiente reattivo anziché catalogo statico, collegando scene, interfacce spaziali e interazione live.",
-    "stack": ["Astro", "Three.js", "WebGL"],
-    "repository": "https://github.com/Micula1312/reactive-archive",
-    "demo": "https://micula1312.github.io/reactive-archive/",
+    "id": "lab-media-reactive-engine",
+    "title": "Lab Media Reactive Engine",
+    "type": "audiovisual engine / live media system",
+    "typeIt": "motore audiovisivo / sistema media live",
+    "description": "A locally developed media engine for reactive audiovisual environments, live control and the DJ console workflow.",
+    "descriptionIt": "Un motore media sviluppato in locale per ambienti audiovisivi reattivi, controllo live e workflow della DJ console.",
+    "stack": ["Python", "real-time media"],
+    "repository": "https://github.com/Micula1312/media-reactive-engine/tree/feature/dj-console",
+    "demo": "",
     "status": "research prototype",
     "accent": "#39ff14"
   }

@@ -1,0 +1,16 @@
+TITLE: Sound Studies Forum
+TYPE: digital platform development
+TIMELINE LABEL: website
+HOMEPAGE: true
+PRACTICE: web-development
+ROLE: Web development
+CLIENT: Sound Studies Forum
+STACK: WordPress, ACF, PHP, JavaScript
+URL: https://soundstudiesforum.org
+START: 2024-05
+END: 2026-03
+STATUS: completed
+RESEARCH:
+EXCERPT: External digital project.
+DESCRIPTION:
+OUTPUTS:

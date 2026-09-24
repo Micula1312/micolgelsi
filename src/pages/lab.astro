@@ -35,9 +35,9 @@ import projects from '../data/lab-projects.json';
             </ul>
           </div>
           <div class="lab-actions">
-            <button type="button" class="lab-launch" data-preview={project.demo} data-title={project.title}>
+            {project.demo && <button type="button" class="lab-launch" data-preview={project.demo} data-title={project.title}>
               <span data-en="OPEN INTERFACE" data-it="APRI INTERFACCIA">OPEN INTERFACE</span> ↗
-            </button>
+            </button>}
             <a href={project.repository} target="_blank" rel="noopener noreferrer">VIEW CODE ↗</a>
           </div>
         </li>
