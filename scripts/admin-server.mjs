@@ -97,6 +97,12 @@ const server=http.createServer(async(req,res)=>{
     if(req.method==='GET'&&url.pathname==='/api/lab'){
       const projects=JSON.parse(await fs.readFile(LAB_CONFIG_PATH,'utf8').catch(()=>'[]'));return send(res,200,{projects});
     }
+    if(req.method==='POST'&&url.pathname==='/api/lab-media'){
+      const id=safe(url.searchParams.get('id')).toLowerCase(),name=safe(url.searchParams.get('name')),ext=path.extname(name).toLowerCase();
+      if(!id||!name||!['.jpg','.jpeg','.png','.webp','.gif','.avif'].includes(ext))return send(res,400,{error:'Choose a JPG, PNG, WEBP, GIF or AVIF image'});
+      const dir=path.join(MEDIA_ROOT,'lab',id);await fs.mkdir(dir,{recursive:true});await fs.writeFile(path.join(dir,name),await readBody(req));
+      return send(res,200,{ok:true,url:`/media/lab/${id}/${name}`});
+    }
     if(req.method==='POST'&&url.pathname==='/api/lab'){
       const body=await jsonBody(req);if(!Array.isArray(body.projects))return send(res,400,{error:'projects must be an array'});
       const clean=body.projects.map((item,index)=>({
@@ -110,6 +116,8 @@ const server=http.createServer(async(req,res)=>{
         repository:String(item.repository||'').trim(),
         demo:String(item.demo||'').trim(),
         status:String(item.status||'prototype').trim(),
+        visual:item.visual==='graphic'?'graphic':'star',
+        image:String(item.image||'').trim(),
         accent:/^#[0-9a-f]{6}$/i.test(String(item.accent||''))?String(item.accent):'#39ff14'
       })).filter(item=>item.id&&item.title);
       if(new Set(clean.map(item=>item.id)).size!==clean.length)return send(res,400,{error:'Every LAB project needs a unique ID'});
