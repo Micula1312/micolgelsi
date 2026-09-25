@@ -49,8 +49,8 @@ const loader = homeConfig.loader;
           <a class="site-name" href={base} aria-label="Micol Gelsi — home">MICOL GELSI</a>
         </div>
         <nav class="site-nav" aria-label="Main navigation">
-          <a href={`${base}#projects`} aria-current={pathname === '/' ? 'page' : undefined} data-en="PROJECTS" data-it="PROGETTI">PROJECTS</a>
-          <a href={withBase('lab/')} aria-current={pathname === '/lab' ? 'page' : undefined}>LAB</a>
+          <a href={`${base}#projects`} aria-current={pathname === '/' ? 'page' : undefined} data-projects-trigger data-en="PROJECTS" data-it="PROGETTI">PROJECTS</a>
+          <a href={`${base}#lab`} data-lab-trigger>LAB</a>
           <a href={withBase('cv/micol-gelsi-CV.pdf')} target="_blank" rel="noopener">CV</a>
           <a href={withBase('play-with-me/')} aria-current={pathname === '/play-with-me' ? 'page' : undefined} data-en="PLAY WITH ME" data-it="GIOCA CON ME">PLAY WITH ME</a>
           <button class="bio-trigger" type="button" data-bio-trigger aria-expanded="false" aria-controls="bio-popup" data-en="BLABLABIO +" data-it="BLABLABIO +">BLABLABIO +</button>
