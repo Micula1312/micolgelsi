@@ -154,11 +154,11 @@ body *,
 body *::before,
 body *::after{
   font-family:var(--mono)!important;
-  /*font-size:var(--type-mono-size)!important;
+  font-size:var(--type-mono-size)!important;
   font-style:normal!important;
   font-weight:var(--type-mono-weight)!important;
   line-height:var(--type-mono-leading)!important;
-  letter-spacing:var(--type-mono-tracking)!important;*/
+  letter-spacing:var(--type-mono-tracking)!important;
   /*text-transform:uppercase!important;*/
 }
 
