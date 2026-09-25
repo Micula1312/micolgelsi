@@ -53,5 +53,10 @@
     "key": "materia-technology",
     "label": "Materials & Technologies",
     "subtitle": "found and reclaimed materials, low-tech tools and digital processes"
+  },
+  {
+    "key": "auto-programmazione",
+    "label": "Auto programmazione e interfacce generative",
+    "subtitle": ""
   }
 ]
