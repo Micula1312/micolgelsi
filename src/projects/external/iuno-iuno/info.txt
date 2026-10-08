@@ -1,0 +1,17 @@
+TITLE: IUNO IUNO
+TYPE: website
+TIMELINE LABEL: website
+HOMEPAGE: true
+PRACTICE: web-development
+ROLE: Web development
+CLIENT: IUNO IUNO
+STACK:
+URL: https://iunoiuno.it/it/
+MAIN LINK: https://iunoiuno.it/it/
+START: 2023-10
+END: 2024-05-09
+STATUS: completed
+RESEARCH:
+EXCERPT: Website developed between October 2023 and May 2024. Published on 9 May 2024.
+DESCRIPTION:
+OUTPUTS:
