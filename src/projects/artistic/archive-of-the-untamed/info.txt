@@ -3,10 +3,10 @@ AUTHOR:
 FEATURED: 
 START: 2024-10
 END: ongoing
-STATUS: 
+STATUS: ongoing
 TYPE: project
 MEDIUM: research, archive, website, installation, participatory practice
-RESEARCH: urban-wilderness, generative-archives, live-data-manipulation
+RESEARCH: urban-wilderness, generative-archives
 COLLABORATORS: Lucia Fontanelli, Olivia Teglia, Giuseppe di Capua, Comitato Rigenerazione no Speculazione
 CURATED BY:
 EXIT
@@ -76,4 +76,11 @@ media: sottopontos
 AVATAR: avatar.gif
 COVER: moments/sottopontos/IMG_8132.webp
 COVER EMBED: 
-RELATED:
+RELATED: 
+HOMEPAGE: 
+TIMELINE LABEL: 
+CLIENT: 
+ROLE: 
+STACK: 
+URL: 
+PRACTICE: web-development

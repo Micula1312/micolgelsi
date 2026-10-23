@@ -16,7 +16,6 @@ medium:
 researchAreas:
   - urban-wilderness
   - generative-archives
-  - live-data-manipulation
 collaborators:
   - "Lucia Fontanelli"
   - "Olivia Teglia"
@@ -35,8 +34,6 @@ cover: "/media/artistic/archive-of-the-untamed/moments/sottopontos/IMG_8132.webp
 gallery:
   []
 videos:
-  []
-media:
   []
 criticalTexts:
   - label: "IMPURE — Giorgia Pinzauti"
