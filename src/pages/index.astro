@@ -33,17 +33,17 @@ const labStars=labProjects.map((project,index)=>({
     </div>
     <nav class="institutional-sidebar-nav" aria-label="Portfolio sections">
       <a href="#institutional-projects">Selected projects</a>
-      <a href="/research/">Research</a>
-      <a href="/cv/">CV</a>
-      <a href="/play-with-me/">Contact</a>
+      <a href="/portfolio/research/">Research</a>
+      <a href="/portfolio/cv/">CV</a>
+      <a href="/portfolio/play-with-me/">Contact</a>
     </nav>
     <p class="institutional-sidebar-foot">ROME / ITALY<br/>© {new Date().getFullYear()}</p>
   </aside>
   <div class="institutional-main" id="institutional-projects">
-    <div class="institutional-main-heading"><span>SELECTED PROJECTS</span><span>{items.filter(item=>item.lane==='artistic').length} ENTRIES</span></div>
-    {items.filter(item=>item.lane==='artistic').sort((a,b)=>String(b.start).localeCompare(String(a.start))).map((item,index)=><a class="institutional-entry" href={item.href}>
+    <div class="institutional-main-heading"><span>SELECTED PROJECTS</span><span>{items.length} ENTRIES</span></div>
+    {items.sort((a,b)=>String(b.start).localeCompare(String(a.start))).map((item,index)=><a class="institutional-entry" href={item.href}>
       <div class="institutional-entry-image">{(item.data.cover||item.data.avatar) && ( /\\.mp4(?:$|\\?)/i.test(item.data.cover||item.data.avatar) ? <video src={item.data.cover||item.data.avatar} muted playsinline preload="metadata" /> : <img src={item.data.cover||item.data.avatar} alt="" loading="lazy" />)}</div>
-      <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{item.data.title}</h2><p>{item.data.summary}</p><div class="institutional-entry-meta"><span>{item.data.displayType||item.data.type||'ARTISTIC RESEARCH'}</span><span>{item.start||item.yearGroup}{item.end&&item.end!==item.start?' — '+item.end:''}</span></div></div>
+      <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{item.data.title}</h2><p>{item.data.summary}</p><div class="institutional-entry-meta"><span>{item.data.displayType||item.data.kind||item.data.type||'PROJECT'}</span><span>{item.start||item.yearGroup}{item.end&&item.end!==item.start?' — '+item.end:''}</span></div></div>
     </a>)}
   </div>
 </section>
