@@ -1083,3 +1083,50 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
 html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .project-facts .institutional-year-fact{display:grid!important}
 
 html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .project-facts .punk-date-fact{display:none!important}
+
+/* Stable Institutional detail scrolling: scroll columns, not the document. */
+@media(min-width:761px){
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .shell{
+  display:grid!important;grid-template-columns:clamp(155px,17vw,260px) minmax(0,1fr)!important;
+  height:100dvh!important;max-height:100dvh!important;min-height:0!important;
+  overflow:hidden!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] main.page{
+  display:block!important;min-width:0!important;min-height:0!important;
+  height:100dvh!important;max-height:100dvh!important;overflow:hidden!important;
+  padding:12px 18px 12px 0!important;margin:0!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-layout{
+  display:grid!important;grid-template-columns:minmax(0,1.7fr) minmax(220px,.7fr)!important;
+  grid-template-rows:minmax(0,1fr)!important;grid-template-areas:"media info"!important;
+  gap:24px!important;width:100%!important;height:100%!important;
+  max-height:100%!important;min-height:0!important;overflow:hidden!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media{
+  grid-area:media!important;grid-column:1!important;grid-row:1!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info{
+  grid-area:info!important;grid-column:2!important;grid-row:1!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(.institutional-project-media,.institutional-project-info){
+  display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;
+  align-items:stretch!important;justify-content:flex-start!important;
+  min-width:0!important;min-height:0!important;height:100%!important;
+  max-height:100%!important;overflow-y:scroll!important;overflow-x:hidden!important;
+  position:relative!important;top:auto!important;
+  scrollbar-width:none!important;overscroll-behavior-y:contain!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media>*{
+  flex-shrink:0!important;
+ }
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media :is(.moment-gallery,.media-stream,.media-grid){
+ display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+ justify-content:flex-start!important;align-items:flex-start!important;
+ width:100%!important;min-width:0!important;max-width:100%!important;
+ overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;
+ scroll-behavior:auto!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(.institutional-project-media,.institutional-project-info,.moment-gallery,.media-stream,.media-grid)::-webkit-scrollbar{
+ display:none!important;width:0!important;height:0!important;
+}
