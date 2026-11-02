@@ -1261,3 +1261,45 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  background:#111!important;
 }
 html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(.media-stream,.moment-gallery)::-webkit-scrollbar{display:none!important}
+
+/* Terminal project surface reset: no inherited white content cards. */
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(
+ .shell,main.page,.institutional-project-layout,.institutional-project-info,
+ .institutional-project-info>*,.institutional-project-info .project-head,
+ .institutional-project-info .project-body,.institutional-project-info .prose,
+ .institutional-project-info .prose>*,.institutional-project-info .prose p,
+ .institutional-project-info .prose blockquote,.institutional-project-info .project-facts,
+ .institutional-project-info .project-facts>div,.institutional-project-info .project-moments,
+ .institutional-project-info .project-moment,.institutional-project-info .project-links,
+ .institutional-project-info .related,.institutional-project-media,
+ .institutional-project-media>*,.institutional-project-media .media-stream,
+ .institutional-project-media .media-stream>figure
+){
+ background:#111!important;background-color:#111!important;
+ color:#e8e8e8!important;box-shadow:none!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(p,li,span,strong,h1,h2,h3,h4,a,dt,dd){
+ color:#e8e8e8!important;background:transparent!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(.eyebrow,.project-facts span,.output-date,.output-type){
+ color:#929292!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .media-stream{
+ display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+ align-items:flex-start!important;justify-content:flex-start!important;
+ overflow-x:scroll!important;overflow-y:hidden!important;
+ overscroll-behavior-x:contain!important;scroll-snap-type:none!important;
+ width:100%!important;max-width:100%!important;min-width:0!important;
+ gap:8px!important;scrollbar-width:none!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .media-stream>figure{
+ display:block!important;flex:0 0 auto!important;
+ width:clamp(240px,36vw,560px)!important;min-width:240px!important;
+ margin:0!important;overflow:visible!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .media-stream>figure :is(img,video){
+ display:block!important;width:100%!important;height:auto!important;
+ max-width:100%!important;max-height:350px!important;
+ object-fit:contain!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .media-stream::-webkit-scrollbar{display:none!important}
