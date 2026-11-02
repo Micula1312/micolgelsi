@@ -50,7 +50,7 @@ const mediaSequence=unifiedMedia.map((src,index)=>({src,index,kind:isVideo(src)?
     <aside class="project-facts">
       {entry.data.author&&<div><span>Author</span>{entry.data.author}</div>}
       {typeLabel&&<div><span>Type</span>{typeLabel}</div>}
-      {entry.data.startDate&&<div><span>Start</span>{entry.data.startDate}</div>}
+      <div class="institutional-year-fact"><span>Year</span>{String(entry.data.endDate||entry.data.year||entry.data.startDate||'').match(/\d{4}/)?.[0]||entry.data.year||'—'}</div>{entry.data.startDate&&<div><span>Start</span>{entry.data.startDate}</div>}
       {entry.data.endDate&&<div><span>End</span>{entry.data.endDate}</div>}
       {entry.data.status&&<div><span>Status</span>{entry.data.status}</div>}
       {entry.data.medium.length>0&&<div><span>Medium</span>{entry.data.medium.join(', ')}</div>}
