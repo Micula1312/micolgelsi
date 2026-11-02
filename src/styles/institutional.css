@@ -1,0 +1,57 @@
+/* Institutional reading mode. Punk remains the unmodified default. */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+@font-face{font-family:"Reglo";src:url("https://raw.githubusercontent.com/sebsan/Reglo/master/Reglo-Bold.otf") format("opentype");font-weight:700;font-display:swap}
+html[data-portfolio-mode="institutional"]{
+  --bg:#faf9f6!important;--fg:#22211f!important;--muted:#696761!important;
+  --line:#d7d3cc!important;--signal:#292825!important;
+  --institutional-serif:"Libre Baskerville",Georgia,serif;
+  --institutional-display:"Reglo",Arial,sans-serif;
+  color-scheme:light;background:var(--bg)!important;color:var(--fg)!important;
+}
+html[data-portfolio-mode="institutional"] body{background:var(--bg)!important;color:var(--fg)!important;font-family:var(--institutional-serif)!important;font-size:16px;line-height:1.65}
+html[data-portfolio-mode="institutional"] .shell{max-width:1480px}
+html[data-portfolio-mode="institutional"] .site-header{border-color:var(--line);padding-top:24px;padding-bottom:32px}
+html[data-portfolio-mode="institutional"] .site-name{font-family:var(--institutional-display)!important;font-size:clamp(26px,3vw,44px)!important;line-height:1.05!important;letter-spacing:-.02em}
+html[data-portfolio-mode="institutional"] .site-nav,
+html[data-portfolio-mode="institutional"] .system-controls,
+html[data-portfolio-mode="institutional"] .view-switch,
+html[data-portfolio-mode="institutional"] .project-facts,
+html[data-portfolio-mode="institutional"] .work-group,
+html[data-portfolio-mode="institutional"] .index-toolbar .view-button{font-family:Arial,Helvetica,sans-serif!important;font-size:11px!important;letter-spacing:.045em}
+html[data-portfolio-mode="institutional"] h1,
+html[data-portfolio-mode="institutional"] h2,
+html[data-portfolio-mode="institutional"] h3,
+html[data-portfolio-mode="institutional"] .work-title,
+html[data-portfolio-mode="institutional"] .project-title,
+html[data-portfolio-mode="institutional"] .web-inspector h2{font-family:var(--institutional-display)!important;font-weight:700!important;letter-spacing:-.025em!important;line-height:1.08!important;text-transform:none}
+html[data-portfolio-mode="institutional"] .index-toolbar h1{font-size:clamp(38px,5.5vw,82px)!important}
+html[data-portfolio-mode="institutional"] .work-title{font-size:clamp(20px,2vw,32px)!important}
+html[data-portfolio-mode="institutional"] .project-description,
+html[data-portfolio-mode="institutional"] .project-body,
+html[data-portfolio-mode="institutional"] .project-copy,
+html[data-portfolio-mode="institutional"] .prose,
+html[data-portfolio-mode="institutional"] article p{font-family:var(--institutional-serif)!important;font-size:clamp(15px,1.25vw,18px)!important;line-height:1.75!important;max-width:70ch}
+html[data-portfolio-mode="institutional"] a,html[data-portfolio-mode="institutional"] button{color:inherit}
+html[data-portfolio-mode="institutional"] a:hover{text-decoration-color:#777}
+html[data-portfolio-mode="institutional"] .work-row,
+html[data-portfolio-mode="institutional"] .work-row:hover{color:var(--fg)!important;text-shadow:none!important}
+html[data-portfolio-mode="institutional"] .web-role,
+html[data-portfolio-mode="institutional"] .lab-star,
+html[data-portfolio-mode="institutional"] .web-inspector-kicker{color:var(--fg)!important}
+html[data-portfolio-mode="institutional"] .entry-gate,
+html[data-portfolio-mode="institutional"] .project-entry-loader{display:none!important}
+html[data-portfolio-mode="institutional"] .project-avatar{filter:none!important}
+html[data-portfolio-mode="institutional"] .bio-popup,
+html[data-portfolio-mode="institutional"] .web-inspector{background:var(--bg)!important;color:var(--fg)!important}
+html[data-portfolio-mode="institutional"] .system-controls{background:var(--bg)!important;color:var(--fg)!important}
+html[data-portfolio-mode="institutional"] [data-copy-toggle],
+html[data-portfolio-mode="institutional"] [data-theme-toggle]{opacity:.4}
+[data-portfolio-mode-toggle]{cursor:pointer;min-width:90px}
+html[data-portfolio-mode="institutional"] [data-portfolio-mode-toggle]{font-weight:700;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:760px){
+ html[data-portfolio-mode="institutional"] .site-header{gap:12px;padding-bottom:20px}
+ html[data-portfolio-mode="institutional"] .site-name{font-size:30px!important}
+ html[data-portfolio-mode="institutional"] .work-title{font-size:21px!important}
+ html[data-portfolio-mode="institutional"] .project-description,
+ html[data-portfolio-mode="institutional"] article p{font-size:15px!important}
+}
