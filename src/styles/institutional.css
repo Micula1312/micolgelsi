@@ -641,3 +641,15 @@ html[data-portfolio-mode="institutional"] .institutional-entry-info .institution
 html[data-portfolio-mode="institutional"] .institutional-entry-info .institutional-entry-number{
  order:-1!important;
 }
+
+/* Compact institutional taxonomy controls. */
+html[data-portfolio-mode="institutional"] .institutional-entry[hidden],
+html[data-portfolio-mode="institutional"] .institutional-search-panel[hidden],
+html[data-portfolio-mode="institutional"] [data-institutional-empty][hidden]{display:none!important}
+html[data-portfolio-mode="institutional"] .institutional-filters{display:flex;align-items:center;gap:15px}
+html[data-portfolio-mode="institutional"] .institutional-filters label{display:flex;align-items:center;gap:7px;font:inherit}
+html[data-portfolio-mode="institutional"] .institutional-filters select{font:inherit;color:inherit;background:transparent;border:0;border-bottom:1px solid #aaa;border-radius:0;max-width:180px}
+html[data-portfolio-mode="institutional"] .institutional-search-panel{padding:12px 0 18px}
+html[data-portfolio-mode="institutional"] .institutional-search-panel input{box-sizing:border-box;width:100%;font:inherit;background:#fff;color:#111;border:0;border-bottom:1px solid #111;padding:8px 0;outline-offset:3px}
+html[data-portfolio-mode="institutional"] .institutional-tag-suggestions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+html[data-portfolio-mode="institutional"] .institutional-tag-suggestions button{font:inherit;background:transparent;border:1px solid #ccc;padding:3px 7px;cursor:pointer}
