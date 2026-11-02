@@ -514,3 +514,55 @@ html[data-portfolio-mode="institutional"] .institutional-project-info :is(a,p,sp
  }
  html[data-portfolio-mode="institutional"] .institutional-project-media{order:1!important}
 }
+
+/* Institutional detail: editorial typography, NEVER Punk pink/italic/oversized copy. */
+html[data-portfolio-mode="institutional"] body:has(.institutional-project-layout) .institutional-project-layout,
+html[data-portfolio-mode="institutional"] body:has(.institutional-project-layout) .institutional-project-layout *:not(svg):not(path){
+ --signal:#111!important;--fg:#111!important;--muted:#666!important;
+ --copy-accent:#111!important;--pink:#111!important;
+ color:#111!important;text-shadow:none!important;filter:none!important;
+ font-family:"IBM Plex Mono",monospace!important;
+ font-style:normal!important;font-variant:normal!important;
+ letter-spacing:0!important;text-transform:none!important;
+ background-color:transparent!important;
+ box-shadow:none!important;border-color:transparent!important;
+ animation:none!important;
+}
+html[data-portfolio-mode="institutional"] body:has(.institutional-project-layout) .institutional-project-layout :is(h1,h2,h3,h4,h5,h6,strong,b,.output-title){
+ font-size:12px!important;line-height:1.55!important;font-weight:500!important;
+ font-style:normal!important;letter-spacing:0!important;
+ text-decoration:none!important;transform:none!important;
+}
+html[data-portfolio-mode="institutional"] body:has(.institutional-project-layout) .institutional-project-layout :is(p,li,dt,dd,span,div,article,aside,a,figcaption,.prose,.lead,.eyebrow,.project-facts,.project-links){
+ font-size:11px!important;line-height:1.7!important;font-weight:400!important;
+ font-style:normal!important;letter-spacing:0!important;
+}
+html[data-portfolio-mode="institutional"] body:has(.institutional-project-layout) .institutional-project-layout :is(em,i){
+ font-size:inherit!important;font-style:normal!important;font-weight:inherit!important;
+}
+html[data-portfolio-mode="institutional"] body:has(.institutional-project-layout) .institutional-project-layout :is(.prose strong,.prose b,.lead strong,.lead b){
+ font-size:inherit!important;font-weight:500!important;font-style:normal!important;
+}
+html[data-portfolio-mode="institutional"] body:has(.institutional-project-layout) .institutional-project-layout :is(a,a:visited,a:hover){
+ color:#111!important;text-decoration:underline!important;text-decoration-thickness:1px!important;
+ text-underline-offset:2px!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-project-layout .institutional-project-info{
+ background:#fff!important;border:0!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-project-layout .institutional-project-info :is(.project-moments,.project-moment,.project-links,.related,.project-facts,.project-body,.project-head,.intro){
+ display:block!important;background:#fff!important;border:0!important;border-radius:0!important;
+ box-shadow:none!important;outline:0!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-project-layout .institutional-project-info :is(.project-moment,.project-facts>div){
+ padding:6px 0!important;margin:0!important;border:0!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-project-layout .institutional-project-media :is(img,video,iframe){
+ filter:none!important;opacity:1!important;mix-blend-mode:normal!important;
+ border:0!important;border-radius:0!important;box-shadow:none!important;
+ background:transparent!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-project-layout .institutional-project-media .media-video-mark{display:none!important}
+html[data-portfolio-mode="institutional"] .institutional-project-layout .institutional-project-info :is(.project-moments img,.project-moments video){
+ width:100%!important;height:auto!important;max-height:none!important;object-fit:contain!important;
+}
