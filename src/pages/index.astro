@@ -11,6 +11,14 @@ const exhibitions=await getCollection('exhibitions');
 const external=await getCollection('external');
 const inferResearch=(item)=>{if(item.data.researchAreas?.length)return item.data.researchAreas;const tags=[...(item.data.themes??[]),...(item.data.medium??[])].map(x=>x.toLowerCase()),result=new Set();if(tags.some(x=>['territory','ecology','wildness','urban wilderness'].includes(x)))result.add('urban-wilderness');if(tags.some(x=>['archive','research'].includes(x)))result.add('generative-archives');if(tags.some(x=>['interspecies','more-than-human'].includes(x)))result.add('interspecies');if(tags.some(x=>['digital','net art','computer vision','interactive installation','website','interface'].includes(x)))result.add('technology-digitalization');if(tags.some(x=>['memory','body','participation'].includes(x)))result.add('emotional-geographies');return[...result];};
 const getTaxonomyType=(data,collection)=>data.taxonomyType||data.displayType||(collection==='external'?(data.timelineLabel||data.kind||'Website'):(data.medium?.[0]||data.kind||'Uncategorized'));
+const resolveMedia=(src='')=>{const value=String(src||'').trim();if(!value||!value.startsWith('/')||value.startsWith('//')||value.startsWith(base))return value;return base+value.replace(/^\\/+/, '');};
+const isVideoPreview=(src='')=>/\\.(mp4|webm|ogg|mov)(?:$|[?#])/i.test(String(src||''));
+const projectPreview=(data,lane)=>{
+ const primary=lane==='external'?(data.thumbnail||data.avatar):(data.cover||data.avatar);
+ const candidates=[...(data.media||[]),...(data.videos||[]),...(data.gallery||[]),...(data.moments||[]).flatMap(m=>[m.media,...(m.gallery||[])])].filter(Boolean);
+ const firstVideo=candidates.find(isVideoPreview);
+ return {src:resolveMedia(firstVideo||primary),fallback:resolveMedia(primary),video:Boolean(firstVideo||isVideoPreview(primary))};
+};
 const displayYear=(data,year)=>`${year}${data.status==='ongoing'||String(data.endDate||'').toLowerCase()==='ongoing'?' · WIP':''}`;
 const normalizeExternalUrl=(value='')=>{const url=String(value).trim();if(!url)return'';if(/^https?:\/\//i.test(url))return url;if(url.startsWith('//'))return`https:${url}`;return`https://${url.replace(/^\/+/, '')}`;};
 const defaultFeatured=new Set(['abundance','archive-of-the-untamed','the-archive-is-alive','untamed-architectureXambient-rave']);
@@ -57,8 +65,11 @@ const labStars=labProjects.map((project,index)=>({
       {items.slice().sort((a,b)=>String(b.start).localeCompare(String(a.start))).map((item,index)=><a class="institutional-entry" data-institutional-entry data-institutional-category={item.lane==='external'?'web':'art'} data-institutional-year={item.yearGroup} data-institutional-context={getTaxonomyType(item.data,item.collection)} data-institutional-tags={JSON.stringify([...(item.data.tags||[]),...(item.data.themes||[]),...(item.data.researchAreas||[])])} data-institutional-research={item.researchAreas.join(', ')} href={item.externalLink?item.href:`${base}${item.href.slice(1)}`}>
         <div class="institutional-entry-image">
           {item.lane==='external' && item.externalLink && <><span class="institutional-web-indicator" aria-hidden="true">→</span><iframe class="institutional-web-frame" title={`Preview of ${item.data.title}`} data-web-preview={item.href} loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer" /></>}
-          {(item.lane==='external'?(item.data.thumbnail||item.data.avatar):(item.data.cover||item.data.avatar)) && (/\\.(mp4|webm|ogg)(?:$|[?#])/i.test(item.lane==='external'?(item.data.thumbnail||item.data.avatar):(item.data.cover||item.data.avatar)) ? <video src={item.lane==='external'?(item.data.thumbnail||item.data.avatar):(item.data.cover||item.data.avatar)} muted playsinline loop autoplay preload="metadata" aria-label={item.data.title} /> : <img src={item.lane==='external'?(item.data.thumbnail||item.data.avatar):(item.data.cover||item.data.avatar)} alt="" loading="lazy" />)}
-          {item.lane!=='external' && !item.data.cover && !item.data.avatar && item.data.coverEmbed && /^https:\/\//i.test(item.data.coverEmbed) && <iframe class="institutional-art-embed" src={item.data.coverEmbed} title={`Preview of ${item.data.title}`} loading="lazy" allow="autoplay; fullscreen" referrerpolicy="strict-origin-when-cross-origin" />}
+          {projectPreview(item.data,item.lane).src && (projectPreview(item.data,item.lane).video
+            ? <video src={projectPreview(item.data,item.lane).src} muted playsinline loop autoplay preload="metadata" poster={!isVideoPreview(projectPreview(item.data,item.lane).fallback)?projectPreview(item.data,item.lane).fallback:undefined} aria-label={item.data.title} />
+            : <img src={projectPreview(item.data,item.lane).src} alt="" loading="lazy" />)}
+
+          {item.lane!=='external' && !projectPreview(item.data,item.lane).src && item.data.coverEmbed && /^https:\/\//i.test(item.data.coverEmbed) && <iframe class="institutional-art-embed" src={item.data.coverEmbed} title={`Preview of ${item.data.title}`} loading="lazy" allow="autoplay; fullscreen" referrerpolicy="strict-origin-when-cross-origin" />}
         </div>
         <div class="institutional-entry-info"><span class="institutional-entry-number" aria-hidden="true">{String(index+1).padStart(2,'0')}</span><h2>{item.data.title}</h2><p>{item.data.summary}</p><div class="institutional-entry-meta"><span>{getTaxonomyType(item.data,item.collection)}</span><span>{displayYear(item.data,item.yearGroup)}</span></div></div>
       </a>)}
