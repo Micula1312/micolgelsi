@@ -751,3 +751,12 @@ html[data-portfolio-mode="institutional"] .is-web-preview-active .institutional-
 @media(prefers-reduced-motion:reduce){
  html[data-portfolio-mode="institutional"] .institutional-web-indicator{animation:none!important}
 }
+
+/* Arrow is anchored to the upper-left corner of each Web project card. */
+html[data-portfolio-mode="institutional"] .institutional-entry[data-institutional-category="web"]{position:relative!important}
+html[data-portfolio-mode="institutional"] .institutional-entry[data-institutional-category="web"] .institutional-web-indicator{
+ position:absolute!important;top:8px!important;left:8px!important;right:auto!important;bottom:auto!important;
+ transform:none!important;z-index:5!important;padding:0!important;
+ background:transparent!important;color:#111!important;
+ font:500 21px/1 "IBM Plex Mono",monospace!important;
+}
