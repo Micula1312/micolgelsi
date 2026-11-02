@@ -18,7 +18,7 @@ const baseNoSlash = base.replace(/\/$/, '');
 const pathname = Astro.url.pathname.replace(baseNoSlash, '').replace(/\/$/, '') || '/';
 const isHome = pathname === '/';
 const fixedShell = ['/', '/play-with-me'].includes(pathname);
-const projectDetail = pathname.startsWith('/projects/') || pathname.startsWith('/exhibitions/');
+const projectDetail = pathname.startsWith('/projects/') || pathname.startsWith('/exhibitions/') || pathname.startsWith('/works/');
 const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
 const bioLines = homeConfig.bio;
 const loader = homeConfig.loader;
@@ -68,7 +68,26 @@ const loader = homeConfig.loader;
           </div>
         </aside>
       </header>
-      <main class="page"><slot /></main>
+      {projectDetail && <aside class="institutional-detail-sidebar" aria-label="Institutional portfolio navigation">
+<div class="institutional-detail-sidebar-top">
+<p>ARTIST / RESEARCHER / CREATIVE CODER</p>
+<a class="institutional-detail-name" href={base}>MICOL GELSI</a>
+<p class="institutional-detail-intro">Working across collective archives, urban wilderness, performative media and experimental digital practices.</p>
+</div>
+<nav aria-label="Portfolio index">
+<a href={base + '?theme=institutional&section=art'}>Artistic practice</a>
+<a href={base + '?theme=institutional&section=web'}>Web development</a>
+<a href={base + '?theme=institutional&section=lab'}>Lab</a>
+<a href={withBase('research/')}>Research</a>
+<a href={withBase('cv/')}>CV</a>
+<a href={withBase('play-with-me/')}>Contact</a>
+</nav>
+<div class="institutional-detail-sidebar-bottom">
+<button type="button" data-portfolio-mode-toggle>← PUNK MODE</button>
+<span>ROME / ITALY</span>
+</div>
+</aside>}
+<main class="page"><slot /></main>
     </div>
 
     <div class="system-controls" aria-label="Display settings">
