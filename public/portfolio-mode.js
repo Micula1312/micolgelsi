@@ -8,6 +8,12 @@
   const initial=['punk','institutional'].includes(requested)?requested:(['punk','institutional'].includes(saved)?saved:'punk');
   const apply=(mode,persist=true)=>{
     root.dataset.portfolioMode=mode;
+    if(mode==='punk'){
+      root.dataset.copyStyle='pink';
+      try{localStorage.setItem('portfolio-copy-style','pink')}catch{}
+      const copyButton=document.querySelector('[data-copy-toggle]');
+      if(copyButton){copyButton.textContent=root.dataset.language==='it'?'Rosa':'Pink';copyButton.setAttribute('aria-pressed','true');}
+    }
     buttons.forEach(button=>{const sidebar=button.classList.contains('institutional-mode-switch');button.textContent=sidebar?'← PUNK MODE':(mode==='institutional'?'Institutional':'Punk');button.setAttribute('aria-pressed',String(mode==='institutional'));button.setAttribute('aria-label','Switch portfolio theme from '+mode);});
     if(mode==='institutional'){
       document.querySelector('[data-entry-gate]')?.remove();
