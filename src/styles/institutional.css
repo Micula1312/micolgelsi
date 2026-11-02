@@ -1154,15 +1154,15 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(.
  }
 }
 
-/* Digital Meadow-inspired dark editorial palette.
-   Color-only skin: no changes to layout, media, scrolling, or Punk. */
+
+/* Terminal monochrome skin — Institutional only; uniform background, no hover bands. */
 html[data-portfolio-mode="institutional"]{
- --bg:#101311!important;--fg:#e6e9df!important;--muted:#a1aaa0!important;
- --line:#39413b!important;--signal:#c4d8a9!important;
- color-scheme:dark!important;background:var(--bg)!important;color:var(--fg)!important;
+ --bg:#111111!important;--fg:#e8e8e8!important;--muted:#929292!important;
+ --line:#393939!important;--signal:#f5f5f5!important;
+ color-scheme:dark!important;background:#111!important;color:var(--fg)!important;
 }
 html[data-portfolio-mode="institutional"] :is(body,body[data-project-detail="true"],.institutional-main,.institutional-sidebar,.institutional-detail-sidebar,.institutional-project-info,.institutional-project-media,.institutional-archive,.institutional-contact,.institutional-search-panel,.system-controls,.bio-popup,.web-inspector){
- background:var(--bg)!important;color:var(--fg)!important;
+ background:#111!important;color:var(--fg)!important;
 }
 html[data-portfolio-mode="institutional"] :is(.institutional-sidebar,.institutional-detail-sidebar,.institutional-main,.institutional-entry,.institutional-entry-info,.institutional-project-info,.institutional-contact,.project-facts,.project-moments,.project-body,.prose,.lead,.institutional-main-heading,.institutional-archive-description,.institutional-entry-meta,.institutional-entry-meta *,h1,h2,h3,h4,p,span,small,label,dt,dd,li){
  color:var(--fg)!important;
@@ -1177,70 +1177,38 @@ html[data-portfolio-mode="institutional"] :is(.institutional-filters select,.ins
  background:transparent!important;color:var(--fg)!important;border-color:var(--line)!important;
 }
 html[data-portfolio-mode="institutional"] .institutional-contact-form button:hover{
- background:var(--fg)!important;color:var(--bg)!important;
+ background:#e8e8e8!important;color:#111!important;
 }
 html[data-portfolio-mode="institutional"] :is(.institutional-entry-image,.institutional-web-preview,.institutional-web-preview-frame,.institutional-lab-placeholder,.institutional-project-media .project-cover,.institutional-project-media .media-stream,.institutional-project-media .media-grid){
- background:#1a201b!important;
+ background:#111!important;
 }
 html[data-portfolio-mode="institutional"] :is(.institutional-entry,.institutional-sidebar,.institutional-detail-sidebar,.project-moment,.institutional-project-info .project-moment){
  border-color:var(--line)!important;
 }
-html[data-portfolio-mode="institutional"] :is(a:hover,button:hover,.institutional-sidebar-nav .is-active){
- color:var(--signal)!important;
-}
-html[data-portfolio-mode="institutional"] :is(.institutional-entry-image img,.institutional-entry-image video,.institutional-project-media img,.institutional-project-media video){
- filter:none!important;
-}
-
-/* EXPERIMENT — code-editor row hover. Revert this commit to undo the trial.
-   Institutional archive only; all detail galleries and Punk are untouched. */
-html[data-portfolio-mode="institutional"] .institutional-entries{
- counter-reset:editor-line;
-}
-html[data-portfolio-mode="institutional"] .institutional-entry{
- position:relative!important;isolation:isolate;
- transition:background-color .16s ease,border-color .16s ease!important;
- border-radius:0!important;
-}
-html[data-portfolio-mode="institutional"] .institutional-entry::before{
- content:""!important;position:absolute!important;inset:0!important;
- background:transparent!important;pointer-events:none!important;
- transition:background-color .16s ease!important;z-index:-1!important;
-}
-html[data-portfolio-mode="institutional"] .institutional-entry:hover::before,
-html[data-portfolio-mode="institutional"] .institutional-entry:focus-visible::before{
- background:#29342d!important;
-}
-html[data-portfolio-mode="institutional"] .institutional-entry:hover,
-html[data-portfolio-mode="institutional"] .institutional-entry:focus-visible{
- background:#29342d!important;outline:0!important;
+/* Terminal hover: glyphs change tone, background never changes. */
+html[data-portfolio-mode="institutional"] :is(.institutional-entry,.institutional-entry:hover,.institutional-entry:focus-visible,.institutional-entry::before,.institutional-entry:hover::before,.institutional-sidebar-nav a:hover,.institutional-sidebar-nav button:hover){
+ background:transparent!important;box-shadow:none!important;
 }
 html[data-portfolio-mode="institutional"] .institutional-entry-info{
- position:relative!important;padding-left:42px!important;
+ position:relative!important;padding-left:38px!important;
 }
 html[data-portfolio-mode="institutional"] .institutional-entry-number{
  position:absolute!important;left:0!important;top:2px!important;
  min-width:3ch!important;font:400 11px/1.5 "IBM Plex Mono",monospace!important;
- font-variant-numeric:tabular-nums!important;color:#849386!important;
+ font-variant-numeric:tabular-nums!important;color:#777!important;
 }
 html[data-portfolio-mode="institutional"] .institutional-entry:hover .institutional-entry-number,
 html[data-portfolio-mode="institutional"] .institutional-entry:focus-visible .institutional-entry-number{
- color:#d4e6aa!important;font-weight:600!important;
+ color:#fff!important;
 }
 html[data-portfolio-mode="institutional"] .institutional-entry:hover .institutional-entry-info h2,
 html[data-portfolio-mode="institutional"] .institutional-entry:focus-visible .institutional-entry-info h2{
- color:#d4e6aa!important;text-decoration:none!important;
+ color:#fff!important;text-decoration:underline!important;text-decoration-thickness:1px!important;
+ text-underline-offset:3px!important;
 }
-html[data-portfolio-mode="institutional"] .institutional-sidebar-nav :is(a,button){
- position:relative!important;transition:background-color .16s ease,color .16s ease!important;
+html[data-portfolio-mode="institutional"] .institutional-sidebar-nav :is(a,button):hover{
+ color:#fff!important;text-decoration:underline!important;text-underline-offset:3px!important;
 }
-html[data-portfolio-mode="institutional"] .institutional-sidebar-nav :is(a,button):hover,
-html[data-portfolio-mode="institutional"] .institutional-sidebar-nav :is(a,button):focus-visible{
- background:#29342d!important;color:#d4e6aa!important;
-}
-@media(prefers-reduced-motion:reduce){
- html[data-portfolio-mode="institutional"] .institutional-entry,
- html[data-portfolio-mode="institutional"] .institutional-entry::before{
-  transition:none!important;
- }
+html[data-portfolio-mode="institutional"] :is(.institutional-entry-image img,.institutional-entry-image video,.institutional-project-media img,.institutional-project-media video){
+ filter:none!important;
 }
