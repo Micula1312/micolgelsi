@@ -2,7 +2,7 @@
   const root=document.documentElement;
   const page=document.querySelector('main.page');
   if(!page || !document.body.dataset.projectDetail && !location.pathname.match(/\/works\/[^/]+\/?$/))return;
-  const mediaSelector='.project-cover,.media-stream,.media-grid,.video-list';
+  const mediaSelector='.project-cover,.media-stream,.media-grid,.video-list,.teaser-embed';
   const infoSelector='.eyebrow,.project-head,.intro,.project-body,.project-moments,.project-links,.related';
   const nodes=[...page.children].filter(node=>node.matches?.(mediaSelector+','+infoSelector));
   if(!nodes.length)return;
@@ -12,15 +12,32 @@
   const media=document.createElement('div');media.className='institutional-project-media';
   const info=document.createElement('div');info.className='institutional-project-info';
   layout.append(media,info);
+  const nestedMedia=[];
+  // Move the actual moment galleries, videos and photos to the media column in Institutional.
+  // Preserve original DOM positions so Punk is restored exactly when switching themes.
+  const collectNested=()=>{
+    if(nestedMedia.length)return;
+    page.querySelectorAll('.project-moment .moment-gallery,.project-moment .moment-single-video,.project-moment > img,.project-moment > video').forEach(node=>{
+      const moment=node.closest('.project-moment');
+      const heading=moment?.querySelector('.output-title')?.textContent?.trim()||'';
+      const marker=document.createComment('original-moment-media');node.before(marker);
+      const wrapper=document.createElement('figure');wrapper.className='institutional-moment-media';
+      if(heading){const caption=document.createElement('figcaption');caption.textContent=heading;wrapper.append(caption)}
+      nestedMedia.push({node,marker,wrapper});
+    });
+  };
   let active=false;
   const update=()=>{
     const institutional=root.dataset.portfolioMode==='institutional';
     if(institutional===active)return;
     active=institutional;
     if(institutional){
+      collectNested();
       page.prepend(layout);
       nodes.forEach(node=>(node.matches(mediaSelector)?media:info).append(node));
+      nestedMedia.forEach(({node,wrapper})=>{wrapper.append(node);media.append(wrapper)});
     }else{
+      nestedMedia.forEach(({node,marker,wrapper})=>{marker.after(node);wrapper.remove()});
       markers.forEach(({node,marker})=>marker.after(node));
       layout.remove();
     }
