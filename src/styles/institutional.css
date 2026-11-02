@@ -1303,3 +1303,36 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  object-fit:contain!important;
 }
 html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .media-stream::-webkit-scrollbar{display:none!important}
+
+/* Preserve the source aspect ratio of every featured media item.
+   No forced cover crop or viewport-sized video in Institutional. */
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .project-cover{
+ display:block!important;width:100%!important;max-width:100%!important;
+ height:auto!important;min-height:0!important;max-height:none!important;
+ aspect-ratio:auto!important;overflow:visible!important;
+ margin:0 0 12px!important;padding:0!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .project-cover :is(img,video){
+ display:block!important;width:auto!important;max-width:100%!important;
+ height:auto!important;max-height:none!important;
+ aspect-ratio:auto!important;object-fit:contain!important;
+ object-position:left top!important;margin:0!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .media-stream>figure{
+ flex:0 0 auto!important;width:auto!important;min-width:0!important;
+ max-width:none!important;height:auto!important;aspect-ratio:auto!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .media-stream>figure :is(img,video){
+ display:block!important;width:auto!important;max-width:min(75vw,560px)!important;
+ height:auto!important;max-height:360px!important;
+ aspect-ratio:auto!important;object-fit:contain!important;
+ object-position:left top!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media .moment-gallery>.moment-thumb{
+ flex:0 0 auto!important;width:auto!important;height:auto!important;
+ min-width:0!important;aspect-ratio:auto!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media .moment-gallery>.moment-thumb :is(img,video){
+ width:auto!important;height:auto!important;max-width:min(75vw,560px)!important;
+ max-height:360px!important;aspect-ratio:auto!important;object-fit:contain!important;
+}
