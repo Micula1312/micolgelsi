@@ -97,3 +97,51 @@ html[data-portfolio-mode="institutional"] .institutional-entry:hover h2{text-dec
  html[data-portfolio-mode="institutional"] .institutional-entry h2{margin:8px 0 12px;font-size:32px!important}
  html[data-portfolio-mode="institutional"] .institutional-entry-info>p{margin-bottom:20px}
 }
+
+/* Institutional v2: strict white, terminal typography, zero visual effects. */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+html[data-portfolio-mode="institutional"]{
+ --bg:#fff!important;--fg:#111!important;--muted:#666!important;--line:#dedede!important;
+ --signal:#111!important;--institutional-mono:"IBM Plex Mono","Courier New",monospace;
+ background:#fff!important;color:#111!important;
+}
+html[data-portfolio-mode="institutional"] body,
+html[data-portfolio-mode="institutional"] .institutional-entry-info>p,
+html[data-portfolio-mode="institutional"] .institutional-intro,
+html[data-portfolio-mode="institutional"] .project-description,
+html[data-portfolio-mode="institutional"] .project-body,
+html[data-portfolio-mode="institutional"] .project-copy,
+html[data-portfolio-mode="institutional"] .prose,
+html[data-portfolio-mode="institutional"] article p{
+ font-family:var(--institutional-mono)!important;font-size:13px!important;line-height:1.7!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry-info>p{font-size:12px!important;line-height:1.65!important}
+html[data-portfolio-mode="institutional"] .institutional-sidebar-nav,
+html[data-portfolio-mode="institutional"] .institutional-kicker,
+html[data-portfolio-mode="institutional"] .institutional-main-heading,
+html[data-portfolio-mode="institutional"] .institutional-entry-number,
+html[data-portfolio-mode="institutional"] .institutional-entry-meta,
+html[data-portfolio-mode="institutional"] .institutional-sidebar-foot,
+html[data-portfolio-mode="institutional"] .site-nav,
+html[data-portfolio-mode="institutional"] .system-controls,
+html[data-portfolio-mode="institutional"] .project-facts{
+ font-family:var(--institutional-mono)!important;font-size:10px!important;letter-spacing:0!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-sidebar h1{font-size:clamp(36px,4.4vw,70px)!important}
+html[data-portfolio-mode="institutional"] .institutional-entry h2{font-size:clamp(24px,2.6vw,42px)!important}
+html[data-portfolio-mode="institutional"] .institutional-entry{grid-template-columns:minmax(150px,34%) minmax(0,1fr);gap:clamp(18px,2.5vw,38px);padding:24px 0}
+html[data-portfolio-mode="institutional"] .institutional-entry-image{background:#fff}
+html[data-portfolio-mode="institutional"] *,
+html[data-portfolio-mode="institutional"] *::before,
+html[data-portfolio-mode="institutional"] *::after{
+ box-shadow:none!important;text-shadow:none!important;filter:none!important;backdrop-filter:none!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry,
+html[data-portfolio-mode="institutional"] .institutional-entry-image,
+html[data-portfolio-mode="institutional"] .institutional-sidebar,
+html[data-portfolio-mode="institutional"] .institutional-main{background:#fff!important}
+html[data-portfolio-mode="institutional"] .institutional-entry-image img,
+html[data-portfolio-mode="institutional"] .institutional-entry-image video{filter:none!important}
+html[data-portfolio-mode="institutional"] .entry-gate,
+html[data-portfolio-mode="institutional"] .project-entry-loader{display:none!important}
+@media(max-width:760px){html[data-portfolio-mode="institutional"] .institutional-entry{grid-template-columns:1fr;gap:12px}html[data-portfolio-mode="institutional"] .institutional-entry h2{font-size:30px!important}}
