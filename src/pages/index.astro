@@ -25,7 +25,7 @@ const labStars=labProjects.map((project,index)=>({
 }));
 ---
 <BaseLayout title="Micol Gelsi">
-<section class="institutional-archive" aria-label="Selected projects">
+<section class="institutional-archive" aria-label="Portfolio archive" data-institutional-archive>
   <aside class="institutional-sidebar">
     <div class="institutional-sidebar-top">
       <p class="institutional-kicker">ARTIST / RESEARCHER / CREATIVE CODER</p>
@@ -33,21 +33,67 @@ const labStars=labProjects.map((project,index)=>({
       <p class="institutional-intro">Working across collective archives, urban wilderness, performative media and experimental digital practices.</p>
     </div>
     <nav class="institutional-sidebar-nav" aria-label="Portfolio sections">
-      <a href="#institutional-projects">Selected projects</a>
+      <button type="button" class="institutional-section-link is-active" data-institutional-section="art" aria-pressed="true">Artistic practice</button>
+      <button type="button" class="institutional-section-link" data-institutional-section="web" aria-pressed="false">Web development</button>
+      <button type="button" class="institutional-section-link" data-institutional-section="lab" aria-pressed="false">Lab</button>
       <a href={`${base}research/`}>Research</a>
       <a href={`${base}cv/`}>CV</a>
       <a href={`${base}play-with-me/`}>Contact</a>
     </nav>
-    <p class="institutional-sidebar-foot">ROME / ITALY<br/>© {new Date().getFullYear()}</p>
+    <p class="institutional-sidebar-foot">ROME / ITALY</p>
   </aside>
   <div class="institutional-main" id="institutional-projects">
-    <div class="institutional-main-heading"><span>SELECTED PROJECTS</span><span>{items.length} ENTRIES</span></div>
-    {items.sort((a,b)=>String(b.start).localeCompare(String(a.start))).map((item,index)=><a class="institutional-entry" href={item.externalLink?item.href:`${base}${item.href.slice(1)}`}>
-      <div class="institutional-entry-image">{(item.data.cover||item.data.avatar) && ( /\\.mp4(?:$|\\?)/i.test(item.data.cover||item.data.avatar) ? <video src={item.data.cover||item.data.avatar} muted playsinline preload="metadata" /> : <img src={item.data.cover||item.data.avatar} alt="" loading="lazy" />)}</div>
-      <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{item.data.title}</h2><p>{item.data.summary}</p><div class="institutional-entry-meta"><span>{item.data.displayType||item.data.kind||item.data.type||'PROJECT'}</span><span>{item.start||item.yearGroup}{item.end&&item.end!==item.start?' — '+item.end:''}</span></div></div>
-    </a>)}
+    <div class="institutional-main-heading">
+      <span data-institutional-heading>ARTISTIC PRACTICE</span>
+      <div class="institutional-filters" aria-label="Archive view">
+        <button type="button" data-institutional-filter="year" class="is-active" aria-pressed="true">Year</button>
+        <button type="button" data-institutional-filter="context" aria-pressed="false">Context</button>
+        <button type="button" data-institutional-filter="research" aria-pressed="false">Research</button>
+      </div>
+    </div>
+    <div class="institutional-entries" data-institutional-entries>
+      {items.slice().sort((a,b)=>String(b.start).localeCompare(String(a.start))).map((item,index)=><a class="institutional-entry" data-institutional-entry data-institutional-category={item.lane==='external'?'web':'art'} data-institutional-year={item.yearGroup} data-institutional-context={item.data.displayType||item.data.kind||item.data.type||'project'} data-institutional-research={item.researchAreas.join(', ')} href={item.externalLink?item.href:`${base}${item.href.slice(1)}`}>
+        <div class="institutional-entry-image">{(item.data.cover||item.data.avatar) && ( /\\.mp4(?:$|\\?)/i.test(item.data.cover||item.data.avatar) ? <video src={item.data.cover||item.data.avatar} muted playsinline preload="metadata" /> : <img src={item.data.cover||item.data.avatar} alt="" loading="lazy" />)}</div>
+        <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{item.data.title}</h2><p>{item.data.summary}</p><div class="institutional-entry-meta"><span>{item.data.displayType||item.data.kind||item.data.type||'PROJECT'}</span><span>{item.start||item.yearGroup}{item.end&&item.end!==item.start?' — '+item.end:''}</span></div></div>
+      </a>)}
+      {labProjects.map((project,index)=><a class="institutional-entry institutional-lab-entry" data-institutional-entry data-institutional-category="lab" data-institutional-year="" data-institutional-context={project.type||'lab'} data-institutional-research="lab" href={project.demo||project.repository||'#'} target="_blank" rel="noopener noreferrer">
+        <div class="institutional-entry-image">{project.image?<img src={project.image} alt="" loading="lazy" />:<span class="institutional-lab-placeholder" aria-hidden="true">★</span>}</div>
+        <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{project.title}</h2><p>{project.description||project.type}</p><div class="institutional-entry-meta"><span>{project.type||'LAB'}</span></div></div>
+      </a>)}
+    </div>
   </div>
 </section>
+<script is:inline>
+(() => {
+  const archive=document.querySelector('[data-institutional-archive]');
+  if(!archive)return;
+  const entries=[...archive.querySelectorAll('[data-institutional-entry]')];
+  const sections=[...archive.querySelectorAll('[data-institutional-section]')];
+  const filters=[...archive.querySelectorAll('[data-institutional-filter]')];
+  const heading=archive.querySelector('[data-institutional-heading]');
+  const container=archive.querySelector('[data-institutional-entries]');
+  const main=archive.querySelector('.institutional-main');
+  const names={art:'ARTISTIC PRACTICE',web:'WEB DEVELOPMENT',lab:'LAB'};
+  let category='art',filter='year';
+  const apply=()=>{
+    sections.forEach(b=>{const active=b.dataset.institutionalSection===category;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
+    filters.forEach(b=>{const active=b.dataset.institutionalFilter===filter;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
+    heading.textContent=names[category];
+    const visible=entries.filter(entry=>entry.dataset.institutionalCategory===category);
+    entries.forEach(entry=>entry.hidden=!visible.includes(entry));
+    const key=filter==='year'?'institutionalYear':filter==='context'?'institutionalContext':'institutionalResearch';
+    visible.sort((a,b)=>filter==='year'?b.dataset[key].localeCompare(a.dataset[key]):a.dataset[key].localeCompare(b.dataset[key])).forEach((entry,index)=>{
+      container.appendChild(entry);
+      const number=entry.querySelector('.institutional-entry-number');
+      if(number)number.textContent=String(index+1).padStart(2,'0');
+    });
+    main.scrollTop=0;
+  };
+  sections.forEach(b=>b.addEventListener('click',()=>{category=b.dataset.institutionalSection;apply();}));
+  filters.forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.institutionalFilter;apply();}));
+  apply();
+})();
+</script>
 
 <section id="projects" class="work-index" aria-labelledby="projects-heading">
 <div class="index-toolbar"><h1 id="projects-heading" data-projects-heading data-en="Projects" data-it="Progetti">Projects</h1><div class="view-switch" aria-label="Arrange projects by"><button class="view-button is-active" type="button" data-view="year" aria-pressed="true">Year</button><button class="view-button" type="button" data-view="type" aria-pressed="false">Context</button><button class="view-button" type="button" data-view="research" aria-pressed="false">Research</button></div></div>
