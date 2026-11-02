@@ -35,7 +35,7 @@
       collectNested();
       page.prepend(layout);
       nodes.forEach(node=>(node.matches(mediaSelector)?media:info).append(node));
-      nestedMedia.forEach(({node,wrapper})=>{wrapper.append(node);media.append(wrapper);if(node.matches('.moment-gallery'))setupMomentHover(node);node.querySelectorAll?.('.moment-gallery').forEach(setupMomentHover)});
+      nestedMedia.forEach(({node,wrapper})=>{wrapper.append(node);media.append(wrapper)});
     }else{
       nestedMedia.forEach(({node,marker,wrapper})=>{marker.after(node);wrapper.remove()});
       markers.forEach(({node,marker})=>marker.after(node));
@@ -60,36 +60,6 @@
       last=0;raf=requestAnimationFrame(tick);
     });
     gallery.addEventListener('pointerleave',()=>{if(raf)cancelAnimationFrame(raf);raf=0;last=0});
-  });
-  // Smooth, reversible hover auto-scroll for Institutional Moment galleries.
-  // No changes to the Punk gallery behavior or media source files.
-  const hoverCarousels=new WeakSet();
-  const setupMomentHover=gallery=>{
-    if(hoverCarousels.has(gallery))return;
-    hoverCarousels.add(gallery);
-    let frame=0,previous=0,direction=1;
-    const stop=()=>{if(frame)cancelAnimationFrame(frame);frame=0;previous=0};
-    const tick=now=>{
-      if(root.dataset.portfolioMode!=='institutional'){stop();return}
-      const max=gallery.scrollWidth-gallery.clientWidth;
-      if(max<=1){stop();return}
-      if(previous)gallery.scrollLeft+=direction*Math.min((now-previous)/1000,.05)*46;
-      previous=now;
-      if(gallery.scrollLeft>=max-1)direction=-1;
-      else if(gallery.scrollLeft<=1)direction=1;
-      frame=requestAnimationFrame(tick);
-    };
-    gallery.addEventListener('pointerenter',()=>{
-      if(root.dataset.portfolioMode!=='institutional'||matchMedia('(prefers-reduced-motion: reduce)').matches||frame)return;
-      previous=0;frame=requestAnimationFrame(tick);
-    });
-    gallery.addEventListener('pointerleave',stop);
-    gallery.addEventListener('pointercancel',stop);
-    window.addEventListener('portfolio-mode-change',stop);
-  };
-  nestedMedia.forEach(({node})=>{
-    if(node.matches('.moment-gallery'))setupMomentHover(node);
-    node.querySelectorAll?.('.moment-gallery').forEach(setupMomentHover);
   });
   window.addEventListener('portfolio-mode-change',update);
   update();
