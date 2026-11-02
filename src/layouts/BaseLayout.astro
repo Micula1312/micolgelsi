@@ -294,5 +294,18 @@ const loader = homeConfig.loader;
     <script is:inline src={withBase('home-loader.js')}></script>
     <script is:inline src={withBase('play-save.js')}></script>
     {projectDetail&&<script is:inline src={withBase('featured-gallery.js')}></script>}
+      <script is:inline>
+      (() => {
+        const replaceStatus = root => {
+          const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+          let node;
+          while((node=walker.nextNode())){
+            if(node.parentElement?.closest('script,style,textarea,code,pre'))continue;
+            if(/^\s*ongoing\s*$/i.test(node.nodeValue))node.nodeValue=node.nodeValue.replace(/ongoing/i,'WIP');
+          }
+        };
+        document.addEventListener('DOMContentLoaded',()=>replaceStatus(document.body));
+      })();
+    </script>
   </body>
 </html>
