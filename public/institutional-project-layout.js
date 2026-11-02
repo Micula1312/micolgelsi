@@ -73,7 +73,7 @@
   // MomentGallery already has its own hover loop. We only provide a fallback
   // for galleries that are not initialized, and for generic media strips.
   media.addEventListener('pointerover',event=>{
-    const gallery=event.target.closest?.('.media-stream,.media-grid,.moment-gallery');
+    const gallery=event.target.closest?.('.moment-gallery');
     if(!gallery||!media.contains(gallery))return;
     if(gallery.matches('.moment-gallery')&&gallery.hasAttribute('data-gallery-ready'))return;
     if(event.relatedTarget&&gallery.contains(event.relatedTarget))return;
@@ -97,6 +97,47 @@
     if(Math.abs(next-media.scrollTop)>.5){event.preventDefault();media.scrollTop=next}
   },{passive:false});
   // Restore Punk's exact original document flow when switching back.
+  // Featured gallery rail: attach directly, not through delegated pointerover.
+  // A horizontal rail can have more content than its clipped viewport.
+  const railStates=new WeakMap();
+  const attachRails=()=>{
+    page.querySelectorAll('.media-stream,.media-grid').forEach(rail=>{
+      if(railStates.has(rail))return;
+      const state={raf:0,last:0,direction:1};
+      railStates.set(rail,state);
+      const stop=()=>{cancelAnimationFrame(state.raf);state.raf=0;state.last=0};
+      const frame=t=>{
+        if(root.dataset.portfolioMode!=='institutional'){stop();return}
+        const max=rail.scrollWidth-rail.clientWidth;
+        if(max>1){
+          const dt=state.last?Math.min((t-state.last)/1000,.05):0;
+          rail.scrollLeft=Math.max(0,Math.min(max,rail.scrollLeft+state.direction*90*dt));
+          if(rail.scrollLeft>=max-1)state.direction=-1;
+          if(rail.scrollLeft<=1)state.direction=1;
+        }
+        state.last=t;
+        state.raf=requestAnimationFrame(frame);
+      };
+      rail.addEventListener('pointerenter',()=>{
+        if(root.dataset.portfolioMode!=='institutional'||matchMedia('(prefers-reduced-motion: reduce)').matches||state.raf)return;
+        state.raf=requestAnimationFrame(frame);
+      });
+      rail.addEventListener('pointerleave',stop);
+      rail.addEventListener('wheel',event=>{
+        if(root.dataset.portfolioMode!=='institutional'||event.ctrlKey)return;
+        const max=rail.scrollWidth-rail.clientWidth;
+        if(max<=1)return;
+        const delta=Math.abs(event.deltaX)>Math.abs(event.deltaY)?event.deltaX:event.deltaY;
+        const next=Math.max(0,Math.min(max,rail.scrollLeft+delta));
+        if(Math.abs(next-rail.scrollLeft)>.5){
+          event.preventDefault();rail.scrollLeft=next;
+        }
+      },{passive:false});
+    });
+  };
+  // The rail may be reparented on theme change; listeners remain attached.
+  window.addEventListener('portfolio-mode-change',()=>requestAnimationFrame(attachRails));
+  attachRails();
   window.addEventListener('portfolio-mode-change',update);
   update();
 })();
