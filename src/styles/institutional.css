@@ -566,3 +566,66 @@ html[data-portfolio-mode="institutional"] .institutional-project-layout .institu
 html[data-portfolio-mode="institutional"] .institutional-project-layout .institutional-project-info :is(.project-moments img,.project-moments video){
  width:100%!important;height:auto!important;max-height:none!important;object-fit:contain!important;
 }
+
+/* Institutional detail shell: same permanent index as homepage. */
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"]{background:#fff!important;color:#111!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .site-header{display:none!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .shell{
+ display:grid!important;grid-template-columns:minmax(240px,30%) minmax(0,1fr)!important;
+ gap:0!important;width:100%!important;max-width:none!important;
+ margin:0!important;padding:0!important;min-height:100dvh!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar{
+ display:flex!important;flex-direction:column!important;align-items:flex-start!important;
+ position:sticky!important;top:0!important;height:100dvh!important;
+ padding:30px 20px 24px 10px!important;box-sizing:border-box!important;
+ background:#fff!important;color:#111!important;
+ font:400 11px/1.7 "IBM Plex Mono",monospace!important;
+}
+html:not([data-portfolio-mode="institutional"]) .institutional-detail-sidebar{display:none!important}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar :is(a,p,span,button){
+ font:400 11px/1.7 "IBM Plex Mono",monospace!important;
+ color:#111!important;background:none!important;border:0!important;
+ padding:0!important;margin:0!important;text-transform:none!important;
+ letter-spacing:0!important;text-decoration:none!important;font-style:normal!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar-top{display:flex;flex-direction:column;gap:15px;max-width:250px}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar-top>p:first-child,
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar-bottom>span{color:#888!important}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-detail-intro{max-width:30ch!important}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar nav{
+ display:flex!important;flex-direction:column!important;align-items:flex-start!important;
+ gap:4px!important;margin-top:80px!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar nav a:hover,
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar-bottom button:hover{text-decoration:underline!important}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar-bottom{
+ margin-top:auto!important;display:flex!important;flex-direction:column!important;gap:12px!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar-bottom button{
+ cursor:pointer!important;text-decoration:underline!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] main.page{
+ width:100%!important;max-width:none!important;margin:0!important;
+ padding:22px 24px 70px!important;box-sizing:border-box!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-layout{
+ grid-template-columns:minmax(0,2fr) minmax(0,3fr)!important;
+ gap:clamp(20px,3vw,48px)!important;padding:0!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info{
+ top:22px!important;max-height:calc(100dvh - 44px)!important;
+}
+@media(max-width:760px){
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .shell{display:block!important}
+ html[data-portfolio-mode="institutional"] .institutional-detail-sidebar{
+  position:relative!important;height:auto!important;min-height:0!important;
+  padding:16px!important;gap:14px!important;
+ }
+ html[data-portfolio-mode="institutional"] .institutional-detail-sidebar nav{
+  margin-top:12px!important;flex-direction:row!important;flex-wrap:wrap!important;gap:10px!important;
+ }
+ html[data-portfolio-mode="institutional"] .institutional-detail-sidebar-bottom{margin-top:10px!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] main.page{padding:16px!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-layout{display:flex!important;flex-direction:column!important}
+}
