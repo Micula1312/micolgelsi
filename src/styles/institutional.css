@@ -1191,3 +1191,56 @@ html[data-portfolio-mode="institutional"] :is(a:hover,button:hover,.institutiona
 html[data-portfolio-mode="institutional"] :is(.institutional-entry-image img,.institutional-entry-image video,.institutional-project-media img,.institutional-project-media video){
  filter:none!important;
 }
+
+/* EXPERIMENT — code-editor row hover. Revert this commit to undo the trial.
+   Institutional archive only; all detail galleries and Punk are untouched. */
+html[data-portfolio-mode="institutional"] .institutional-entries{
+ counter-reset:editor-line;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry{
+ position:relative!important;isolation:isolate;
+ transition:background-color .16s ease,border-color .16s ease!important;
+ border-radius:0!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry::before{
+ content:""!important;position:absolute!important;inset:0!important;
+ background:transparent!important;pointer-events:none!important;
+ transition:background-color .16s ease!important;z-index:-1!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry:hover::before,
+html[data-portfolio-mode="institutional"] .institutional-entry:focus-visible::before{
+ background:#29342d!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry:hover,
+html[data-portfolio-mode="institutional"] .institutional-entry:focus-visible{
+ background:#29342d!important;outline:0!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry-info{
+ position:relative!important;padding-left:42px!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry-number{
+ position:absolute!important;left:0!important;top:2px!important;
+ min-width:3ch!important;font:400 11px/1.5 "IBM Plex Mono",monospace!important;
+ font-variant-numeric:tabular-nums!important;color:#849386!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry:hover .institutional-entry-number,
+html[data-portfolio-mode="institutional"] .institutional-entry:focus-visible .institutional-entry-number{
+ color:#d4e6aa!important;font-weight:600!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry:hover .institutional-entry-info h2,
+html[data-portfolio-mode="institutional"] .institutional-entry:focus-visible .institutional-entry-info h2{
+ color:#d4e6aa!important;text-decoration:none!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-sidebar-nav :is(a,button){
+ position:relative!important;transition:background-color .16s ease,color .16s ease!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-sidebar-nav :is(a,button):hover,
+html[data-portfolio-mode="institutional"] .institutional-sidebar-nav :is(a,button):focus-visible{
+ background:#29342d!important;color:#d4e6aa!important;
+}
+@media(prefers-reduced-motion:reduce){
+ html[data-portfolio-mode="institutional"] .institutional-entry,
+ html[data-portfolio-mode="institutional"] .institutional-entry::before{
+  transition:none!important;
+ }
+}
