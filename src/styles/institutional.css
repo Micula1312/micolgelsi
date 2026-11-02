@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 /* Institutional reading mode. Punk remains the unmodified default. */
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 @font-face{font-family:"Reglo";src:url("https://raw.githubusercontent.com/sebsan/Reglo/master/Reglo-Bold.otf") format("opentype");font-weight:700;font-display:swap}
@@ -99,7 +100,7 @@ html[data-portfolio-mode="institutional"] .institutional-entry:hover h2{text-dec
 }
 
 /* Institutional v2: strict white, terminal typography, zero visual effects. */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
 html[data-portfolio-mode="institutional"]{
  --bg:#fff!important;--fg:#111!important;--muted:#666!important;--line:#dedede!important;
  --signal:#111!important;--institutional-mono:"IBM Plex Mono","Courier New",monospace;
