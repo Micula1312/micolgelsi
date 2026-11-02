@@ -42,24 +42,48 @@
       layout.remove();
     }
   };
-  // MomentGallery handles its own hover scrolling; generic galleries use the same behavior.
-  page.querySelectorAll('.media-stream,.media-grid').forEach(gallery=>{
-    let raf=0,last=0,direction=1;
+  // Delegate hover so galleries moved into the Institutional column still work.
+  // Avoid duplicate animation loops and leave Punk gallery behavior unchanged.
+  const animations=new Map();
+  const stopGallery=gallery=>{
+    const state=animations.get(gallery);
+    if(state)cancelAnimationFrame(state.raf);
+    animations.delete(gallery);
+  };
+  const startGallery=gallery=>{
+    if(root.dataset.portfolioMode!=='institutional'||
+       matchMedia('(prefers-reduced-motion: reduce)').matches||
+       animations.has(gallery))return;
+    const state={raf:0,previous:0,direction:1};
     const tick=now=>{
-      if(root.dataset.portfolioMode!=='institutional'){raf=0;return}
+      if(root.dataset.portfolioMode!=='institutional'){stopGallery(gallery);return}
       const max=gallery.scrollWidth-gallery.clientWidth;
-      if(max<=1){raf=0;return}
-      if(last)gallery.scrollLeft+=direction*Math.min((now-last)/1000,.05)*30;
-      last=now;
-      if(gallery.scrollLeft>=max-1)direction=-1;
-      if(gallery.scrollLeft<=1)direction=1;
-      raf=requestAnimationFrame(tick);
+      if(max<=1){stopGallery(gallery);return}
+      if(state.previous){
+        gallery.scrollLeft+=state.direction*Math.min((now-state.previous)/1000,.05)*58;
+        if(gallery.scrollLeft>=max-1)state.direction=-1;
+        else if(gallery.scrollLeft<=1)state.direction=1;
+      }
+      state.previous=now;
+      state.raf=requestAnimationFrame(tick);
     };
-    gallery.addEventListener('pointerenter',()=>{
-      if(root.dataset.portfolioMode!=='institutional'||matchMedia('(prefers-reduced-motion: reduce)').matches||raf)return;
-      last=0;raf=requestAnimationFrame(tick);
-    });
-    gallery.addEventListener('pointerleave',()=>{if(raf)cancelAnimationFrame(raf);raf=0;last=0});
+    animations.set(gallery,state);
+    state.raf=requestAnimationFrame(tick);
+  };
+  // MomentGallery already has its own hover loop. We only provide a fallback
+  // for galleries that are not initialized, and for generic media strips.
+  media.addEventListener('pointerover',event=>{
+    const gallery=event.target.closest?.('.media-stream,.media-grid,.moment-gallery');
+    if(!gallery||!media.contains(gallery))return;
+    if(gallery.matches('.moment-gallery')&&gallery.hasAttribute('data-gallery-ready'))return;
+    if(event.relatedTarget&&gallery.contains(event.relatedTarget))return;
+    startGallery(gallery);
+  });
+  media.addEventListener('pointerout',event=>{
+    const gallery=event.target.closest?.('.media-stream,.media-grid,.moment-gallery');
+    if(!gallery)return;
+    if(event.relatedTarget&&gallery.contains(event.relatedTarget))return;
+    stopGallery(gallery);
   });
   window.addEventListener('portfolio-mode-change',update);
   update();
