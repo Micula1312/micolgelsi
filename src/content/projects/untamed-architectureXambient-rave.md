@@ -6,7 +6,7 @@ displayType: "multimedia performance"
 year: "2025"
 startDate: "2025-07"
 status: ongoing
-summary: "A multimedia performance exploring urban wilderness in the Aniene River Nature Reserve through the live manipulation of materials in & from the hyper-object Archive of the #Untamed, accompanied by the sonic narrative of Rome-based DJ and producer Stiky Verde."
+summary: "A performative activation of Archive of the Untamed, translating archival materials connected to the protection of Rome's Aniene River Nature Reserve into a collective audiovisual experience through live image manipulation, sound and multimedia performance."
 medium:
   - "audiovisual performance"
   - "live media manipulation"
@@ -14,7 +14,7 @@ medium:
   - "listening practice"
 researchAreas:
   - urban-wilderness
-  - more-than-human-relations
+  - generative-archives
   - live-data-manipulation
 collaborators:
   - "Stiky Verde Giuseppe di Capua Federico Russo Elisa Catalano Paolo Rucci"
@@ -74,8 +74,12 @@ works:
   []
 ---
 
-A 30-minute multimedia performance unfolding within the physical space of the installation and exploring urban wilderness in the Aniene River Nature Reserve. Drawing on materials from the web-based Archive of the #Untamed, the artists improvise live with images, sounds and data. Like archivists, they place their own interpretative filters on these materials, making the construction of the narrative itself part of the work.
+#untamed-architecture × @ambient-rave is a performative activation of Archive of the Untamed, a collective web-based archive investigating urban wilderness and the relationships between territories, communities and forms of resistance.
 
-The reconstructed walk can also be experienced from Lilo’s perspective, introducing a more-than-human point of view that shifts attention and orientation away from an exclusively human perception of the territory.
+Drawing on materials collected around the protection of the Aniene River Nature Reserve in Rome, the performance brings the archive into physical space, reinterpreting its contents through live visuals, sound and multimedia experimentation.
 
-The performance features live video manipulation by Giuseppe Di Capua and Federico Russo, a sonic narrative by Rome-based DJ and producer Stiky Verde, and an audio-reactive choreographic light intervention by Elisa Catalano and Paolo Rucci.
+A reconstructed walk through the reserve becomes the starting point for a 30-minute audiovisual improvisation. Images, sounds and archival fragments are manipulated in real time, while the artists act as temporary archivists, exposing the subjective filters through which territories are documented, remembered and narrated.
+
+The walk also unfolds through Lilo's perspective, introducing a more-than-human point of view that challenges an exclusively human reading of the landscape.
+
+The performance brings together live video manipulation by Giuseppe Di Capua and Federico Russo, a sonic narrative by Stiky Verde, and an audio-reactive choreographic light intervention by Elisa Catalano and Paolo Rucci.
