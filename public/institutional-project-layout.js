@@ -42,6 +42,25 @@
       layout.remove();
     }
   };
+  // MomentGallery handles its own hover scrolling; generic galleries use the same behavior.
+  page.querySelectorAll('.media-stream,.media-grid').forEach(gallery=>{
+    let raf=0,last=0,direction=1;
+    const tick=now=>{
+      if(root.dataset.portfolioMode!=='institutional'){raf=0;return}
+      const max=gallery.scrollWidth-gallery.clientWidth;
+      if(max<=1){raf=0;return}
+      if(last)gallery.scrollLeft+=direction*Math.min((now-last)/1000,.05)*30;
+      last=now;
+      if(gallery.scrollLeft>=max-1)direction=-1;
+      if(gallery.scrollLeft<=1)direction=1;
+      raf=requestAnimationFrame(tick);
+    };
+    gallery.addEventListener('pointerenter',()=>{
+      if(root.dataset.portfolioMode!=='institutional'||matchMedia('(prefers-reduced-motion: reduce)').matches||raf)return;
+      last=0;raf=requestAnimationFrame(tick);
+    });
+    gallery.addEventListener('pointerleave',()=>{if(raf)cancelAnimationFrame(raf);raf=0;last=0});
+  });
   window.addEventListener('portfolio-mode-change',update);
   update();
 })();
