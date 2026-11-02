@@ -446,16 +446,8 @@ html[data-portfolio-mode="institutional"] .institutional-archive-description{
 html[data-portfolio-mode="institutional"] .institutional-archive-description[hidden]{display:none!important}
 
 /* Detail repair: isolate layout from Punk page grid and legacy panel sizing. */
-html[data-portfolio-mode="institutional"] body:has(.institutional-project-layout){
- height:auto!important;min-height:100dvh!important;overflow-y:auto!important;overflow-x:hidden!important;
-}
-html[data-portfolio-mode="institutional"] body:has(.institutional-project-layout) .shell,
-html[data-portfolio-mode="institutional"] body:has(.institutional-project-layout) main.page{
- display:block!important;position:relative!important;float:none!important;
- height:auto!important;min-height:0!important;max-height:none!important;
- overflow:visible!important;width:calc(100% - 48px)!important;max-width:none!important;
- margin:0 auto!important;padding:0!important;
-}
+/* Obsolete body:has() shell overrides removed: they forced display:block,
+   prevented the fixed-height grid from scrolling and clipped both columns. */
 html[data-portfolio-mode="institutional"] .institutional-project-layout{
  display:grid!important;grid-template-columns:minmax(0,2fr) minmax(0,3fr)!important;
  grid-template-areas:"info media"!important;
@@ -1129,4 +1121,35 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
 }
 html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(.institutional-project-media,.institutional-project-info,.moment-gallery,.media-stream,.media-grid)::-webkit-scrollbar{
  display:none!important;width:0!important;height:0!important;
+}
+
+/* Single authoritative desktop detail geometry, overriding legacy :has selectors. */
+@media(min-width:761px){
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"]:has(.institutional-project-layout){
+  height:100dvh!important;min-height:0!important;overflow:hidden!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"]:has(.institutional-project-layout) .shell{
+  display:grid!important;position:relative!important;
+  grid-template-columns:clamp(155px,17vw,260px) minmax(0,1fr)!important;
+  width:100%!important;max-width:100%!important;height:100dvh!important;
+  min-height:0!important;max-height:100dvh!important;
+  margin:0!important;padding:0!important;overflow:hidden!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"]:has(.institutional-project-layout) main.page{
+  display:block!important;position:relative!important;
+  width:100%!important;max-width:100%!important;height:100dvh!important;
+  min-width:0!important;min-height:0!important;max-height:100dvh!important;
+  margin:0!important;padding:12px 18px 12px 0!important;overflow:hidden!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-layout{
+  grid-template-rows:minmax(0,1fr)!important;
+  height:100%!important;min-height:0!important;max-height:100%!important;
+  overflow:hidden!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media,
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info{
+  height:100%!important;min-height:0!important;max-height:100%!important;
+  overflow-y:auto!important;overflow-x:hidden!important;
+  scrollbar-width:none!important;overscroll-behavior-y:contain!important;
+ }
 }
