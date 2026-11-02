@@ -24,6 +24,30 @@ const labStars=labProjects.map((project,index)=>({
 }));
 ---
 <BaseLayout title="Micol Gelsi">
+<section class="institutional-archive" aria-label="Selected projects">
+  <aside class="institutional-sidebar">
+    <div class="institutional-sidebar-top">
+      <p class="institutional-kicker">ARTIST / RESEARCHER / CREATIVE CODER</p>
+      <h1>MICOL GELSI</h1>
+      <p class="institutional-intro">Working across collective archives, urban wilderness, performative media and experimental digital practices.</p>
+    </div>
+    <nav class="institutional-sidebar-nav" aria-label="Portfolio sections">
+      <a href="#institutional-projects">Selected projects</a>
+      <a href="/research/">Research</a>
+      <a href="/cv/">CV</a>
+      <a href="/play-with-me/">Contact</a>
+    </nav>
+    <p class="institutional-sidebar-foot">ROME / ITALY<br/>© {new Date().getFullYear()}</p>
+  </aside>
+  <div class="institutional-main" id="institutional-projects">
+    <div class="institutional-main-heading"><span>SELECTED PROJECTS</span><span>{items.filter(item=>item.lane==='artistic').length} ENTRIES</span></div>
+    {items.filter(item=>item.lane==='artistic').sort((a,b)=>String(b.start).localeCompare(String(a.start))).map((item,index)=><a class="institutional-entry" href={item.href}>
+      <div class="institutional-entry-image">{(item.data.cover||item.data.avatar) && ( /\\.mp4(?:$|\\?)/i.test(item.data.cover||item.data.avatar) ? <video src={item.data.cover||item.data.avatar} muted playsinline preload="metadata" /> : <img src={item.data.cover||item.data.avatar} alt="" loading="lazy" />)}</div>
+      <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{item.data.title}</h2><p>{item.data.summary}</p><div class="institutional-entry-meta"><span>{item.data.displayType||item.data.type||'ARTISTIC RESEARCH'}</span><span>{item.start||item.yearGroup}{item.end&&item.end!==item.start?' — '+item.end:''}</span></div></div>
+    </a>)}
+  </div>
+</section>
+
 <section id="projects" class="work-index" aria-labelledby="projects-heading">
 <div class="index-toolbar"><h1 id="projects-heading" data-projects-heading data-en="Projects" data-it="Progetti">Projects</h1><div class="view-switch" aria-label="Arrange projects by"><button class="view-button is-active" type="button" data-view="year" aria-pressed="true">Year</button><button class="view-button" type="button" data-view="type" aria-pressed="false">Context</button><button class="view-button" type="button" data-view="research" aria-pressed="false">Research</button></div></div>
 <div id="work-list" class="work-list is-year-plane" data-view="year"><div class="year-track" data-year-track><div class="year-lanes" aria-hidden="true"><span class="year-lane-label is-artistic">Artistic practice</span><span class="year-lane-label is-web">Web development</span></div><div class="year-axis" aria-hidden="true"></div>{items.map(item=><a class={`work-row ${item.lane==='external'?'is-external-project':''} ${item.featured?'is-featured':''}`} href={item.href} data-external={item.externalLink?'true':'false'} data-url={item.externalLink?item.href:''} data-year={item.yearGroup} data-type={item.lane} data-title={item.data.title} data-kind={item.collection==='external'?item.data.kind:''} data-practice={item.collection==='external'?(item.data.practice??'web-development'):''} data-role={item.collection==='external'?(item.data.role??'Web development'):''} data-client={item.collection==='external'?(item.data.client??''):''} data-stack={item.collection==='external'?(item.data.stack??[]).join(', '):''} data-summary={item.data.summary??''} data-research={item.researchAreas.join(',')} data-start={item.start} data-end={item.end} data-lane={item.lane} data-moments={JSON.stringify(item.data.moments??[])}><span class="timeline-mark" aria-hidden="true"><span class="timeline-end timeline-end-top"></span><span class="timeline-end timeline-end-bottom"></span><span class="output-moments"></span></span><span class="work-title">{item.data.title}</span>{item.externalLink&&<em class="web-role">{item.data.timelineLabel??'website'}</em>}<span class="project-badges">{item.data.author&&<span class="author-pill">BY {item.data.author}</span>}</span></a>)}<div class="lab-stars" data-lab-stars hidden aria-label="LAB projects">{labStars.map(project=><a class={`lab-star ${project.graphic?'has-graphic':''}`} href={project.href} target={project.href==='#'?undefined:'_blank'} rel={project.href==='#'?undefined:'noopener noreferrer'} style={`--lab-x:${project.x}%;--lab-y:${project.y}%;--lab-size:${project.size}px;--lab-tilt:${project.tilt}deg`} aria-label={`${project.title} — ${project.type}`}><span class="lab-star-symbol" aria-hidden="true">★</span>{project.graphic&&<span class="lab-star-fill" aria-hidden="true" style={`background-image:url(${JSON.stringify(project.graphic)})`}></span>}<span class="lab-star-label"><strong>{project.title}</strong><em class="lab-star-type">{project.type}</em></span></a>)}</div></div><div class="research-field" aria-hidden="true">{researchAreas.map(([key,label])=><span class={`research-anchor anchor-${key}`}>{label}</span>)}</div><div class="type-field" aria-hidden="true"></div></div>
