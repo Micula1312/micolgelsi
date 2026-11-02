@@ -85,6 +85,18 @@
     if(event.relatedTarget&&gallery.contains(event.relatedTarget))return;
     stopGallery(gallery);
   });
+  // Scroll fallback for older page-layout CSS: wheel over media must scroll media,
+  // not the clipped outer page. Only intercept if this column has room to scroll.
+  media.addEventListener('wheel',event=>{
+    if(root.dataset.portfolioMode!=='institutional'||event.ctrlKey)return;
+    if(Math.abs(event.deltaX)>Math.abs(event.deltaY))return;
+    const delta=event.deltaMode===1?event.deltaY*16:event.deltaMode===2?event.deltaY*media.clientHeight:event.deltaY;
+    const max=Math.max(0,media.scrollHeight-media.clientHeight);
+    if(max<=1)return;
+    const next=Math.max(0,Math.min(max,media.scrollTop+delta));
+    if(Math.abs(next-media.scrollTop)>.5){event.preventDefault();media.scrollTop=next}
+  },{passive:false});
+  // Restore Punk's exact original document flow when switching back.
   window.addEventListener('portfolio-mode-change',update);
   update();
 })();
