@@ -427,3 +427,12 @@ html[data-portfolio-mode="institutional"] .institutional-project-info :is(.proje
  }
  html[data-portfolio-mode="institutional"] .institutional-project-media{grid-row:2!important}
 }
+
+/* Detail layout correction: information left, stacked media right. */
+@media(min-width:761px){
+ html[data-portfolio-mode="institutional"] .institutional-project-layout{
+  grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)!important;
+ }
+ html[data-portfolio-mode="institutional"] .institutional-project-info{grid-column:1!important;grid-row:1!important}
+ html[data-portfolio-mode="institutional"] .institutional-project-media{grid-column:2!important;grid-row:1!important}
+}
