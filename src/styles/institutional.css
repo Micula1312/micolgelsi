@@ -1212,3 +1212,52 @@ html[data-portfolio-mode="institutional"] .institutional-sidebar-nav :is(a,butto
 html[data-portfolio-mode="institutional"] :is(.institutional-entry-image img,.institutional-entry-image video,.institutional-project-media img,.institutional-project-media video){
  filter:none!important;
 }
+
+/* Institutional terminal detail: restore readable sidebar and full-bleed dark surfaces. */
+@media(min-width:761px){
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .shell{
+  grid-template-columns:clamp(175px,17vw,260px) minmax(0,1fr)!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] main.page{
+  padding:0!important;margin:0!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-layout{
+  gap:0!important;grid-template-columns:minmax(0,1.7fr) minmax(260px,.75fr)!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media{
+  padding:0!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info{
+  padding:12px 16px 20px 20px!important;
+ }
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar :is(a,p,span,button),
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-detail-name{
+ color:#e8e8e8!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar :is(.institutional-detail-sidebar-top>p:first-child,.institutional-detail-sidebar-bottom>span){
+ color:#929292!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar :is(a,button):hover{
+ color:#fff!important;text-decoration:underline!important;text-underline-offset:3px!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(.institutional-project-media,.institutional-project-info,.institutional-project-layout,.institutional-moment-media,.media-stream,.media-grid,.media-item,.moment-gallery,.project-cover){
+ background:#111!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .media-stream{
+ display:flex!important;flex-wrap:nowrap!important;gap:8px!important;
+ width:100%!important;max-width:100%!important;
+ overflow-x:auto!important;overflow-y:hidden!important;
+ padding:0 0 12px!important;margin:12px 0 20px!important;
+ scrollbar-width:none!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .media-stream>figure{
+ flex:0 0 auto!important;width:auto!important;max-width:none!important;
+ min-width:clamp(190px,22vw,360px)!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .media-stream>figure :is(img,video){
+ width:auto!important;max-width:min(65vw,480px)!important;
+ height:auto!important;max-height:260px!important;object-fit:contain!important;
+ background:#111!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(.media-stream,.moment-gallery)::-webkit-scrollbar{display:none!important}
