@@ -1077,3 +1077,7 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
   height:auto!important;max-height:none!important;overflow:visible!important;
  }
 }
+
+/* Year-only facts for Institutional; preserve original Start/End in Punk. */
+.project-facts .institutional-year-fact{display:none}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .project-facts .institutional-year-fact{display:grid!important}
