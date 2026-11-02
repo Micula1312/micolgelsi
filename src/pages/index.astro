@@ -48,23 +48,19 @@ const labStars=labProjects.map((project,index)=>({
   <div class="institutional-main" id="institutional-projects">
     <div class="institutional-main-heading">
       <span data-institutional-heading>ARTISTIC PRACTICE</span>
-      <div class="institutional-filters" aria-label="Archive view">
-        <button type="button" data-institutional-filter="year" class="is-active" aria-pressed="true">Year</button>
-        <button type="button" data-institutional-filter="context" aria-pressed="false">Context</button>
-        <button type="button" data-institutional-filter="research" aria-pressed="false">Research</button>
-      </div>
+      <div class="institutional-filters" aria-label="Archive filters"><label>Type <select data-institutional-type aria-label="Filter by type"><option value="">All types</option></select></label><button type="button" data-institutional-search-toggle aria-expanded="false" aria-controls="institutional-search-panel">⌕ Search</button></div>
     </div>
-    <p class="institutional-archive-description" data-institutional-description></p>
+    <div class="institutional-search-panel" id="institutional-search-panel" data-institutional-search-panel hidden><input type="search" data-institutional-search placeholder="Search title, type, #tag…" aria-label="Search projects" /><div data-institutional-tags class="institutional-tag-suggestions"></div></div><p class="institutional-archive-description" data-institutional-description></p><p data-institutional-empty hidden>No matching projects.</p>
     <div class="institutional-entries" data-institutional-entries>
-      {items.slice().sort((a,b)=>String(b.start).localeCompare(String(a.start))).map((item,index)=><a class="institutional-entry" data-institutional-entry data-institutional-category={item.lane==='external'?'web':'art'} data-institutional-year={item.yearGroup} data-institutional-context={item.data.displayType||item.data.kind||item.data.type||'project'} data-institutional-research={item.researchAreas.join(', ')} href={item.externalLink?item.href:`${base}${item.href.slice(1)}`}>
+      {items.slice().sort((a,b)=>String(b.start).localeCompare(String(a.start))).map((item,index)=><a class="institutional-entry" data-institutional-entry data-institutional-category={item.lane==='external'?'web':'art'} data-institutional-year={item.yearGroup} data-institutional-context={item.data.type||item.data.displayType||item.data.kind||'project'} data-institutional-tags={JSON.stringify([...(item.data.tags||[]),...(item.data.themes||[]),...(item.data.researchAreas||[])])} data-institutional-research={item.researchAreas.join(', ')} href={item.externalLink?item.href:`${base}${item.href.slice(1)}`}>
         <div class="institutional-entry-image">{(item.data.cover||item.data.avatar) && ( /\\.mp4(?:$|\\?)/i.test(item.data.cover||item.data.avatar) ? <video src={item.data.cover||item.data.avatar} muted playsinline preload="metadata" /> : <img src={item.data.cover||item.data.avatar} alt="" loading="lazy" />)}</div>
         <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{item.data.title}</h2><p>{item.data.summary}</p><div class="institutional-entry-meta"><span>{item.data.displayType||item.data.kind||item.data.type||'PROJECT'}</span><span>{item.start||item.yearGroup}{item.end&&item.end!==item.start?' — '+item.end:''}</span></div></div>
       </a>)}
-      {labProjects.map((project,index)=><a class="institutional-entry institutional-lab-entry" data-institutional-entry data-institutional-category="lab" data-institutional-year="" data-institutional-context={project.type||'lab'} data-institutional-research="lab" href={project.demo||project.repository||'#'} target="_blank" rel="noopener noreferrer">
+      {labProjects.map((project,index)=><a class="institutional-entry institutional-lab-entry" data-institutional-entry data-institutional-category="lab" data-institutional-year="" data-institutional-context={project.type||'lab'} data-institutional-tags={JSON.stringify(project.tags||[])} data-institutional-research="lab" href={project.demo||project.repository||'#'} target="_blank" rel="noopener noreferrer">
         <div class="institutional-entry-image">{project.image?<img src={project.image} alt="" loading="lazy" />:<span class="institutional-lab-placeholder" aria-hidden="true">★</span>}</div>
         <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{project.title}</h2><p>{project.description||project.type}</p><div class="institutional-entry-meta"><span>{project.type||'LAB'}</span></div></div>
       </a>)}
-      {graphics.map((graphic,index)=><a class="institutional-entry institutional-graphic-entry" data-institutional-entry data-institutional-category="graphics" data-institutional-year={String(graphic.year||'')} data-institutional-context={graphic.type||'graphic'} data-institutional-research="graphics" href={graphic.link||graphic.image||'#'} target="_blank" rel="noopener noreferrer">
+      {graphics.map((graphic,index)=><a class="institutional-entry institutional-graphic-entry" data-institutional-entry data-institutional-category="graphics" data-institutional-year={String(graphic.year||'')} data-institutional-context={graphic.type||'graphic'} data-institutional-tags={JSON.stringify(graphic.tags||[])} data-institutional-research="graphics" href={graphic.link||graphic.image||'#'} target="_blank" rel="noopener noreferrer">
         <div class="institutional-entry-image"><img src={graphic.image} alt={graphic.title||'Graphic work'} loading="lazy" /></div>
         <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{graphic.title||'Untitled'}</h2>{graphic.description&&<p>{graphic.description}</p>}<div class="institutional-entry-meta"><span>{graphic.project||graphic.type||'GRAPHIC'}</span><span>{graphic.year||''}</span></div></div>
       </a>)}
@@ -77,32 +73,47 @@ const labStars=labProjects.map((project,index)=>({
   if(!archive)return;
   const entries=[...archive.querySelectorAll('[data-institutional-entry]')];
   const sections=[...archive.querySelectorAll('[data-institutional-section]')];
-  const filters=[...archive.querySelectorAll('[data-institutional-filter]')];
   const heading=archive.querySelector('[data-institutional-heading]');
   const container=archive.querySelector('[data-institutional-entries]');
   const main=archive.querySelector('.institutional-main');
-  const names={art:'ARTISTIC PRACTICE',web:'WEB DEVELOPMENT',lab:'LAB',graphics:'GRAPHICS'};
-  const descriptions=JSON.parse(archive.dataset.archiveDescriptions||'{}');
   const description=archive.querySelector('[data-institutional-description]');
-  let category=['art','web','lab','graphics'].includes(new URLSearchParams(window.location.search).get('section'))?new URLSearchParams(window.location.search).get('section'):'art',filter='year';
-  const apply=()=>{
+  const descriptions=JSON.parse(archive.dataset.archiveDescriptions||'{}');
+  const names={art:'ARTISTIC PRACTICE',web:'WEB DEVELOPMENT',lab:'LAB',graphics:'GRAPHICS'};
+  const typeSelect=archive.querySelector('[data-institutional-type]');
+  const searchToggle=archive.querySelector('[data-institutional-search-toggle]');
+  const searchPanel=archive.querySelector('[data-institutional-search-panel]');
+  const searchInput=archive.querySelector('[data-institutional-search]');
+  const tagsHost=archive.querySelector('[data-institutional-tags]');
+  const empty=archive.querySelector('[data-institutional-empty]');
+  const params=new URLSearchParams(location.search);
+  let category=['art','web','lab','graphics'].includes(params.get('section'))?params.get('section'):'art';
+  const getTags=e=>{try{return JSON.parse(e.dataset.institutionalTags||'[]').filter(Boolean)}catch{return []}};
+  const inCategory=()=>entries.filter(e=>e.dataset.institutionalCategory===category);
+  const refreshOptions=()=>{
+    const types=[...new Set(inCategory().map(e=>e.dataset.institutionalContext?.trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+    typeSelect.replaceChildren(new Option('All types',''),...types.map(t=>new Option(t,t)));
+    const tags=[...new Set(inCategory().flatMap(getTags))].sort((a,b)=>a.localeCompare(b));
+    tagsHost.replaceChildren(...tags.map(tag=>{const button=document.createElement('button');button.type='button';button.textContent='#'+tag;button.addEventListener('click',()=>{searchInput.value=tag;apply();});return button;}));
+  };
+  const apply=(animate=true)=>{
+    const before=new Map(entries.filter(e=>!e.hidden).map(e=>[e,e.getBoundingClientRect()]));
     sections.forEach(b=>{const active=b.dataset.institutionalSection===category;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
-    filters.forEach(b=>{const active=b.dataset.institutionalFilter===filter;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
     heading.textContent=names[category];
     if(description){description.textContent=descriptions[category]||'';description.hidden=!descriptions[category];}
-    const visible=entries.filter(entry=>entry.dataset.institutionalCategory===category);
-    entries.forEach(entry=>entry.hidden=!visible.includes(entry));
-    const key=filter==='year'?'institutionalYear':filter==='context'?'institutionalContext':'institutionalResearch';
-    visible.sort((a,b)=>filter==='year'?b.dataset[key].localeCompare(a.dataset[key]):a.dataset[key].localeCompare(b.dataset[key])).forEach((entry,index)=>{
-      container.appendChild(entry);
-      const number=entry.querySelector('.institutional-entry-number');
-      if(number)number.textContent=String(index+1).padStart(2,'0');
-    });
-    main.scrollTop=0;
+    const query=searchInput.value.trim().replace(/^#/,'').toLocaleLowerCase();
+    const type=typeSelect.value;
+    const visible=inCategory().filter(e=>!type||e.dataset.institutionalContext===type).filter(e=>!query||[e.querySelector('h2')?.textContent,e.querySelector('.institutional-entry-info p')?.textContent,e.dataset.institutionalContext,...getTags(e)].join(' ').toLocaleLowerCase().includes(query));
+    visible.sort((a,b)=>(b.dataset.institutionalYear||'').localeCompare(a.dataset.institutionalYear||''));
+    entries.forEach(e=>{e.hidden=!visible.includes(e);});
+    visible.forEach((e,index)=>{container.appendChild(e);const number=e.querySelector('.institutional-entry-number');if(number)number.textContent=String(index+1).padStart(2,'0');});
+    empty.hidden=visible.length>0;
+    if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)requestAnimationFrame(()=>visible.forEach(e=>{const old=before.get(e);if(!old)return;const next=e.getBoundingClientRect(),dx=old.left-next.left,dy=old.top-next.top;if(Math.abs(dx)+Math.abs(dy)>2)e.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:'translate(0,0)'}],{duration:420,easing:'cubic-bezier(.22,.61,.36,1)'});}));
   };
-  sections.forEach(b=>b.addEventListener('click',()=>{category=b.dataset.institutionalSection;apply();}));
-  filters.forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.institutionalFilter;apply();}));
-  apply();
+  sections.forEach(b=>b.addEventListener('click',()=>{category=b.dataset.institutionalSection;searchInput.value='';refreshOptions();apply();main.scrollTop=0;}));
+  typeSelect.addEventListener('change',()=>apply());
+  searchInput.addEventListener('input',()=>apply());
+  searchToggle.addEventListener('click',()=>{searchPanel.hidden=!searchPanel.hidden;searchToggle.setAttribute('aria-expanded',String(!searchPanel.hidden));if(!searchPanel.hidden)searchInput.focus();else{searchInput.value='';apply();}});
+  refreshOptions();apply(false);
 })();
 </script>
 
