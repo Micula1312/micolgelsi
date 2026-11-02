@@ -56,7 +56,7 @@ const labStars=labProjects.map((project,index)=>({
     <div class="institutional-entries" data-institutional-entries>
       {items.slice().sort((a,b)=>String(b.start).localeCompare(String(a.start))).map((item,index)=><a class="institutional-entry" data-institutional-entry data-institutional-category={item.lane==='external'?'web':'art'} data-institutional-year={item.yearGroup} data-institutional-context={getTaxonomyType(item.data,item.collection)} data-institutional-tags={JSON.stringify([...(item.data.tags||[]),...(item.data.themes||[]),...(item.data.researchAreas||[])])} data-institutional-research={item.researchAreas.join(', ')} href={item.externalLink?item.href:`${base}${item.href.slice(1)}`}>
         <div class="institutional-entry-image">
-          {item.lane==='external' && item.externalLink && <iframe class="institutional-web-frame" title={`Preview of ${item.data.title}`} data-web-preview={item.href} loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer" />}
+          {item.lane==='external' && item.externalLink && <><span class="institutional-web-indicator" aria-hidden="true">← LIVE PREVIEW</span><iframe class="institutional-web-frame" title={`Preview of ${item.data.title}`} data-web-preview={item.href} loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer" /></>}
           {(item.lane==='external'?(item.data.thumbnail||item.data.avatar):(item.data.cover||item.data.avatar)) && (/\\.(mp4|webm|ogg)(?:$|[?#])/i.test(item.lane==='external'?(item.data.thumbnail||item.data.avatar):(item.data.cover||item.data.avatar)) ? <video src={item.lane==='external'?(item.data.thumbnail||item.data.avatar):(item.data.cover||item.data.avatar)} muted playsinline loop autoplay preload="metadata" aria-label={item.data.title} /> : <img src={item.lane==='external'?(item.data.thumbnail||item.data.avatar):(item.data.cover||item.data.avatar)} alt="" loading="lazy" />)}
         </div>
         <div class="institutional-entry-info"><span class="institutional-entry-number" aria-hidden="true">{String(index+1).padStart(2,'0')}</span><h2>{item.data.title}</h2><p>{item.data.summary}</p><div class="institutional-entry-meta"><span>{getTaxonomyType(item.data,item.collection)}</span><span>{displayYear(item.data,item.yearGroup)}</span></div></div>
@@ -79,6 +79,10 @@ const labStars=labProjects.map((project,index)=>({
         const frame=card.querySelector('[data-web-preview]');
         if(!frame)return;
         let pending;
+        const image=card.querySelector(".institutional-entry-image");
+        const resize=()=>{if(image)image.style.setProperty("--web-frame-scale",String(image.clientWidth/1440));};
+        resize();
+        new ResizeObserver(resize).observe(image);
         const start=()=>{
           if(document.documentElement.dataset.portfolioMode!=='institutional')return;
           clearTimeout(pending);
