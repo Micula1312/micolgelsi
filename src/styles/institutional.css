@@ -237,3 +237,109 @@ html[data-portfolio-mode="institutional"] .institutional-entry video{
  html[data-portfolio-mode="institutional"] .institutional-entry{gap:10px!important;padding:18px 0!important}
  html[data-portfolio-mode="institutional"] .institutional-entry h2{font-size:24px!important}
 }
+
+/* Institutional v4 — consistent borderless full-width editorial system across all pages. */
+html[data-portfolio-mode="institutional"]{
+ --institutional-display:var(--institutional-mono)!important;
+ --project-panel-gap:0px!important;--project-panel-pad:0px!important;
+}
+html[data-portfolio-mode="institutional"] body,
+html[data-portfolio-mode="institutional"] main,
+html[data-portfolio-mode="institutional"] section,
+html[data-portfolio-mode="institutional"] article,
+html[data-portfolio-mode="institutional"] aside,
+html[data-portfolio-mode="institutional"] figure,
+html[data-portfolio-mode="institutional"] header,
+html[data-portfolio-mode="institutional"] footer,
+html[data-portfolio-mode="institutional"] .project-head,
+html[data-portfolio-mode="institutional"] .project-body,
+html[data-portfolio-mode="institutional"] .project-cover,
+html[data-portfolio-mode="institutional"] .media-stream,
+html[data-portfolio-mode="institutional"] .media-grid,
+html[data-portfolio-mode="institutional"] .video-list,
+html[data-portfolio-mode="institutional"] .project-moments,
+html[data-portfolio-mode="institutional"] .project-moment,
+html[data-portfolio-mode="institutional"] .project-links,
+html[data-portfolio-mode="institutional"] .related,
+html[data-portfolio-mode="institutional"] .project-facts,
+html[data-portfolio-mode="institutional"] .research-row,
+html[data-portfolio-mode="institutional"] .simple-index{
+ background:#fff!important;border:0!important;border-radius:0!important;
+ outline-color:#111;
+}
+html[data-portfolio-mode="institutional"] :is(h1,h2,h3,h4,h5,h6,.site-name,.work-title,.project-title,.institutional-sidebar h1,.institutional-entry h2,.web-inspector h2){
+ font-family:var(--institutional-mono)!important;font-size:12px!important;
+ font-weight:500!important;line-height:1.5!important;letter-spacing:0!important;
+ text-transform:none!important;text-shadow:none!important;
+}
+html[data-portfolio-mode="institutional"] :is(p,li,dt,dd,blockquote,.lead,.prose,.project-facts,.project-facts span,.output-title,.output-date,.output-type,.output-location,.institutional-intro,.institutional-entry-info>p,.institutional-entry-meta,.institutional-entry-number,.institutional-kicker,.institutional-main-heading,.institutional-sidebar-nav,.institutional-sidebar-foot,.eyebrow,.simple-index,.research-row,.project-links,.related){
+ font-family:var(--institutional-mono)!important;font-size:11px!important;
+ font-weight:400!important;line-height:1.65!important;letter-spacing:0!important;
+ text-shadow:none!important;
+}
+html[data-portfolio-mode="institutional"] :is(.project-head,.project-body,.project-cover,.media-stream,.media-grid,.video-list,.project-moments,.project-links,.related,.intro,.simple-index,.research-row){
+ width:100%!important;max-width:none!important;min-width:0!important;
+ box-shadow:none!important;
+}
+html[data-portfolio-mode="institutional"] :is(.project-head,.project-body,.intro){
+ display:block!important;padding:0!important;margin:0 0 26px!important;
+}
+html[data-portfolio-mode="institutional"] :is(.project-cover,.media-stream,.media-grid,.video-list,.project-moments,.project-links,.related){
+ padding:0!important;margin:0 0 34px!important;
+}
+html[data-portfolio-mode="institutional"] :is(.prose,.lead,.project-body .prose,.project-description,.project-copy){
+ width:100%!important;max-width:none!important;columns:auto!important;
+}
+html[data-portfolio-mode="institutional"] :is(.project-cover img,.project-cover video,.media-grid img,.media-grid video,.media-stream img,.media-stream video,.video-list video){
+ max-width:100%!important;object-fit:contain!important;box-shadow:none!important;
+}
+html[data-portfolio-mode="institutional"] .project-cover img,
+html[data-portfolio-mode="institutional"] .project-cover video{width:100%!important;height:auto!important;max-height:none!important}
+html[data-portfolio-mode="institutional"] .media-stream{
+ display:flex!important;flex-wrap:wrap!important;align-items:flex-start!important;
+ gap:8px!important;overflow:visible!important;
+}
+html[data-portfolio-mode="institutional"] .media-stream figure{flex:0 1 auto!important;max-width:100%!important}
+html[data-portfolio-mode="institutional"] .media-stream img,
+html[data-portfolio-mode="institutional"] .media-stream video{max-height:none!important}
+html[data-portfolio-mode="institutional"] .project-facts>div{
+ border:0!important;padding:4px 0!important;
+}
+html[data-portfolio-mode="institutional"] :is(.project-moment,.research-row,.related a){
+ padding:12px 0!important;border:0!important;
+}
+html[data-portfolio-mode="institutional"] :is(.project-head,.project-body,.project-moments,.media-stream,.media-grid,.project-links,.related) :is(a,button):hover{
+ animation:none!important;text-shadow:none!important;
+}
+html[data-portfolio-mode="institutional"] :is(.project-entry-signal,.media-video-mark){text-shadow:none!important;mix-blend-mode:normal!important}
+html[data-portfolio-mode="institutional"] .site-header{border-bottom:0!important}
+html[data-portfolio-mode="institutional"] .institutional-sidebar{border-right:0!important}
+html[data-portfolio-mode="institutional"] .institutional-main-heading,
+html[data-portfolio-mode="institutional"] .institutional-entry{border-bottom:0!important}
+html[data-portfolio-mode="institutional"] .institutional-entry{
+ grid-template-columns:minmax(0,40%) minmax(0,1fr)!important;
+ gap:20px!important;padding:14px 0 24px!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry-image{
+ aspect-ratio:auto!important;min-height:0!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry-image img,
+html[data-portfolio-mode="institutional"] .institutional-entry-image video{
+ width:100%!important;height:auto!important;max-height:320px!important;object-fit:contain!important;
+ object-position:left top!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-sidebar h1{margin:14px 0 18px!important}
+html[data-portfolio-mode="institutional"] .institutional-entry h2{margin:4px 0 8px!important}
+html[data-portfolio-mode="institutional"] .institutional-entry-info>p{margin-bottom:10px!important}
+html[data-portfolio-mode="institutional"] .institutional-main{padding:24px 28px 70px!important}
+html[data-portfolio-mode="institutional"] .shell{max-width:none!important;width:calc(100% - 48px)!important}
+html[data-portfolio-mode="institutional"] body:has(.institutional-archive) .shell{width:100%!important}
+html[data-portfolio-mode="institutional"] .page{width:100%!important;max-width:none!important}
+html[data-portfolio-mode="institutional"] :is(.project-head,.project-body,.project-cover,.media-stream,.media-grid,.video-list,.project-moments,.project-links,.related,.project-facts,.research-row) :is(img,video){filter:none!important}
+@media(max-width:760px){
+ html[data-portfolio-mode="institutional"] .shell{width:calc(100% - 28px)!important}
+ html[data-portfolio-mode="institutional"] .institutional-entry{grid-template-columns:1fr!important;gap:8px!important}
+ html[data-portfolio-mode="institutional"] .institutional-main{padding:18px 16px 70px!important}
+ html[data-portfolio-mode="institutional"] .institutional-sidebar{padding:18px 16px!important}
+ html[data-portfolio-mode="institutional"] .media-stream{gap:6px!important}
+}
