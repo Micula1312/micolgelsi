@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import labProjects from '../data/lab-projects.json';
+import graphics from '../data/graphics.json';
 import homeConfig from '../../config/home.json';
 
 const base = import.meta.env.BASE_URL;
@@ -26,7 +27,7 @@ const labStars=labProjects.map((project,index)=>({
 }));
 ---
 <BaseLayout title="Micol Gelsi">
-<section class="institutional-archive" aria-label="Portfolio archive" data-institutional-archive data-archive-descriptions={JSON.stringify({art:homeConfig.archives?.artistic?.description||"",web:homeConfig.archives?.web?.description||"",lab:homeConfig.archives?.lab?.description||""})}>
+<section class="institutional-archive" aria-label="Portfolio archive" data-institutional-archive data-archive-descriptions={JSON.stringify({art:homeConfig.archives?.artistic?.description||"",web:homeConfig.archives?.web?.description||"",lab:homeConfig.archives?.lab?.description||"",graphics:homeConfig.archives?.graphics?.description||""})}>
   <aside class="institutional-sidebar">
     <div class="institutional-sidebar-top">
       <p class="institutional-kicker">ARTIST / RESEARCHER / CREATIVE CODER</p>
@@ -37,6 +38,7 @@ const labStars=labProjects.map((project,index)=>({
       <button type="button" class="institutional-section-link is-active" data-institutional-section="art" aria-pressed="true">Artistic practice</button>
       <button type="button" class="institutional-section-link" data-institutional-section="web" aria-pressed="false">Web development</button>
       <button type="button" class="institutional-section-link" data-institutional-section="lab" aria-pressed="false">Lab</button>
+      <button type="button" class="institutional-section-link" data-institutional-section="graphics" aria-pressed="false">Graphics</button>
 
       <a href={`${base}cv/`}>CV</a>
       <a href={`${base}play-with-me/`}>Contact</a>
@@ -62,6 +64,10 @@ const labStars=labProjects.map((project,index)=>({
         <div class="institutional-entry-image">{project.image?<img src={project.image} alt="" loading="lazy" />:<span class="institutional-lab-placeholder" aria-hidden="true">★</span>}</div>
         <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{project.title}</h2><p>{project.description||project.type}</p><div class="institutional-entry-meta"><span>{project.type||'LAB'}</span></div></div>
       </a>)}
+      {graphics.map((graphic,index)=><a class="institutional-entry institutional-graphic-entry" data-institutional-entry data-institutional-category="graphics" data-institutional-year={String(graphic.year||'')} data-institutional-context={graphic.type||'graphic'} data-institutional-research="graphics" href={graphic.link||graphic.image||'#'} target="_blank" rel="noopener noreferrer">
+        <div class="institutional-entry-image"><img src={graphic.image} alt={graphic.title||'Graphic work'} loading="lazy" /></div>
+        <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{graphic.title||'Untitled'}</h2>{graphic.description&&<p>{graphic.description}</p>}<div class="institutional-entry-meta"><span>{graphic.project||graphic.type||'GRAPHIC'}</span><span>{graphic.year||''}</span></div></div>
+      </a>)}
     </div>
   </div>
 </section>
@@ -75,10 +81,10 @@ const labStars=labProjects.map((project,index)=>({
   const heading=archive.querySelector('[data-institutional-heading]');
   const container=archive.querySelector('[data-institutional-entries]');
   const main=archive.querySelector('.institutional-main');
-  const names={art:'ARTISTIC PRACTICE',web:'WEB DEVELOPMENT',lab:'LAB'};
+  const names={art:'ARTISTIC PRACTICE',web:'WEB DEVELOPMENT',lab:'LAB',graphics:'GRAPHICS'};
   const descriptions=JSON.parse(archive.dataset.archiveDescriptions||'{}');
   const description=archive.querySelector('[data-institutional-description]');
-  let category=['art','web','lab'].includes(new URLSearchParams(window.location.search).get('section'))?new URLSearchParams(window.location.search).get('section'):'art',filter='year';
+  let category=['art','web','lab','graphics'].includes(new URLSearchParams(window.location.search).get('section'))?new URLSearchParams(window.location.search).get('section'):'art',filter='year';
   const apply=()=>{
     sections.forEach(b=>{const active=b.dataset.institutionalSection===category;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
     filters.forEach(b=>{const active=b.dataset.institutionalFilter===filter;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
