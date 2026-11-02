@@ -1009,3 +1009,71 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  display:block!important;margin:8px 0 14px!important;padding-left:18px!important;
 }
 html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-body .prose li{display:list-item!important}
+
+/* Detail gallery repair: independent vertical scrolling and intrinsic-ratio thumbnails. */
+@media(min-width:761px){
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"]{
+  height:100dvh!important;overflow:hidden!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .shell{
+  height:100dvh!important;min-height:0!important;overflow:hidden!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] main.page{
+  height:100dvh!important;min-height:0!important;overflow:hidden!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-layout{
+  height:calc(100dvh - 40px)!important;min-height:0!important;overflow:hidden!important;
+  align-items:stretch!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media,
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info{
+  height:100%!important;max-height:none!important;min-height:0!important;
+  overflow-y:auto!important;overflow-x:hidden!important;
+  position:relative!important;top:auto!important;overscroll-behavior-y:contain!important;
+ }
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media .moment-gallery{
+ display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+ align-items:flex-start!important;gap:7px!important;overflow-x:auto!important;
+ overflow-y:hidden!important;scrollbar-width:none!important;
+ width:100%!important;max-width:100%!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media .moment-gallery > button.moment-thumb{
+ display:block!important;position:relative!important;flex:0 0 auto!important;
+ width:auto!important;min-width:0!important;max-width:none!important;
+ height:112px!important;min-height:0!important;max-height:112px!important;
+ aspect-ratio:auto!important;overflow:hidden!important;
+ border:0!important;padding:0!important;margin:0!important;
+ background:transparent!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media .moment-gallery > button.moment-thumb > :is(img,video){
+ display:block!important;position:static!important;inset:auto!important;
+ width:auto!important;min-width:0!important;max-width:none!important;
+ height:112px!important;min-height:0!important;max-height:112px!important;
+ object-fit:contain!important;object-position:center!important;
+ aspect-ratio:auto!important;margin:0!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media .moment-gallery > button.moment-thumb > img{
+ width:auto!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media .moment-gallery > button.moment-thumb > video{
+ width:auto!important;aspect-ratio:16/9!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media .moment-gallery::-webkit-scrollbar,
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media::-webkit-scrollbar,
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info::-webkit-scrollbar{
+ display:none!important;width:0!important;height:0!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media,
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info{
+ scrollbar-width:none!important;-ms-overflow-style:none!important;
+}
+@media(max-width:760px){
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"]{
+  height:auto!important;overflow-y:auto!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media,
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info{
+  height:auto!important;max-height:none!important;overflow:visible!important;
+ }
+}
