@@ -790,7 +790,10 @@ html[data-portfolio-mode="institutional"] .institutional-entry .institutional-ar
  }
 }
 html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-body .prose{
- display:none!important;
+ display:block!important;visibility:visible!important;opacity:1!important;
+ width:100%!important;max-width:100%!important;max-height:none!important;
+ overflow:visible!important;columns:auto!important;
+ font-size:11px!important;line-height:1.48!important;
 }
 html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-head{
  display:block!important;margin:0!important;padding:0!important;
@@ -985,3 +988,24 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
 html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(a,span,strong){
  white-space:normal!important;overflow-wrap:anywhere!important;
 }
+
+/* Restore complete abstracts and editorial descriptions in Institutional project details. */
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-body .prose{
+ display:block!important;visibility:visible!important;opacity:1!important;
+ height:auto!important;max-height:none!important;overflow:visible!important;
+ width:100%!important;max-width:100%!important;columns:auto!important;
+ font-size:11px!important;line-height:1.48!important;margin:14px 0 20px!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-body .prose :is(p,li){
+ display:block!important;position:static!important;height:auto!important;
+ max-height:none!important;overflow:visible!important;line-height:1.48!important;
+ font-size:11px!important;margin:0 0 12px!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-body .prose :is(h2,h3,h4){
+ display:block!important;font-weight:700!important;font-size:11px!important;
+ line-height:1.35!important;margin:18px 0 8px!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-body .prose :is(ul,ol){
+ display:block!important;margin:8px 0 14px!important;padding-left:18px!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-body .prose li{display:list-item!important}
