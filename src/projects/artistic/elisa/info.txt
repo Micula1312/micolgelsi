@@ -3,7 +3,7 @@ START: 2026-03
 END: 2026-10
 STATUS: 
 TYPE: 
-MEDIUM:  Live Interface Performance
+MEDIUM: Live Interface Performance
 RESEARCH: hydro-feminism, bodies-affects, surveillance-politics-of-visibility, live-data-manipulation
 WITH:
 
@@ -39,7 +39,7 @@ location: Inota Festival, Budapest
 AVATAR: IMG_7338.MOV
 AUTHOR: 
 FEATURED: 
-COVER: IMG_7339.JPG
+COVER: IMG_7384.MOV
 COLLABORATORS: Beatrice Resta Benedetta Marino
 HOMEPAGE: true
 TIMELINE LABEL: website

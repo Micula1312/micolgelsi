@@ -25,7 +25,7 @@ credits:
 photoCredits:
   []
 avatar: "/media/artistic/elisa/IMG_7338.MOV"
-cover: "/media/artistic/elisa/IMG_7339.JPG"
+cover: "/media/artistic/elisa/IMG_7384.MOV"
 gallery:
   []
 videos:
