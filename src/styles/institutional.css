@@ -760,3 +760,10 @@ html[data-portfolio-mode="institutional"] .institutional-entry[data-institutiona
  background:transparent!important;color:#111!important;
  font:500 21px/1 "IBM Plex Mono",monospace!important;
 }
+
+/* Cover embeds (e.g. Elisa) are live content, not missing-image placeholders. */
+html[data-portfolio-mode="institutional"] .institutional-entry .institutional-art-embed{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ border:0!important;background:#f5f5f5!important;display:block!important;
+ pointer-events:none!important;
+}
