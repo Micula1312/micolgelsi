@@ -343,3 +343,21 @@ html[data-portfolio-mode="institutional"] :is(.project-head,.project-body,.proje
  html[data-portfolio-mode="institutional"] .institutional-sidebar{padding:18px 16px!important}
  html[data-portfolio-mode="institutional"] .media-stream{gap:6px!important}
 }
+
+/* Institutional archive navigation: compact text-only controls. */
+html[data-portfolio-mode="institutional"] .institutional-entry[hidden]{display:none!important}
+html[data-portfolio-mode="institutional"] .institutional-section-link,
+html[data-portfolio-mode="institutional"] .institutional-filters button{
+ display:inline-block;background:transparent!important;border:0!important;border-radius:0!important;
+ box-shadow:none!important;padding:0!important;margin:0!important;cursor:pointer;
+ color:#666!important;font:400 11px/1.65 var(--institutional-mono)!important;
+ text-align:left;text-decoration:none!important;animation:none!important;transition:none!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-section-link.is-active,
+html[data-portfolio-mode="institutional"] .institutional-filters button.is-active{color:#111!important;text-decoration:underline!important;text-underline-offset:3px!important}
+html[data-portfolio-mode="institutional"] .institutional-filters{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:16px;align-items:center}
+html[data-portfolio-mode="institutional"] .institutional-main-heading{align-items:baseline!important;gap:20px!important}
+html[data-portfolio-mode="institutional"] .institutional-sidebar-nav{align-items:flex-start!important}
+html[data-portfolio-mode="institutional"] .institutional-lab-placeholder{display:block;font:32px/1 var(--institutional-mono);color:#111}
+html[data-portfolio-mode="institutional"] .institutional-lab-entry .institutional-entry-image{min-height:60px}
+@media(max-width:760px){html[data-portfolio-mode="institutional"] .institutional-filters{gap:10px}html[data-portfolio-mode="institutional"] .institutional-filters button{font-size:10px!important}}
