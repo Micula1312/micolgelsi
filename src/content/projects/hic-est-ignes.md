@@ -24,6 +24,8 @@ credits:
   []
 photoCredits:
   []
+avatar: "/media/artistic/hic-est-ignes/media/_DSC6431.webp"
+cover: "/media/artistic/hic-est-ignes/media/performanceCLUSTER-2-.mp4"
 gallery:
   []
 videos:
