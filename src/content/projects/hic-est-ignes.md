@@ -25,9 +25,20 @@ credits:
 photoCredits:
   []
 gallery:
-  []
+  - "/media/artistic/hic-est-ignes/media/_DSC6408.webp"
+  - "/media/artistic/hic-est-ignes/media/_DSC6424.webp"
+  - "/media/artistic/hic-est-ignes/media/_DSC6427.webp"
+  - "/media/artistic/hic-est-ignes/media/_DSC6431.webp"
 videos:
-  []
+  - "/media/artistic/hic-est-ignes/media/performanceCLUSTER-2-.mp4"
+  - "/media/artistic/hic-est-ignes/media/VID_20230315_184906.mp4"
+media:
+  - "/media/artistic/hic-est-ignes/media/_DSC6408.webp"
+  - "/media/artistic/hic-est-ignes/media/_DSC6424.webp"
+  - "/media/artistic/hic-est-ignes/media/_DSC6427.webp"
+  - "/media/artistic/hic-est-ignes/media/_DSC6431.webp"
+  - "/media/artistic/hic-est-ignes/media/performanceCLUSTER-2-.mp4"
+  - "/media/artistic/hic-est-ignes/media/VID_20230315_184906.mp4"
 criticalTexts:
   []
 publications:

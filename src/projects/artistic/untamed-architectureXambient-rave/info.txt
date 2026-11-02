@@ -18,7 +18,7 @@ Paolo Rucci
 CURATED BY:
 
 CREDITS: Foto di Giorgia Pinzauti, Raffaele, Casa del''Architettura
-EXCERPT: A performative activation of Archive of the Untamed, translating archival materials connected to the protection of Rome's Aniene River Nature Reserve into a collective audiovisual experience through live image manipulation, sound and multimedia performance.
+EXCERPT: A performative activation of Archive of the Untamed, translating archival materials connected to the protection of Rome's Aniene River Nature Reserve into a collective audiovisual experience through live image manipulation, sound and multimedia performance. 
 DESCRIPTION: #untamed-architecture × @ambient-rave is a performative activation of Archive of the Untamed, a collective web-based archive investigating urban wilderness and the relationships between territories, communities and forms of resistance.
 
 Drawing on materials collected around the protection of the Aniene River Nature Reserve in Rome, the performance brings the archive into physical space, reinterpreting its contents through live visuals, sound and multimedia experimentation.
@@ -47,8 +47,8 @@ COVER: cover.mp4
 MAIN LINK: 
 COVER EMBED: 
 RELATED: 
-HOMEPAGE: 
-TIMELINE LABEL: 
+HOMEPAGE: true
+TIMELINE LABEL: website
 CLIENT: 
 ROLE: 
 STACK: 
