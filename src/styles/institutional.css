@@ -653,3 +653,9 @@ html[data-portfolio-mode="institutional"] .institutional-search-panel{padding:12
 html[data-portfolio-mode="institutional"] .institutional-search-panel input{box-sizing:border-box;width:100%;font:inherit;background:#fff;color:#111;border:0;border-bottom:1px solid #111;padding:8px 0;outline-offset:3px}
 html[data-portfolio-mode="institutional"] .institutional-tag-suggestions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
 html[data-portfolio-mode="institutional"] .institutional-tag-suggestions button{font:inherit;background:transparent;border:1px solid #ccc;padding:3px 7px;cursor:pointer}
+
+/* Archive hierarchy: project title leads, taxonomy is quiet, numbers hidden. */
+html[data-portfolio-mode="institutional"] .institutional-entry-info .institutional-entry-number{display:none!important}
+html[data-portfolio-mode="institutional"] .institutional-entry-info h2{font-size:clamp(17px,1.35vw,22px)!important;font-weight:500!important;line-height:1.3!important;margin:4px 0 12px!important}
+html[data-portfolio-mode="institutional"] .institutional-entry-info .institutional-entry-meta,
+html[data-portfolio-mode="institutional"] .institutional-entry-info .institutional-entry-meta *{font-size:10px!important;font-weight:400!important;color:#777!important;line-height:1.4!important}
