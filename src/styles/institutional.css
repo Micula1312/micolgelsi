@@ -361,3 +361,15 @@ html[data-portfolio-mode="institutional"] .institutional-sidebar-nav{align-items
 html[data-portfolio-mode="institutional"] .institutional-lab-placeholder{display:block;font:32px/1 var(--institutional-mono);color:#111}
 html[data-portfolio-mode="institutional"] .institutional-lab-entry .institutional-entry-image{min-height:60px}
 @media(max-width:760px){html[data-portfolio-mode="institutional"] .institutional-filters{gap:10px}html[data-portfolio-mode="institutional"] .institutional-filters button{font-size:10px!important}}
+
+/* Keep the theme switch visible inside the Institutional sidebar. */
+html[data-portfolio-mode="institutional"] .institutional-sidebar-bottom{margin-top:auto;display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+html[data-portfolio-mode="institutional"] .institutional-sidebar-nav{margin-top:32px!important}
+html[data-portfolio-mode="institutional"] .institutional-mode-switch{
+ display:block!important;visibility:visible!important;opacity:1!important;
+ background:none!important;border:0!important;padding:0!important;margin:0!important;
+ font:500 11px/1.6 var(--institutional-mono)!important;color:#111!important;
+ cursor:pointer;text-align:left;animation:none!important;transition:none!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-mode-switch:hover{text-decoration:underline!important;text-underline-offset:3px}
+html:not([data-portfolio-mode="institutional"]) .institutional-mode-switch{display:none!important}
