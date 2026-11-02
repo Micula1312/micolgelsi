@@ -629,3 +629,15 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  html[data-portfolio-mode="institutional"] body[data-project-detail="true"] main.page{padding:16px!important}
  html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-layout{display:flex!important;flex-direction:column!important}
 }
+
+/* Institutional archive previews: metadata first, above the title. */
+html[data-portfolio-mode="institutional"] .institutional-entry-info{
+ display:flex!important;flex-direction:column!important;align-items:flex-start!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry-info .institutional-entry-meta{
+ order:-2!important;display:flex!important;gap:14px!important;
+ width:100%!important;margin:0 0 9px!important;padding:0!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry-info .institutional-entry-number{
+ order:-1!important;
+}
