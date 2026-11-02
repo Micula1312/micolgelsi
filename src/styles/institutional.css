@@ -919,3 +919,17 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
 html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-moment-media .moment-thumb{
  flex:0 0 22%!important;width:22%!important;min-width:72px!important;
 }
+
+/* Generic media collections use compact horizontal strips in Institutional. */
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media :is(.media-stream,.media-grid){
+ display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+ overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;
+ gap:8px!important;align-items:flex-start!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media :is(.media-stream,.media-grid)>figure{
+ flex:0 0 30%!important;width:30%!important;min-width:90px!important;
+ max-width:none!important;grid-column:auto!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media :is(.media-stream,.media-grid)>figure :is(img,video){
+ width:100%!important;height:auto!important;max-height:220px!important;object-fit:contain!important;
+}
