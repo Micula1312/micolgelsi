@@ -843,3 +843,29 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
   order:1!important;max-height:none!important;overflow:visible!important;
  }
 }
+
+/* Institutional: every project medium, including moment carousels, belongs in the center. */
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media{
+ display:block!important;flex:none!important;width:100%!important;max-width:100%!important;
+ margin:0!important;padding:0 0 20px!important;border:0!important;min-width:0!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-moment-media figcaption{
+ font:400 10px/1.5 "IBM Plex Mono",monospace!important;color:#666!important;
+ padding:0 0 10px!important;margin:0!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media .moment-gallery{
+ display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+ width:100%!important;max-width:100%!important;min-width:0!important;
+ overflow-x:auto!important;overflow-y:hidden!important;gap:8px!important;
+ scrollbar-width:thin!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-moment-media .moment-thumb{
+ display:block!important;flex:0 0 32%!important;width:32%!important;min-width:100px!important;
+ height:auto!important;aspect-ratio:4/3!important;overflow:hidden!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-moment-media .moment-thumb :is(img,video){
+ width:100%!important;height:100%!important;object-fit:cover!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-moment-media > :is(img,video){
+ display:block!important;width:100%!important;height:auto!important;object-fit:contain!important;
+}
