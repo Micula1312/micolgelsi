@@ -78,7 +78,7 @@ const labStars=labProjects.map((project,index)=>({
   const names={art:'ARTISTIC PRACTICE',web:'WEB DEVELOPMENT',lab:'LAB'};
   const descriptions=JSON.parse(archive.dataset.archiveDescriptions||'{}');
   const description=archive.querySelector('[data-institutional-description]');
-  let category='art',filter='year';
+  let category=['art','web','lab'].includes(new URLSearchParams(window.location.search).get('section'))?new URLSearchParams(window.location.search).get('section'):'art',filter='year';
   const apply=()=>{
     sections.forEach(b=>{const active=b.dataset.institutionalSection===category;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
     filters.forEach(b=>{const active=b.dataset.institutionalFilter===filter;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
