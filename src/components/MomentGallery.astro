@@ -78,7 +78,7 @@ const isVideo = (src = '') => /\.(?:mp4|webm|mov)(?:$|\?)/i.test(src);
     };
 
     const startAutoScroll = () => {
-      if (raf || gallery.scrollWidth <= gallery.clientWidth) return;
+      if (raf) return;
       previous = 0;
       raf = requestAnimationFrame(tick);
     };
@@ -90,7 +90,9 @@ const isVideo = (src = '') => /\.(?:mp4|webm|mov)(?:$|\?)/i.test(src);
     };
 
     gallery.addEventListener('pointerenter', startAutoScroll);
+    gallery.addEventListener('mouseenter', startAutoScroll);
     gallery.addEventListener('pointerleave', stopAutoScroll);
+    gallery.addEventListener('mouseleave', stopAutoScroll);
     gallery.addEventListener('focusin', stopAutoScroll);
   });
 </script>
