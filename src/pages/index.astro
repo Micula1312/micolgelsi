@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import labProjects from '../data/lab-projects.json';
+import homeConfig from '../../config/home.json';
 
 const base = import.meta.env.BASE_URL;
 const projects=await getCollection('projects');
@@ -25,7 +26,7 @@ const labStars=labProjects.map((project,index)=>({
 }));
 ---
 <BaseLayout title="Micol Gelsi">
-<section class="institutional-archive" aria-label="Portfolio archive" data-institutional-archive>
+<section class="institutional-archive" aria-label="Portfolio archive" data-institutional-archive data-archive-descriptions={JSON.stringify({art:homeConfig.archives?.artistic?.description||"",web:homeConfig.archives?.web?.description||"",lab:homeConfig.archives?.lab?.description||""})}>
   <aside class="institutional-sidebar">
     <div class="institutional-sidebar-top">
       <p class="institutional-kicker">ARTIST / RESEARCHER / CREATIVE CODER</p>
@@ -51,6 +52,7 @@ const labStars=labProjects.map((project,index)=>({
         <button type="button" data-institutional-filter="research" aria-pressed="false">Research</button>
       </div>
     </div>
+    <p class="institutional-archive-description" data-institutional-description></p>
     <div class="institutional-entries" data-institutional-entries>
       {items.slice().sort((a,b)=>String(b.start).localeCompare(String(a.start))).map((item,index)=><a class="institutional-entry" data-institutional-entry data-institutional-category={item.lane==='external'?'web':'art'} data-institutional-year={item.yearGroup} data-institutional-context={item.data.displayType||item.data.kind||item.data.type||'project'} data-institutional-research={item.researchAreas.join(', ')} href={item.externalLink?item.href:`${base}${item.href.slice(1)}`}>
         <div class="institutional-entry-image">{(item.data.cover||item.data.avatar) && ( /\\.mp4(?:$|\\?)/i.test(item.data.cover||item.data.avatar) ? <video src={item.data.cover||item.data.avatar} muted playsinline preload="metadata" /> : <img src={item.data.cover||item.data.avatar} alt="" loading="lazy" />)}</div>
@@ -74,11 +76,14 @@ const labStars=labProjects.map((project,index)=>({
   const container=archive.querySelector('[data-institutional-entries]');
   const main=archive.querySelector('.institutional-main');
   const names={art:'ARTISTIC PRACTICE',web:'WEB DEVELOPMENT',lab:'LAB'};
+  const descriptions=JSON.parse(archive.dataset.archiveDescriptions||'{}');
+  const description=archive.querySelector('[data-institutional-description]');
   let category='art',filter='year';
   const apply=()=>{
     sections.forEach(b=>{const active=b.dataset.institutionalSection===category;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
     filters.forEach(b=>{const active=b.dataset.institutionalFilter===filter;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
     heading.textContent=names[category];
+    if(description){description.textContent=descriptions[category]||'';description.hidden=!descriptions[category];}
     const visible=entries.filter(entry=>entry.dataset.institutionalCategory===category);
     entries.forEach(entry=>entry.hidden=!visible.includes(entry));
     const key=filter==='year'?'institutionalYear':filter==='context'?'institutionalContext':'institutionalResearch';
