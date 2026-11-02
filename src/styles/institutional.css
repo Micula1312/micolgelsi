@@ -145,3 +145,95 @@ html[data-portfolio-mode="institutional"] .institutional-entry-image video{filte
 html[data-portfolio-mode="institutional"] .entry-gate,
 html[data-portfolio-mode="institutional"] .project-entry-loader{display:none!important}
 @media(max-width:760px){html[data-portfolio-mode="institutional"] .institutional-entry{grid-template-columns:1fr;gap:12px}html[data-portfolio-mode="institutional"] .institutional-entry h2{font-size:30px!important}}
+
+/* Institutional v3: independent right-column scroll, restrained typography and no hover animation. */
+html[data-portfolio-mode="institutional"] body:has(.institutional-archive),
+html[data-portfolio-mode="institutional"] body:has(.institutional-archive) .shell,
+html[data-portfolio-mode="institutional"] body:has(.institutional-archive) .page{
+ height:100dvh!important;min-height:0!important;max-height:100dvh!important;
+ overflow:hidden!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-archive{
+ height:100dvh!important;min-height:0!important;max-height:100dvh!important;
+ overflow:hidden!important;align-items:stretch!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-sidebar{
+ position:relative!important;top:auto!important;height:100dvh!important;
+ overflow-y:auto!important;overscroll-behavior:contain;
+ padding:24px 28px!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-main{
+ height:100dvh!important;max-height:100dvh!important;min-height:0!important;
+ overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior-y:contain;
+ padding:24px 34px 80px!important;scrollbar-width:none;
+}
+html[data-portfolio-mode="institutional"] .institutional-main::-webkit-scrollbar{display:none}
+html[data-portfolio-mode="institutional"] .institutional-sidebar h1{
+ font-size:clamp(30px,3.4vw,52px)!important;margin:18px 0 24px!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-intro,
+html[data-portfolio-mode="institutional"] .institutional-entry-info>p{
+ font-size:11px!important;line-height:1.6!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-sidebar-nav{
+ font-size:10px!important;gap:6px!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-kicker,
+html[data-portfolio-mode="institutional"] .institutional-main-heading,
+html[data-portfolio-mode="institutional"] .institutional-entry-number,
+html[data-portfolio-mode="institutional"] .institutional-entry-meta,
+html[data-portfolio-mode="institutional"] .institutional-sidebar-foot{
+ font-size:9px!important;line-height:1.5!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry{
+ padding:16px 0!important;gap:22px!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry h2{
+ font-size:clamp(19px,2vw,30px)!important;margin:6px 0 10px!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry-info>p{margin-bottom:16px!important}
+html[data-portfolio-mode="institutional"] .institutional-main-heading{padding-bottom:10px!important;margin-bottom:4px!important}
+html[data-portfolio-mode="institutional"] .institutional-entry-image{aspect-ratio:4/3!important}
+html[data-portfolio-mode="institutional"] .institutional-entry:hover h2,
+html[data-portfolio-mode="institutional"] .institutional-entry:focus-visible h2{
+ text-decoration:none!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry,
+html[data-portfolio-mode="institutional"] .institutional-entry *,
+html[data-portfolio-mode="institutional"] .institutional-entry *::before,
+html[data-portfolio-mode="institutional"] .institutional-entry *::after{
+ animation:none!important;transition:none!important;transform:none!important;
+ opacity:1!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry:hover,
+html[data-portfolio-mode="institutional"] .institutional-entry:focus-visible{
+ background:#fff!important;color:#111!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry:hover .institutional-entry-info h2{
+ color:#111!important;text-decoration:none!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry:focus-visible{
+ outline:1px solid #111!important;outline-offset:2px!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry img,
+html[data-portfolio-mode="institutional"] .institutional-entry video{
+ animation:none!important;transition:none!important;opacity:1!important;
+}
+@media(max-width:760px){
+ html[data-portfolio-mode="institutional"] body:has(.institutional-archive),
+ html[data-portfolio-mode="institutional"] body:has(.institutional-archive) .shell,
+ html[data-portfolio-mode="institutional"] body:has(.institutional-archive) .page{
+  height:auto!important;min-height:100dvh!important;max-height:none!important;overflow:visible!important;
+ }
+ html[data-portfolio-mode="institutional"] .institutional-archive{
+  height:auto!important;min-height:100dvh!important;max-height:none!important;overflow:visible!important;
+ }
+ html[data-portfolio-mode="institutional"] .institutional-sidebar{
+  height:auto!important;overflow:visible!important;padding:20px!important;
+ }
+ html[data-portfolio-mode="institutional"] .institutional-main{
+  height:auto!important;max-height:none!important;overflow:visible!important;padding:20px 20px 90px!important;
+ }
+ html[data-portfolio-mode="institutional"] .institutional-entry{gap:10px!important;padding:18px 0!important}
+ html[data-portfolio-mode="institutional"] .institutional-entry h2{font-size:24px!important}
+}
