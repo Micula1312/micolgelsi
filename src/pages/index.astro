@@ -11,8 +11,8 @@ const exhibitions=await getCollection('exhibitions');
 const external=await getCollection('external');
 const inferResearch=(item)=>{if(item.data.researchAreas?.length)return item.data.researchAreas;const tags=[...(item.data.themes??[]),...(item.data.medium??[])].map(x=>x.toLowerCase()),result=new Set();if(tags.some(x=>['territory','ecology','wildness','urban wilderness'].includes(x)))result.add('urban-wilderness');if(tags.some(x=>['archive','research'].includes(x)))result.add('generative-archives');if(tags.some(x=>['interspecies','more-than-human'].includes(x)))result.add('interspecies');if(tags.some(x=>['digital','net art','computer vision','interactive installation','website','interface'].includes(x)))result.add('technology-digitalization');if(tags.some(x=>['memory','body','participation'].includes(x)))result.add('emotional-geographies');return[...result];};
 const getTaxonomyType=(data,collection)=>data.taxonomyType||data.displayType||(collection==='external'?(data.timelineLabel||data.kind||'Website'):(data.medium?.[0]||data.kind||'Uncategorized'));
-const resolveMedia=(src='')=>{const value=String(src||'').trim();if(!value||!value.startsWith('/')||value.startsWith('//')||value.startsWith(base))return value;return base+value.replace(/^\\/+/, '');};
-const isVideoPreview=(src='')=>/\\.(mp4|webm|ogg|mov)(?:$|[?#])/i.test(String(src||''));
+const resolveMedia=(src='')=>{const value=String(src||'').trim();if(!value||!value.startsWith('/')||value.startsWith('//')||value.startsWith(base))return value;return base+value.replace(/^\/+/, '');};
+const isVideoPreview=(src='')=>/\.(mp4|webm|ogg|mov)(?:$|[?#])/i.test(String(src||''));
 const projectPreview=(data,lane)=>{
  const primary=lane==='external'?(data.thumbnail||data.avatar):(data.cover||data.avatar);
  const candidates=[...(data.media||[]),...(data.videos||[]),...(data.gallery||[]),...(data.moments||[]).flatMap(m=>[m.media,...(m.gallery||[])])].filter(Boolean);
