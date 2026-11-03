@@ -53,6 +53,7 @@ const loader = homeConfig.loader;
         <nav class="site-nav" aria-label="Main navigation">
           <a href={`${base}#projects`} aria-current={pathname === '/' ? 'page' : undefined} data-projects-trigger data-en="PROJECTS" data-it="PROGETTI">PROJECTS</a>
           <a href={`${base}#lab`} data-lab-trigger>LAB</a>
+          <a href={withBase('about/')} data-en="ABOUT" data-it="CHI SONO">ABOUT</a>
           <a href={withBase('cv/micol-gelsi-CV.pdf')} target="_blank" rel="noopener">CV</a>
           <a href={withBase('play-with-me/')} aria-current={pathname === '/play-with-me' ? 'page' : undefined} data-en="PLAY WITH ME" data-it="GIOCA CON ME">PLAY WITH ME</a>
           <button class="bio-trigger" type="button" data-bio-trigger aria-expanded="false" aria-controls="bio-popup" data-en="BLABLABIO +" data-it="BLABLABIO +">BLABLABIO +</button>
@@ -80,6 +81,7 @@ const loader = homeConfig.loader;
 <a href={base + '?theme=institutional&section=web'}>Web development</a>
 <a href={base + '?theme=institutional&section=lab'}>Lab</a>
 
+<a href={withBase('about/')}>About</a>
 <a href={withBase('cv/')}>CV</a>
 <a href={withBase('play-with-me/')}>Contact</a>
 </nav>
@@ -152,10 +154,6 @@ const loader = homeConfig.loader;
             element.textContent = element.dataset[language] || element.dataset.en || '';
           });
           translateTextNodes(language);
-          if (themeButton) {
-            const italian = language === 'it';
-            themeButton.textContent = root.dataset.theme === 'dark' ? (italian ? 'Scuro' : 'Dark') : (italian ? 'Chiaro' : 'Light');
-          }
           if (copyButton) {
             const italian = language === 'it';
             copyButton.textContent = root.dataset.copyStyle !== 'plain' ? (italian ? 'Rosa' : 'Pink') : (italian ? 'Normale' : 'Plain');
