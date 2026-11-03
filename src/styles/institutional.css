@@ -1493,3 +1493,59 @@ html .virus-mode-toggle:focus-visible{outline:3px solid #ff2d3d!important;outlin
 html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .virus-mode-toggle{color:#fff!important;background:#e90018!important}
 @keyframes virus-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){html .virus-mode-toggle::before{animation:none!important}}
+
+/* Infected settings widget: the WHOLE floating control is the red organism. */
+html .system-controls,
+html[data-portfolio-mode="institutional"] .system-controls,
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) .system-controls{
+ display:flex!important;align-items:center!important;gap:12px!important;
+ padding:13px 18px!important;border:2px solid #ff3540!important;
+ border-radius:36px 24px 42px 22px!important;border-image:none!important;
+ background:#bc0016!important;color:#fff!important;
+ box-shadow:0 0 0 3px #3a0007,0 0 0 5px #f30b25,0 0 26px #f00a,0 0 55px #e600263d,inset 0 0 23px #570009!important;
+ transform:rotate(-2deg)!important;isolation:isolate!important;
+ font:700 10px/1.2 'IBM Plex Mono',monospace!important;
+}
+html .system-controls::before,
+html[data-portfolio-mode="institutional"] .system-controls::before{
+ content:''!important;position:absolute!important;inset:-8px!important;
+ border:2px dotted #ff283a!important;border-radius:42px 29px 48px 28px!important;
+ pointer-events:none!important;z-index:-1!important;
+}
+html .system-controls::after,
+html[data-portfolio-mode="institutional"] .system-controls::after{
+ content:'✳'!important;position:absolute!important;right:-12px!important;top:-16px!important;
+ font-size:25px!important;color:#ff2638!important;text-shadow:0 0 10px #f00!important;
+ pointer-events:none!important;animation:virus-spin 7s linear infinite!important;
+}
+html .system-controls .virus-mode-toggle,
+html[data-portfolio-mode="institutional"] .system-controls .virus-mode-toggle{
+ background:transparent!important;border:0!important;border-radius:0!important;
+ box-shadow:none!important;text-shadow:none!important;transform:none!important;
+ min-width:0!important;min-height:0!important;padding:4px 9px 4px 0!important;
+ color:#fff!important;font:900 11px/1.2 'IBM Plex Mono',monospace!important;
+ letter-spacing:.08em!important;
+ border-right:1px solid #ff8190!important;
+}
+html .system-controls .virus-mode-toggle::after{display:none!important}
+html .system-controls .virus-mode-toggle::before{font-size:14px!important;margin-right:6px!important}
+html .system-controls .virus-mode-toggle:hover,
+html[data-portfolio-mode="institutional"] .system-controls .virus-mode-toggle:hover{
+ color:#fff!important;background:transparent!important;transform:scale(1.04)!important;
+ box-shadow:none!important;animation:none!important;text-decoration:underline!important;
+}
+html .system-controls .system-control,
+html[data-portfolio-mode="institutional"] .system-controls .system-control{background:transparent!important;color:#fff!important}
+html .system-controls .system-control>span,
+html[data-portfolio-mode="institutional"] .system-controls .system-control>span{color:#ffacb3!important}
+html .system-controls .system-control button,
+html[data-portfolio-mode="institutional"] .system-controls .system-control button{
+ color:#fff!important;background:transparent!important;border:0!important;
+ box-shadow:none!important;text-shadow:none!important;animation:none!important;
+}
+html .system-controls .system-control button:hover,
+html[data-portfolio-mode="institutional"] .system-controls .system-control button:hover{
+ color:#fff!important;text-decoration:underline!important;animation:none!important;
+}
+@media(max-width:760px){html .system-controls{gap:8px!important;padding:11px 13px!important;max-width:calc(100vw - 24px)!important}}
+@media(prefers-reduced-motion:reduce){html .system-controls::after{animation:none!important}}
