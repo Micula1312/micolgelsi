@@ -36,6 +36,9 @@
       page.prepend(layout);
       nodes.forEach(node=>(node.matches(mediaSelector)?media:info).append(node));
       nestedMedia.forEach(({node,wrapper})=>{wrapper.append(node);media.append(wrapper)});
+      // Each project opens at the beginning of its own independent text column.
+      info.scrollTop=0;
+      requestAnimationFrame(()=>{if(root.dataset.portfolioMode==='institutional')info.scrollTop=0;});
     }else{
       nestedMedia.forEach(({node,marker,wrapper})=>{marker.after(node);wrapper.remove()});
       markers.forEach(({node,marker})=>marker.after(node));
@@ -138,6 +141,7 @@
   // The rail may be reparented on theme change; listeners remain attached.
   window.addEventListener('portfolio-mode-change',()=>requestAnimationFrame(attachRails));
   attachRails();
+  window.addEventListener('pageshow',()=>{if(root.dataset.portfolioMode==='institutional')info.scrollTop=0;});
   window.addEventListener('portfolio-mode-change',update);
   update();
 })();
