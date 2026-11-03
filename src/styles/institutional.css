@@ -1336,3 +1336,90 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  width:auto!important;height:auto!important;max-width:min(75vw,560px)!important;
  max-height:360px!important;aspect-ratio:auto!important;object-fit:contain!important;
 }
+
+
+/* Institutional terminal reset — 2026-11-03. Scoped to Institutional; Punk unchanged. */
+html[data-portfolio-mode="institutional"]{
+  --bg:#101010!important;--fg:#e8e8e8!important;--muted:#989898!important;
+  --line:#383838!important;--signal:#e8e8e8!important;
+  color-scheme:dark!important;background:#101010!important;color:#e8e8e8!important;
+}
+html[data-portfolio-mode="institutional"] body,
+html[data-portfolio-mode="institutional"] .shell,
+html[data-portfolio-mode="institutional"] main.page,
+html[data-portfolio-mode="institutional"] .institutional-archive,
+html[data-portfolio-mode="institutional"] .institutional-sidebar,
+html[data-portfolio-mode="institutional"] .institutional-main,
+html[data-portfolio-mode="institutional"] .institutional-entries,
+html[data-portfolio-mode="institutional"] .institutional-entry,
+html[data-portfolio-mode="institutional"] .institutional-entry-info,
+html[data-portfolio-mode="institutional"] .institutional-entry-image{
+  background:#101010!important;color:#e8e8e8!important;
+}
+html[data-portfolio-mode="institutional"] body,
+html[data-portfolio-mode="institutional"] :is(h1,h2,h3,h4,p,a,button,input,select,textarea,label,small,span){
+  font-family:"IBM Plex Mono","Courier New",monospace!important;
+}
+html[data-portfolio-mode="institutional"] :is(.institutional-entry h2,.institutional-sidebar h1,.institutional-main-heading){
+  color:#e8e8e8!important;text-shadow:none!important;letter-spacing:0!important;
+}
+html[data-portfolio-mode="institutional"] :is(.institutional-entry-meta,.institutional-entry-number,.institutional-kicker,.institutional-sidebar-foot){
+  color:#989898!important;
+}
+html[data-portfolio-mode="institutional"] body:has(.institutional-archive) .shell{
+  width:100%!important;max-width:none!important;margin:0!important;padding:0!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-archive{
+  width:100%!important;max-width:none!important;margin:0!important;
+  grid-template-columns:minmax(210px,22%) minmax(0,1fr)!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-sidebar{
+  padding:20px 16px!important;border-right:1px solid #383838!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-main{
+  padding:20px 16px 80px!important;min-width:0!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry{
+  border-bottom:1px solid #383838!important;
+  grid-template-columns:minmax(0,42%) minmax(0,1fr)!important;
+  gap:clamp(18px,3vw,48px)!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry-image{
+  aspect-ratio:auto!important;height:auto!important;min-height:0!important;
+  overflow:hidden!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry-image :is(img,video){
+  display:block!important;width:100%!important;height:auto!important;
+  max-height:none!important;aspect-ratio:auto!important;object-fit:contain!important;
+}
+html[data-portfolio-mode="institutional"] :is(.institutional-filters select,.institutional-filters option,.institutional-search-panel input){
+  color:#e8e8e8!important;background:#101010!important;
+  border:1px solid #555!important;border-radius:0!important;
+  color-scheme:dark!important;accent-color:#b5b5b5!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-filters select{
+  appearance:auto!important;-webkit-appearance:menulist!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-filters option:checked{
+  background:#444!important;color:#fff!important;
+}
+html[data-portfolio-mode="institutional"] :is(.institutional-sidebar-nav button,.institutional-sidebar-nav a,.institutional-filters button){
+  background:transparent!important;color:#e8e8e8!important;
+}
+html[data-portfolio-mode="institutional"] :is(.institutional-entry:hover,.institutional-entry:focus-visible){
+  background:#101010!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-entry:hover h2{
+  text-decoration:underline!important;text-decoration-thickness:1px!important;
+}
+@media(max-width:760px){
+  html[data-portfolio-mode="institutional"] .institutional-archive{display:block!important;}
+  html[data-portfolio-mode="institutional"] .institutional-sidebar{
+    position:relative!important;height:auto!important;padding:14px 12px!important;
+    border-right:0!important;border-bottom:1px solid #383838!important;
+  }
+  html[data-portfolio-mode="institutional"] .institutional-main{padding:14px 12px 70px!important;}
+  html[data-portfolio-mode="institutional"] .institutional-entry{
+    grid-template-columns:minmax(0,1fr)!important;gap:12px!important;
+  }
+}
