@@ -150,3 +150,47 @@ html[data-portfolio-mode="institutional"] .institutional-about-trigger{font:inhe
 
 /* ABOUT belongs to the Institutional index only; Stellar keeps BLABLABIO. */
 html:not([data-portfolio-mode="institutional"]) .site-nav .institutional-about-trigger{display:none!important}
+
+/* The Institutional index is the same component visually on home and inner pages. */
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar.institutional-sidebar{
+ position:sticky!important;top:0!important;align-self:start!important;
+ height:100dvh!important;min-height:0!important;
+ padding:clamp(24px,3vw,54px)!important;
+ display:flex!important;flex-direction:column!important;align-items:stretch!important;
+ border-right:1px solid var(--line)!important;
+ background:var(--bg)!important;color:var(--fg)!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar.institutional-sidebar .institutional-index-name{
+ display:block;font-family:var(--institutional-display)!important;
+ font-size:clamp(38px,5vw,82px)!important;line-height:.95!important;
+ letter-spacing:-.025em!important;font-weight:700!important;
+ text-decoration:none!important;color:var(--fg)!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar.institutional-sidebar .institutional-sidebar-nav{
+ display:flex!important;flex-direction:column!important;align-items:stretch!important;
+ gap:8px!important;margin-top:auto!important;padding:42px 0!important;
+ font:12px/1.5 Arial,Helvetica,sans-serif!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar.institutional-sidebar .institutional-sidebar-nav :is(a,button){
+ display:block!important;width:max-content!important;
+ font:inherit!important;letter-spacing:inherit!important;
+ color:var(--fg)!important;text-align:left!important;
+ background:transparent!important;border:0!important;padding:0!important;
+ text-decoration:none!important;cursor:pointer!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar.institutional-sidebar .institutional-sidebar-nav :is(a,button):hover{text-decoration:underline!important}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar.institutional-sidebar .institutional-sidebar-bottom{
+ margin-top:0!important;display:block!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar.institutional-sidebar .institutional-sidebar-bottom button{
+ font:inherit!important;text-decoration:none!important;
+}
+@media(max-width:760px){
+ html[data-portfolio-mode="institutional"] .institutional-detail-sidebar.institutional-sidebar{
+  position:relative!important;height:auto!important;min-height:0!important;
+  padding:24px!important;
+ }
+ html[data-portfolio-mode="institutional"] .institutional-detail-sidebar.institutional-sidebar .institutional-sidebar-nav{
+  margin-top:16px!important;padding:16px 0!important;
+ }
+}
