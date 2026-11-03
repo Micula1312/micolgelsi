@@ -147,3 +147,6 @@ html:not([data-portfolio-mode="institutional"]) .bio-close { margin-left: auto; 
 body.institutional-about-open{overflow:hidden!important}
 html[data-portfolio-mode="institutional"] .institutional-about-trigger{font:inherit;background:none;border:0;padding:0;cursor:pointer}
 @media(max-width:760px){.institutional-about-overlay{padding:8px}.institutional-about-sheet{box-shadow:5px 5px 0 #ff4fa7}.institutional-about-content{padding:24px 18px}}
+
+/* ABOUT belongs to the Institutional index only; Stellar keeps BLABLABIO. */
+html:not([data-portfolio-mode="institutional"]) .site-nav .institutional-about-trigger{display:none!important}
