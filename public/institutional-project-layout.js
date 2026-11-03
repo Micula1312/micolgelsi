@@ -36,6 +36,13 @@
       page.prepend(layout);
       nodes.forEach(node=>(node.matches(mediaSelector)?media:info).append(node));
       nestedMedia.forEach(({node,wrapper})=>{wrapper.append(node);media.append(wrapper)});
+      // Keep the project's featured gallery directly below its cover.
+      // It was previously appended after other media, sometimes far below the fold.
+      const featured=media.querySelector('[data-featured-gallery]');
+      const cover=media.querySelector('.project-cover');
+      if(featured&&cover)cover.after(featured);
+      else if(featured)media.prepend(featured);
+
     }else{
       nestedMedia.forEach(({node,marker,wrapper})=>{marker.after(node);wrapper.remove()});
       markers.forEach(({node,marker})=>marker.after(node));
