@@ -28,6 +28,12 @@ credits:
   []
 photoCredits:
   []
+media:
+  []
+gallery:
+  []
+videos:
+  []
 moments:
   []
 ---
