@@ -15,7 +15,7 @@ html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-
 html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-sidebar-name {
  display:block!important;width:100%!important;max-width:100%!important;
  margin:20px 0 24px!important;padding:0!important;
- font:500 18px/1.2 Helvetica,Arial,sans-serif!important;
+ font:500 18px/1.2 "IBM Plex Mono",monospace!important;
  letter-spacing:-.025em!important;text-transform:none!important;
  white-space:nowrap!important;overflow-wrap:normal!important;
  color:#171717!important;
@@ -26,11 +26,11 @@ html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-
  background:transparent!important;border:0!important;
 }
 html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-kicker {
- font:400 10px/1.5 Helvetica,Arial,sans-serif!important;
+ font:400 10px/1.5 "IBM Plex Mono",monospace!important;
  color:#666!important;letter-spacing:0!important;margin:0!important;
 }
 html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-intro {
- font:400 11px/1.65 Helvetica,Arial,sans-serif!important;
+ font:400 11px/1.65 "IBM Plex Mono",monospace!important;
  max-width:34ch!important;margin:0!important;
  color:#444!important;letter-spacing:0!important;
 }
@@ -54,7 +54,7 @@ html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-
  margin-top:auto!important;gap:12px!important;
 }
 html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-sidebar-foot {
- font:400 10px/1.5 Helvetica,Arial,sans-serif!important;
+ font:400 10px/1.5 "IBM Plex Mono",monospace!important;
  letter-spacing:0!important;color:#666!important;margin:0!important;
 }
 html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-mode-switch {
@@ -70,7 +70,12 @@ html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-
   height:100dvh!important;min-height:0!important;max-height:100dvh!important;
   overflow-y:auto!important;
  }
- 
+ html[data-portfolio-mode="institutional"] body:has(> .shell > .institutional-detail-sidebar) .shell {
+  display:block!important;grid-template-columns:none!important;
+  width:100%!important;max-width:none!important;
+  height:auto!important;max-height:none!important;min-height:100dvh!important;
+  margin:0!important;padding:0!important;overflow:visible!important;
+ }
  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .shell {
   display:block!important;grid-template-columns:none!important;
   width:100%!important;max-width:none!important;
@@ -117,18 +122,4 @@ html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-
   flex-direction:row!important;flex-wrap:wrap!important;
   gap:12px 20px!important;margin-top:18px!important;padding:12px 0!important;
  }
-}
-
-/* Institutional typography: Helvetica everywhere, including legacy project panels.
-   Icons and SVG graphics keep their own glyph rendering. */
-html[data-portfolio-mode="institutional"] body,
-html[data-portfolio-mode="institutional"] body :not(svg):not(svg *):not(.icon):not([class*="icon-"]):not([class*="lucide"]){
- font-family:Helvetica,Arial,sans-serif!important;
-}
-html[data-portfolio-mode="institutional"] body .institutional-sidebar .institutional-sidebar-name,
-html[data-portfolio-mode="institutional"] body .institutional-sidebar .institutional-sidebar-name a,
-html[data-portfolio-mode="institutional"] body .institutional-sidebar .institutional-intro,
-html[data-portfolio-mode="institutional"] body .institutional-sidebar .institutional-kicker,
-html[data-portfolio-mode="institutional"] body .institutional-sidebar .institutional-sidebar-foot{
- font-family:Helvetica,Arial,sans-serif!important;
 }
