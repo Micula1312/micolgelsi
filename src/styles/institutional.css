@@ -1336,3 +1336,11 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  width:auto!important;height:auto!important;max-width:min(75vw,560px)!important;
  max-height:360px!important;aspect-ratio:auto!important;object-fit:contain!important;
 }
+
+/* Project videos: preserve the full portrait/landscape frame of the cover video.
+   Limit its height to the media column viewport, never crop. */
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .project-cover>video{
+ width:auto!important;max-width:100%!important;height:auto!important;
+ max-height:72dvh!important;object-fit:contain!important;object-position:left top!important;
+ aspect-ratio:auto!important;
+}
