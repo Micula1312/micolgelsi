@@ -1385,17 +1385,6 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  }
 }
 
-/* Make the shared project header visible on the dark Institutional surface. */
-html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.project-head{
- display:block!important;visibility:visible!important;opacity:1!important;
- color:#e8e8e8!important;background:transparent!important;
-}
-html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.project-head :is(h1,.lead),
-html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.eyebrow :is(a,span){
- color:#e8e8e8!important;visibility:visible!important;opacity:1!important;
- text-shadow:none!important;
-}
-
 /* Detail metadata: intact labels and terminal-style bracketed eyebrow. */
 html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.eyebrow::before{content:"[";color:#999}
 html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.eyebrow::after{content:"]";color:#999}
