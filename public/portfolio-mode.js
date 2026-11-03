@@ -8,6 +8,8 @@
   const initial=['punk','institutional'].includes(requested)?requested:(['punk','institutional'].includes(saved)?saved:'punk');
   const apply=(mode,persist=true)=>{
     root.dataset.portfolioMode=mode;
+    root.dataset.theme=mode==='institutional'?'light':'dark';
+    document.querySelectorAll('[data-theme-toggle]').forEach(button=>{button.textContent=mode==='institutional'?'Light':'Dark';button.disabled=true;button.setAttribute('aria-label','Appearance follows portfolio mode');});
     if(mode==='punk'){
       root.dataset.copyStyle='pink';
       try{localStorage.setItem('portfolio-copy-style','pink')}catch{}
