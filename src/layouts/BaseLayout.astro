@@ -73,7 +73,7 @@ const loader = homeConfig.loader;
       {(projectDetail || institutionalSidebar) && <aside class="institutional-detail-sidebar institutional-sidebar" aria-label="Institutional portfolio navigation">
   <div class="institutional-sidebar-top">
     <p class="institutional-kicker">ARTIST / RESEARCHER / CREATIVE CODER</p>
-    <a class="institutional-index-name" href={base}>MICOL GELSI</a>
+    
     <p class="institutional-intro">Working across collective archives, urban wilderness, performative media and experimental digital practices.</p>
   </div>
   <nav class="institutional-sidebar-nav" aria-label="Portfolio sections">
@@ -82,11 +82,8 @@ const loader = homeConfig.loader;
     <a href={base + '?theme=institutional&section=lab'}>Lab</a>
     <a href={base + '?theme=institutional&section=graphics'}>Graphics</a>
     <button type="button" data-institutional-about-trigger>About</button>
-    <a href={withBase('cv/')}>CV</a>
-    <a href={withBase('play-with-me/')}>Contact</a>
   </nav>
   <div class="institutional-sidebar-bottom">
-    <button type="button" class="institutional-mode-switch" data-portfolio-mode-toggle aria-label="Switch portfolio theme">← PUNK MODE</button>
     <p class="institutional-sidebar-foot">ROME / ITALY</p>
   </div>
 </aside>}
