@@ -1,72 +1,95 @@
-/* Institutional navigation: shared component and shared typography across all pages. */
-html[data-portfolio-mode="institutional"] .institutional-sidebar h1 a{
- color:inherit!important;font:inherit!important;line-height:inherit!important;
- text-decoration:none!important;letter-spacing:inherit!important;
+/* Shared Institutional vertical header. One Astro component, one canonical layout. */
+@media (min-width:761px) {
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .shell {
+    display:block!important;
+    width:100%!important;max-width:none!important;
+    min-height:100dvh!important;height:auto!important;
+    margin:0!important;padding:0!important;
+    overflow:visible!important;
+  }
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .institutional-detail-sidebar {
+    position:fixed!important;inset:0 auto 0 0!important;
+    width:30%!important;min-width:250px!important;max-width:none!important;
+    height:100dvh!important;min-height:0!important;
+    padding:24px 28px!important;
+    margin:0!important;overflow-y:auto!important;
+    box-sizing:border-box!important;z-index:90!important;
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;
+    background:var(--bg)!important;
+  }
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) main.page {
+    display:block!important;width:70%!important;max-width:none!important;
+    margin:0 0 0 30%!important;min-width:0!important;
+    min-height:100dvh!important;height:auto!important;max-height:none!important;
+    overflow:visible!important;
+  }
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) {
+    overflow-y:auto!important;overflow-x:hidden!important;
+  }
 }
-html[data-portfolio-mode="institutional"] .institutional-sidebar :is(.institutional-sidebar-nav a,.institutional-sidebar-nav button){
- font:inherit!important;color:inherit!important;letter-spacing:inherit!important;
- text-transform:none!important;text-decoration:none!important;
- background:transparent!important;border:0!important;padding:0!important;
- cursor:pointer!important;
-}
-html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-sidebar-nav{
- display:flex!important;flex-direction:column!important;align-items:flex-start!important;
- gap:6px!important;margin-top:auto!important;padding:42px 0!important;
- font:10px/1.5 Arial,Helvetica,sans-serif!important;
-}
-html[data-portfolio-mode="institutional"] .institutional-sidebar h1{
- font-size:clamp(30px,3.4vw,52px)!important;
- margin:14px 0 18px!important;
-}
-html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-intro{
- font-size:11px!important;line-height:1.6!important;
- font-family:var(--institutional-serif)!important;
-}
-html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-sidebar-bottom{
- margin-top:auto!important;
-}
-@media(min-width:761px){
- html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .shell{
-  display:block!important;grid-template-columns:none!important;
-  width:100%!important;max-width:none!important;
-  height:auto!important;max-height:none!important;min-height:100dvh!important;
-  margin:0!important;padding:0!important;overflow:visible!important;
- }
- html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .institutional-detail-sidebar{
-  position:fixed!important;inset:0 auto 0 0!important;
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-sidebar-top {
   display:flex!important;flex-direction:column!important;align-items:stretch!important;
-  width:30%!important;min-width:0!important;max-width:none!important;
-  height:100dvh!important;min-height:0!important;max-height:100dvh!important;
-  margin:0!important;padding:24px 28px!important;
-  box-sizing:border-box!important;overflow-y:auto!important;overflow-x:hidden!important;
-  background:var(--bg)!important;z-index:90!important;
- }
- html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) main.page{
-  display:block!important;width:70%!important;max-width:none!important;
-  margin:0 0 0 30%!important;padding:0!important;min-width:0!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-index-name {
+  display:block!important;
+  font-family:var(--institutional-display)!important;
+  font-size:clamp(38px,5vw,82px)!important;
+  line-height:.95!important;font-weight:400!important;
+  margin:28px 0 36px!important;text-decoration:none!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-sidebar-nav {
+  display:flex!important;flex-direction:column!important;
+  align-items:flex-start!important;gap:8px!important;
+  margin-top:auto!important;padding:42px 0!important;
+  font:12px/1.5 Arial,Helvetica,sans-serif!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-sidebar-nav :is(a,button) {
+  font:inherit!important;display:block!important;width:max-content!important;
+  background:none!important;border:0!important;
+  padding:0!important;margin:0!important;text-decoration:none!important;
+  color:var(--fg)!important;cursor:pointer!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-sidebar-bottom {
+  margin-top:auto!important;display:flex!important;align-items:flex-start!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-mode-switch {display:none!important}
+@media(max-width:760px) {
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .shell {
+    display:block!important;width:100%!important;max-width:none!important;
+  }
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .institutional-detail-sidebar {
+    position:relative!important;inset:auto!important;
+    width:100%!important;min-width:0!important;max-width:none!important;
+    height:auto!important;min-height:0!important;max-height:none!important;
+    padding:20px!important;overflow:visible!important;
+  }
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) main.page {
+    display:block!important;margin:0!important;width:100%!important;max-width:none!important;
+    height:auto!important;overflow:visible!important;
+  }
+  html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-sidebar-nav {
+    flex-direction:row!important;flex-wrap:wrap!important;gap:12px 20px!important;
+    margin-top:18px!important;padding:12px 0!important;
+  }
+}
+
+/* Project detail pages have a legacy 17vw grid and clipped 100dvh shell.
+   Override those constraints so the shared sidebar uses the HOME 30% column. */
+@media(min-width:761px){
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"]:has(.institutional-detail-sidebar) .shell{
+  display:block!important;grid-template-columns:none!important;
+  height:auto!important;max-height:none!important;min-height:100dvh!important;
+  overflow:visible!important;
  }
  html[data-portfolio-mode="institutional"] body[data-project-detail="true"]:has(.institutional-detail-sidebar) main.page{
+  width:70%!important;max-width:none!important;
+  margin-left:30%!important;margin-right:0!important;
   height:100dvh!important;max-height:100dvh!important;min-height:0!important;
-  overflow:hidden!important;
+  padding:0!important;overflow:hidden!important;
  }
-}
-@media(max-width:760px){
- html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .shell{
-  display:block!important;width:100%!important;max-width:none!important;
-  height:auto!important;max-height:none!important;overflow:visible!important;
- }
- html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .institutional-detail-sidebar{
-  position:relative!important;inset:auto!important;width:100%!important;
-  min-width:0!important;max-width:none!important;height:auto!important;
-  min-height:0!important;max-height:none!important;overflow:visible!important;
-  padding:20px!important;
- }
- html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) main.page{
-  display:block!important;width:100%!important;max-width:none!important;
-  margin:0!important;height:auto!important;overflow:visible!important;
- }
- html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-sidebar-nav{
-  flex-direction:row!important;flex-wrap:wrap!important;
-  gap:12px 20px!important;margin-top:18px!important;padding:12px 0!important;
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"]:has(.institutional-detail-sidebar) .institutional-detail-sidebar{
+  position:fixed!important;left:0!important;top:0!important;bottom:0!important;
+  width:30%!important;min-width:0!important;max-width:none!important;
+  height:100dvh!important;padding:24px 28px!important;
  }
 }
