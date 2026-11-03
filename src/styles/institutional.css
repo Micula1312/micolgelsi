@@ -1376,3 +1376,25 @@ html[data-portfolio-mode="institutional"] body:has(.institutional-archive) .inst
 html[data-portfolio-mode="institutional"] body:has(.institutional-archive) .institutional-entries.is-graphics-masonry .institutional-graphic-entry .institutional-entry-info{display:none!important;}
 @media(max-width:800px){html[data-portfolio-mode="institutional"] body:has(.institutional-archive) .institutional-entries.is-graphics-masonry{columns:3 130px!important;column-gap:5px!important;}}
 @media(max-width:480px){html[data-portfolio-mode="institutional"] body:has(.institutional-archive) .institutional-entries.is-graphics-masonry{columns:2 110px!important;column-gap:4px!important;}}
+
+
+/* FIX: Home previews disappeared because absolute-positioned images had a
+   parent reset to aspect-ratio:auto (zero intrinsic height). Keep this scoped
+   to the Institutional index; do not touch project-detail galleries. */
+html[data-portfolio-mode="institutional"] body:has(.institutional-archive)
+.institutional-entry:not(.institutional-graphic-entry) .institutional-entry-image{
+  position:relative!important;aspect-ratio:4/3!important;
+  height:auto!important;min-height:0!important;overflow:hidden!important;
+}
+html[data-portfolio-mode="institutional"] body:has(.institutional-archive)
+.institutional-entry:not(.institutional-graphic-entry) .institutional-entry-image> :is(img,video){
+  position:absolute!important;inset:0!important;
+  display:block!important;width:100%!important;height:100%!important;
+  max-height:none!important;object-fit:cover!important;
+}
+html[data-portfolio-mode="institutional"] body:has(.institutional-archive)
+.is-graphics-masonry .institutional-graphic-entry .institutional-entry-image> :is(img,video){
+  position:static!important;inset:auto!important;
+  width:100%!important;height:auto!important;max-height:none!important;
+  object-fit:contain!important;
+}
