@@ -1440,3 +1440,20 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
 html[data-portfolio-mode="institutional"] .institutional-detail-sidebar{background:#f7f7f5!important;color:#171717!important;border-color:#c8c8c6!important}
 html[data-portfolio-mode="institutional"] .institutional-detail-sidebar :is(a,p,span,button){color:#171717!important}
 html[data-portfolio-mode="institutional"] .institutional-detail-sidebar :is(.institutional-detail-sidebar-top>p:first-child,.institutional-detail-sidebar-bottom>span){color:#686868!important}
+
+/* Institutional home: light surfaces throughout, including legacy terminal panels. */
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]),
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) :is(.shell,.institutional-main,.institutional-sidebar,.institutional-archive,.institutional-contact,.institutional-search-panel,.system-controls,.institutional-entry,.institutional-entry-info){
+ background:#f7f7f5!important;color:#171717!important;
+}
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) :is(.institutional-sidebar,.institutional-main,.institutional-entry,.institutional-entry-info,.institutional-entry-info h2,.institutional-entry-number,.institutional-sidebar-nav a,.institutional-sidebar-nav button,.institutional-main-heading,.institutional-kicker,.institutional-entry-meta,.institutional-entry-meta *,h1,h2,h3,h4,p,span,a,button){
+ color:#171717!important;
+}
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) :is(.institutional-entry,.institutional-entry:hover,.institutional-entry:focus-visible,.institutional-entry::before,.institutional-entry:hover::before){background:transparent!important}
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) .institutional-entry-image{
+ background:#e8e8e6!important;aspect-ratio:4/3!important;position:relative!important;overflow:hidden!important;
+}
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) .institutional-entry-image> :is(img,video){
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ max-height:none!important;aspect-ratio:auto!important;object-fit:cover!important;object-position:center!important;
+}
