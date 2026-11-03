@@ -1344,3 +1344,24 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  max-height:72dvh!important;object-fit:contain!important;object-position:left top!important;
  aspect-ratio:auto!important;
 }
+
+/* Project detail headings: align content to the top of the right column.
+   Scoped to Institutional only; leave Punk and media galleries untouched. */
+@media (min-width:761px){
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info{
+  justify-content:flex-start!important;align-content:flex-start!important;align-items:stretch!important;
+  padding-top:12px!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info > :is(.eyebrow,.project-head,.intro,.project-body){
+  position:static!important;top:auto!important;transform:none!important;
+  flex:0 0 auto!important;align-self:stretch!important;
+  margin-top:0!important;min-height:0!important;height:auto!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-head{
+  display:block!important;padding-top:0!important;padding-bottom:0!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-head :is(h1,.lead){
+  position:static!important;transform:none!important;align-self:start!important;
+  margin-top:0!important;min-height:0!important;
+ }
+}
