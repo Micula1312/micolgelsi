@@ -1669,3 +1669,13 @@ html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institu
   margin-left:0!important;width:100%!important;max-width:none!important;
  }
 }
+
+/* One Institutional sidebar geometry on home and internal pages. */
+@media(min-width:761px){
+ html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .institutional-detail-sidebar.institutional-sidebar{
+  width:max(250px,30vw)!important;min-width:250px!important;max-width:none!important;
+ }
+ html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) main.page{
+  margin-left:max(250px,30vw)!important;
+ }
+}
