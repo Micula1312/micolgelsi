@@ -1375,7 +1375,7 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
   align-self:start!important;scroll-padding-top:0!important;
  }
  html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.eyebrow{
-  display:none!important;
+  display:block!important;color:#999!important;margin:0 0 8px!important;
  }
  html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.project-head{
   margin:0!important;padding:0!important;min-height:0!important;
@@ -1383,4 +1383,15 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.project-head>h1{
   margin:0!important;padding:0!important;line-height:1.4!important;
  }
+}
+
+/* Make the shared project header visible on the dark Institutional surface. */
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.project-head{
+ display:block!important;visibility:visible!important;opacity:1!important;
+ color:#e8e8e8!important;background:transparent!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.project-head :is(h1,.lead),
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.eyebrow :is(a,span){
+ color:#e8e8e8!important;visibility:visible!important;opacity:1!important;
+ text-shadow:none!important;
 }
