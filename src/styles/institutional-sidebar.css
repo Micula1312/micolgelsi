@@ -122,11 +122,7 @@ html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-
 /* Institutional typography: Helvetica everywhere, including legacy project panels.
    Icons and SVG graphics keep their own glyph rendering. */
 html[data-portfolio-mode="institutional"] body,
-html[data-portfolio-mode="institutional"] body :is(
- h1,h2,h3,h4,h5,h6,p,a,button,input,textarea,select,option,label,
- span,small,strong,em,b,i,li,dt,dd,blockquote,figcaption,caption,
- th,td,summary,time,code,pre
-):not(.icon):not([class*="icon-"]):not([class*="lucide"]){
+html[data-portfolio-mode="institutional"] body :not(svg):not(svg *):not(.icon):not([class*="icon-"]):not([class*="lucide"]){
  font-family:Helvetica,Arial,sans-serif!important;
 }
 html[data-portfolio-mode="institutional"] body .institutional-sidebar .institutional-sidebar-name,
