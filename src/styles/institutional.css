@@ -1455,3 +1455,31 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  max-width:min(70vw,480px)!important;max-height:240px!important;
  aspect-ratio:auto!important;object-fit:contain!important;
 }
+
+
+/* Featured project carousel: always a real visible horizontal rail below cover. */
+@media(min-width:761px){
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .project-cover > :is(img,video){
+   max-height:52dvh!important;
+ }
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media [data-featured-gallery]{
+ display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+ align-items:flex-start!important;justify-content:flex-start!important;
+ flex:0 0 auto!important;visibility:visible!important;opacity:1!important;
+ width:100%!important;max-width:100%!important;min-height:110px!important;
+ overflow-x:auto!important;overflow-y:hidden!important;overscroll-behavior-x:contain!important;
+ gap:8px!important;margin:10px 0 22px!important;padding:0 0 8px!important;
+ scroll-behavior:auto!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media [data-featured-gallery] > figure{
+ display:block!important;position:relative!important;flex:0 0 auto!important;
+ width:auto!important;min-width:0!important;max-width:none!important;
+ height:auto!important;margin:0!important;padding:0!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media [data-featured-gallery] > figure > :is(img,video){
+ display:block!important;position:static!important;width:auto!important;
+ height:clamp(130px,20vw,270px)!important;max-height:270px!important;
+ max-width:min(75vw,520px)!important;object-fit:contain!important;
+ aspect-ratio:auto!important;
+}
