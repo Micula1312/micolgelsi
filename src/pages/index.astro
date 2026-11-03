@@ -77,9 +77,9 @@ const labStars=labProjects.map((project,index)=>({
         <div class="institutional-entry-image">{project.image?(/\.(mp4|webm|ogg)(?:$|[?#])/i.test(project.image)?<video src={project.image} muted playsinline loop autoplay preload="metadata" aria-label={project.title}/>:<img src={project.image} alt="" loading="lazy" />):<span class="institutional-lab-placeholder" aria-hidden="true">★</span>}</div>
         <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{project.title}</h2><p>{project.description||project.type}</p><div class="institutional-entry-meta"><span>{project.type||'LAB'}</span></div></div>
       </a>)}
-      {graphics.map((graphic,index)=><a class="institutional-entry institutional-graphic-entry" data-institutional-entry data-institutional-category="graphics" data-institutional-year={String(graphic.year||'')} data-institutional-context={graphic.type||'graphic'} data-institutional-tags={JSON.stringify(graphic.tags||[])} data-institutional-research="graphics" href={graphic.link||graphic.image||'#'} target="_blank" rel="noopener noreferrer">
-        <div class="institutional-entry-image">{/\.(mp4|webm|ogg)(?:$|[?#])/i.test(graphic.image||"")?<video src={graphic.image} muted playsinline loop autoplay preload="metadata" aria-label={graphic.title||"Graphic work"} />:<img src={graphic.image} alt={graphic.title||"Graphic work"} loading="lazy" />}</div>
-        <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{graphic.title||'Untitled'}</h2>{graphic.description&&<p>{graphic.description}</p>}<div class="institutional-entry-meta"><span>{graphic.project||graphic.type||'GRAPHIC'}</span><span>{displayYear(graphic,graphic.year||'')}</span></div></div>
+      {graphics.map((graphic,index)=><a class="institutional-entry institutional-graphic-entry" data-institutional-entry data-institutional-category="graphics" data-institutional-year={String(graphic.year||'')} data-institutional-context={graphic.type||'graphic'} data-institutional-tags={JSON.stringify(graphic.tags||[])} data-institutional-research="graphics" href={graphic.link||graphic.image||'#'} target="_blank" rel="noopener noreferrer" aria-label={graphic.title||'Open graphic'}>
+        <div class="institutional-entry-image">{/\.(mp4|webm|ogg)(?:$|[?#])/i.test(graphic.image||"")?<video src={graphic.image} muted playsinline loop autoplay preload="metadata" aria-label={graphic.title||"Graphic work"} />:<img src={graphic.image} alt={graphic.title||""} loading="lazy" />}</div>
+        <div class="institutional-entry-info" aria-hidden="true"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{graphic.title||''}</h2>{graphic.description&&<p>{graphic.description}</p>}<div class="institutional-entry-meta"><span>{graphic.project||graphic.type||''}</span><span>{graphic.year||''}</span></div></div>
       </a>)}
     </div>
   </div>
@@ -146,11 +146,12 @@ const labStars=labProjects.map((project,index)=>({
     const before=new Map(entries.filter(e=>!e.hidden).map(e=>[e,e.getBoundingClientRect()]));
     sections.forEach(b=>{const active=b.dataset.institutionalSection===category;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
     heading.textContent=names[category];
+    container.classList.toggle('is-graphics-masonry',category==='graphics');
     if(description){description.textContent=descriptions[category]||'';description.hidden=!descriptions[category];}
     const query=searchInput.value.trim().replace(/^#/,'').toLocaleLowerCase();
     const type=typeSelect.value;
     const visible=inCategory().filter(e=>!type||e.dataset.institutionalContext===type).filter(e=>!query||[e.querySelector('h2')?.textContent,e.querySelector('.institutional-entry-info p')?.textContent,e.dataset.institutionalContext,...getTags(e)].join(' ').toLocaleLowerCase().includes(query));
-    visible.sort((a,b)=>(b.dataset.institutionalYear||'').localeCompare(a.dataset.institutionalYear||''));
+    if(category!=='graphics')visible.sort((a,b)=>(b.dataset.institutionalYear||'').localeCompare(a.dataset.institutionalYear||''));
     entries.forEach(e=>{e.hidden=!visible.includes(e);});
     visible.forEach((e,index)=>{container.appendChild(e);const number=e.querySelector('.institutional-entry-number');if(number)number.textContent=String(index+1).padStart(2,'0');});
     empty.hidden=visible.length>0;
