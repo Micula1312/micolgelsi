@@ -11,7 +11,7 @@ const sections = [
 <aside class:list={['institutional-sidebar',{'institutional-detail-sidebar':!home}]} aria-label="Institutional portfolio navigation">
   <div class="institutional-sidebar-top">
     <p class="institutional-kicker">ARTIST / RESEARCHER / CREATIVE CODER</p>
-    <h1>{home ? 'MICOL GELSI' : <a href={base}>MICOL GELSI</a>}</h1>
+    {home ? <h1>MICOL GELSI</h1> : <a class="institutional-index-name" href={base}>MICOL GELSI</a>}
     <p class="institutional-intro">Working across collective archives, urban wilderness, performative media and experimental digital practices.</p>
   </div>
   <nav class="institutional-sidebar-nav" aria-label="Portfolio sections">
