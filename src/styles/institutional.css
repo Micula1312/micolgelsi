@@ -1549,3 +1549,47 @@ html[data-portfolio-mode="institutional"] .system-controls .system-control butto
 }
 @media(max-width:760px){html .system-controls{gap:8px!important;padding:11px 13px!important;max-width:calc(100vw - 24px)!important}}
 @media(prefers-reduced-motion:reduce){html .system-controls::after{animation:none!important}}
+
+/* Brutalist Helvetica virus: a single hard red typographic slab, no ornaments. */
+html .system-controls,
+html[data-portfolio-mode="institutional"] .system-controls,
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) .system-controls{
+ gap:0!important;padding:0!important;background:#f0001b!important;color:#fff!important;
+ border:3px solid #f0001b!important;border-image:none!important;border-radius:0!important;
+ box-shadow:none!important;transform:none!important;
+ font-family:Helvetica,Arial,sans-serif!important;
+}
+html .system-controls::before,html .system-controls::after,
+html[data-portfolio-mode="institutional"] .system-controls::before,
+html[data-portfolio-mode="institutional"] .system-controls::after{content:none!important;display:none!important;animation:none!important}
+html .system-controls .virus-mode-toggle,
+html[data-portfolio-mode="institutional"] .system-controls .virus-mode-toggle{
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ min-height:43px!important;padding:10px 15px!important;
+ border:0!important;border-right:2px solid #fff!important;
+ border-radius:0!important;background:#f0001b!important;color:#fff!important;
+ font:900 15px/1 Helvetica,Arial,sans-serif!important;letter-spacing:-.045em!important;
+ text-transform:uppercase!important;box-shadow:none!important;text-shadow:none!important;
+ transform:none!important;animation:none!important;
+}
+html .system-controls .virus-mode-toggle::before,
+html .system-controls .virus-mode-toggle::after{content:none!important;display:none!important}
+html .system-controls .system-control,
+html[data-portfolio-mode="institutional"] .system-controls .system-control{padding:0!important;gap:0!important;background:transparent!important}
+html .system-controls .system-control>span,
+html[data-portfolio-mode="institutional"] .system-controls .system-control>span{
+ padding:0 0 0 12px!important;color:#fff!important;
+ font:700 11px/1 Helvetica,Arial,sans-serif!important;text-transform:uppercase!important;
+}
+html .system-controls .system-control button,
+html[data-portfolio-mode="institutional"] .system-controls .system-control button{
+ min-height:43px!important;padding:10px 13px 10px 6px!important;
+ color:#fff!important;background:transparent!important;
+ font:900 15px/1 Helvetica,Arial,sans-serif!important;letter-spacing:-.04em!important;
+}
+html .system-controls .virus-mode-toggle:hover,
+html[data-portfolio-mode="institutional"] .system-controls .virus-mode-toggle:hover,
+html .system-controls .system-control button:hover{
+ background:#fff!important;color:#f0001b!important;transform:none!important;
+ text-decoration:none!important;box-shadow:none!important;animation:none!important;
+}
