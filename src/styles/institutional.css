@@ -1398,3 +1398,60 @@ html[data-portfolio-mode="institutional"] body:has(.institutional-archive)
   width:100%!important;height:auto!important;max-height:none!important;
   object-fit:contain!important;
 }
+
+
+/* Detail page repair 2026-11-03: independent readable columns, visible media
+   sequence, no changes to home archive, Graphics, or Punk. */
+@media(min-width:761px){
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-layout{
+   display:grid!important;grid-template-columns:minmax(0,1.65fr) minmax(300px,.75fr)!important;
+   gap:16px!important;align-items:stretch!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info{
+   display:flex!important;flex-direction:column!important;justify-content:flex-start!important;
+   align-items:stretch!important;align-content:start!important;
+   padding:8px 20px 110px 10px!important;
+   box-sizing:border-box!important;overflow-y:auto!important;overflow-x:hidden!important;
+   scroll-padding-top:12px!important;scroll-padding-bottom:100px!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>*{
+   flex:0 0 auto!important;min-height:0!important;max-height:none!important;
+   margin-left:0!important;margin-right:0!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(.project-body,.prose,.project-head,.intro,.project-moments){
+   overflow:visible!important;max-height:none!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(p,li,h1,h2,h3){
+   overflow-wrap:anywhere!important;white-space:normal!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media{
+   padding:6px 0 110px!important;box-sizing:border-box!important;
+   overflow-y:auto!important;overflow-x:hidden!important;
+   scroll-padding-bottom:110px!important;
+ }
+ /* A huge portrait cover must not hide every subsequent gallery below the fold. */
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .project-cover :is(img,video){
+   display:block!important;width:auto!important;max-width:100%!important;
+   height:auto!important;max-height:68dvh!important;object-fit:contain!important;
+   object-position:left top!important;
+ }
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media{
+ display:block!important;min-width:0!important;max-width:100%!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media .moment-gallery{
+ display:flex!important;flex-flow:row nowrap!important;gap:8px!important;
+ width:100%!important;min-width:0!important;max-width:100%!important;
+ overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media .moment-gallery > .moment-thumb{
+ display:block!important;position:relative!important;flex:0 0 auto!important;
+ width:auto!important;min-width:0!important;height:auto!important;
+ max-height:none!important;overflow:visible!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media .moment-gallery > .moment-thumb > :is(img,video){
+ display:block!important;position:static!important;inset:auto!important;
+ width:auto!important;height:clamp(110px,17vw,240px)!important;
+ max-width:min(70vw,480px)!important;max-height:240px!important;
+ aspect-ratio:auto!important;object-fit:contain!important;
+}
