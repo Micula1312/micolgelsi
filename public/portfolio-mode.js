@@ -16,7 +16,7 @@
       const copyButton=document.querySelector('[data-copy-toggle]');
       if(copyButton){copyButton.textContent=root.dataset.language==='it'?'Rosa':'Pink';copyButton.setAttribute('aria-pressed','true');}
     }
-    buttons.forEach(button=>{const sidebar=button.classList.contains('institutional-mode-switch');button.textContent=sidebar?'← STELLAR':(mode==='institutional'?'Institutional':'Stellar');button.setAttribute('aria-pressed',String(mode==='institutional'));button.setAttribute('aria-label','Switch portfolio theme from '+mode);});
+    buttons.forEach(button=>{button.textContent=mode==='institutional'?'STELLAR':'INSTITUTIONAL';button.setAttribute('aria-pressed',String(mode==='institutional'));button.setAttribute('aria-label','Switch portfolio theme from '+mode);});
     if(mode==='institutional'){
       document.querySelector('[data-entry-gate]')?.remove();
       document.querySelector('[data-project-loader]')?.remove();
