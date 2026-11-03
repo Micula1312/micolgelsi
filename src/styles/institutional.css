@@ -1395,3 +1395,15 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  color:#e8e8e8!important;visibility:visible!important;opacity:1!important;
  text-shadow:none!important;
 }
+
+/* Detail metadata: intact labels and terminal-style bracketed eyebrow. */
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.eyebrow::before{content:"[";color:#999}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.eyebrow::after{content:"]";color:#999}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-facts>div{
+ grid-template-columns:max-content minmax(0,1fr)!important;
+ column-gap:16px!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-facts>div>span:first-child{
+ white-space:nowrap!important;overflow-wrap:normal!important;word-break:normal!important;
+ min-width:max-content!important;width:max-content!important;
+}
