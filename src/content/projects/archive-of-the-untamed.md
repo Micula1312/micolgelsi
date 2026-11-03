@@ -35,8 +35,6 @@ gallery:
   []
 videos:
   []
-media:
-  []
 criticalTexts:
   - label: "IMPURE — Giorgia Pinzauti"
     url: "https://www.impure.zone/pages/article?id=44"

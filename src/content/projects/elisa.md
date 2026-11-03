@@ -28,48 +28,9 @@ photoCredits:
 avatar: "/media/artistic/elisa/media/IMG_7378.JPG"
 cover: "/media/artistic/elisa/media/IMG_7338.MOV"
 gallery:
-  - "/media/artistic/elisa/media/IMG_7312.JPG"
-  - "/media/artistic/elisa/media/IMG_7313.JPG"
-  - "/media/artistic/elisa/media/IMG_7326.JPG"
-  - "/media/artistic/elisa/media/IMG_7339.JPG"
-  - "/media/artistic/elisa/media/IMG_7354.JPG"
-  - "/media/artistic/elisa/media/IMG_7356.JPG"
-  - "/media/artistic/elisa/media/IMG_7378.JPG"
-  - "/media/artistic/elisa/media/IMG_7409.JPG"
-  - "/media/artistic/elisa/media/IMG_7410.JPG"
+  []
 videos:
-  - "/media/artistic/elisa/media/IMG_7308.MOV"
-  - "/media/artistic/elisa/media/IMG_7310.MOV"
-  - "/media/artistic/elisa/media/IMG_7319.MOV"
-  - "/media/artistic/elisa/media/IMG_7331.MOV"
-  - "/media/artistic/elisa/media/IMG_7338.MOV"
-  - "/media/artistic/elisa/media/IMG_7348.MOV"
-  - "/media/artistic/elisa/media/IMG_7350.MOV"
-  - "/media/artistic/elisa/media/IMG_7363.MOV"
-  - "/media/artistic/elisa/media/IMG_7384.MOV"
-  - "/media/artistic/elisa/media/IMG_7402.MOV"
-  - "/media/artistic/elisa/media/IMG_7417.MOV"
-media:
-  - "/media/artistic/elisa/media/IMG_7308.MOV"
-  - "/media/artistic/elisa/media/IMG_7310.MOV"
-  - "/media/artistic/elisa/media/IMG_7312.JPG"
-  - "/media/artistic/elisa/media/IMG_7313.JPG"
-  - "/media/artistic/elisa/media/IMG_7319.MOV"
-  - "/media/artistic/elisa/media/IMG_7326.JPG"
-  - "/media/artistic/elisa/media/IMG_7331.MOV"
-  - "/media/artistic/elisa/media/IMG_7338.MOV"
-  - "/media/artistic/elisa/media/IMG_7339.JPG"
-  - "/media/artistic/elisa/media/IMG_7348.MOV"
-  - "/media/artistic/elisa/media/IMG_7350.MOV"
-  - "/media/artistic/elisa/media/IMG_7354.JPG"
-  - "/media/artistic/elisa/media/IMG_7356.JPG"
-  - "/media/artistic/elisa/media/IMG_7363.MOV"
-  - "/media/artistic/elisa/media/IMG_7378.JPG"
-  - "/media/artistic/elisa/media/IMG_7384.MOV"
-  - "/media/artistic/elisa/media/IMG_7402.MOV"
-  - "/media/artistic/elisa/media/IMG_7409.JPG"
-  - "/media/artistic/elisa/media/IMG_7410.JPG"
-  - "/media/artistic/elisa/media/IMG_7417.MOV"
+  []
 criticalTexts:
   []
 publications:
@@ -79,14 +40,17 @@ communication:
 links:
   []
 moments:
-  - date: "2024-06"
+  - date: "2026-06"
     title: "Athens Digital Arts Festival."
-    type: "AV performance"
     location: "Technopolis City of Athens, Athens"
   - date: "2026-06-08"
     title: "Elisa X Inota festival"
-    type: "AV videomapping"
     location: "Inota Festival, Budapest"
+  - date: "2026-10"
+    title: "Patchlab | digital art festival"
+  - date: "2026-10"
+    title: "Vizual Brazil"
+    location: "Barcellona"
 works:
   []
 ---

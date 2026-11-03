@@ -27,15 +27,20 @@ Rather than treating technology as a neutral instrument, ELISA approaches the in
 Within this shifting environment, fluidity emerges as a possible response to the pressures of digital exposure and fragmentation, opening questions about permeability, interdependence and the continuous reconfiguration of bodies and data across physical and virtual ecosystems.
 LINKS:
 
-OUTPUTS: 2024-06
+OUTPUTS: 2026-06
 Athens Digital Arts Festival.
-type: AV performance
 location: Technopolis City of Athens, Athens
 
 2026-06-08
 Elisa X Inota festival
-type: AV videomapping
 location: Inota Festival, Budapest
+
+2026-10
+Patchlab | digital art festival
+
+2026-10
+Vizual Brazil
+location: Barcellona
 AVATAR: media/IMG_7378.JPG
 AUTHOR: 
 FEATURED: 
