@@ -19,7 +19,7 @@ const pathname = Astro.url.pathname.replace(baseNoSlash, '').replace(/\/$/, '') 
 const isHome = pathname === '/';
 const fixedShell = ['/', '/play-with-me'].includes(pathname);
 const institutionalSidebar = ['/play-with-me', '/about'].includes(pathname);
-const projectDetail = pathname.startsWith('/projects/') || pathname.startsWith('/exhibitions/') || pathname.startsWith('/works/');
+const projectDetail = pathname === '/about' || pathname.startsWith('/projects/') || pathname.startsWith('/exhibitions/') || pathname.startsWith('/works/');
 const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
 const bioLines = homeConfig.bio;
 const loader = homeConfig.loader;
