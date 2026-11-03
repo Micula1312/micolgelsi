@@ -1407,3 +1407,47 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  white-space:nowrap!important;overflow-wrap:normal!important;word-break:normal!important;
  min-width:max-content!important;width:max-content!important;
 }
+
+/* One appearance per portfolio mode: Institutional = light, Punk = dark.
+   Detail-only overrides do not affect galleries, sizing, or Punk. */
+html[data-portfolio-mode="institutional"]{
+ --bg:#f7f7f5!important;--fg:#171717!important;--muted:#686868!important;--line:#c8c8c6!important;
+ color-scheme:light!important;background:#f7f7f5!important;color:#171717!important;
+}
+html[data-portfolio-mode="institutional"] body{background:var(--bg)!important;color:var(--fg)!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(
+ .shell,main.page,.institutional-project-layout,.institutional-project-info,
+ .institutional-project-info>*,.institutional-project-info .project-head,
+ .institutional-project-info .project-body,.institutional-project-info .prose,
+ .institutional-project-info .prose>*,.institutional-project-info .project-facts,
+ .institutional-project-info .project-facts>div,.institutional-project-info .project-moments,
+ .institutional-project-info .project-moment,.institutional-project-info .project-links,
+ .institutional-project-info .related,.institutional-project-media,
+ .institutional-project-media>*,.institutional-project-media .media-stream,
+ .institutional-project-media .media-stream>figure
+ ){
+ background:#f7f7f5!important;background-color:#f7f7f5!important;
+ color:#171717!important;box-shadow:none!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(
+ h1,h2,h3,h4,p,li,span,strong,a,dt,dd,.lead,.output-title,.output-location
+ ){color:#171717!important;text-shadow:none!important;opacity:1!important;visibility:visible!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(
+ .eyebrow,.output-date,.output-type,.project-facts>div>span:first-child
+ ){color:#686868!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.eyebrow :is(a,span){color:#686868!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.eyebrow::before,
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>.eyebrow::after{color:#686868!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(.project-moment,.project-facts>div){border-color:#c8c8c6!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-moment{
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+ visibility:visible!important;opacity:1!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-moment>*{
+ display:block!important;position:static!important;visibility:visible!important;opacity:1!important;
+ color:#171717!important;max-width:100%!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-detail-sidebar,
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar{background:#f7f7f5!important;color:#171717!important;border-color:#c8c8c6!important}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar :is(a,p,span,button){color:#171717!important}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar :is(.institutional-detail-sidebar-top>p:first-child,.institutional-detail-sidebar-bottom>span){color:#686868!important}
