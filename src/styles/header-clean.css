@@ -106,3 +106,44 @@ html:not([data-portfolio-mode="institutional"]) .bio-close { margin-left: auto; 
     padding: 16px;
   }
 }
+
+/* About: deliberately raw, full-viewport overlay above the entire portfolio. */
+.institutional-about-overlay[hidden]{display:none!important}
+.institutional-about-overlay{
+ position:fixed!important;inset:0!important;z-index:2147483000!important;
+ display:flex!important;align-items:center;justify-content:center;
+ padding:clamp(10px,3vw,32px);background:rgba(0,0,0,.88)!important;
+ color:#111!important;font-family:"Courier New",monospace!important;
+}
+.institutional-about-sheet{
+ width:min(940px,100%);max-height:calc(100dvh - 24px);overflow-y:auto;
+ background:#f7f7f5!important;color:#111!important;
+ border:2px solid #111;box-shadow:12px 12px 0 #ff4fa7;
+}
+.institutional-about-bar{
+ display:flex;justify-content:space-between;align-items:center;gap:15px;
+ border-bottom:2px solid #111;padding:12px 16px;
+ font:700 12px/1.4 "Courier New",monospace!important;
+}
+.institutional-about-bar button{
+ background:transparent!important;color:#111!important;border:1px solid #111!important;
+ padding:5px 10px;cursor:pointer;font:inherit!important;
+}
+.institutional-about-content{padding:clamp(20px,5vw,60px)}
+.institutional-about-content h2{
+ margin:0 0 12px!important;color:#111!important;
+ font:700 clamp(40px,8vw,100px)/.9 "Courier New",monospace!important;
+ letter-spacing:-.09em!important;overflow-wrap:anywhere;
+}
+.institutional-about-content .institutional-about-kicker{
+ margin:0 0 40px!important;font:700 11px/1.4 "Courier New",monospace!important;
+}
+.institutional-about-content p:not(.institutional-about-kicker){
+ max-width:670px!important;margin:0 0 16px!important;
+ color:#111!important;font:400 clamp(15px,2vw,21px)/1.5 "Courier New",monospace!important;
+}
+.institutional-about-links{display:flex;gap:28px;flex-wrap:wrap;margin-top:42px;border-top:1px solid #111;padding-top:16px}
+.institutional-about-links a{color:#111!important;font:700 13px "Courier New",monospace!important}
+body.institutional-about-open{overflow:hidden!important}
+html[data-portfolio-mode="institutional"] .institutional-about-trigger{font:inherit;background:none;border:0;padding:0;cursor:pointer}
+@media(max-width:760px){.institutional-about-overlay{padding:8px}.institutional-about-sheet{box-shadow:5px 5px 0 #ff4fa7}.institutional-about-content{padding:24px 18px}}
