@@ -36,10 +36,10 @@ location: Technopolis City of Athens, Athens
 Elisa X Inota festival
 type: AV videomapping
 location: Inota Festival, Budapest
-AVATAR: IMG_7338.MOV
+AVATAR: media/IMG_7378.JPG
 AUTHOR: 
 FEATURED: 
-COVER: IMG_7384.MOV
+COVER: media/IMG_7338.MOV
 COLLABORATORS: Beatrice Resta Benedetta Marino
 HOMEPAGE: true
 TIMELINE LABEL: website
