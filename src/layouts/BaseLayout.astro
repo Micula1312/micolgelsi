@@ -18,8 +18,8 @@ const baseNoSlash = base.replace(/\/$/, '');
 const pathname = Astro.url.pathname.replace(baseNoSlash, '').replace(/\/$/, '') || '/';
 const isHome = pathname === '/';
 const fixedShell = ['/', '/play-with-me'].includes(pathname);
-const institutionalSidebar = ['/play-with-me', '/about'].includes(pathname);
-const projectDetail = pathname === '/about' || pathname.startsWith('/projects/') || pathname.startsWith('/exhibitions/') || pathname.startsWith('/works/');
+const institutionalSidebar = pathname === '/play-with-me';
+const projectDetail = pathname.startsWith('/projects/') || pathname.startsWith('/exhibitions/') || pathname.startsWith('/works/');
 const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
 const bioLines = homeConfig.bio;
 const loader = homeConfig.loader;
@@ -53,7 +53,7 @@ const loader = homeConfig.loader;
         <nav class="site-nav" aria-label="Main navigation">
           <a href={`${base}#projects`} aria-current={pathname === '/' ? 'page' : undefined} data-projects-trigger data-en="PROJECTS" data-it="PROGETTI">PROJECTS</a>
           <a href={`${base}#lab`} data-lab-trigger>LAB</a>
-          <a href={withBase('about/')} data-en="ABOUT" data-it="CHI SONO">ABOUT</a>
+          <button type="button" class="institutional-about-trigger" data-institutional-about-trigger data-en="ABOUT" data-it="CHI SONO">ABOUT</button>
           <a href={withBase('cv/micol-gelsi-CV.pdf')} target="_blank" rel="noopener">CV</a>
           <a href={withBase('play-with-me/')} aria-current={pathname === '/play-with-me' ? 'page' : undefined} data-en="PLAY WITH ME" data-it="GIOCA CON ME">PLAY WITH ME</a>
           <button class="bio-trigger" type="button" data-bio-trigger aria-expanded="false" aria-controls="bio-popup" data-en="BLABLABIO +" data-it="BLABLABIO +">BLABLABIO +</button>
@@ -81,7 +81,7 @@ const loader = homeConfig.loader;
 <a href={base + '?theme=institutional&section=web'}>Web development</a>
 <a href={base + '?theme=institutional&section=lab'}>Lab</a>
 
-<a href={withBase('about/')}>About</a>
+<button type="button" data-institutional-about-trigger>About</button>
 <a href={withBase('cv/')}>CV</a>
 <a href={withBase('play-with-me/')}>Contact</a>
 </nav>
@@ -93,6 +93,28 @@ const loader = homeConfig.loader;
 <main class="page"><slot /></main>
     </div>
 
+    <div class="institutional-about-overlay" data-institutional-about-overlay role="dialog" aria-modal="true" aria-labelledby="institutional-about-title" aria-hidden="true" hidden>
+      <div class="institutional-about-sheet">
+        <div class="institutional-about-bar"><span>ABOUT / MICOL GELSI</span><button type="button" data-institutional-about-close aria-label="Close About">[ X ] CLOSE</button></div>
+        <div class="institutional-about-content"><h2 id="institutional-about-title">MICOL GELSI</h2><p class="institutional-about-kicker">ARTIST / RESEARCHER / CREATIVE CODER</p>
+        {bioLines.map(line => <p>{line}</p>)}
+        <div class="institutional-about-links"><a href={withBase('cv/')}>CV ↗</a><a href={withBase('play-with-me/')}>CONTACT ↗</a></div></div>
+      </div>
+    </div>
+    <script is:inline>
+      (() => {
+        const overlay=document.querySelector('[data-institutional-about-overlay]');
+        if(!overlay)return;
+        const close=overlay.querySelector('[data-institutional-about-close]');
+        let previousFocus=null;
+        const hide=()=>{overlay.hidden=true;overlay.setAttribute('aria-hidden','true');document.body.classList.remove('institutional-about-open');previousFocus?.focus?.();};
+        const show=()=>{previousFocus=document.activeElement;overlay.hidden=false;overlay.setAttribute('aria-hidden','false');document.body.classList.add('institutional-about-open');close?.focus();};
+        document.querySelectorAll('[data-institutional-about-trigger]').forEach(button=>button.addEventListener('click',show));
+        close?.addEventListener('click',hide);
+        overlay.addEventListener('pointerdown',event=>{if(event.target===overlay)hide();});
+        document.addEventListener('keydown',event=>{if(overlay.hidden)return;if(event.key==='Escape')hide();if(event.key==='Tab'){const nodes=[...overlay.querySelectorAll('button,a')].filter(el=>!el.disabled);if(!nodes.length)return;const first=nodes[0],last=nodes[nodes.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}});
+      })();
+    </script>
     <div class="system-controls" aria-label="Display settings">
       <button type="button" class="virus-mode-toggle" data-portfolio-mode-toggle aria-label="Switch to Institutional">INSTITUTIONAL</button>
       <div class="system-control">
