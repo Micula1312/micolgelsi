@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import InstitutionalSidebar from '../components/InstitutionalSidebar.astro';
 import { getCollection } from 'astro:content';
 import labProjects from '../data/lab-projects.json';
 import graphics from '../data/graphics.json';
@@ -39,24 +40,7 @@ const labStars=labProjects.map((project,index)=>({
 ---
 <BaseLayout title="Micol Gelsi">
 <section class="institutional-archive" aria-label="Portfolio archive" data-institutional-archive data-archive-descriptions={JSON.stringify({art:homeConfig.archives?.artistic?.description||"",web:homeConfig.archives?.web?.description||"",lab:homeConfig.archives?.lab?.description||"",graphics:homeConfig.archives?.graphics?.description||""})}>
-  <aside class="institutional-sidebar">
-    <div class="institutional-sidebar-top">
-      <p class="institutional-kicker">ARTIST / RESEARCHER / CREATIVE CODER</p>
-      <h1>MICOL GELSI</h1>
-      <p class="institutional-intro">Working across collective archives, urban wilderness, performative media and experimental digital practices.</p>
-    </div>
-    <nav class="institutional-sidebar-nav" aria-label="Portfolio sections">
-      <button type="button" class="institutional-section-link is-active" data-institutional-section="art" aria-pressed="true">Artistic practice</button>
-      <button type="button" class="institutional-section-link" data-institutional-section="web" aria-pressed="false">Web development</button>
-      <button type="button" class="institutional-section-link" data-institutional-section="lab" aria-pressed="false">Lab</button>
-      <button type="button" class="institutional-section-link" data-institutional-section="graphics" aria-pressed="false">Graphics</button>
-
-      <button type="button" data-institutional-about-trigger>About</button>
-      <a href={`${base}cv/`}>CV</a>
-      <a href={`${base}play-with-me/`}>Contact</a>
-    </nav>
-    <div class="institutional-sidebar-bottom"><button type="button" class="institutional-mode-switch" data-portfolio-mode-toggle aria-label="Switch portfolio theme">← PUNK MODE</button><p class="institutional-sidebar-foot">ROME / ITALY</p></div>
-  </aside>
+  <InstitutionalSidebar home />
   <div class="institutional-main" id="institutional-projects">
     <div class="institutional-main-heading">
       <span data-institutional-heading>ARTISTIC PRACTICE</span>
