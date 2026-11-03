@@ -35,7 +35,7 @@ const loader = homeConfig.loader;
     <meta name="theme-color" content="#080808" />
     <title>{title}</title>
   </head>
-  <body data-fixed-shell={fixedShell ? 'true' : undefined} data-project-detail={projectDetail ? 'true' : undefined} data-institutional-contact={institutionalSidebar ? 'true' : undefined}>
+  <body data-institutional-inner={!isHome ? 'true' : undefined} data-fixed-shell={fixedShell ? 'true' : undefined} data-project-detail={projectDetail ? 'true' : undefined} data-institutional-contact={institutionalSidebar ? 'true' : undefined}>
     {isHome && loader.enabled && <section class="entry-gate" data-entry-gate data-entry-lines={JSON.stringify(loader.phrases)} data-entry-lines-it={JSON.stringify(loader.phrasesIt??loader.phrases)} data-again-label={loader.againInstruction} data-again-label-it={loader.againInstructionIt??loader.againInstruction} data-enter-label={loader.enterInstruction} data-enter-label-it={loader.enterInstructionIt??loader.enterInstruction} aria-label="Portfolio entrance">
       <p class="entry-counter" data-entry-counter>00 / {String(loader.phrases.length).padStart(2, '0')}</p>
       <p class="entry-fixed" data-en={loader.fixedText} data-it={loader.fixedTextIt??loader.fixedText}>{loader.fixedText}</p>
@@ -72,7 +72,7 @@ const loader = homeConfig.loader;
           </div>
         </aside>
       </header>
-      {(projectDetail || institutionalSidebar) && <InstitutionalSidebar />}
+      {!isHome && <InstitutionalSidebar />}
 <main class="page"><slot /></main>
     </div>
 
