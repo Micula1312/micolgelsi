@@ -1,0 +1,29 @@
+---
+const { home = false } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const sections = [
+  ['art','Artistic practice'],
+  ['web','Web development'],
+  ['lab','Lab'],
+  ['graphics','Graphics']
+];
+---
+<aside class:list={['institutional-sidebar',{'institutional-detail-sidebar':!home}]} aria-label="Institutional portfolio navigation">
+  <div class="institutional-sidebar-top">
+    <p class="institutional-kicker">ARTIST / RESEARCHER / CREATIVE CODER</p>
+    {home ? <h1>MICOL GELSI</h1> : <a class="institutional-index-name" href={base}>MICOL GELSI</a>}
+    <p class="institutional-intro">Working across collective archives, urban wilderness, performative media and experimental digital practices.</p>
+  </div>
+  <nav class="institutional-sidebar-nav" aria-label="Portfolio sections">
+    {sections.map(([key,label]) => home
+      ? <button type="button" class:list={['institutional-section-link',{'is-active':key==='art'}]} data-institutional-section={key} aria-pressed={key==='art'?'true':'false'}>{label}</button>
+      : <a href={`${base}?theme=institutional&section=${key}`}>{label}</a>
+    )}
+    <button type="button" data-institutional-about-trigger>About</button>
+    <a href={`${base}cv/`}>CV</a>
+    <a href={`${base}play-with-me/`}>Contact</a>
+  </nav>
+  <div class="institutional-sidebar-bottom">
+    <p class="institutional-sidebar-foot">ROME / ITALY</p>
+  </div>
+</aside>
