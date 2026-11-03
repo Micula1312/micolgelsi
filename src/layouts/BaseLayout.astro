@@ -94,10 +94,6 @@ const loader = homeConfig.loader;
     <div class="system-controls" aria-label="Display settings">
       <div class="system-control"><span>Portfolio</span><button type="button" data-portfolio-mode-toggle aria-pressed="false">Punk</button></div>
       <div class="system-control">
-        <span data-en="Mode" data-it="Modo">Mode</span>
-        <button type="button" data-theme-toggle aria-label="Switch light or dark mode">Dark</button>
-      </div>
-      <div class="system-control">
         <span data-en="Text" data-it="Testo">Text</span>
         <button type="button" data-copy-toggle aria-label="Switch discursive text style">Pink</button>
       </div>
@@ -111,20 +107,6 @@ const loader = homeConfig.loader;
       (() => {
         const root = document.documentElement;
         root.dataset.style = 'rgb';
-
-        const themeButton = document.querySelector('[data-theme-toggle]');
-        if (themeButton) {
-          const updateThemeLabel = () => {
-            const italian = root.dataset.language === 'it';
-            themeButton.textContent = root.dataset.theme === 'dark' ? (italian ? 'Scuro' : 'Dark') : (italian ? 'Chiaro' : 'Light');
-            themeButton.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
-          };
-          themeButton.addEventListener('click', () => {
-            root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-            updateThemeLabel();
-          });
-          updateThemeLabel();
-        }
 
         const copyButton = document.querySelector('[data-copy-toggle]');
         if (copyButton) {
