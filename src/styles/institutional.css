@@ -1457,3 +1457,39 @@ html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"])
  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
  max-height:none!important;aspect-ratio:auto!important;object-fit:cover!important;object-position:center!important;
 }
+
+/* Virus capsule: an intentionally alien control, shared by Stellar and Institutional. */
+html .virus-mode-toggle,
+html[data-portfolio-mode="institutional"] .virus-mode-toggle{
+ appearance:none!important;position:relative!important;isolation:isolate!important;
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ width:max-content!important;min-width:128px!important;min-height:34px!important;
+ padding:8px 19px!important;border:2px solid #ff202b!important;border-radius:999px!important;
+ background:#e90018!important;color:#fff!important;
+ font:900 10px/1.1 'IBM Plex Mono',monospace!important;letter-spacing:.1em!important;
+ text-transform:uppercase!important;text-decoration:none!important;
+ box-shadow:0 0 0 2px #1c0003,0 0 0 4px #ff202b,0 0 15px rgba(255,0,30,.6),inset 0 0 12px #71000b!important;
+ text-shadow:1px 1px 0 #610007!important;cursor:pointer!important;
+ transform:rotate(-3deg)!important;transition:transform .16s ease,box-shadow .16s ease!important;
+}
+html .virus-mode-toggle::before,
+html[data-portfolio-mode="institutional"] .virus-mode-toggle::before{
+ content:'✳'!important;display:inline-block!important;margin-right:9px!important;
+ font-size:17px!important;line-height:0!important;color:#fff!important;
+ animation:virus-spin 5s linear infinite!important;
+}
+html .virus-mode-toggle::after,
+html[data-portfolio-mode="institutional"] .virus-mode-toggle::after{
+ content:''!important;position:absolute!important;inset:-6px!important;z-index:-1!important;
+ border:1px dashed #ff1728!important;border-radius:999px!important;pointer-events:none!important;
+}
+html .virus-mode-toggle:hover,
+html[data-portfolio-mode="institutional"] .virus-mode-toggle:hover{
+ background:#ff2435!important;color:#fff!important;text-decoration:none!important;
+ transform:rotate(2deg) scale(1.07)!important;
+ box-shadow:0 0 0 2px #1c0003,0 0 0 4px #ff202b,0 0 24px rgba(255,0,30,.85),inset 0 0 10px #71000b!important;
+}
+html .virus-mode-toggle:focus-visible{outline:3px solid #ff2d3d!important;outline-offset:8px!important}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .virus-mode-toggle{color:#fff!important;background:#e90018!important}
+@keyframes virus-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){html .virus-mode-toggle::before{animation:none!important}}
