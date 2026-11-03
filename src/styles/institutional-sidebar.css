@@ -1,0 +1,74 @@
+/* Shared Institutional vertical header. One Astro component, one canonical layout. */
+@media (min-width:761px) {
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .shell {
+    display:block!important;
+    width:100%!important;max-width:none!important;
+    min-height:100dvh!important;height:auto!important;
+    margin:0!important;padding:0!important;
+    overflow:visible!important;
+  }
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .institutional-detail-sidebar {
+    position:fixed!important;inset:0 auto 0 0!important;
+    width:30%!important;min-width:250px!important;max-width:none!important;
+    height:100dvh!important;min-height:0!important;
+    padding:24px 28px!important;
+    margin:0!important;overflow-y:auto!important;
+    box-sizing:border-box!important;z-index:90!important;
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;
+    background:var(--bg)!important;
+  }
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) main.page {
+    display:block!important;width:70%!important;max-width:none!important;
+    margin:0 0 0 30%!important;min-width:0!important;
+    min-height:100dvh!important;height:auto!important;max-height:none!important;
+    overflow:visible!important;
+  }
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) {
+    overflow-y:auto!important;overflow-x:hidden!important;
+  }
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-sidebar-top {
+  display:flex!important;flex-direction:column!important;align-items:stretch!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-index-name {
+  display:block!important;
+  font-family:var(--institutional-display)!important;
+  font-size:clamp(38px,5vw,82px)!important;
+  line-height:.95!important;font-weight:400!important;
+  margin:28px 0 36px!important;text-decoration:none!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-sidebar-nav {
+  display:flex!important;flex-direction:column!important;
+  align-items:flex-start!important;gap:8px!important;
+  margin-top:auto!important;padding:42px 0!important;
+  font:12px/1.5 Arial,Helvetica,sans-serif!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-sidebar-nav :is(a,button) {
+  font:inherit!important;display:block!important;width:max-content!important;
+  background:none!important;border:0!important;
+  padding:0!important;margin:0!important;text-decoration:none!important;
+  color:var(--fg)!important;cursor:pointer!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-sidebar-bottom {
+  margin-top:auto!important;display:flex!important;align-items:flex-start!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-mode-switch {display:none!important}
+@media(max-width:760px) {
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .shell {
+    display:block!important;width:100%!important;max-width:none!important;
+  }
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) .institutional-detail-sidebar {
+    position:relative!important;inset:auto!important;
+    width:100%!important;min-width:0!important;max-width:none!important;
+    height:auto!important;min-height:0!important;max-height:none!important;
+    padding:20px!important;overflow:visible!important;
+  }
+  html[data-portfolio-mode="institutional"] body:has(.institutional-detail-sidebar) main.page {
+    display:block!important;margin:0!important;width:100%!important;max-width:none!important;
+    height:auto!important;overflow:visible!important;
+  }
+  html[data-portfolio-mode="institutional"] .institutional-detail-sidebar .institutional-sidebar-nav {
+    flex-direction:row!important;flex-wrap:wrap!important;gap:12px 20px!important;
+    margin-top:18px!important;padding:12px 0!important;
+  }
+}
