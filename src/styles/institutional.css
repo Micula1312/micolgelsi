@@ -1613,21 +1613,15 @@ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .inst
  min-width:0!important;overflow-wrap:anywhere!important;word-break:break-word!important;
 }
 
-/* Institutional detail: editorial negative highlight for preview headings and linked titles. */
-html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(.project-head h1,.output-title,.project-links a,.project-reference-group a){
- color:#171717!important;font-size:12px!important;line-height:1.5!important;
+/* Institutional HOME only: quiet black project titles, including hover/focus. */
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) .institutional-entry .institutional-entry-info h2,
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) .institutional-entry:hover .institutional-entry-info h2,
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) .institutional-entry:focus-visible .institutional-entry-info h2,
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) .institutional-entry .institutional-entry-info h2 :is(a,span),
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) .institutional-entry:hover .institutional-entry-info h2 :is(a,span){
+ color:#171717!important;background:transparent!important;box-shadow:none!important;
  text-decoration:none!important;text-shadow:none!important;
- background:transparent!important;box-shadow:none!important;
- transition:background-color .14s ease,color .14s ease!important;
+ font-size:12px!important;line-height:1.45!important;font-weight:500!important;
 }
-html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(.project-head h1,.output-title a,.project-links a,.project-reference-group a):hover,
-html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(.project-head h1,.output-title a,.project-links a,.project-reference-group a):focus-visible{
- color:#fff!important;background:#171717!important;text-decoration:none!important;
- box-shadow:3px 0 0 #171717,-3px 0 0 #171717!important;
-}
-html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .output-title a{
- color:inherit!important;font-size:inherit!important;text-decoration:none!important;
- box-decoration-break:clone;-webkit-box-decoration-break:clone;
-}
-html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .output-title a:hover,
-html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .output-title a:focus-visible{color:#fff!important}
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) .institutional-entry:hover .institutional-entry-info h2,
+html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"]) .institutional-entry:focus-visible .institutional-entry-info h2{opacity:.65!important}
