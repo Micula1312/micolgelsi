@@ -17,7 +17,8 @@ const projectPreview=(data,lane)=>{
  const primary=lane==='external'?(data.thumbnail||data.avatar):(data.cover||data.avatar);
  const candidates=[...(data.media||[]),...(data.videos||[]),...(data.gallery||[]),...(data.moments||[]).flatMap(m=>[m.media,...(m.gallery||[])])].filter(Boolean);
  const firstVideo=candidates.find(isVideoPreview);
- return {src:resolveMedia(firstVideo||primary),fallback:resolveMedia(primary),video:Boolean(firstVideo||isVideoPreview(primary))};
+ const selected=primary||firstVideo||candidates[0]||'';
+ return {src:resolveMedia(selected),fallback:resolveMedia(primary),video:isVideoPreview(selected)};
 };
 const displayYear=(data,year)=>`${year}${data.status==='ongoing'||String(data.endDate||'').toLowerCase()==='ongoing'?' · WIP':''}`;
 const normalizeExternalUrl=(value='')=>{const url=String(value).trim();if(!url)return'';if(/^https?:\/\//i.test(url))return url;if(url.startsWith('//'))return`https:${url}`;return`https://${url.replace(/^\/+/, '')}`;};
