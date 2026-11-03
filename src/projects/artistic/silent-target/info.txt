@@ -6,7 +6,7 @@ AVATAR: avatar.mp4
 START: 2024-02
 END: 2025-07
 STATUS: 
-TYPE: interactive installation
+TYPE: diffuse installation
 MEDIUM: interactive installation
 RESEARCH: generative-archives, surveillance-politics-of-visibility, live-data-manipulation
 COLLABORATORS: 
@@ -43,4 +43,21 @@ type: interactive installation
 location: Roma
 media: videocitta
 COVER: cover.webp
-FEATURED:
+FEATURED: 
+HOMEPAGE: true
+
+TIMELINE LABEL: website
+
+CLIENT:
+
+ROLE:
+
+STACK:
+
+URL:
+
+PRACTICE: web-development
+
+COVER EMBED:
+
+RELATED:

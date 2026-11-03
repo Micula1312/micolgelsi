@@ -2,8 +2,8 @@ TITLE: Elisa
 START: 2026-03
 END: 2026-10
 STATUS: 
-TYPE: 
-MEDIUM: Live Interface Performance
+TYPE: live performance
+MEDIUM: 
 RESEARCH: hydro-feminism, bodies-affects, surveillance-politics-of-visibility, live-data-manipulation
 WITH:
 

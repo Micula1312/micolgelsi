@@ -114,16 +114,10 @@ location: Campo XS, Genova
 media: campo-xs
 COVER EMBED: 
 RELATED: 
-HOMEPAGE: true
-
-TIMELINE LABEL: website
-
-CLIENT:
-
-ROLE:
-
-STACK:
-
-URL:
-
+HOMEPAGE: 
+TIMELINE LABEL: 
+CLIENT: 
+ROLE: 
+STACK: 
+URL: 
 PRACTICE: web-development

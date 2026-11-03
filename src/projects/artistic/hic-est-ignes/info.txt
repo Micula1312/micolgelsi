@@ -1,5 +1,5 @@
 TITLE: hic-est-ignes
-TYPE: project
+TYPE: live performance
 START: 2023-09
 END: 2025-10
 STATUS: ongoing
@@ -17,20 +17,12 @@ FEATURED:
 MAIN LINK: https://docs.google.com/presentation/d/1MayLI20fjuo5zU1kjGJ5lTZ0EVvw1wYrymcOxY4wxIA/edit?usp=sharing
 COLLABORATORS: 
 CREDITS: 
-HOMEPAGE: true
-
-TIMELINE LABEL: website
-
-CLIENT:
-
-ROLE:
-
-STACK:
-
-URL:
-
+HOMEPAGE: 
+TIMELINE LABEL: 
+CLIENT: 
+ROLE: 
+STACK: 
+URL: 
 PRACTICE: web-development
-
-COVER EMBED:
-
+COVER EMBED: 
 RELATED:

@@ -3,7 +3,7 @@ title: "hic-est-ignes"
 author: "Blivet"
 mainLink: "https://docs.google.com/presentation/d/1MayLI20fjuo5zU1kjGJ5lTZ0EVvw1wYrymcOxY4wxIA/edit?usp=sharing"
 type: project
-displayType: "project"
+displayType: "live performance"
 year: "2023"
 startDate: "2023-09"
 endDate: "2025-10"
