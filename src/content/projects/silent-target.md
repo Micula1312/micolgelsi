@@ -2,7 +2,7 @@
 title: "Silent Target"
 author: "Blivet"
 type: project
-displayType: "interactive installation"
+displayType: "diffuse installation"
 year: "2024"
 startDate: "2024-02"
 endDate: "2025-07"

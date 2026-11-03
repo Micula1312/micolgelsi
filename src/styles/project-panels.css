@@ -942,3 +942,30 @@ html[data-copy-style="pink"] .bio-popup .site-bio{
   .media-stream .media-photo img,.media-grid figure img{height:56vh}
   .project-cover-embed{min-height:58vh;aspect-ratio:auto}
 }
+
+/* Punk project media gallery: restore generic photo/video streams.
+   The project templates use .media-item, not the legacy .media-photo class. */
+html[data-portfolio-mode="punk"] body[data-project-detail="true"] .media-stream:not(.is-carousel){
+ display:flex!important;flex-wrap:wrap!important;align-items:flex-start!important;
+ gap:8px!important;width:100%!important;max-width:100%!important;
+ height:auto!important;min-height:0!important;overflow:visible!important;
+ visibility:visible!important;opacity:1!important;
+}
+html[data-portfolio-mode="punk"] body[data-project-detail="true"] .media-stream:not(.is-carousel) > figure.media-item{
+ display:block!important;position:relative!important;flex:0 0 calc(33.333% - 6px)!important;
+ width:calc(33.333% - 6px)!important;max-width:none!important;
+ height:auto!important;min-height:0!important;opacity:1!important;visibility:visible!important;
+ margin:0!important;grid-column:auto!important;
+}
+html[data-portfolio-mode="punk"] body[data-project-detail="true"] .media-stream:not(.is-carousel) .media-item :is(img,video){
+ display:block!important;width:100%!important;height:auto!important;
+ max-height:340px!important;object-fit:contain!important;opacity:1!important;
+}
+@media(max-width:760px){
+ html[data-portfolio-mode="punk"] body[data-project-detail="true"] .media-stream:not(.is-carousel){
+  flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x proximity!important;
+ }
+ html[data-portfolio-mode="punk"] body[data-project-detail="true"] .media-stream:not(.is-carousel) > figure.media-item{
+  flex:0 0 72vw!important;width:72vw!important;scroll-snap-align:start!important;
+ }
+}

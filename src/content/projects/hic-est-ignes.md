@@ -3,7 +3,7 @@ title: "hic-est-ignes"
 author: "Blivet"
 mainLink: "https://docs.google.com/presentation/d/1MayLI20fjuo5zU1kjGJ5lTZ0EVvw1wYrymcOxY4wxIA/edit?usp=sharing"
 type: project
-displayType: "project"
+displayType: "live performance"
 year: "2023"
 startDate: "2023-09"
 endDate: "2025-10"
@@ -24,6 +24,8 @@ credits:
   []
 photoCredits:
   []
+avatar: "/media/artistic/hic-est-ignes/media/_DSC6431.webp"
+cover: "/media/artistic/hic-est-ignes/media/performanceCLUSTER-2-.mp4"
 gallery:
   - "/media/artistic/hic-est-ignes/media/_DSC6408.webp"
   - "/media/artistic/hic-est-ignes/media/_DSC6424.webp"

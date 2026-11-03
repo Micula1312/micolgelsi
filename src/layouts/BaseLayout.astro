@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/institutional.css';
 import '../styles/year-plane.css';
 import '../styles/grid.css';
 import '../styles/hacker.css';
@@ -17,7 +18,8 @@ const baseNoSlash = base.replace(/\/$/, '');
 const pathname = Astro.url.pathname.replace(baseNoSlash, '').replace(/\/$/, '') || '/';
 const isHome = pathname === '/';
 const fixedShell = ['/', '/play-with-me'].includes(pathname);
-const projectDetail = pathname.startsWith('/projects/') || pathname.startsWith('/exhibitions/');
+const institutionalSidebar = pathname === '/play-with-me';
+const projectDetail = pathname.startsWith('/projects/') || pathname.startsWith('/exhibitions/') || pathname.startsWith('/works/');
 const withBase = (path = '') => `${base}${String(path).replace(/^\//, '')}`;
 const bioLines = homeConfig.bio;
 const loader = homeConfig.loader;
@@ -31,7 +33,7 @@ const loader = homeConfig.loader;
     <meta name="theme-color" content="#080808" />
     <title>{title}</title>
   </head>
-  <body data-fixed-shell={fixedShell ? 'true' : undefined} data-project-detail={projectDetail ? 'true' : undefined}>
+  <body data-fixed-shell={fixedShell ? 'true' : undefined} data-project-detail={projectDetail ? 'true' : undefined} data-institutional-contact={institutionalSidebar ? 'true' : undefined}>
     {isHome && loader.enabled && <section class="entry-gate" data-entry-gate data-entry-lines={JSON.stringify(loader.phrases)} data-entry-lines-it={JSON.stringify(loader.phrasesIt??loader.phrases)} data-again-label={loader.againInstruction} data-again-label-it={loader.againInstructionIt??loader.againInstruction} data-enter-label={loader.enterInstruction} data-enter-label-it={loader.enterInstructionIt??loader.enterInstruction} aria-label="Portfolio entrance">
       <p class="entry-counter" data-entry-counter>00 / {String(loader.phrases.length).padStart(2, '0')}</p>
       <p class="entry-fixed" data-en={loader.fixedText} data-it={loader.fixedTextIt??loader.fixedText}>{loader.fixedText}</p>
@@ -67,18 +69,30 @@ const loader = homeConfig.loader;
           </div>
         </aside>
       </header>
-      <main class="page"><slot /></main>
+      {(projectDetail || institutionalSidebar) && <aside class="institutional-detail-sidebar" aria-label="Institutional portfolio navigation">
+<div class="institutional-detail-sidebar-top">
+<p>ARTIST / RESEARCHER / CREATIVE CODER</p>
+<a class="institutional-detail-name" href={base}>MICOL GELSI</a>
+<p class="institutional-detail-intro">Working across collective archives, urban wilderness, performative media and experimental digital practices.</p>
+</div>
+<nav aria-label="Portfolio index">
+<a href={base + '?theme=institutional&section=art'}>Artistic practice</a>
+<a href={base + '?theme=institutional&section=web'}>Web development</a>
+<a href={base + '?theme=institutional&section=lab'}>Lab</a>
+
+<a href={withBase('cv/')}>CV</a>
+<a href={withBase('play-with-me/')}>Contact</a>
+</nav>
+<div class="institutional-detail-sidebar-bottom">
+<button type="button" class="virus-mode-toggle" data-portfolio-mode-toggle>STELLAR</button>
+<span>ROME / ITALY</span>
+</div>
+</aside>}
+<main class="page"><slot /></main>
     </div>
 
     <div class="system-controls" aria-label="Display settings">
-      <div class="system-control">
-        <span data-en="Mode" data-it="Modo">Mode</span>
-        <button type="button" data-theme-toggle aria-label="Switch light or dark mode">Dark</button>
-      </div>
-      <div class="system-control">
-        <span data-en="Text" data-it="Testo">Text</span>
-        <button type="button" data-copy-toggle aria-label="Switch discursive text style">Pink</button>
-      </div>
+      <button type="button" class="virus-mode-toggle" data-portfolio-mode-toggle aria-label="Switch to Institutional">INSTITUTIONAL</button>
       <div class="system-control">
         <span>Lang</span>
         <button type="button" data-language-toggle aria-label="Switch Italian or English">EN</button>
@@ -89,20 +103,6 @@ const loader = homeConfig.loader;
       (() => {
         const root = document.documentElement;
         root.dataset.style = 'rgb';
-
-        const themeButton = document.querySelector('[data-theme-toggle]');
-        if (themeButton) {
-          const updateThemeLabel = () => {
-            const italian = root.dataset.language === 'it';
-            themeButton.textContent = root.dataset.theme === 'dark' ? (italian ? 'Scuro' : 'Dark') : (italian ? 'Chiaro' : 'Light');
-            themeButton.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
-          };
-          themeButton.addEventListener('click', () => {
-            root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-            updateThemeLabel();
-          });
-          updateThemeLabel();
-        }
 
         const copyButton = document.querySelector('[data-copy-toggle]');
         if (copyButton) {
@@ -266,10 +266,25 @@ const loader = homeConfig.loader;
         skip?.addEventListener('click', enter);
       })();
     </script>}
+    <script is:inline src={withBase('portfolio-mode.js')}></script>
+    <script is:inline src={withBase('institutional-project-layout.js')}></script>
     <script is:inline src={withBase('base-path.js')}></script>
     <script is:inline src={withBase('research-layout.js')}></script>
     <script is:inline src={withBase('home-loader.js')}></script>
     <script is:inline src={withBase('play-save.js')}></script>
     {projectDetail&&<script is:inline src={withBase('featured-gallery.js')}></script>}
+      <script is:inline>
+      (() => {
+        const replaceStatus = root => {
+          const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+          let node;
+          while((node=walker.nextNode())){
+            if(node.parentElement?.closest('script,style,textarea,code,pre'))continue;
+            if(/^\s*ongoing\s*$/i.test(node.nodeValue))node.nodeValue=node.nodeValue.replace(/ongoing/i,'WIP');
+          }
+        };
+        document.addEventListener('DOMContentLoaded',()=>replaceStatus(document.body));
+      })();
+    </script>
   </body>
 </html>

@@ -2,6 +2,31 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="Play With Me — Micol Gelsi">
+  <section class="institutional-contact" aria-labelledby="institutional-contact-title">
+    <div class="institutional-contact-kicker">CONTACT / INQUIRIES / COLLABORATIONS</div>
+    <h1 id="institutional-contact-title">Get in touch.</h1>
+    <p>For collaborations, projects, commissions or just to say hello.</p>
+    <a class="institutional-contact-email" href="mailto:micolg@gmail.com">micolg@gmail.com ↗</a>
+    <form class="institutional-contact-form" data-institutional-contact-form>
+      <label for="institutional-contact-name">Name <input id="institutional-contact-name" name="name" type="text" autocomplete="name" required /></label>
+      <label for="institutional-contact-email">Email <input id="institutional-contact-email" name="email" type="email" autocomplete="email" required /></label>
+      <label for="institutional-contact-subject">Subject <input id="institutional-contact-subject" name="subject" type="text" required /></label>
+      <label for="institutional-contact-message">Message <textarea id="institutional-contact-message" name="message" rows="7" required></textarea></label>
+      <button type="submit">SEND MESSAGE ↗</button>
+      <p class="institutional-contact-note">Opens your email app with the message ready to send.</p>
+    </form>
+  </section>
+  <script is:inline>
+    document.querySelector("[data-institutional-contact-form]")?.addEventListener("submit", event => {
+      event.preventDefault();
+      const form=event.currentTarget;
+      if(!form.reportValidity())return;
+      const data=new FormData(form);
+      const subject=String(data.get("subject")||"Contact");
+      const body=`From: ${data.get("name")}\\nReply to: ${data.get("email")}\\n\\n${data.get("message")}`;
+      window.location.href=`mailto:micolg@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  </script>
   <section class="board" aria-labelledby="play-title">
     <div class="board-toolbar">
       <div class="title-group">

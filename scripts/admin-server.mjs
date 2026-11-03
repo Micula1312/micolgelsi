@@ -8,6 +8,8 @@ const PROJECTS_ROOT=path.join(ROOT,'src','projects');
 const MEDIA_ROOT=path.join(ROOT,'public','media');
 const CONFIG_PATH=path.join(ROOT,'config','research-areas.json');
 const HOME_CONFIG_PATH=path.join(ROOT,'config','home.json');
+const GRAPHICS_CONFIG_PATH=path.join(ROOT,'src','data','graphics.json');
+const GRAPHICS_MEDIA_ROOT=path.join(MEDIA_ROOT,'graphics');
 const LAB_CONFIG_PATH=path.join(ROOT,'src','data','lab-projects.json');
 const PUBLIC_CONFIG_PATH=path.join(ROOT,'public','research-areas.json');
 const UI_PATH=path.join(ROOT,'admin','index.html');
@@ -93,6 +95,26 @@ const server=http.createServer(async(req,res)=>{
     }
     if(req.method==='GET'&&url.pathname==='/api/home'){
       const data=JSON.parse(await fs.readFile(HOME_CONFIG_PATH,'utf8'));return send(res,200,data);
+    }
+    if(req.method==='GET'&&url.pathname==='/api/graphics'){
+      return send(res,200,JSON.parse(await fs.readFile(GRAPHICS_CONFIG_PATH,'utf8').catch(()=>'[]')));
+    }
+    if(req.method==='POST'&&url.pathname==='/api/graphics'){
+      const entries=await jsonBody(req);
+      if(!Array.isArray(entries))return send(res,400,{error:'Expected graphics array'});
+      const clean=entries.map((g,i)=>({id:safe(g.id||'graphic-'+i),image:String(g.image||''),title:String(g.title||''),year:String(g.year||''),type:String(g.type||'graphic'),project:String(g.project||''),description:String(g.description||''),tags:Array.isArray(g.tags)?g.tags.map(String):[],link:String(g.link||'')})).filter(g=>g.image.startsWith('/media/graphics/'));
+      await fs.writeFile(GRAPHICS_CONFIG_PATH,JSON.stringify(clean,null,2)+'\n');
+      return send(res,200,clean);
+    }
+    if(req.method==='POST'&&url.pathname==='/api/graphics-media'){
+      const name=safe(url.searchParams.get('name')||''),ext=path.extname(name).toLowerCase();
+      if(!['.jpg','.jpeg','.png','.webp','.gif','.avif','.mp4','.webm'].includes(ext))return send(res,400,{error:'Unsupported image or video'});
+      const bytes=await readBody(req,80*1024*1024);
+      await fs.mkdir(GRAPHICS_MEDIA_ROOT,{recursive:true});
+      const stem=path.parse(name).name;let filename=name,n=2;
+      while(await exists(path.join(GRAPHICS_MEDIA_ROOT,filename)))filename=stem+'-'+n+++ext;
+      await fs.writeFile(path.join(GRAPHICS_MEDIA_ROOT,filename),bytes);
+      return send(res,200,{image:'/media/graphics/'+filename});
     }
     if(req.method==='GET'&&url.pathname==='/api/lab'){
       const projects=JSON.parse(await fs.readFile(LAB_CONFIG_PATH,'utf8').catch(()=>'[]'));return send(res,200,{projects});

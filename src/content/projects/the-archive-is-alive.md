@@ -1,8 +1,8 @@
 ---
 title: "The Archive Is Alive!"
 featured: true
-type: exhibition
-displayType: "exhibition"
+type: project
+displayType: "residency output"
 year: "2026"
 startDate: "2026-04"
 endDate: "2026-06"

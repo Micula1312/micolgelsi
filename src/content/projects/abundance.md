@@ -45,7 +45,7 @@ credits:
 photoCredits:
   []
 avatar: "/media/artistic/abundance/moments/collagene/collagene 26.01 (38) (1).webp"
-cover: "/media/artistic/abundance/moments/collagene/collagene 26.01 (38) (1).webp"
+cover: "/media/artistic/abundance/moments/granata/asap-abundance-granata.mp4"
 gallery:
   []
 videos:

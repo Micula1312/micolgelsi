@@ -33,6 +33,19 @@
     "displayType": {
       "type": "string"
     },
+    "taxonomyType": {
+      "type": "string"
+    },
+    "thumbnail": {
+      "type": "string"
+    },
+    "tags": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "startDate": {
       "type": "string"
     },

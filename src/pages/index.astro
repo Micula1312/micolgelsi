@@ -2,11 +2,25 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import labProjects from '../data/lab-projects.json';
+import graphics from '../data/graphics.json';
+import homeConfig from '../../config/home.json';
 
+const base = import.meta.env.BASE_URL;
 const projects=await getCollection('projects');
 const exhibitions=await getCollection('exhibitions');
 const external=await getCollection('external');
 const inferResearch=(item)=>{if(item.data.researchAreas?.length)return item.data.researchAreas;const tags=[...(item.data.themes??[]),...(item.data.medium??[])].map(x=>x.toLowerCase()),result=new Set();if(tags.some(x=>['territory','ecology','wildness','urban wilderness'].includes(x)))result.add('urban-wilderness');if(tags.some(x=>['archive','research'].includes(x)))result.add('generative-archives');if(tags.some(x=>['interspecies','more-than-human'].includes(x)))result.add('interspecies');if(tags.some(x=>['digital','net art','computer vision','interactive installation','website','interface'].includes(x)))result.add('technology-digitalization');if(tags.some(x=>['memory','body','participation'].includes(x)))result.add('emotional-geographies');return[...result];};
+const getTaxonomyType=(data,collection)=>data.taxonomyType||data.displayType||(collection==='external'?(data.timelineLabel||data.kind||'Website'):(data.medium?.[0]||data.kind||'Uncategorized'));
+const resolveMedia=(src='')=>{const value=String(src||'').trim();if(!value||!value.startsWith('/')||value.startsWith('//')||value.startsWith(base))return value;return base+value.replace(/^\/+/, '');};
+const isVideoPreview=(src='')=>/\.(mp4|webm|ogg|mov)(?:$|[?#])/i.test(String(src||''));
+const projectPreview=(data,lane)=>{
+ const primary=lane==='external'?(data.thumbnail||data.avatar):(data.cover||data.avatar);
+ const candidates=[...(data.media||[]),...(data.videos||[]),...(data.gallery||[]),...(data.moments||[]).flatMap(m=>[m.media,...(m.gallery||[])])].filter(Boolean);
+ const firstVideo=candidates.find(isVideoPreview);
+ const selected=primary||firstVideo||candidates[0]||'';
+ return {src:resolveMedia(selected),fallback:resolveMedia(primary),video:isVideoPreview(selected)};
+};
+const displayYear=(data,year)=>`${year}${data.status==='ongoing'||String(data.endDate||'').toLowerCase()==='ongoing'?' · WIP':''}`;
 const normalizeExternalUrl=(value='')=>{const url=String(value).trim();if(!url)return'';if(/^https?:\/\//i.test(url))return url;if(url.startsWith('//'))return`https:${url}`;return`https://${url.replace(/^\/+/, '')}`;};
 const defaultFeatured=new Set(['abundance','archive-of-the-untamed','the-archive-is-alive','untamed-architectureXambient-rave']);
 const normalize=(item)=>{const year=item.data.year!=null?String(item.data.year):'—',yearMatch=year.match(/\d{4}/),yearGroup=yearMatch?.[0]??year,lane=item.collection==='external'?'external':'artistic',start=item.data.startDate??yearMatch?.[0]??'',end=item.data.endDate??(item.data.status==='ongoing'?'ongoing':yearMatch?.[0]??''),externalUrl=item.collection==='external'?normalizeExternalUrl(item.data.url):'',featured=Boolean(item.data.featured)||defaultFeatured.has(item.id);return{...item,yearGroup,lane,start,end,featured,researchAreas:inferResearch(item),href:externalUrl||`/${item.collection}/${item.id}/`,externalLink:Boolean(externalUrl)};};
@@ -24,6 +38,134 @@ const labStars=labProjects.map((project,index)=>({
 }));
 ---
 <BaseLayout title="Micol Gelsi">
+<section class="institutional-archive" aria-label="Portfolio archive" data-institutional-archive data-archive-descriptions={JSON.stringify({art:homeConfig.archives?.artistic?.description||"",web:homeConfig.archives?.web?.description||"",lab:homeConfig.archives?.lab?.description||"",graphics:homeConfig.archives?.graphics?.description||""})}>
+  <aside class="institutional-sidebar">
+    <div class="institutional-sidebar-top">
+      <p class="institutional-kicker">ARTIST / RESEARCHER / CREATIVE CODER</p>
+      <h1>MICOL GELSI</h1>
+      <p class="institutional-intro">Working across collective archives, urban wilderness, performative media and experimental digital practices.</p>
+    </div>
+    <nav class="institutional-sidebar-nav" aria-label="Portfolio sections">
+      <button type="button" class="institutional-section-link is-active" data-institutional-section="art" aria-pressed="true">Artistic practice</button>
+      <button type="button" class="institutional-section-link" data-institutional-section="web" aria-pressed="false">Web development</button>
+      <button type="button" class="institutional-section-link" data-institutional-section="lab" aria-pressed="false">Lab</button>
+      <button type="button" class="institutional-section-link" data-institutional-section="graphics" aria-pressed="false">Graphics</button>
+
+      <a href={`${base}cv/`}>CV</a>
+      <a href={`${base}play-with-me/`}>Contact</a>
+    </nav>
+    <div class="institutional-sidebar-bottom"><button type="button" class="institutional-mode-switch" data-portfolio-mode-toggle aria-label="Switch portfolio theme">← PUNK MODE</button><p class="institutional-sidebar-foot">ROME / ITALY</p></div>
+  </aside>
+  <div class="institutional-main" id="institutional-projects">
+    <div class="institutional-main-heading">
+      <span data-institutional-heading>ARTISTIC PRACTICE</span>
+      <div class="institutional-filters" aria-label="Archive filters"><label>Type <select data-institutional-type aria-label="Filter by type"><option value="">All types</option></select></label><button type="button" data-institutional-search-toggle aria-expanded="false" aria-controls="institutional-search-panel">⌕ Search</button></div>
+    </div>
+    <div class="institutional-search-panel" id="institutional-search-panel" data-institutional-search-panel hidden><input type="search" data-institutional-search placeholder="Search title, type, #tag…" aria-label="Search projects" /><div data-institutional-tags class="institutional-tag-suggestions"></div></div><p class="institutional-archive-description" data-institutional-description></p><p data-institutional-empty hidden>No matching projects.</p>
+    <div class="institutional-entries" data-institutional-entries>
+      {items.slice().sort((a,b)=>String(b.start).localeCompare(String(a.start))).map((item,index)=><a class="institutional-entry" data-institutional-entry data-institutional-category={item.lane==='external'?'web':'art'} data-institutional-year={item.yearGroup} data-institutional-context={getTaxonomyType(item.data,item.collection)} data-institutional-tags={JSON.stringify([...(item.data.tags||[]),...(item.data.themes||[]),...(item.data.researchAreas||[])])} data-institutional-research={item.researchAreas.join(', ')} href={item.externalLink?item.href:`${base}${item.href.slice(1)}`}>
+        <div class="institutional-entry-image">
+          {item.lane==='external' && item.externalLink && <><span class="institutional-web-indicator" aria-hidden="true">→</span><iframe class="institutional-web-frame" title={`Preview of ${item.data.title}`} data-web-preview={item.href} loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer" /></>}
+          {projectPreview(item.data,item.lane).src && (projectPreview(item.data,item.lane).video
+            ? <video src={projectPreview(item.data,item.lane).src} muted playsinline loop autoplay preload="metadata" poster={!isVideoPreview(projectPreview(item.data,item.lane).fallback)?projectPreview(item.data,item.lane).fallback:undefined} aria-label={item.data.title} />
+            : <img src={projectPreview(item.data,item.lane).src} alt="" loading="lazy" />)}
+
+          {item.lane!=='external' && !projectPreview(item.data,item.lane).src && item.data.coverEmbed && /^https:\/\//i.test(item.data.coverEmbed) && <iframe class="institutional-art-embed" src={item.data.coverEmbed} title={`Preview of ${item.data.title}`} loading="lazy" allow="autoplay; fullscreen" referrerpolicy="strict-origin-when-cross-origin" />}
+        </div>
+        <div class="institutional-entry-info"><span class="institutional-entry-number" aria-hidden="true">{String(index+1).padStart(2,'0')}</span><h2>{item.data.title}</h2><p>{item.data.summary}</p><div class="institutional-entry-meta"><span>{getTaxonomyType(item.data,item.collection)}</span><span>{displayYear(item.data,item.yearGroup)}</span></div></div>
+      </a>)}
+      {labProjects.map((project,index)=><a class="institutional-entry institutional-lab-entry" data-institutional-entry data-institutional-category="lab" data-institutional-year="" data-institutional-context={project.type||'lab'} data-institutional-tags={JSON.stringify(project.tags||[])} data-institutional-research="lab" href={project.demo||project.repository||'#'} target="_blank" rel="noopener noreferrer">
+        <div class="institutional-entry-image">{project.image?(/\.(mp4|webm|ogg)(?:$|[?#])/i.test(project.image)?<video src={project.image} muted playsinline loop autoplay preload="metadata" aria-label={project.title}/>:<img src={project.image} alt="" loading="lazy" />):<span class="institutional-lab-placeholder" aria-hidden="true">★</span>}</div>
+        <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{project.title}</h2><p>{project.description||project.type}</p><div class="institutional-entry-meta"><span>{project.type||'LAB'}</span></div></div>
+      </a>)}
+      {graphics.map((graphic,index)=><a class="institutional-entry institutional-graphic-entry" data-institutional-entry data-institutional-category="graphics" data-institutional-year={String(graphic.year||'')} data-institutional-context={graphic.type||'graphic'} data-institutional-tags={JSON.stringify(graphic.tags||[])} data-institutional-research="graphics" href={graphic.link||resolveMedia(graphic.image)||'#'} target="_blank" rel="noopener noreferrer" aria-label={graphic.title||'Open graphic'}>
+        <div class="institutional-entry-image">{/\.(mp4|webm|ogg)(?:$|[?#])/i.test(graphic.image||"")?<video src={resolveMedia(graphic.image)} muted playsinline loop autoplay preload="metadata" aria-label={graphic.title||"Graphic work"} />:<img src={resolveMedia(graphic.image)} alt={graphic.title||""} loading="lazy" />}</div>
+        <div class="institutional-entry-info" aria-hidden="true"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{graphic.title||''}</h2>{graphic.description&&<p>{graphic.description}</p>}<div class="institutional-entry-meta"><span>{graphic.project||graphic.type||''}</span><span>{graphic.year||''}</span></div></div>
+      </a>)}
+    </div>
+  </div>
+</section>
+  <script is:inline>
+    (() => {
+      const cards=document.querySelectorAll('.institutional-entry[data-institutional-category="web"]');
+      cards.forEach(card=>{
+        const frame=card.querySelector('[data-web-preview]');
+        if(!frame)return;
+        let pending;
+        const image=card.querySelector(".institutional-entry-image");
+        const resize=()=>{if(image)image.style.setProperty("--web-frame-scale",String(image.clientWidth/1440));};
+        resize();
+        new ResizeObserver(resize).observe(image);
+        const start=()=>{
+          if(document.documentElement.dataset.portfolioMode!=='institutional')return;
+          clearTimeout(pending);
+          if(!frame.getAttribute('src'))frame.setAttribute('src',frame.dataset.webPreview);
+          card.classList.add('is-web-preview-active');
+        };
+        const stop=()=>{
+          clearTimeout(pending);
+          card.classList.remove('is-web-preview-active');
+          pending=setTimeout(()=>frame.removeAttribute('src'),350);
+        };
+        card.addEventListener('mouseenter',start);
+        card.addEventListener('mouseleave',stop);
+        card.addEventListener('focusin',start);
+        card.addEventListener('focusout',stop);
+      });
+    })();
+  </script>
+
+<script is:inline>
+(() => {
+  const archive=document.querySelector('[data-institutional-archive]');
+  if(!archive)return;
+  const entries=[...archive.querySelectorAll('[data-institutional-entry]')];
+  const sections=[...archive.querySelectorAll('[data-institutional-section]')];
+  const heading=archive.querySelector('[data-institutional-heading]');
+  const container=archive.querySelector('[data-institutional-entries]');
+  const main=archive.querySelector('.institutional-main');
+  const description=archive.querySelector('[data-institutional-description]');
+  const descriptions=JSON.parse(archive.dataset.archiveDescriptions||'{}');
+  const names={art:'ARTISTIC PRACTICE',web:'WEB DEVELOPMENT',lab:'LAB',graphics:'GRAPHICS'};
+  const typeSelect=archive.querySelector('[data-institutional-type]');
+  const searchToggle=archive.querySelector('[data-institutional-search-toggle]');
+  const searchPanel=archive.querySelector('[data-institutional-search-panel]');
+  const searchInput=archive.querySelector('[data-institutional-search]');
+  const tagsHost=archive.querySelector('[data-institutional-tags]');
+  const empty=archive.querySelector('[data-institutional-empty]');
+  const params=new URLSearchParams(location.search);
+  let category=['art','web','lab','graphics'].includes(params.get('section'))?params.get('section'):'art';
+  const getTags=e=>{try{return JSON.parse(e.dataset.institutionalTags||'[]').filter(Boolean)}catch{return []}};
+  const inCategory=()=>entries.filter(e=>e.dataset.institutionalCategory===category);
+  const refreshOptions=()=>{
+    const types=[...new Set(inCategory().map(e=>e.dataset.institutionalContext?.trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+    typeSelect.replaceChildren(new Option('All types',''),...types.map(t=>new Option(t,t)));
+    const tags=[...new Set(inCategory().flatMap(getTags))].sort((a,b)=>a.localeCompare(b));
+    tagsHost.replaceChildren(...tags.map(tag=>{const button=document.createElement('button');button.type='button';button.textContent='#'+tag;button.addEventListener('click',()=>{searchInput.value=tag;apply();});return button;}));
+  };
+  const apply=(animate=true)=>{
+    const before=new Map(entries.filter(e=>!e.hidden).map(e=>[e,e.getBoundingClientRect()]));
+    sections.forEach(b=>{const active=b.dataset.institutionalSection===category;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
+    heading.textContent=names[category];
+    container.classList.toggle('is-graphics-masonry',category==='graphics');
+    if(description){description.textContent=descriptions[category]||'';description.hidden=!descriptions[category];}
+    const query=searchInput.value.trim().replace(/^#/,'').toLocaleLowerCase();
+    const type=typeSelect.value;
+    const visible=inCategory().filter(e=>!type||e.dataset.institutionalContext===type).filter(e=>!query||[e.querySelector('h2')?.textContent,e.querySelector('.institutional-entry-info p')?.textContent,e.dataset.institutionalContext,...getTags(e)].join(' ').toLocaleLowerCase().includes(query));
+    if(category!=='graphics')visible.sort((a,b)=>(b.dataset.institutionalYear||'').localeCompare(a.dataset.institutionalYear||''));
+    entries.forEach(e=>{e.hidden=!visible.includes(e);});
+    visible.forEach((e,index)=>{container.appendChild(e);const number=e.querySelector('.institutional-entry-number');if(number)number.textContent=String(index+1).padStart(2,'0');});
+    empty.hidden=visible.length>0;
+    if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)requestAnimationFrame(()=>visible.forEach(e=>{const old=before.get(e);if(!old)return;const next=e.getBoundingClientRect(),dx=old.left-next.left,dy=old.top-next.top;if(Math.abs(dx)+Math.abs(dy)>2)e.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:'translate(0,0)'}],{duration:420,easing:'cubic-bezier(.22,.61,.36,1)'});}));
+  };
+  sections.forEach(b=>b.addEventListener('click',()=>{category=b.dataset.institutionalSection;searchInput.value='';refreshOptions();apply();main.scrollTop=0;}));
+  typeSelect.addEventListener('change',()=>apply());
+  searchInput.addEventListener('input',()=>apply());
+  searchToggle.addEventListener('click',()=>{searchPanel.hidden=!searchPanel.hidden;searchToggle.setAttribute('aria-expanded',String(!searchPanel.hidden));if(!searchPanel.hidden)searchInput.focus();else{searchInput.value='';apply();}});
+  refreshOptions();apply(false);
+})();
+</script>
+
 <section id="projects" class="work-index" aria-labelledby="projects-heading">
 <div class="index-toolbar"><h1 id="projects-heading" data-projects-heading data-en="Projects" data-it="Progetti">Projects</h1><div class="view-switch" aria-label="Arrange projects by"><button class="view-button is-active" type="button" data-view="year" aria-pressed="true">Year</button><button class="view-button" type="button" data-view="type" aria-pressed="false">Context</button><button class="view-button" type="button" data-view="research" aria-pressed="false">Research</button></div></div>
 <div id="work-list" class="work-list is-year-plane" data-view="year"><div class="year-track" data-year-track><div class="year-lanes" aria-hidden="true"><span class="year-lane-label is-artistic">Artistic practice</span><span class="year-lane-label is-web">Web development</span></div><div class="year-axis" aria-hidden="true"></div>{items.map(item=><a class={`work-row ${item.lane==='external'?'is-external-project':''} ${item.featured?'is-featured':''}`} href={item.href} data-external={item.externalLink?'true':'false'} data-url={item.externalLink?item.href:''} data-year={item.yearGroup} data-type={item.lane} data-title={item.data.title} data-kind={item.collection==='external'?item.data.kind:''} data-practice={item.collection==='external'?(item.data.practice??'web-development'):''} data-role={item.collection==='external'?(item.data.role??'Web development'):''} data-client={item.collection==='external'?(item.data.client??''):''} data-stack={item.collection==='external'?(item.data.stack??[]).join(', '):''} data-summary={item.data.summary??''} data-research={item.researchAreas.join(',')} data-start={item.start} data-end={item.end} data-lane={item.lane} data-moments={JSON.stringify(item.data.moments??[])}><span class="timeline-mark" aria-hidden="true"><span class="timeline-end timeline-end-top"></span><span class="timeline-end timeline-end-bottom"></span><span class="output-moments"></span></span><span class="work-title">{item.data.title}</span>{item.externalLink&&<em class="web-role">{item.data.timelineLabel??'website'}</em>}<span class="project-badges">{item.data.author&&<span class="author-pill">BY {item.data.author}</span>}</span></a>)}<div class="lab-stars" data-lab-stars hidden aria-label="LAB projects">{labStars.map(project=><a class={`lab-star ${project.graphic?'has-graphic':''}`} href={project.href} target={project.href==='#'?undefined:'_blank'} rel={project.href==='#'?undefined:'noopener noreferrer'} style={`--lab-x:${project.x}%;--lab-y:${project.y}%;--lab-size:${project.size}px;--lab-tilt:${project.tilt}deg`} aria-label={`${project.title} — ${project.type}`}><span class="lab-star-symbol" aria-hidden="true">★</span>{project.graphic&&<span class="lab-star-fill" aria-hidden="true" style={`background-image:url(${JSON.stringify(project.graphic)})`}></span>}<span class="lab-star-label"><strong>{project.title}</strong><em class="lab-star-type">{project.type}</em></span></a>)}</div></div><div class="research-field" aria-hidden="true">{researchAreas.map(([key,label])=><span class={`research-anchor anchor-${key}`}>{label}</span>)}</div><div class="type-field" aria-hidden="true"></div></div>

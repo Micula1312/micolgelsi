@@ -22,8 +22,8 @@ const parentHref=parent?withBase(`${parent.type==='exhibition'?'exhibitions':'pr
   <div class="project-body"><article class="prose"><Content /></article><aside class="project-facts">
     {entry.data.author&&<div><span>Author</span>{entry.data.author}</div>}
     {typeLabel&&<div><span>Type</span>{typeLabel}</div>}
-    {entry.data.startDate&&<div><span>Start</span>{entry.data.startDate}</div>}
-    {entry.data.endDate&&<div><span>End</span>{entry.data.endDate}</div>}
+    <div class="institutional-year-fact"><span>Year</span>{String(entry.data.endDate||entry.data.year||entry.data.startDate||'').match(/\d{4}/)?.[0]||entry.data.year||'—'}</div>{entry.data.startDate&&<div class="punk-date-fact"><span>Start</span>{entry.data.startDate}</div>}
+    {entry.data.endDate&&<div class="punk-date-fact"><span>End</span>{entry.data.endDate}</div>}
     {entry.data.status&&<div><span>Status</span>{entry.data.status}</div>}
     {entry.data.medium.length>0&&<div><span>Medium</span>{entry.data.medium.join(', ')}</div>}
     {entry.data.researchAreas.length>0&&<div><span>Research</span>{entry.data.researchAreas.join(', ')}</div>}

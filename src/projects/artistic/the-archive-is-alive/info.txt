@@ -4,7 +4,7 @@ AVATAR: avatar.mp4
 FEATURED: true
 START: 2026-04
 END: 2026-06
-TYPE: exhibition
+TYPE: residency output
 MEDIUM: installation, participatory practice
 RESEARCH: generative-archives, bodies-affects, surveillance-politics-of-visibility, live-data-manipulation
 ARTISTS INVOLVED: 
@@ -54,4 +54,17 @@ COLLABORATORS: Giuseppe Di Capua and Federico Russo
 CREDITS: Foto di Sara Scognamillo
 OUTPUTS: 
 COVER EMBED: 
-RELATED:
+RELATED: 
+HOMEPAGE: true
+
+TIMELINE LABEL: website
+
+CLIENT:
+
+ROLE:
+
+STACK:
+
+URL:
+
+PRACTICE: web-development

@@ -18,6 +18,19 @@
       "default": "external project",
       "type": "string"
     },
+    "taxonomyType": {
+      "type": "string"
+    },
+    "thumbnail": {
+      "type": "string"
+    },
+    "tags": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "practice": {
       "default": "web-development",
       "type": "string"

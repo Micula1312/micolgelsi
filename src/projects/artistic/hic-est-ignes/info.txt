@@ -1,10 +1,10 @@
 TITLE: hic-est-ignes
-TYPE: project
+TYPE: live performance
 START: 2023-09
 END: 2025-10
 STATUS: ongoing
-AVATAR: videos/performanceCLUSTER-2-.mp4
-COVER: images/_DSC6427.webp
+AVATAR: media/_DSC6431.webp
+COVER: media/performanceCLUSTER-2-.mp4
 RESEARCH: more-than-human-relations, digital-access-inclusion
 MEDIUM: installation, av and fire performance
 EXCERPT: 
@@ -16,4 +16,13 @@ AUTHOR: Blivet
 FEATURED: 
 MAIN LINK: https://docs.google.com/presentation/d/1MayLI20fjuo5zU1kjGJ5lTZ0EVvw1wYrymcOxY4wxIA/edit?usp=sharing
 COLLABORATORS: 
-CREDITS:
+CREDITS: 
+HOMEPAGE: 
+TIMELINE LABEL: 
+CLIENT: 
+ROLE: 
+STACK: 
+URL: 
+PRACTICE: web-development
+COVER EMBED: 
+RELATED:

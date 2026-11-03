@@ -1,0 +1,63 @@
+/* Institutional detail pages: single source of truth.
+   Loaded AFTER Punk/global styles. Never targets the archive index. */
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"]{
+ --bg:#101010;--fg:#e8e8e8;--muted:#999;--line:#383838;
+ background:#101010!important;color:#e8e8e8!important;
+ font:12px/1.55 "IBM Plex Mono","Courier New",monospace!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(.shell,main.page,.institutional-project-layout,.institutional-project-media,.institutional-project-info,.institutional-detail-sidebar,.project-head,.project-body,.prose,.project-facts,.project-moments,.project-moment,.project-links,.related,.project-cover,.media-stream,.media-grid,.video-list,.institutional-moment-media,.moment-gallery){
+ background:#101010!important;color:#e8e8e8!important;box-shadow:none!important;
+ border-color:#383838!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .site-header{display:none!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-detail-sidebar{display:flex!important;flex-direction:column!important;justify-content:space-between!important;padding:16px 12px!important;min-width:0!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-detail-sidebar :is(a,p,span,button){color:#e8e8e8!important;font:12px/1.5 "IBM Plex Mono",monospace!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-detail-sidebar nav{display:flex!important;flex-direction:column!important;gap:5px!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-layout{display:grid!important;grid-template-columns:minmax(0,1.65fr) minmax(300px,.9fr)!important;gap:20px!important;width:100%!important;min-width:0!important;padding:0!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(.institutional-project-media,.institutional-project-info){display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:stretch!important;align-content:flex-start!important;gap:14px!important;min-width:0!important;min-height:0!important;padding:8px 0 90px!important;overflow-x:hidden!important;overflow-y:auto!important;scrollbar-width:none!important;overscroll-behavior:contain!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(.institutional-project-media,.institutional-project-info)::-webkit-scrollbar{display:none}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info{padding:8px 18px 90px 0!important;position:relative!important;top:auto!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info>*{display:block!important;position:static!important;flex:0 0 auto!important;width:100%!important;min-width:0!important;min-height:0!important;height:auto!important;max-height:none!important;margin:0!important;padding:0!important;overflow:visible!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(.project-body,.prose,.project-head,.intro,.project-moments,.project-links,.related){display:block!important;position:static!important;width:100%!important;max-width:none!important;min-height:0!important;max-height:none!important;overflow:visible!important;margin:0 0 12px!important;padding:0!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(p,li,h1,h2,h3,strong,a,span){color:#e8e8e8!important;overflow-wrap:anywhere!important;white-space:normal!important;max-height:none!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(h1,h2){font:500 14px/1.4 "IBM Plex Mono",monospace!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info :is(p,li){font:12px/1.55 "IBM Plex Mono",monospace!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-facts>div{display:grid!important;grid-template-columns:90px minmax(0,1fr)!important;gap:10px!important;padding:5px 0!important;border-top:1px solid #383838!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .project-facts .institutional-year-fact{display:grid!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .project-facts .punk-date-fact{display:none!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media>*{display:block!important;position:relative!important;flex:0 0 auto!important;width:100%!important;min-width:0!important;max-width:100%!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:visible!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .project-cover :is(img,video){display:block!important;position:static!important;width:auto!important;max-width:100%!important;height:auto!important;max-height:58dvh!important;object-fit:contain!important;object-position:left top!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .project-cover iframe{display:block!important;width:100%!important;height:min(55dvh,500px)!important;border:0!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media :is([data-featured-gallery],.media-grid,.video-list,.moment-gallery){
+ display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;align-items:flex-start!important;justify-content:flex-start!important;gap:8px!important;
+ width:100%!important;min-width:0!important;max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media :is([data-featured-gallery],.media-grid,.video-list,.moment-gallery)::-webkit-scrollbar{display:none}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media :is([data-featured-gallery],.media-grid,.video-list)> :is(figure,video),html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .moment-gallery>.moment-thumb{
+ display:block!important;position:relative!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:none!important;height:auto!important;max-height:none!important;aspect-ratio:auto!important;overflow:visible!important;margin:0!important;padding:0!important;border:0!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media :is([data-featured-gallery],.media-grid,.video-list) :is(img,video),html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .moment-gallery>.moment-thumb> :is(img,video){
+ display:block!important;position:static!important;inset:auto!important;width:auto!important;height:clamp(130px,19vw,270px)!important;max-height:270px!important;max-width:min(70vw,520px)!important;aspect-ratio:auto!important;object-fit:contain!important;
+}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media{display:block!important;flex:0 0 auto!important;width:100%!important;padding:0 0 16px!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media figcaption{font:10px/1.4 "IBM Plex Mono",monospace!important;color:#999!important;margin:0 0 8px!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media .institutional-moment-media> :is(img,video){width:auto!important;max-width:100%!important;height:auto!important;max-height:70dvh!important;object-fit:contain!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-moment{display:block!important;padding:12px 0!important;border-top:1px solid #383838!important}
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info .project-moment>*{display:block!important;position:static!important;margin:0!important;max-width:100%!important}
+@media(min-width:761px){
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"]{height:100dvh!important;overflow:hidden!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .shell{display:grid!important;grid-template-columns:clamp(175px,15vw,260px) minmax(0,1fr)!important;gap:0!important;width:100%!important;max-width:none!important;height:100dvh!important;margin:0!important;padding:0!important;overflow:hidden!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] main.page{display:block!important;width:100%!important;min-width:0!important;height:100dvh!important;max-height:100dvh!important;margin:0!important;padding:0!important;overflow:hidden!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-layout{height:100%!important;max-height:100%!important;grid-template-rows:minmax(0,1fr)!important;overflow:hidden!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(.institutional-project-media,.institutional-project-info){height:100%!important;max-height:100%!important}
+}
+@media(max-width:760px){
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"]{height:auto!important;overflow-y:auto!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .shell{display:block!important;width:100%!important;max-width:none!important;margin:0!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] main.page{padding:12px!important;height:auto!important;overflow:visible!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-detail-sidebar{position:relative!important;height:auto!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-layout{display:flex!important;flex-direction:column!important;height:auto!important;gap:24px!important;overflow:visible!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] :is(.institutional-project-media,.institutional-project-info){height:auto!important;max-height:none!important;overflow:visible!important;padding:0 0 28px!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-info{order:0!important}
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media{order:1!important}
+}

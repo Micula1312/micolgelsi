@@ -24,5 +24,19 @@
     "radioUrl": "https://www.radioraheem.it/portaradio/portaradi0-w-sticky-verde/",
     "skipLabel": "awwwww — VAI AL PORTFOLIO ↘",
     "skipLabelIt": ""
+  },
+  "archives": {
+    "artistic": {
+      "description": ""
+    },
+    "web": {
+      "description": ""
+    },
+    "lab": {
+      "description": ""
+    },
+    "graphics": {
+      "description": ""
+    }
   }
 }
