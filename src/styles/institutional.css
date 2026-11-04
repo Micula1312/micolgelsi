@@ -1699,7 +1699,7 @@ html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"])
  }
  html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media > .project-cover:not(.project-cover-embed) > :is(img,video) {
   display:block!important;position:static!important;
-  width:100%!important;max-width:100%!important;min-width:0!important;
+  width:auto!important;max-width:100%!important;min-width:0!important;
   height:auto!important;max-height:calc(100dvh - 32px)!important;
   aspect-ratio:auto!important;object-fit:contain!important;
   object-position:left top!important;
