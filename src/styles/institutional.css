@@ -1705,3 +1705,15 @@ html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"])
   object-position:left top!important;
  }
 }
+
+/* Fix portrait MOV covers (Elisa): video element fills its own column,
+   while object-fit:contain displays the entire frame without cropping. */
+@media (min-width:761px) {
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media > .project-cover:not(.project-cover-embed) > video {
+  display:block!important;position:static!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  height:min(72dvh,720px)!important;max-height:72dvh!important;
+  object-fit:contain!important;object-position:center center!important;
+  background:#111!important;aspect-ratio:auto!important;
+ }
+}
