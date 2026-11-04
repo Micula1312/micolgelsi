@@ -173,3 +173,15 @@ html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-
   margin-top:auto!important;gap:12px!important;
  }
 }
+
+/* Small lowercase home link, identical on Institutional home and inner pages. */
+html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-sidebar-name,
+html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-detail-sidebar .institutional-sidebar-name {
+ margin:20px 0 24px!important;
+ font:400 11px/1.5 "IBM Plex Mono",monospace!important;
+ letter-spacing:0!important;text-transform:none!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-sidebar-name a {
+ font:inherit!important;text-transform:none!important;
+ text-decoration:none!important;cursor:pointer!important;
+}
