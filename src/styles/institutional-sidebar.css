@@ -143,3 +143,10 @@ html[data-portfolio-mode="institutional"] .institutional-sidebar .institutional-
   padding:20px 20px 90px!important;
  }
 }
+
+/* Institutional mobile lightbox: keep controls, hide only the media counter. */
+@media (max-width:760px) {
+ html[data-portfolio-mode="institutional"] .moment-lightbox figcaption {
+  display:none!important;
+ }
+}
