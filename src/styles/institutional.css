@@ -1687,3 +1687,21 @@ html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"])
   overflow:visible!important;
  }
 }
+
+/* Institutional detail cover: fit the complete source frame inside the central column.
+   The home archive's 4:3 previews intentionally remain unchanged. */
+@media (min-width:761px) {
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media > .project-cover:not(.project-cover-embed) {
+  display:flex!important;align-items:flex-start!important;justify-content:flex-start!important;
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  height:auto!important;max-height:none!important;overflow:visible!important;
+  aspect-ratio:auto!important;
+ }
+ html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media > .project-cover:not(.project-cover-embed) > :is(img,video) {
+  display:block!important;position:static!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  height:auto!important;max-height:calc(100dvh - 32px)!important;
+  aspect-ratio:auto!important;object-fit:contain!important;
+  object-position:left top!important;
+ }
+}
