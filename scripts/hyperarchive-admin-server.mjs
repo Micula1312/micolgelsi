@@ -13,7 +13,11 @@ const send=(res,status,data,type='application/json; charset=utf-8')=>{
   res.writeHead(status,{'content-type':type,'cache-control':'no-store','x-content-type-options':'nosniff'});
   res.end(type.startsWith('application/json')?JSON.stringify(data):data);
 };
-const blocks=source=>[...source.matchAll(rx())].map((m,index)=>({index,tag:m[1],html:m[3],start:m.index,end:m.index+m[0].length,original:m[0]}));
+const blocks=source=>{
+  const ignored=[...source.matchAll(/<(script|style|svg|pre|code)\\b[^>]*>[\\s\S]*?<\\/\\1>/gi)].map(m=>[m.index,m.index+m[0].length]);
+  return [...source.matchAll(rx())].filter(m=>!ignored.some(([a,b])=>m.index>=a&&m.index<b))
+    .map((m,index)=>({index,tag:m[1],html:m[3],start:m.index,end:m.index+m[0].length,original:m[0]}));
+};
 const escapeHtml=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 function sanitize(input){
   let html=String(input??'');
@@ -47,6 +51,28 @@ const server=http.createServer(async(req,res)=>{
     if(req.method==='GET'&&url.pathname==='/api/blocks'){
       const source=await fs.readFile(SOURCE,'utf8');
       return send(res,200,{blocks:blocks(source).map(({index,tag,html,original})=>({index,tag,html,original}))});
+    }
+    if(req.method==='POST'&&url.pathname==='/api/blocks/batch'){
+      const {edits}=await readBody(req);
+      if(!Array.isArray(edits)||edits.length>250)return send(res,400,{error:'Invalid batch'});
+      const source=await fs.readFile(SOURCE,'utf8'),current=blocks(source);
+      const seen=new Set(),replacements=[];
+      for(const edit of edits){
+        if(!Number.isInteger(edit.index)||seen.has(edit.index)||typeof edit.original!=='string'||typeof edit.html!=='string')
+          return send(res,400,{error:'Invalid or duplicate edit'});
+        seen.add(edit.index);
+        const block=current[edit.index];
+        if(!block||block.original!==edit.original)return send(res,409,{error:'The page changed. Reload before saving.'});
+        replacements.push({...block,nextHtml:sanitize(edit.html)});
+      }
+      let updated=source;
+      for(const block of replacements.sort((a,b)=>b.start-a.start))
+        updated=updated.slice(0,block.start)+block.original.replace(block.html,block.nextHtml)+updated.slice(block.end);
+      if(updated!==source){
+        await fs.copyFile(SOURCE,SOURCE+'.hyperarchive-backup');
+        await fs.writeFile(SOURCE,updated,'utf8');
+      }
+      return send(res,200,{ok:true,saved:replacements.length});
     }
     if(req.method==='POST'&&url.pathname==='/api/blocks'){
       const {index,html,original}=await readBody(req);
