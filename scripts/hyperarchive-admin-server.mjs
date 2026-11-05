@@ -14,7 +14,7 @@ const send=(res,status,data,type='application/json; charset=utf-8')=>{
   res.end(type.startsWith('application/json')?JSON.stringify(data):data);
 };
 const blocks=source=>{
-  const ignored=[...source.matchAll(/<(script|style|svg|pre|code)\\b[^>]*>[\\s\S]*?<\\/\\1>/gi)].map(m=>[m.index,m.index+m[0].length]);
+  const ignored=[...source.matchAll(/<(script|style|svg|pre|code)\b[^>]*>[\s\S]*?<\/\1>/gi)].map(m=>[m.index,m.index+m[0].length]);
   return [...source.matchAll(rx())].filter(m=>!ignored.some(([a,b])=>m.index>=a&&m.index<b))
     .map((m,index)=>({index,tag:m[1],html:m[3],start:m.index,end:m.index+m[0].length,original:m[0]}));
 };
