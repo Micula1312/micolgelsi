@@ -1,0 +1,29 @@
+---
+const githubEdit='https://github.com/Micula1312/micolgelsi/edit/main/src/pages/otherwise-hyperarchive.astro';
+const githubDev='https://github.dev/Micula1312/micolgelsi/blob/main/src/pages/otherwise-hyperarchive.astro';
+const preview=import.meta.env.BASE_URL+'otherwise-hyperarchive/?theme=punk';
+---
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<title>HYPERARCHIVE / REMOTE EDITING</title>
+<style>
+:root{font:13px/1.5 Helvetica,Arial,sans-serif;background:#090909;color:#eee}*{box-sizing:border-box}
+body{margin:0;padding:20px}main{max-width:840px;margin:8vh auto}h1{font-size:clamp(25px,5vw,56px);font-weight:500;letter-spacing:-.07em;line-height:1;margin:28px 0}
+small{color:#999}a{color:inherit;text-decoration:none}.signal{color:#39ff14}.pink{color:#ff2bbd;font:italic 1.15em Georgia,serif}
+.row{border-top:1px solid #555;padding:22px 0;display:grid;grid-template-columns:130px 1fr;gap:20px}.row a{border:1px solid #555;padding:14px;display:block}.row a:hover{border-color:#39ff14;color:#39ff14}
+p{max-width:65ch;color:#aaa}.warning{border-left:2px solid #ff2bbd;padding-left:16px;margin:30px 0}footer{border-top:1px solid #555;padding-top:20px;margin-top:60px;color:#888}
+@media(max-width:600px){.row{grid-template-columns:1fr;gap:8px}}
+</style></head>
+<body><main>
+<small>✳ PORTFOLIO / RESEARCH / EDITORIAL ACCESS</small>
+<h1>[#]_HYPERARCHIVE<span class="signal">_</span><br /><span class="pink">remote editing.</span></h1>
+<p>Accesso remoto ai contenuti del progetto. Per modificare il sorgente serve un account GitHub autorizzato sul repository. Le modifiche vengono salvate tramite commit e pubblicate dalla pipeline di deploy.</p>
+<div class="row"><small>01 / EDIT ONLINE</small><a href={githubEdit} target="_blank" rel="noopener noreferrer">MODIFICA LA PAGINA SU GITHUB ↗<br /><small>Editor online con salvataggio tramite commit</small></a></div>
+<div class="row"><small>02 / CODE EDITOR</small><a href={githubDev} target="_blank" rel="noopener noreferrer">APRI IN GITHUB.DEV ↗<br /><small>Editor completo nel browser</small></a></div>
+<div class="row"><small>03 / PUBLIC VIEW</small><a href={preview}>VEDI LA PAGINA PUBBLICA ↗<br /><small>Anteprima Stellar</small></a></div>
+<div class="warning"><strong>NOTA / SICUREZZA</strong><p>Questo è un accesso editoriale online, non ancora il CMS visuale locale. Il pannello WYSIWYG su localhost:4312 non può essere pubblicato in sicurezza senza un backend autenticato e un sistema di persistenza. Nessun endpoint di scrittura anonimo è esposto qui.</p></div>
+<footer>✳ [#]_HYPERARCHIVE — EDITORIAL INFRASTRUCTURE / WIP</footer>
+</main></body></html>
