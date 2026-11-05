@@ -1,5 +1,34 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+const mediaRoot=path.join(process.cwd(),'public','media','artistic');
+function projectCover(slug){
+  const dir=path.join(mediaRoot,slug);
+  if(!fs.existsSync(dir))return null;
+  const infoPath=path.join(process.cwd(),'src','projects','artistic',slug,'info.txt');
+  const info=fs.existsSync(infoPath)?fs.readFileSync(infoPath,'utf8'):'';
+  const specified=info.match(/^COVER:\s*(.+)$/m)?.[1]?.trim();
+  const files=[];
+  function walk(folder,depth=0){
+    if(depth>3)return;
+    for(const item of fs.readdirSync(folder,{withFileTypes:true})){
+      if(item.name.startsWith('.')||/^(source|sources|backup|originals)$/i.test(item.name))continue;
+      const full=path.join(folder,item.name);
+      if(item.isDirectory())walk(full,depth+1);
+      else if(/\.(jpe?g|png|webp|avif|gif)$/i.test(item.name))files.push(path.relative(dir,full).replaceAll('\\','/'));
+    }
+  }
+  walk(dir);
+  files.sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  const selected=files.find(x=>x===specified||x.split('/').at(-1)===specified)
+    ||files.find(x=>/^(cover|poster|thumbnail|hero)([._-]|$)/i.test(x.split('/').at(-1)))
+    ||files.find(x=>/^(avatar)([._-]|$)/i.test(x.split('/').at(-1)))
+    ||files[0];
+  return selected?import.meta.env.BASE_URL+'media/artistic/'+slug+'/'+selected.split('/').map(encodeURIComponent).join('/'):null;
+}
+const untamedCover=projectCover('archive-of-the-untamed');
+const aliveCover=projectCover('the-archive-is-alive');
 const base = import.meta.env.BASE_URL;
 ---
 <BaseLayout title="[#]_HYPERARCHIVE — Micol Gelsi">
@@ -8,7 +37,15 @@ const base = import.meta.env.BASE_URL;
   <header class="hyper-hero"><div class="hyper-hero-stars" aria-hidden="true"><span>✳</span><span>★</span><span>✳</span><span>✦</span><span>★</span><span>✳</span><span>✦</span><span>★</span><span>✳</span><span>✦</span><span>★</span><span>✳</span></div><span>OTHERWISE HYPERARCHIVE / RESEARCH ATLAS / 2027</span><h1>[#]_HYPERARCHIVE<span class="hyper-accent">_</span></h1><p>A rhizomatic digital infrastructure for creative agitation and collective mobilization in public space.</p><small>CRITICAL MAPPING ★ ALLIED TECHNOLOGIES ★ COLLECTIVE MEDIA INFRASTRUCTURES</small></header>
   <nav class="hyper-nav" aria-label="Proposal sections"><a href="#concept">01 CONCEPT</a><a href="#untamed">02 PREVIOUS</a><a href="#system">03 SYSTEM</a><a href="#human">04 HUMAN</a><a href="#space">05 SPACE</a><a href="#loop">06 LOOP</a><a href="#process">07 PROCESS</a><a href="#references">08 REFERENCES</a></nav>
   <section id="concept" class="hyper-section"><span class="hyper-index">01 / RESEARCH QUESTION</span><div><h2>Detect / <em>map / reconfigure.</em></h2><p>SUBTRACTION = restricted access / erased memory / controlled visibility / lost digital autonomy. MAP = identify mechanisms, actors, boundaries.</p><p>SOURCE: Archive of the Untamed. DATA: situated knowledge / informal ecologies / collective use / relations of care.</p><p>QUESTION: Can independent interfaces support intersectional struggles and collective spatial practice?</p></div><div class="hyper-protocol"><div><span>01 / OBJECT</span><p>Not the lost site alone. The operation that makes it unavailable: enclosure, administrative language, classification, infrastructural control.</p></div><div><span>02 / COUNTER-DATA</span><p>Situated accounts / informal ecologies / collective practices. Records remain partial, contested, revisable.</p></div><div><span>03 / QUESTION</span><p>Who defines public access? Who produces the record? Who can modify the system?</p></div></div></section>
-  <section id="untamed" class="hyper-section hyper-previous"><span class="hyper-index">02 / PREVIOUS</span><div><h2>Archive → conflict → <em>observatory.</em></h2><p>RESEARCH LINEAGE / 05 STATES</p><div class="hyper-genealogy"><div class="hyper-genealogy-item"><span>01 / ARCHIVE OF THE UNTAMED</span><div><h3>Urban wildness / collective memory</h3><p>Participatory archive. Urban ecologies / situated media / informal spatial practices.</p></div></div><div class="hyper-genealogy-item"><span>02 / EVICTION AND SUBTRACTION</span><div><h3>Access revoked</h3><p>Eviction / restriction / enclosure. Record the process, not only the loss.</p></div></div><div class="hyper-genealogy-item"><span>03 / DECLARATIONS OF INTENT</span><div><h3>Institutional protocol</h3><p>RESTORE LEGALITY / ACCELERATE INTERVENTION. Analyse language, authority, urgency, spatial effects.</p></div></div><div class="hyper-genealogy-item"><span>04 / TOWARDS AN OBSERVATORY</span><div><h3>Distributed observation</h3><p>PROPOSED: independent observatory. NODES: archivists / documentarians / artists / explorers. PROTOCOL: collect / cross-reference / share.</p></div></div><div class="hyper-genealogy-item"><span>05 / A NETWORKED MEDIA ARCHIVE</span><div><h3>Shared media infrastructure</h3><p>TOPICS: occupation / artistic reappropriation / contested sites / public–private debounding / intersectional struggle. MEDIA: testimony / maps / images / sound / interfaces.</p></div></div></div><p class="hyper-pink-note">★ NOT ONLY WHAT DISAPPEARS. HOW ACCESS IS REMOVED.</p><div class="hyper-previous-links"><a href="https://thearchiveoftheuntamed.xyz/" target="_blank" rel="noopener noreferrer"><span>01 / PREVIOUS RESEARCH</span>ARCHIVE OF THE UNTAMED ↗</a><a href="https://thearchiveoftheuntamed.xyz/portfolio/projects/the-archive-is-alive/" target="_blank" rel="noopener noreferrer"><span>02 / PREVIOUS RESEARCH</span>ARCHIVE IS ALIVE ↗</a></div></div></section>
+  <section id="untamed" class="hyper-section hyper-previous"><span class="hyper-index">02 / PREVIOUS</span><div><h2>Archive → conflict → <em>observatory.</em></h2><p>RESEARCH LINEAGE / 05 STATES</p><div class="hyper-genealogy"><div class="hyper-genealogy-item"><span>01 / ARCHIVE OF THE UNTAMED</span><div><h3>Urban wildness / collective memory</h3><p>Participatory archive. Urban ecologies / situated media / informal spatial practices.</p></div></div><div class="hyper-genealogy-item"><span>02 / EVICTION AND SUBTRACTION</span><div><h3>Access revoked</h3><p>Eviction / restriction / enclosure. Record the process, not only the loss.</p></div></div><div class="hyper-genealogy-item"><span>03 / DECLARATIONS OF INTENT</span><div><h3>Institutional protocol</h3><p>RESTORE LEGALITY / ACCELERATE INTERVENTION. Analyse language, authority, urgency, spatial effects.</p></div></div><div class="hyper-genealogy-item"><span>04 / TOWARDS AN OBSERVATORY</span><div><h3>Distributed observation</h3><p>PROPOSED: independent observatory. NODES: archivists / documentarians / artists / explorers. PROTOCOL: collect / cross-reference / share.</p></div></div><div class="hyper-genealogy-item"><span>05 / A NETWORKED MEDIA ARCHIVE</span><div><h3>Shared media infrastructure</h3><p>TOPICS: occupation / artistic reappropriation / contested sites / public–private debounding / intersectional struggle. MEDIA: testimony / maps / images / sound / interfaces.</p></div></div></div><p class="hyper-pink-note">★ NOT ONLY WHAT DISAPPEARS. HOW ACCESS IS REMOVED.</p><div class="hyper-previous-links">
+<a class="hyper-project-card" href={base+'projects/archive-of-the-untamed/'} aria-label="View Archive of the Untamed project">
+  <div class="hyper-project-cover">{untamedCover ? <img src={untamedCover} alt="Archive of the Untamed — project cover" loading="lazy" /> : <span class="hyper-cover-fallback" aria-hidden="true">✳</span>}<span class="hyper-cover-cross" aria-hidden="true">✳</span><span class="hyper-cover-index">FIG. 001 / PROJECT ARCHIVE</span></div>
+  <div class="hyper-project-caption"><span>01 / PREVIOUS RESEARCH</span><strong>ARCHIVE OF THE UNTAMED</strong><span aria-hidden="true">↗</span></div>
+</a>
+<a class="hyper-project-card" href={base+'projects/the-archive-is-alive/'} aria-label="View The Archive Is Alive project">
+  <div class="hyper-project-cover">{aliveCover ? <img src={aliveCover} alt="The Archive Is Alive — project cover" loading="lazy" /> : <span class="hyper-cover-fallback" aria-hidden="true">★</span>}<span class="hyper-cover-cross" aria-hidden="true">✳</span><span class="hyper-cover-index">FIG. 002 / LIVE ARCHIVE</span></div>
+  <div class="hyper-project-caption"><span>02 / PREVIOUS RESEARCH</span><strong>THE ARCHIVE IS ALIVE!</strong><span aria-hidden="true">↗</span></div>
+</a></div></div></section>
   <section id="system" class="hyper-section"><span class="hyper-index">03 / DIGITAL INFRASTRUCTURE</span><div><h2>Independent systems / <em>allied technologies.</em></h2><p>INTERFACE ≠ NEUTRAL. CONTROL: hosting / access / taxonomy / maintenance / circulation. TEST: independent platforms; collective governance; revisable relations.</p><figure class="hyper-diagram"><figcaption>FIG. 01 — DISTRIBUTED ARCHIVE / RELATIONAL INDEX</figcaption><svg viewBox="0 0 900 380" role="img" aria-label="Curved non-hierarchical archive connections"><g class="wires"><path d="M130 100C220 15 365 70 450 185S690 300 765 100M130 100C210 270 330 325 450 185S650 12 765 100M130 285C270 340 320 90 450 185S650 350 770 285M130 285C65 200 75 165 130 100M765 100C845 180 850 225 770 285M130 100C340 20 585 350 770 285"/></g><g class="accent-wires"><path d="M130 100Q330 165 450 185T765 100M130 285Q325 200 450 185T770 285"/></g><g class="nodes"><circle cx="130" cy="100" r="32"/><circle cx="130" cy="285" r="30"/><circle cx="450" cy="185" r="44"/><circle cx="765" cy="100" r="32"/><circle cx="770" cy="285" r="34"/></g><g text-anchor="middle"><text x="130" y="104">MEMORY</text><text x="130" y="289">SITES</text><text x="450" y="182">ARCHIVE</text><text x="450" y="195">/ INDEX</text><text x="765" y="104">ECOLOGY</text><text x="770" y="289">PEOPLE</text></g><g class="hyper-svg-stars"><text x="300" y="83">✳</text><text x="612" y="268">✦</text></g></svg></figure><p class="hyper-pink-note">★ ALLY OR CONTROL SYSTEM?</p><p>ALLIED TECHNOLOGIES = tools shaped with their users. DESIGN / MAINTAIN / REVISE / SHARE.</p><small>MODEL: relational / non-hierarchical / revisable.</small></div><div class="hyper-protocol"><div><span>HOST / OWNERSHIP</span><p>Where is the archive stored? Who can maintain it? Independence is a condition to negotiate, not a property guaranteed by software.</p></div><div><span>ACCESS / GOVERNANCE</span><p>Multiple contributors. Revisable metadata. Consent, attribution and withdrawal. Visibility must not become compulsory exposure.</p></div><div><span>ALLIED TECHNOLOGIES</span><p>Technology is allied only through use: accountable to participants, adaptable to changing needs, open to critique.</p></div></div></section>
   <section id="human" class="hyper-section"><span class="hyper-index">04 / HUMAN INFRASTRUCTURES</span><div><h2>Digital links / <em>human rhizomes.</em></h2><p>PLATFORM ≠ COMMUNITY. Interface = possible contact layer. Human infrastructure = situated relations / shared skills / collective decisions / mutual support.</p><p>CONNECT → ORGANISE → CO-CONSTRUCT → INHABIT. From autonomous digital networks to temporary physical assemblies. No central node. No fixed hierarchy. Multiple points of entry.</p><figure class="hyper-diagram hyper-diagram-human"><figcaption>FIG. 02 — HUMAN / DIGITAL / SPATIAL ASSEMBLY</figcaption><svg viewBox="0 0 900 350" role="img" aria-label="Three interacting rhizomatic networks: digital interfaces, human relationships and spatial interventions"><g class="wires"><path d="M95 96C220 0 310 230 450 130S670 18 815 90M95 96C270 260 330 10 450 130S680 315 815 90M110 275C260 110 310 330 450 205S690 125 790 275M110 275C285 330 310 80 450 205S670 340 790 275"/></g><g class="accent-wires"><path d="M95 96Q240 190 450 130T815 90M110 275Q275 140 450 205T790 275M450 130Q510 160 450 205"/></g><g class="nodes"><circle cx="95" cy="96" r="24"/><circle cx="110" cy="275" r="20"/><circle cx="450" cy="130" r="33"/><circle cx="450" cy="205" r="24"/><circle cx="815" cy="90" r="25"/><circle cx="790" cy="275" r="22"/></g><g text-anchor="middle"><text x="95" y="100">WEB</text><text x="110" y="279">DATA</text><text x="450" y="134">PEOPLE</text><text x="450" y="209">SKILLS</text><text x="815" y="94">SPACE</text><text x="790" y="279">ACTION</text><text x="450" y="22">NO CENTRE / MULTIPLE ENTRIES / RECONFIGURABLE</text></g><g class="hyper-svg-stars"><text x="290" y="82">✳</text><text x="650" y="244">✳</text><text x="335" y="285">✦</text></g></svg></figure><p class="hyper-pink-note">★ A platform connects records. People construct infrastructures.</p></div><div class="hyper-protocol"><div><span>RELATION</span><p>Nodes are not interchangeable users. They are people, situated practices, uneven capacities, dependencies and shared commitments.</p></div><div><span>ASSEMBLY</span><p>The interface can facilitate contact. Collective decisions, trust, conflict and maintenance happen through human negotiation.</p></div><div><span>RHIZOME / TEST</span><p>Multiple entrances and lateral links. No mandatory centre. How does a network remain open without erasing responsibility?</p></div></div></section>
   <section id="space" class="hyper-section"><span class="hyper-index">05 / SPATIAL TRANSLATION</span><div><h2>Deploy / <em>public space.</em></h2><p>BOUNDARIES: public/private; physical/digital; archive/intervention. OUTPUT: spatial interfaces. METHODS: mapping / reversible structures / collective construction.</p><div class="hyper-columns"><div><figure class="hyper-diagram"><figcaption>FIG. 03 — PROJECTION / URBAN SURFACE</figcaption><svg viewBox="0 0 420 300" role="img" aria-label="Curved projection mapping paths across an urban surface"><g class="wires"><path d="M70 245Q85 80 200 70T355 245M115 245Q120 115 200 110T310 245M155 245Q165 150 200 145T270 245M70 245Q210 275 355 245"/></g><g class="accent-wires"><path d="M24 260Q130 40 255 155T405 260M24 260Q200 95 330 85T405 260"/></g><circle class="nodes" cx="24" cy="260" r="7"/><text x="20" y="284">SOURCE</text><text x="215" y="36">SITE / SURFACE</text></svg></figure><h3>01 / Projection mapping</h3><p>INPUT: archive fragments / maps / audiovisual records. OUTPUT: temporary urban projection.</p></div><div><figure class="hyper-diagram"><figcaption>FIG. 04 — PARASITIC / REVERSIBLE STRUCTURE</figcaption><svg viewBox="0 0 420 300" role="img" aria-label="Curved diagram of a reversible parasitic spatial structure"><g class="wires"><path d="M55 250Q65 80 140 70T200 250M80 250Q90 115 140 110T175 250M20 250Q200 275 400 250"/></g><g class="accent-wires"><path d="M160 155Q245 35 340 110T370 245M160 155Q240 215 370 245M160 155Q225 105 340 110M245 205Q295 145 340 110"/></g><g class="nodes"><circle cx="160" cy="155" r="5"/><circle cx="340" cy="110" r="5"/><circle cx="370" cy="245" r="5"/></g><text x="200" y="32">ATTACH / ASSEMBLE / RELEASE</text></svg></figure><h3>02 / Parasitic architectures</h3><p>REVERSIBLE / SITE-RESPONSIVE / COLLECTIVELY ASSEMBLED.</p></div></div><figure class="hyper-diagram"><figcaption>FIG. 05 — RECIPROCAL FEEDBACK / CURVED PATHS</figcaption><svg viewBox="0 0 900 260" role="img" aria-label="Curved reciprocal loop connecting archive, public interventions and new contributions"><g class="accent-wires"><path d="M180 130C280 12 370 12 450 130S640 248 730 130"/><path d="M730 130C650 8 555 8 450 130S280 252 180 130" stroke-dasharray="5 8"/><circle cx="180" cy="130" r="48"/><circle cx="450" cy="130" r="48"/><circle cx="730" cy="130" r="48"/></g><g text-anchor="middle"><text x="180" y="125">CRITICAL</text><text x="180" y="139">MAPPING</text><text x="450" y="125">DIGITAL</text><text x="450" y="139">AUTONOMY</text><text x="730" y="125">PUBLIC</text><text x="730" y="139">SPACE</text><text x="450" y="27">NEW TRACES / RETURN / REASSEMBLY</text></g></svg></figure></div><div class="hyper-protocol"><div><span>DEBOUNDING</span><p>Public/private is not a stable binary. Examine who sets thresholds, grants access, monitors use and authorises presence.</p></div><div><span>TRANSLATION</span><p>Documents become projections, temporary structures and encounters. Spatial translation changes the reading of the archive; it does not simply display it.</p></div><div><span>REVERSIBILITY</span><p>Site-responsive devices: assemble / inhabit / disassemble. The intervention remains contingent on local relations and permissions.</p></div></div></section>
@@ -98,5 +135,53 @@ html[data-portfolio-mode="institutional"] .hyperarchive{--hyper-accent:var(--pro
 .hyperarchive .hyper-diagram .hyper-svg-stars text{fill:#39ff14!important}
 .hyperarchive .hyper-previous-links>a,.hyperarchive .hyper-protocol>div>span,.hyperarchive .hyper-genealogy-item>span{font-family:var(--mono,"Helvetica Neue",Helvetica,Arial,sans-serif)}
 @media(prefers-reduced-motion:reduce){.hyperarchive .hyper-hero-stars span{animation:none!important}}
+
+/* Related projects — brutal archival halftone cover cards. */
+.hyperarchive .hyper-previous-links{gap:12px}
+.hyperarchive .hyper-previous-links>a.hyper-project-card{
+ display:block;min-height:0;padding:0;overflow:hidden;border:1px solid #626262;
+ background:#080808;color:#eee;text-decoration:none;font-family:var(--mono,"Helvetica Neue",Helvetica,Arial,sans-serif)
+}
+.hyperarchive .hyper-project-cover{
+ position:relative;aspect-ratio:4/3;overflow:hidden;background:#171717;
+ border-bottom:1px solid #555;isolation:isolate
+}
+.hyperarchive .hyper-project-cover img{
+ display:block;width:100%;height:100%;object-fit:cover;
+ filter:grayscale(1) contrast(2.3) brightness(.79);
+ transform:scale(1.005);transition:filter .25s steps(4,end),transform .3s steps(5,end);
+}
+.hyperarchive .hyper-project-cover:after{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(0,0,0,.32) 3px 4px);
+ mix-blend-mode:multiply;opacity:.9
+}
+.hyperarchive .hyper-cover-cross{
+ position:absolute;z-index:2;top:12px;right:14px;color:#39ff14;
+ font-size:clamp(22px,4vw,54px);line-height:1;text-shadow:2px 2px #000
+}
+.hyperarchive .hyper-cover-index{
+ position:absolute;z-index:2;bottom:10px;left:10px;
+ background:#39ff14;color:#000;font:600 9px/1.2 var(--mono,Helvetica,Arial,sans-serif);
+ padding:4px 6px;letter-spacing:.04em
+}
+.hyperarchive .hyper-cover-fallback{
+ display:grid;place-items:center;width:100%;height:100%;font-size:clamp(70px,12vw,190px);
+ color:#777;background:repeating-linear-gradient(135deg,#111 0 12px,#292929 12px 13px)
+}
+.hyperarchive .hyper-project-caption{
+ display:grid;grid-template-columns:1fr auto;gap:9px 12px;padding:12px;
+ align-items:end;font-family:var(--mono,"Helvetica Neue",Helvetica,Arial,sans-serif)
+}
+.hyperarchive .hyper-project-caption>span:first-child{grid-column:1/-1;font-size:9px;color:#aaa}
+.hyperarchive .hyper-project-caption strong{font-size:clamp(12px,1.4vw,17px);font-weight:600;line-height:1.15;letter-spacing:-.04em}
+.hyperarchive .hyper-project-caption>span:last-child{color:#39ff14;font-size:20px;line-height:1}
+.hyperarchive .hyper-project-card:hover .hyper-project-cover img,
+.hyperarchive .hyper-project-card:focus-visible .hyper-project-cover img{
+ filter:grayscale(1) contrast(3) brightness(1.05) sepia(1) hue-rotate(45deg) saturate(5);
+ transform:scale(1.055)
+}
+.hyperarchive .hyper-project-card:hover,.hyperarchive .hyper-project-card:focus-visible{border-color:#39ff14}
+@media(prefers-reduced-motion:reduce){.hyperarchive .hyper-project-cover img{transition:none}}
 </style>
 
