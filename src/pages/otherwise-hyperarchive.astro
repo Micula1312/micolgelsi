@@ -60,5 +60,41 @@ html[data-portfolio-mode="institutional"] .hyperarchive{--hyper-accent:#222;--hy
 .hyperarchive .hyper-section h2 em{font-size:1.12em}
 .hyperarchive .hyper-diagram svg text{font-family:var(--mono,"Helvetica Neue",Helvetica,Arial,sans-serif)}
 html[data-portfolio-mode="institutional"] .hyperarchive{--hyper-accent:var(--prose-pink,#ff2bbd)}
+
+/* Stellar research page: brutal grayscale, fluorescent green signals, fuchsia editorial italics. */
+html:not([data-portfolio-mode="institutional"]) .hyperarchive{
+ --hyper-accent:var(--signal,#39ff14);--hyper-line:#555;
+ color:#dedede;background:transparent;font-family:var(--mono,"Helvetica Neue",Helvetica,Arial,sans-serif);
+}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-hero h1{
+ color:#e8e8e8;font-family:var(--mono,"Helvetica Neue",Helvetica,Arial,sans-serif);
+ font-weight:600;letter-spacing:-.075em;
+}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-accent,
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-loop-step>span,
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-steps strong{color:var(--signal,#39ff14)}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-hero-stars{
+ display:flex;position:relative;gap:clamp(10px,2vw,34px);align-items:center;flex-wrap:wrap;
+ color:var(--signal,#39ff14);font-size:clamp(16px,3vw,48px);line-height:1;
+}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-hero-stars span:nth-child(3n){color:#aaa}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-hero-stars span:nth-child(4n){color:#ff2bbd}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-hero-stars span{animation:hyper-twinkle 3.6s ease-in-out infinite alternate}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-hero-stars span:nth-child(2n){animation-delay:-1.4s}
+@keyframes hyper-twinkle{to{opacity:.32;transform:scale(.8) rotate(15deg)}}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-section h2 em,
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-hero>p,
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-pink-note,
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-loop-return{
+ color:var(--prose-pink,#ff2bbd);font-family:Georgia,"Times New Roman",serif;
+ font-style:italic;font-weight:400;text-transform:lowercase;
+}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-hero>p{max-width:900px;font-size:clamp(20px,3vw,42px);line-height:1.15}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-diagram{background:#111;border-color:#555}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-diagram .nodes{fill:#111;stroke:var(--signal,#39ff14)}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-diagram .accent-wires{stroke:var(--signal,#39ff14)}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-diagram .hyper-svg-stars text{fill:var(--signal,#39ff14)}
+html:not([data-portfolio-mode="institutional"]) .hyperarchive .hyper-nav a:hover{color:var(--signal,#39ff14)}
+@media(prefers-reduced-motion:reduce){.hyperarchive .hyper-hero-stars span{animation:none!important}}
 </style>
 
