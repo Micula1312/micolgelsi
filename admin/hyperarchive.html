@@ -1,50 +1,95 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>HYPERARCHIVE / EDITOR</title>
 <style>
-:root{font:13px/1.45 "Helvetica Neue",Helvetica,Arial,sans-serif;color:#eee;background:#090909}*{box-sizing:border-box}body{margin:0}header{position:sticky;top:0;z-index:5;background:#090909;border-bottom:1px solid #555;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:16px;margin:0}small,.muted{color:#999}main{padding:24px 22px 100px;max-width:1100px;margin:auto}button,a{font:inherit}button{background:#151515;border:1px solid #777;color:#eee;padding:8px 12px;cursor:pointer}button:hover,button:focus{border-color:#39ff14;color:#39ff14}button:disabled{opacity:.4;cursor:not-allowed}a{color:#39ff14}.toolbar{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0}.toolbar button{min-width:38px}.toolbar .pink{color:#ff2bbd;font:italic 17px Georgia,serif}.row{border-top:1px solid #555;padding:20px 0;display:grid;grid-template-columns:170px minmax(0,1fr);gap:20px}.meta{color:#999;font-size:11px}.editable{border:1px solid #444;background:#141414;min-height:56px;padding:14px;outline:0;white-space:normal;overflow-wrap:anywhere}.editable:focus{border-color:#39ff14}.editable em,.editable i{font:italic 1.2em Georgia,serif;color:#ff2bbd}.editable strong,.editable b{font-weight:700}.actions{display:flex;gap:8px;margin-top:8px;align-items:center}.status{color:#39ff14}#search{background:#111;color:#eee;border:1px solid #555;padding:9px;min-width:200px}.hidden{display:none!important}@media(max-width:650px){.row{grid-template-columns:1fr;gap:8px}header{position:static}}</style>
+:root{font:13px/1.45 "Helvetica Neue",Helvetica,Arial,sans-serif;color:#eee;background:#090909}*{box-sizing:border-box}body{margin:0}header{position:sticky;top:0;z-index:5;background:#090909;border-bottom:1px solid #555;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:16px;margin:0}small,.muted{color:#999}main{padding:24px 22px 100px;max-width:1100px;margin:auto}button,a{font:inherit}button{background:#151515;border:1px solid #777;color:#eee;padding:8px 12px;cursor:pointer}button:hover,button:focus{border-color:#39ff14;color:#39ff14}button:disabled{opacity:.4;cursor:not-allowed}a{color:#39ff14}.toolbar{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0}.toolbar button{min-width:38px}.toolbar .pink{color:#ff2bbd;font:italic 17px Georgia,serif}.row{border-top:1px solid #555;padding:20px 0;display:grid;grid-template-columns:170px minmax(0,1fr);gap:20px}.meta{color:#999;font-size:11px}.editable{border:1px solid #444;background:#141414;min-height:56px;padding:14px;outline:0;white-space:normal;overflow-wrap:anywhere}.editable:focus{border-color:#39ff14}.editable em,.editable i{font:italic 1.2em Georgia,serif;color:#ff2bbd}.editable strong,.editable b{font-weight:700}.actions{display:flex;gap:8px;margin-top:8px;align-items:center}.status{color:#39ff14}#search{background:#111;color:#eee;border:1px solid #555;padding:9px;min-width:200px}.hidden{display:none!important}@media(max-width:650px){.row{grid-template-columns:1fr;gap:8px}header{position:static}}.row.is-dirty{border-left:2px solid #ff2bbd;padding-left:12px}.row.is-dirty .status{color:#ff2bbd}#saveAll:not(:disabled){border-color:#39ff14;background:#39ff14;color:#080808;font-weight:700}.editable:empty:before{content:"Write text…";color:#666}.meta strong{color:#39ff14;font-weight:500}.row:focus-within{background:#101010}header{box-shadow:0 1px 0 #333}#notice{padding:12px 0;color:#39ff14}
+</style>
 </head><body>
 <header><div><h1>✳ [#]_HYPERARCHIVE / CONTENT EDITOR</h1><small>LOCAL ADMIN · 4312 · STELLAR</small></div><div><a href="http://localhost:4321/portfolio/otherwise-hyperarchive/?theme=punk" target="_blank" rel="noopener">VIEW PAGE ↗</a>　<input id="search" placeholder="Filter text…"></div></header>
 <main><p class="muted">Click a text block to edit it. Select text and apply formatting. Save each block individually. The Astro file is backed up automatically before each save.</p>
-<div class="toolbar"><button data-cmd="bold" title="Bold"><b>B</b></button><button data-cmd="italic" title="Italic"><i>I</i></button><button data-cmd="pink" class="pink" title="Fuchsia italic">fuchsia italic</button><button data-cmd="link" title="Insert link">LINK</button><button data-cmd="unlink">UNLINK</button><button data-cmd="removeFormat">CLEAR</button><button id="reload">RELOAD</button></div>
+<div class="toolbar"><button data-cmd="bold" title="Bold"><b>B</b></button><button data-cmd="italic" title="Italic"><i>I</i></button><button data-cmd="pink" class="pink" title="Fuchsia italic">fuchsia italic</button><button data-cmd="link" title="Insert link">LINK</button><button data-cmd="unlink">UNLINK</button><button data-cmd="removeFormat">CLEAR</button><button id="reload">RELOAD</button><button id="saveAll" disabled>SAVE ALL CHANGES</button><span id="counter" class="muted">0 unsaved changes</span></div>
 <div id="notice" role="status"></div><div id="blocks"></div></main>
 <script>
-let data=[],active=null;
 const $=id=>document.getElementById(id);
-function esc(s){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;')}
-function make(block){
- const row=document.createElement('section');row.className='row';row.dataset.index=block.index;
- const meta=document.createElement('div');meta.className='meta';meta.textContent=String(block.index+1).padStart(3,'0')+' / '+block.tag.toUpperCase();
- const right=document.createElement('div'),editor=document.createElement('div');editor.className='editable';editor.contentEditable='true';editor.innerHTML=block.html;
+let blocks=[],dirty=new Map(),active=null,selection=null;
+const editorMap=new Map();
+const notice=(message)=>{$('notice').textContent=message};
+function capture(){const s=getSelection();if(s&&s.rangeCount&&active?.contains(s.anchorNode))selection=s.getRangeAt(0).cloneRange()}
+function restore(){if(selection){const s=getSelection();s.removeAllRanges();s.addRange(selection)}}
+function exec(cmd,value){if(!active)return notice('Select an editable text block first');active.focus();restore();document.execCommand(cmd,false,value);mark(active.dataset.index);capture()}
+function mark(id){
+ const index=Number(id),el=editorMap.get(index),b=blocks.find(x=>x.index===index);
+ if(!b||!el)return;
+ if(el.innerHTML===b.html)dirty.delete(index);else dirty.set(index,el.innerHTML);
+ el.closest('.row').classList.toggle('is-dirty',dirty.has(index));
+ el.closest('.row').querySelector('.status').textContent=dirty.has(index)?'● UNSAVED':'';
+ $('saveAll').disabled=!dirty.size;
+ $('counter').textContent=dirty.size+' unsaved changes';
+}
+function make(b){
+ const row=document.createElement('section');row.className='row';row.dataset.index=b.index;
+ const meta=document.createElement('div');meta.className='meta';
+ const number=document.createElement('strong');number.textContent=String(b.index+1).padStart(3,'0')+' / '+b.tag.toUpperCase();
+ meta.append(number);
+ const right=document.createElement('div'),editor=document.createElement('div');
+ editor.className='editable';editor.contentEditable='true';editor.dataset.index=b.index;editor.innerHTML=dirty.get(b.index)??b.html;
+ editorMap.set(b.index,editor);
  editor.addEventListener('focus',()=>active=editor);
+ editor.addEventListener('mouseup',capture);editor.addEventListener('keyup',capture);
+ editor.addEventListener('input',()=>mark(b.index));
+ editor.addEventListener('paste',e=>{e.preventDefault();document.execCommand('insertText',false,e.clipboardData.getData('text/plain'))});
  const actions=document.createElement('div');actions.className='actions';
- const save=document.createElement('button');save.textContent='SAVE CHANGES';
- const reset=document.createElement('button');reset.textContent='RESET';
+ const save=document.createElement('button');save.textContent='SAVE';
+ const reset=document.createElement('button');reset.textContent='DISCARD';
  const status=document.createElement('span');status.className='status';
- reset.onclick=()=>{editor.innerHTML=block.html;status.textContent='Reverted'};
- save.onclick=async()=>{
-   save.disabled=true;status.textContent='Saving…';
-   try{
-     const response=await fetch('/api/blocks',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({index:block.index,original:block.original,html:editor.innerHTML})});
-     const result=await response.json();if(!response.ok)throw Error(result.error);
-     status.textContent='Saved ✓';await load();
-   }catch(error){status.textContent='ERROR: '+error.message}finally{save.disabled=false}
- };
- actions.append(save,reset,status);right.append(editor,actions);row.append(meta,right);return row;
+ save.onclick=()=>saveChanges([b.index]);
+ reset.onclick=()=>{editor.innerHTML=b.html;mark(b.index)};
+ actions.append(save,reset,status);right.append(editor,actions);row.append(meta,right);
+ markLater(row,b.index);
+ return row;
 }
-async function load(){
- const response=await fetch('/api/blocks');const json=await response.json();data=json.blocks;
- $('blocks').replaceChildren(...data.map(make));filter();
- $('notice').textContent=data.length+' editable text blocks';
+function markLater(row,index){row.classList.toggle('is-dirty',dirty.has(index))}
+function filter(){
+ const q=$('search').value.toLowerCase().trim();
+ document.querySelectorAll('.row').forEach(row=>{
+  const id=Number(row.dataset.index),b=blocks.find(x=>x.index===id);
+  row.classList.toggle('hidden',!((b?.tag||'')+' '+(editorMap.get(id)?.textContent||'')).toLowerCase().includes(q));
+ });
 }
-function filter(){const q=$('search').value.toLowerCase();document.querySelectorAll('.row').forEach(row=>row.classList.toggle('hidden',!row.textContent.toLowerCase().includes(q)))}
-$('search').addEventListener('input',filter);$('reload').onclick=load;
-document.querySelectorAll('[data-cmd]').forEach(btn=>btn.addEventListener('mousedown',e=>e.preventDefault()));
-document.querySelectorAll('[data-cmd]').forEach(btn=>btn.addEventListener('click',()=>{
- if(!active)return alert('Select text inside an editable block first');
- active.focus();let cmd=btn.dataset.cmd;
- if(cmd==='pink'){document.execCommand('italic');return}
- if(cmd==='link'){const url=prompt('Link URL (https://...)');if(url&&/^https?:\/\//i.test(url))document.execCommand('createLink',false,url);return}
- document.execCommand(cmd==='unlink'?'unlink':cmd,false,null);
-}));
-load().catch(e=>$('notice').textContent=e.message);
+async function load(keepDirty=false){
+ if(!keepDirty&&dirty.size&&!confirm('Discard all unsaved changes?'))return;
+ if(!keepDirty)dirty.clear();
+ const r=await fetch('/api/blocks');if(!r.ok)throw Error('Cannot load content');
+ blocks=(await r.json()).blocks;editorMap.clear();active=null;selection=null;
+ $('blocks').replaceChildren(...blocks.map(make));filter();
+ $('saveAll').disabled=!dirty.size;
+ $('counter').textContent=dirty.size+' unsaved changes';
+ notice(blocks.length+' editable blocks loaded');
+}
+async function saveChanges(ids){
+ const edits=ids.filter(id=>dirty.has(id)).map(id=>{
+  const b=blocks.find(x=>x.index===id);return {index:id,original:b.original,html:dirty.get(id)};
+ });
+ if(!edits.length)return notice('Nothing to save');
+ $('saveAll').disabled=true;notice('Saving '+edits.length+' blocks…');
+ try{
+  const r=await fetch('/api/blocks/batch',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({edits})});
+  const result=await r.json();if(!r.ok)throw Error(result.error||'Save failed');
+  for(const id of ids)dirty.delete(id);
+  await load(true);notice('✓ Saved '+result.saved+' blocks to Astro. Refresh the site preview.');
+ }catch(e){notice('ERROR: '+e.message);$('saveAll').disabled=false}
+}
+$('search').addEventListener('input',filter);
+$('reload').onclick=()=>load(false);
+$('saveAll').onclick=()=>saveChanges([...dirty.keys()]);
+document.querySelectorAll('[data-cmd]').forEach(btn=>{
+ btn.addEventListener('mousedown',e=>e.preventDefault());
+ btn.addEventListener('click',()=>{
+  const cmd=btn.dataset.cmd;
+  if(cmd==='pink')return exec('italic');
+  if(cmd==='link'){const url=prompt('Link URL (https://...)');if(url&&/^https?:\/\//i.test(url))exec('createLink',url);return}
+  exec(cmd);
+ });
+});
+window.addEventListener('beforeunload',e=>{if(dirty.size){e.preventDefault();e.returnValue=''}});
+load(true).catch(e=>notice(e.message));
 </script></body></html>
