@@ -1722,7 +1722,7 @@ html[data-portfolio-mode="institutional"] body:not([data-project-detail="true"])
 @media (min-width:761px) {
  html[data-portfolio-mode="institutional"] body[data-project-detail="true"] .institutional-project-media > figure.project-cover:not(.project-cover-embed) > img {
   display:block!important;position:static!important;width:100%!important;max-width:100%!important;
-  height:82dvh!important;max-height:82dvh!important;aspect-ratio:auto!important;
+  height:auto!important;max-height:82dvh!important;aspect-ratio:auto!important;
   object-fit:contain!important;object-position:center top!important;
  }
 }
