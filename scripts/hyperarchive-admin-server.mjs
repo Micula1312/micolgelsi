@@ -19,16 +19,16 @@ function sanitize(input){
   let html=String(input??'');
   if(html.length>30000)throw new Error('Text too long');
   // Permit only inline editorial markup. No scripts, styles, attributes or embedded media.
-  html=html.replace(/<!--[\\s\\S]*?-->/g,'');
-  html=html.replace(/<(script|style|iframe|svg|object|math|template)[^>]*>[\\s\\S]*?<\\/\\1>/gi,'');
-  html=html.replace(/<\\/?([a-z][a-z0-9-]*)\\b[^>]*>/gi,(raw,name)=>{
-    const tag=name.toLowerCase(),closing=/^<\\//.test(raw);
+  html=html.replace(/<!--[\s\S]*?-->/g,'');
+  html=html.replace(/<(script|style|iframe|svg|object|math|template)[^>]*>[\s\S]*?<\/\1>/gi,'');
+  html=html.replace(/<\/?([a-z][a-z0-9-]*)\b[^>]*>/gi,(raw,name)=>{
+    const tag=name.toLowerCase(),closing=/^<\//.test(raw);
     if(tag==='br')return closing?'':'<br />';
     if(['em','i','strong','b'].includes(tag))return closing?`</${tag}>`:`<${tag}>`;
     if(tag==='a'){
       if(closing)return '</a>';
-      const href=raw.match(/\\bhref\\s*=\\s*(?:"([^"]*)"|'([^']*)')/i)?.slice(1).find(Boolean)||'';
-      if(!/^(https?:\\/\\/|mailto:|#|\\/)/i.test(href))return '<a>';
+      const href=raw.match(/\bhref\s*=\s*(?:"([^"]*)"|'([^']*)')/i)?.slice(1).find(Boolean)||'';
+      if(!/^(https?:\/\/|mailto:|#|\/)/i.test(href))return '<a>';
       return `<a href="${escapeHtml(href).replaceAll('"','&quot;')}" target="_blank" rel="noopener noreferrer">`;
     }
     return '';
