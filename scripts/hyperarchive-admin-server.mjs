@@ -54,16 +54,17 @@ const readBody=async req=>{
 const server=http.createServer(async(req,res)=>{
   try{
     const url=new URL(req.url,'http://localhost');
+    if(url.pathname==='/api/notes'&&!/^https?:\\/\\/(localhost|127\\.0\\.0\\.1):\\d+$/.test(req.headers.origin||''))return send(res,403,{error:'Local editor only'});
     if(req.method==='OPTIONS'&&url.pathname==='/api/notes'){
-      res.writeHead(204,{'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type'});return res.end();
+      res.writeHead(204,{'access-control-allow-origin':req.headers.origin,'access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type'});return res.end();
     }
     if(req.method==='POST'&&url.pathname==='/api/notes'){
       const {notes}=await readBody(req);
       if(!Array.isArray(notes)||notes.length>150||notes.some(n=>!n||typeof n.id!=='string'||n.id.length>100||typeof n.text!=='string'||!n.text.trim()||n.text.length>280||typeof n.anchor!=='string'||!(/^[a-z0-9-]{1,80}$/i).test(n.anchor)||!Number.isFinite(n.x)||!Number.isFinite(n.y)||n.x<0||n.x>1||n.y<0||n.y>1)){
-        res.setHeader('access-control-allow-origin','*');return send(res,400,{error:'Invalid notes'});
+        res.setHeader('access-control-allow-origin',req.headers.origin);return send(res,400,{error:'Invalid notes'});
       }
       await fs.writeFile(NOTES,JSON.stringify(notes,null,2)+'\\n','utf8');
-      res.setHeader('access-control-allow-origin','*');return send(res,200,{ok:true,count:notes.length});
+      res.setHeader('access-control-allow-origin',req.headers.origin);return send(res,200,{ok:true,count:notes.length});
     }
     if(req.method==='GET'&&url.pathname==='/')return send(res,200,await fs.readFile(UI,'utf8'),'text/html; charset=utf-8');
     if(req.method==='GET'&&url.pathname==='/api/blocks'){
