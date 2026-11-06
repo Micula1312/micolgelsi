@@ -50,7 +50,17 @@ const server=http.createServer(async(req,res)=>{
     if(req.method==='GET'&&url.pathname==='/')return send(res,200,await fs.readFile(UI,'utf8'),'text/html; charset=utf-8');
     if(req.method==='GET'&&url.pathname==='/api/blocks'){
       const source=await fs.readFile(SOURCE,'utf8');
-      return send(res,200,{blocks:blocks(source).map(({index,tag,html,original})=>({index,tag,html,original}))});
+      const entries=blocks(source);
+      let section='INTRO / HEADER',subsection='';
+      const cleaned=html=>html.replace(/<[^>]+>/g,' ').replace(/\\s+/g,' ').trim();
+      const result=entries.map(({index,tag,html,original})=>{
+        const kind=tag.toLowerCase(),title=cleaned(html);
+        if(kind==='h2'){section=title||'UNTITLED SECTION';subsection='';}
+        if(kind==='h3')subsection=title||'UNTITLED SUBSECTION';
+        const cls=original.match(/^<[^>]+\\bclass=["']([^"']+)/i)?.[1]||'';
+        return {index,tag,html,original,section,subsection,component:cls.split(/\\s+/).slice(0,2).join(' ')||kind};
+      });
+      return send(res,200,{blocks:result});
     }
     if(req.method==='POST'&&url.pathname==='/api/blocks/structure'){
       const {action,index,target,original}=await readBody(req);
