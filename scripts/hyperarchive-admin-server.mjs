@@ -7,7 +7,7 @@ const SOURCE=path.join(ROOT,'src/pages/otherwise-hyperarchive.astro');
 const UI=path.join(ROOT,'admin/hyperarchive.html');
 const PORT=4312;
 const HOST='127.0.0.1';
-const tags='h1|h2|h3|p|li|small|figcaption';
+const tags='h1|h2|h3|h4|h5|h6|p|li|small|figcaption|span|label|button|summary|blockquote|time|dt|dd';
 const rx=()=>new RegExp('<('+tags+')(\\s[^>]*)?>([\\s\\S]*?)<\\/\\1>','gi');
 const send=(res,status,data,type='application/json; charset=utf-8')=>{
   res.writeHead(status,{'content-type':type,'cache-control':'no-store','x-content-type-options':'nosniff'});
