@@ -5,8 +5,8 @@
 </style>
 </head><body>
 <header><div><h1>✳ [#]_HYPERARCHIVE / CONTENT EDITOR</h1><small>LOCAL ADMIN · 4312 · STELLAR</small></div><div><a href="http://localhost:4321/portfolio/otherwise-hyperarchive/?theme=punk" target="_blank" rel="noopener">VIEW PAGE ↗</a>　<input id="search" placeholder="Filter text…"></div></header>
-<main><p class="muted">Click a text block to edit it. Select text and apply formatting. Save each block individually. The Astro file is backed up automatically before each save.</p>
-<div class="toolbar"><button data-cmd="bold" title="Bold"><b>B</b></button><button data-cmd="italic" title="Italic"><i>I</i></button><button data-cmd="pink" class="pink" title="Fuchsia italic">fuchsia italic</button><button data-cmd="link" title="Insert link">LINK</button><button data-cmd="unlink">UNLINK</button><button data-cmd="removeFormat">CLEAR</button><button id="reload">RELOAD</button><button id="saveAll" disabled>SAVE ALL CHANGES</button><span id="counter" class="muted">0 unsaved changes</span></div>
+<main><p class="muted">Click a text block to edit it. Select text and apply formatting. Save blocks individually or all together. EXPORT JSON downloads an independent snapshot of every text block, including unsaved edits. The Astro file is backed up automatically before each save.</p>
+<div class="toolbar"><button data-cmd="bold" title="Bold"><b>B</b></button><button data-cmd="italic" title="Italic"><i>I</i></button><button data-cmd="pink" class="pink" title="Fuchsia italic">fuchsia italic</button><button data-cmd="link" title="Insert link">LINK</button><button data-cmd="unlink">UNLINK</button><button data-cmd="removeFormat">CLEAR</button><button id="reload">RELOAD</button><button id="saveAll" disabled>SAVE ALL CHANGES</button><button id="exportJson" title="Download a complete editorial JSON snapshot, including unsaved changes">EXPORT JSON ↓</button><span id="counter" class="muted">0 unsaved changes</span></div>
 <div id="notice" role="status"></div><div id="blocks"></div></main>
 <script>
 const $=id=>document.getElementById(id);
@@ -78,7 +78,36 @@ async function saveChanges(ids){
   await load(true);notice('✓ Saved '+result.saved+' blocks to Astro. Refresh the site preview.');
  }catch(e){notice('ERROR: '+e.message);$('saveAll').disabled=false}
 }
+function exportJson(){
+ const snapshot={
+  format:'hyperarchiviation-editor-snapshot',
+  version:1,
+  exportedAt:new Date().toISOString(),
+  source:'src/pages/otherwise-hyperarchive.astro',
+  includesUnsavedChanges:dirty.size>0,
+  blocks:blocks.map(b=>({
+   index:b.index,
+   tag:b.tag,
+   html:editorMap.get(b.index)?.innerHTML??b.html,
+   savedHtml:b.html,
+   unsaved:dirty.has(b.index)
+  }))
+ };
+ const data=JSON.stringify(snapshot,null,2)+'\\n';
+ const blob=new Blob([data],{type:'application/json;charset=utf-8'});
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement('a');
+ const stamp=new Date().toISOString().replace(/[:.]/g,'-');
+ link.href=url;
+ link.download='hyperarchiviation-studies-'+stamp+'.json';
+ document.body.append(link);
+ link.click();
+ link.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ notice('✓ JSON snapshot exported ('+snapshot.blocks.length+' blocks'+(dirty.size?', including '+dirty.size+' unsaved edits':'')+').');
+}
 $('search').addEventListener('input',filter);
+$('exportJson').onclick=exportJson;
 $('reload').onclick=()=>load(false);
 $('saveAll').onclick=()=>saveChanges([...dirty.keys()]);
 document.querySelectorAll('[data-cmd]').forEach(btn=>{
