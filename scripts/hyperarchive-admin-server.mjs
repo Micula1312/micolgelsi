@@ -20,9 +20,9 @@ const blocks=source=>{
     .map((m,index)=>({index,tag:m[1],html:m[3],start:m.index,end:m.index+m[0].length,original:m[0]}));
 };
 const bibliography=source=>{
- const section=source.match(/<section\\b[^>]*\\bid=["']references["'][^>]*>[\\s\\S]*?<ol>([\\s\\S]*?)<\\/ol>/i);
+ const section=source.match(/<section\b[^>]*\bid=["']references["'][^>]*>[\s\S]*?<ol>([\s\S]*?)<\/ol>/i);
  if(!section)return null;
- const items=[...section[1].matchAll(/<li\\b[^>]*>([\\s\\S]*?)<\\/li>/gi)].map(m=>m[1].replace(/<\\/a>/gi,'').replace(/<[^>]*>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').trim());
+ const items=[...section[1].matchAll(/<li\b[^>]*>([\s\S]*?)<\/li>/gi)].map(m=>m[1].replace(/<\/a>/gi,'').replace(/<[^>]*>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').trim());
  return {original:section[1],items};
 };
 const escapeHtml=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
@@ -54,7 +54,7 @@ const readBody=async req=>{
 const server=http.createServer(async(req,res)=>{
   try{
     const url=new URL(req.url,'http://localhost');
-    if(url.pathname==='/api/notes'&&!/^https?:\\/\\/(localhost|127\\.0\\.0\\.1):\\d+$/.test(req.headers.origin||''))return send(res,403,{error:'Local editor only'});
+    if(url.pathname==='/api/notes'&&!/^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(req.headers.origin||''))return send(res,403,{error:'Local editor only'});
     if(req.method==='OPTIONS'&&url.pathname==='/api/notes'){
       res.writeHead(204,{'access-control-allow-origin':req.headers.origin,'access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type'});return res.end();
     }
@@ -63,24 +63,24 @@ const server=http.createServer(async(req,res)=>{
       if(!Array.isArray(notes)||notes.length>150||notes.some(n=>!n||typeof n.id!=='string'||n.id.length>100||typeof n.text!=='string'||!n.text.trim()||n.text.length>280||typeof n.anchor!=='string'||!(/^[a-z0-9-]{1,80}$/i).test(n.anchor)||!Number.isFinite(n.x)||!Number.isFinite(n.y)||n.x<0||n.x>1||n.y<0||n.y>1)){
         res.setHeader('access-control-allow-origin',req.headers.origin);return send(res,400,{error:'Invalid notes'});
       }
-      await fs.writeFile(NOTES,JSON.stringify(notes,null,2)+'\\n','utf8');
+      await fs.writeFile(NOTES,JSON.stringify(notes,null,2)+'\n','utf8');
       res.setHeader('access-control-allow-origin',req.headers.origin);return send(res,200,{ok:true,count:notes.length});
     }
     if(req.method==='GET'&&url.pathname==='/')return send(res,200,await fs.readFile(UI,'utf8'),'text/html; charset=utf-8');
     if(req.method==='GET'&&url.pathname==='/api/blocks'){
       const source=await fs.readFile(SOURCE,'utf8');
-      const sections=[...source.matchAll(/<section\\b[^>]*\\bid=["']([^"']+)["'][^>]*>/gi)].map(m=>({start:m.index,id:m[1]}));
+      const sections=[...source.matchAll(/<section\b[^>]*\bid=["']([^"']+)["'][^>]*>/gi)].map(m=>({start:m.index,id:m[1]}));
       const entries=blocks(source);
       let section='INTRO / HEADER',subsection='';
-      const cleaned=html=>html.replace(/<[^>]+>/g,' ').replace(/\\s+/g,' ').trim();
+      const cleaned=html=>html.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
       const result=entries.map(({index,tag,html,original})=>{
         const kind=tag.toLowerCase(),title=cleaned(html);
         const enclosing=[...sections].reverse().find(s=>s.start<=entries[index].start);
         if(enclosing?.id) section=enclosing.id.toUpperCase().replace(/-/g,' / ');
         else if(kind==='h2'){section=title||'UNTITLED SECTION';subsection='';}
         if(kind==='h3')subsection=title||'UNTITLED SUBSECTION';
-        const cls=original.match(/^<[^>]+\\bclass=["']([^"']+)/i)?.[1]||'';
-        return {index,tag,html,original,section,subsection,component:cls.split(/\\s+/).slice(0,2).join(' ')||kind};
+        const cls=original.match(/^<[^>]+\bclass=["']([^"']+)/i)?.[1]||'';
+        return {index,tag,html,original,section,subsection,component:cls.split(/\s+/).slice(0,2).join(' ')||kind};
       });
       return send(res,200,{blocks:result});
     }
@@ -96,7 +96,7 @@ const server=http.createServer(async(req,res)=>{
       const source=await fs.readFile(SOURCE,'utf8'),data=bibliography(source);
       if(!data||data.original!==original)return send(res,409,{error:'Bibliography changed. Reload before saving.'});
       const escaped=items.map(x=>x.trim()).filter(Boolean).map(x=>'<li>'+escapeHtml(x)+'</li>').join('');
-      const section=source.match(/<section\\b[^>]*\\bid=["']references["'][^>]*>[\\s\\S]*?<ol>([\\s\\S]*?)<\\/ol>/i);
+      const section=source.match(/<section\b[^>]*\bid=["']references["'][^>]*>[\s\S]*?<ol>([\s\S]*?)<\/ol>/i);
       const start=section.index+section[0].indexOf(data.original);
       const updated=source.slice(0,start)+escaped+source.slice(start+data.original.length);
       if(updated!==source){await fs.copyFile(SOURCE,SOURCE+'.hyperarchive-backup');await fs.writeFile(SOURCE,updated,'utf8');}
@@ -113,7 +113,7 @@ const server=http.createServer(async(req,res)=>{
         // Only clone complete standalone text elements, never a wrapper with nested editable blocks.
         if(current.some(b=>b.index!==index&&b.start>item.start&&b.end<item.end))
           return send(res,400,{error:'This block contains nested blocks and cannot be duplicated safely.'});
-        updated=source.slice(0,item.end)+'\\n'+item.original+source.slice(item.end);
+        updated=source.slice(0,item.end)+'\n'+item.original+source.slice(item.end);
       }else{
         if(!Number.isInteger(target)||!current[target]||target===index)
           return send(res,400,{error:'Invalid destination'});
