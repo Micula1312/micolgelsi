@@ -3,15 +3,16 @@
 <style>
 :root{font:13px/1.45 "Helvetica Neue",Helvetica,Arial,sans-serif;color:#eee;background:#090909}*{box-sizing:border-box}body{margin:0}header{position:relative;background:#090909;border-bottom:1px solid #555;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:16px;margin:0}small,.muted{color:#999}main{padding:24px 22px 100px;max-width:1100px;margin:auto}button,a{font:inherit}button{background:#151515;border:1px solid #777;color:#eee;padding:8px 12px;cursor:pointer}button:hover,button:focus{border-color:#39ff14;color:#39ff14}button:disabled{opacity:.4;cursor:not-allowed}a{color:#39ff14}.toolbar{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:12px 22px;background:#090909;border-bottom:1px solid #555;align-items:center}.toolbar button{min-width:38px}.toolbar .pink{color:#ff2bbd;font:italic 17px Georgia,serif}.row{border-top:1px solid #555;padding:20px 0;display:grid;grid-template-columns:170px minmax(0,1fr);gap:20px}.meta{color:#999;font-size:11px}.editable{border:1px solid #444;background:#141414;min-height:56px;padding:14px;outline:0;white-space:normal;overflow-wrap:anywhere}.editable:focus{border-color:#39ff14}.editable em,.editable i{font:italic 1.2em Georgia,serif;color:#ff2bbd}.editable strong,.editable b{font-weight:700}.actions{display:flex;gap:8px;margin-top:8px;align-items:center}.status{color:#39ff14}#search{background:#111;color:#eee;border:1px solid #555;padding:9px;min-width:200px}.hidden{display:none!important}@media(max-width:650px){.row{grid-template-columns:1fr;gap:8px}.sticky-controls{max-height:55vh;overflow-y:auto}}.drag-handle{cursor:grab;user-select:none;touch-action:none}.drag-handle:active{cursor:grabbing}.row.drag-over{outline:2px dashed #39ff14;outline-offset:-3px}.row.is-dirty{border-left:2px solid #ff2bbd;padding-left:12px}.row.is-dirty .status{color:#ff2bbd}#saveAll:not(:disabled){border-color:#39ff14;background:#39ff14;color:#080808;font-weight:700}.editable:empty:before{content:"Write text…";color:#666}.meta strong{color:#39ff14;font-weight:500}.row:focus-within{background:#101010}header{box-shadow:0 1px 0 #333}#notice{padding:12px 0;color:#39ff14}
 .sticky-controls{position:sticky;top:0;z-index:30;background:#090909;box-shadow:0 8px 20px #0009}.editor-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:22px}.section-nav{position:sticky;top:155px;align-self:start;max-height:calc(100vh - 175px);overflow:auto;border-right:1px solid #333;padding-right:12px}.section-nav button{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid #303030;background:transparent;color:#aaa;font-size:11px;padding:11px 7px;overflow-wrap:anywhere}.section-nav button.active{color:#39ff14;border-left:2px solid #39ff14}.section-heading{margin:32px 0 8px;padding:14px 0 8px;border-bottom:2px solid #ff2bbd;color:#ff2bbd;font-size:12px;letter-spacing:.06em;text-transform:uppercase;scroll-margin-top:180px}.section-heading small{display:block;color:#888;letter-spacing:0;text-transform:none}.row{scroll-margin-top:180px}.meta .component{display:block;margin:8px 0;color:#ff2bbd;overflow-wrap:anywhere}.meta .subsection{display:block;color:#aaa;margin-top:4px}.row .editable{line-height:1.6}.row[data-kind="h1"] .editable,.row[data-kind="h2"] .editable{font-size:19px;font-weight:600}.row[data-kind="h3"] .editable{font-size:16px;font-weight:500}.row[data-kind="small"] .editable,.row[data-kind="span"] .editable{font-size:12px}.editor-main{min-width:0}.section-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 22px;border-bottom:1px solid #333}.section-tools select{background:#141414;color:#eee;border:1px solid #555;padding:7px;max-width:280px}.section-tools label{color:#aaa;font-size:11px}@media(max-width:850px){.editor-layout{grid-template-columns:1fr}.section-nav{position:static;max-height:130px;overflow:auto;border-right:0;border-bottom:1px solid #444;display:flex;gap:6px}.section-nav button{min-width:140px;width:auto;flex:0 0 auto}}@media(max-width:650px){.toolbar{padding:9px}.section-tools{padding:8px}.row{padding:12px 0}.section-heading,.row{scroll-margin-top:240px}}
+.bibliography-panel{border:1px solid #ff2bbd;padding:16px;margin:16px 0 24px;background:#160e16}.bibliography-panel h2{font-size:15px;margin:0 0 6px}.bibliography-panel textarea{display:block;width:100%;min-height:270px;resize:vertical;background:#090909;color:#eee;border:1px solid #555;padding:12px;font:12px/1.6 Helvetica,Arial,sans-serif}.bibliography-panel textarea:focus{outline:1px solid #ff2bbd}.bibliography-panel .actions{justify-content:flex-start}.bibliography-panel small{display:block;color:#aaa;margin:5px 0 12px}.bibliography-panel button{border-color:#ff2bbd}.bibliography-panel #bibStatus{color:#39ff14}
 </style>
 </head><body>
 <div class="sticky-controls"><header><div><h1>✳ [#]_HYPERARCHIVE / CONTENT EDITOR</h1><small>LOCAL ADMIN · 4312 · STELLAR</small></div><div><a href="http://localhost:4321/portfolio/otherwise-hyperarchive/?theme=punk" target="_blank" rel="noopener">VIEW PAGE ↗</a>　<input id="search" placeholder="Filter text…"></div></header>
 <div class="toolbar"><button data-cmd="normal" title="Remove formatting">NORMAL</button><button data-cmd="bold" title="Bold"><b>B</b></button><button data-cmd="italic" title="Italic"><i>I</i></button><button data-cmd="pink" class="pink" title="Fuchsia italic">fuchsia italic</button><button data-cmd="link" title="Insert link">LINK</button><button data-cmd="unlink">UNLINK</button><button data-cmd="removeFormat">CLEAR</button><button id="reload">RELOAD</button><button id="saveAll" disabled>SAVE ALL CHANGES</button><button id="exportJson" title="Download a complete editorial JSON snapshot, including unsaved changes">EXPORT JSON ↓</button><span id="counter" class="muted">0 unsaved changes</span></div><div class="section-tools"><label for="sectionFilter">SECTION</label><select id="sectionFilter"><option value="">ALL SECTIONS</option></select><span id="visibleCount" class="muted"></span></div></div><main><p class="muted">Click a text block to edit it. Select text and apply formatting. Edit text using NORMAL / BOLD / ITALIC. Drag the handle to reorder adjacent text blocks, or duplicate a block. Save text edits before moving or duplicating. EXPORT JSON downloads a complete editorial snapshot. Each save creates a backup.</p>
 
-<div id="notice" role="status"></div><div class="editor-layout"><nav class="section-nav" id="sectionNav" aria-label="Page sections"></nav><div class="editor-main" id="blocks"></div></div></main>
+<div id="notice" role="status"></div><div class="editor-layout"><nav class="section-nav" id="sectionNav" aria-label="Page sections"></nav><div class="editor-main"><div id="bibliographyPanel" class="bibliography-panel"><h2>08 / BIBLIOGRAPHY · BULK ENTRY</h2><small>One reference per line. Paste the complete bibliography here and save once. Saving this field replaces existing formatted bibliography entries with plain text; existing hyperlinks will be removed.</small><textarea id="bibliographyText" spellcheck="false" placeholder="Author. Title. Publisher, year.&#10;Author. Title. Publisher, year."></textarea><div class="actions"><button id="saveBibliography">SAVE BIBLIOGRAPHY</button><button id="reloadBibliography">RELOAD</button><span id="bibStatus"></span></div></div><div id="blocks"></div></div></div></main>
 <script>
 const $=id=>document.getElementById(id);
-let blocks=[],dirty=new Map(),active=null,selection=null,draggedIndex=null;
+let blocks=[],dirty=new Map(),active=null,selection=null,draggedIndex=null,bibliographyOriginal=null;
 const editorMap=new Map();
 const notice=(message)=>{$('notice').textContent=message};
 function capture(){const s=getSelection();if(s&&s.rangeCount&&active?.contains(s.anchorNode))selection=s.getRangeAt(0).cloneRange()}
@@ -130,6 +131,24 @@ async function structure(action,index,target){
   notice('✓ Block '+(action==='move'?'moved':'duplicated')+'. Changes saved to Astro.');
  }catch(e){notice('ERROR: '+e.message)}
 }
+async function loadBibliography(){
+ const r=await fetch('/api/bibliography');const data=await r.json();
+ if(!r.ok)throw Error(data.error||'Cannot load bibliography');
+ bibliographyOriginal=data.original;
+ $('bibliographyText').value=data.items.join('\\n');
+ $('bibStatus').textContent=data.items.length+' entries';
+}
+async function saveBibliography(){
+ if(dirty.size)return notice('Save other text changes before editing the bibliography.');
+ if(bibliographyOriginal===null)return;
+ const items=$('bibliographyText').value.split(/\\r?\\n/).map(x=>x.trim()).filter(Boolean);
+ if(!confirm('Replace the bibliography with '+items.length+' plain-text entries? Existing bibliography links and inline formatting will be removed.'))return;
+ const r=await fetch('/api/bibliography',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({original:bibliographyOriginal,items})});
+ const data=await r.json();
+ if(!r.ok)return notice('ERROR: '+(data.error||'Save failed'));
+ await loadBibliography();await load(true);
+ notice('✓ Bibliography saved ('+data.count+' entries).');
+}
 function exportJson(){
  const snapshot={
   format:'hyperarchiviation-editor-snapshot',
@@ -158,6 +177,8 @@ function exportJson(){
  setTimeout(()=>URL.revokeObjectURL(url),1000);
  notice('✓ JSON snapshot exported ('+snapshot.blocks.length+' blocks'+(dirty.size?', including '+dirty.size+' unsaved edits':'')+').');
 }
+$('saveBibliography').onclick=()=>saveBibliography().catch(e=>notice(e.message));
+$('reloadBibliography').onclick=()=>loadBibliography().catch(e=>notice(e.message));
 $('search').addEventListener('input',filter);
 $('sectionFilter').addEventListener('change',filter);
 $('exportJson').onclick=exportJson;
@@ -174,5 +195,5 @@ document.querySelectorAll('[data-cmd]').forEach(btn=>{
  });
 });
 window.addEventListener('beforeunload',e=>{if(dirty.size){e.preventDefault();e.returnValue=''}});
-load(true).catch(e=>notice(e.message));
+Promise.all([load(true),loadBibliography()]).catch(e=>notice(e.message));
 </script></body></html>
