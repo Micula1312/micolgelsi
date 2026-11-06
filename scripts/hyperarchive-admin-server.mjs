@@ -52,6 +52,42 @@ const server=http.createServer(async(req,res)=>{
       const source=await fs.readFile(SOURCE,'utf8');
       return send(res,200,{blocks:blocks(source).map(({index,tag,html,original})=>({index,tag,html,original}))});
     }
+    if(req.method==='POST'&&url.pathname==='/api/blocks/structure'){
+      const {action,index,target,original}=await readBody(req);
+      if(!['duplicate','move'].includes(action)||!Number.isInteger(index)||typeof original!=='string')
+        return send(res,400,{error:'Invalid structural edit'});
+      const source=await fs.readFile(SOURCE,'utf8'),current=blocks(source),item=current[index];
+      if(!item||item.original!==original)return send(res,409,{error:'Page changed. Reload the editor before restructuring.'});
+      let updated;
+      if(action==='duplicate'){
+        // Only clone complete standalone text elements, never a wrapper with nested editable blocks.
+        if(current.some(b=>b.index!==index&&b.start>item.start&&b.end<item.end))
+          return send(res,400,{error:'This block contains nested blocks and cannot be duplicated safely.'});
+        updated=source.slice(0,item.end)+'\\n'+item.original+source.slice(item.end);
+      }else{
+        if(!Number.isInteger(target)||!current[target]||target===index)
+          return send(res,400,{error:'Invalid destination'});
+        const dest=current[target],low=Math.min(index,target),high=Math.max(index,target);
+        const group=current.slice(low,high+1);
+        // Moving is allowed only across directly adjacent sibling elements.
+        if(group.some((b,i)=>i&&source.slice(group[i-1].end,b.start).trim()!==''))
+          return send(res,400,{error:'These blocks belong to different containers. Move within a contiguous group of sibling blocks.'});
+        if(group.some(b=>current.some(other=>other!==b&&other.start>b.start&&other.end<b.end)))
+          return send(res,400,{error:'Nested content cannot be reordered safely.'});
+        const chunks=group.map(b=>source.slice(b.start,b.end));
+        const gaps=group.slice(1).map((b,i)=>source.slice(group[i].end,b.start));
+        const moved=chunks.splice(index-low,1)[0];
+        chunks.splice(target-low,0,moved);
+        let replacement=chunks[0];
+        for(let i=1;i<chunks.length;i++)replacement+=gaps[i-1]+chunks[i];
+        updated=source.slice(0,group[0].start)+replacement+source.slice(group.at(-1).end);
+      }
+      if(updated!==source){
+        await fs.copyFile(SOURCE,SOURCE+'.hyperarchive-backup');
+        await fs.writeFile(SOURCE,updated,'utf8');
+      }
+      return send(res,200,{ok:true,action});
+    }
     if(req.method==='POST'&&url.pathname==='/api/blocks/batch'){
       const {edits}=await readBody(req);
       if(!Array.isArray(edits)||edits.length>250)return send(res,400,{error:'Invalid batch'});
