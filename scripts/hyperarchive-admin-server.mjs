@@ -18,6 +18,12 @@ const blocks=source=>{
   return [...source.matchAll(rx())].filter(m=>!ignored.some(([a,b])=>m.index>=a&&m.index<b))
     .map((m,index)=>({index,tag:m[1],html:m[3],start:m.index,end:m.index+m[0].length,original:m[0]}));
 };
+const bibliography=source=>{
+ const section=source.match(/<section\\b[^>]*\\bid=["']references["'][^>]*>[\\s\\S]*?<ol>([\\s\\S]*?)<\\/ol>/i);
+ if(!section)return null;
+ const items=[...section[1].matchAll(/<li\\b[^>]*>([\\s\\S]*?)<\\/li>/gi)].map(m=>m[1].replace(/<\\/a>/gi,'').replace(/<[^>]*>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').trim());
+ return {original:section[1],items};
+};
 const escapeHtml=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 function sanitize(input){
   let html=String(input??'');
@@ -50,17 +56,38 @@ const server=http.createServer(async(req,res)=>{
     if(req.method==='GET'&&url.pathname==='/')return send(res,200,await fs.readFile(UI,'utf8'),'text/html; charset=utf-8');
     if(req.method==='GET'&&url.pathname==='/api/blocks'){
       const source=await fs.readFile(SOURCE,'utf8');
+      const sections=[...source.matchAll(/<section\\b[^>]*\\bid=["']([^"']+)["'][^>]*>/gi)].map(m=>({start:m.index,id:m[1]}));
       const entries=blocks(source);
       let section='INTRO / HEADER',subsection='';
       const cleaned=html=>html.replace(/<[^>]+>/g,' ').replace(/\\s+/g,' ').trim();
       const result=entries.map(({index,tag,html,original})=>{
         const kind=tag.toLowerCase(),title=cleaned(html);
-        if(kind==='h2'){section=title||'UNTITLED SECTION';subsection='';}
+        const enclosing=[...sections].reverse().find(s=>s.start<=entries[index].start);
+        if(enclosing?.id) section=enclosing.id.toUpperCase().replace(/-/g,' / ');
+        else if(kind==='h2'){section=title||'UNTITLED SECTION';subsection='';}
         if(kind==='h3')subsection=title||'UNTITLED SUBSECTION';
         const cls=original.match(/^<[^>]+\\bclass=["']([^"']+)/i)?.[1]||'';
         return {index,tag,html,original,section,subsection,component:cls.split(/\\s+/).slice(0,2).join(' ')||kind};
       });
       return send(res,200,{blocks:result});
+    }
+    if(req.method==='GET'&&url.pathname==='/api/bibliography'){
+      const source=await fs.readFile(SOURCE,'utf8'),data=bibliography(source);
+      if(!data)return send(res,404,{error:'Bibliography not found'});
+      return send(res,200,data);
+    }
+    if(req.method==='POST'&&url.pathname==='/api/bibliography'){
+      const {original,items}=await readBody(req);
+      if(typeof original!=='string'||!Array.isArray(items)||items.length>200||items.some(x=>typeof x!=='string'||x.length>2000))
+        return send(res,400,{error:'Invalid bibliography'});
+      const source=await fs.readFile(SOURCE,'utf8'),data=bibliography(source);
+      if(!data||data.original!==original)return send(res,409,{error:'Bibliography changed. Reload before saving.'});
+      const escaped=items.map(x=>x.trim()).filter(Boolean).map(x=>'<li>'+escapeHtml(x)+'</li>').join('');
+      const section=source.match(/<section\\b[^>]*\\bid=["']references["'][^>]*>[\\s\\S]*?<ol>([\\s\\S]*?)<\\/ol>/i);
+      const start=section.index+section[0].indexOf(data.original);
+      const updated=source.slice(0,start)+escaped+source.slice(start+data.original.length);
+      if(updated!==source){await fs.copyFile(SOURCE,SOURCE+'.hyperarchive-backup');await fs.writeFile(SOURCE,updated,'utf8');}
+      return send(res,200,{ok:true,count:items.filter(x=>x.trim()).length});
     }
     if(req.method==='POST'&&url.pathname==='/api/blocks/structure'){
       const {action,index,target,original}=await readBody(req);
