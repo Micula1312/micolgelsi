@@ -1,13 +1,14 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>HYPERARCHIVE / EDITOR</title>
 <style>
-:root{font:13px/1.45 "Helvetica Neue",Helvetica,Arial,sans-serif;color:#eee;background:#090909}*{box-sizing:border-box}body{margin:0}header{position:sticky;top:0;z-index:5;background:#090909;border-bottom:1px solid #555;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:16px;margin:0}small,.muted{color:#999}main{padding:24px 22px 100px;max-width:1100px;margin:auto}button,a{font:inherit}button{background:#151515;border:1px solid #777;color:#eee;padding:8px 12px;cursor:pointer}button:hover,button:focus{border-color:#39ff14;color:#39ff14}button:disabled{opacity:.4;cursor:not-allowed}a{color:#39ff14}.toolbar{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0}.toolbar button{min-width:38px}.toolbar .pink{color:#ff2bbd;font:italic 17px Georgia,serif}.row{border-top:1px solid #555;padding:20px 0;display:grid;grid-template-columns:170px minmax(0,1fr);gap:20px}.meta{color:#999;font-size:11px}.editable{border:1px solid #444;background:#141414;min-height:56px;padding:14px;outline:0;white-space:normal;overflow-wrap:anywhere}.editable:focus{border-color:#39ff14}.editable em,.editable i{font:italic 1.2em Georgia,serif;color:#ff2bbd}.editable strong,.editable b{font-weight:700}.actions{display:flex;gap:8px;margin-top:8px;align-items:center}.status{color:#39ff14}#search{background:#111;color:#eee;border:1px solid #555;padding:9px;min-width:200px}.hidden{display:none!important}@media(max-width:650px){.row{grid-template-columns:1fr;gap:8px}header{position:static}}.drag-handle{cursor:grab;user-select:none;touch-action:none}.drag-handle:active{cursor:grabbing}.row.drag-over{outline:2px dashed #39ff14;outline-offset:-3px}.row.is-dirty{border-left:2px solid #ff2bbd;padding-left:12px}.row.is-dirty .status{color:#ff2bbd}#saveAll:not(:disabled){border-color:#39ff14;background:#39ff14;color:#080808;font-weight:700}.editable:empty:before{content:"Write text…";color:#666}.meta strong{color:#39ff14;font-weight:500}.row:focus-within{background:#101010}header{box-shadow:0 1px 0 #333}#notice{padding:12px 0;color:#39ff14}
+:root{font:13px/1.45 "Helvetica Neue",Helvetica,Arial,sans-serif;color:#eee;background:#090909}*{box-sizing:border-box}body{margin:0}header{position:relative;background:#090909;border-bottom:1px solid #555;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:16px;margin:0}small,.muted{color:#999}main{padding:24px 22px 100px;max-width:1100px;margin:auto}button,a{font:inherit}button{background:#151515;border:1px solid #777;color:#eee;padding:8px 12px;cursor:pointer}button:hover,button:focus{border-color:#39ff14;color:#39ff14}button:disabled{opacity:.4;cursor:not-allowed}a{color:#39ff14}.toolbar{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:12px 22px;background:#090909;border-bottom:1px solid #555;align-items:center}.toolbar button{min-width:38px}.toolbar .pink{color:#ff2bbd;font:italic 17px Georgia,serif}.row{border-top:1px solid #555;padding:20px 0;display:grid;grid-template-columns:170px minmax(0,1fr);gap:20px}.meta{color:#999;font-size:11px}.editable{border:1px solid #444;background:#141414;min-height:56px;padding:14px;outline:0;white-space:normal;overflow-wrap:anywhere}.editable:focus{border-color:#39ff14}.editable em,.editable i{font:italic 1.2em Georgia,serif;color:#ff2bbd}.editable strong,.editable b{font-weight:700}.actions{display:flex;gap:8px;margin-top:8px;align-items:center}.status{color:#39ff14}#search{background:#111;color:#eee;border:1px solid #555;padding:9px;min-width:200px}.hidden{display:none!important}@media(max-width:650px){.row{grid-template-columns:1fr;gap:8px}.sticky-controls{max-height:55vh;overflow-y:auto}}.drag-handle{cursor:grab;user-select:none;touch-action:none}.drag-handle:active{cursor:grabbing}.row.drag-over{outline:2px dashed #39ff14;outline-offset:-3px}.row.is-dirty{border-left:2px solid #ff2bbd;padding-left:12px}.row.is-dirty .status{color:#ff2bbd}#saveAll:not(:disabled){border-color:#39ff14;background:#39ff14;color:#080808;font-weight:700}.editable:empty:before{content:"Write text…";color:#666}.meta strong{color:#39ff14;font-weight:500}.row:focus-within{background:#101010}header{box-shadow:0 1px 0 #333}#notice{padding:12px 0;color:#39ff14}
+.sticky-controls{position:sticky;top:0;z-index:30;background:#090909;box-shadow:0 8px 20px #0009}.editor-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:22px}.section-nav{position:sticky;top:155px;align-self:start;max-height:calc(100vh - 175px);overflow:auto;border-right:1px solid #333;padding-right:12px}.section-nav button{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid #303030;background:transparent;color:#aaa;font-size:11px;padding:11px 7px;overflow-wrap:anywhere}.section-nav button.active{color:#39ff14;border-left:2px solid #39ff14}.section-heading{margin:32px 0 8px;padding:14px 0 8px;border-bottom:2px solid #ff2bbd;color:#ff2bbd;font-size:12px;letter-spacing:.06em;text-transform:uppercase;scroll-margin-top:180px}.section-heading small{display:block;color:#888;letter-spacing:0;text-transform:none}.row{scroll-margin-top:180px}.meta .component{display:block;margin:8px 0;color:#ff2bbd;overflow-wrap:anywhere}.meta .subsection{display:block;color:#aaa;margin-top:4px}.row .editable{line-height:1.6}.row[data-kind="h1"] .editable,.row[data-kind="h2"] .editable{font-size:19px;font-weight:600}.row[data-kind="h3"] .editable{font-size:16px;font-weight:500}.row[data-kind="small"] .editable,.row[data-kind="span"] .editable{font-size:12px}.editor-main{min-width:0}.section-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 22px;border-bottom:1px solid #333}.section-tools select{background:#141414;color:#eee;border:1px solid #555;padding:7px;max-width:280px}.section-tools label{color:#aaa;font-size:11px}@media(max-width:850px){.editor-layout{grid-template-columns:1fr}.section-nav{position:static;max-height:130px;overflow:auto;border-right:0;border-bottom:1px solid #444;display:flex;gap:6px}.section-nav button{min-width:140px;width:auto;flex:0 0 auto}}@media(max-width:650px){.toolbar{padding:9px}.section-tools{padding:8px}.row{padding:12px 0}.section-heading,.row{scroll-margin-top:240px}}
 </style>
 </head><body>
-<header><div><h1>✳ [#]_HYPERARCHIVE / CONTENT EDITOR</h1><small>LOCAL ADMIN · 4312 · STELLAR</small></div><div><a href="http://localhost:4321/portfolio/otherwise-hyperarchive/?theme=punk" target="_blank" rel="noopener">VIEW PAGE ↗</a>　<input id="search" placeholder="Filter text…"></div></header>
-<main><p class="muted">Click a text block to edit it. Select text and apply formatting. Edit text using NORMAL / BOLD / ITALIC. Drag the handle to reorder adjacent text blocks, or duplicate a block. Save text edits before moving or duplicating. EXPORT JSON downloads a complete editorial snapshot. Each save creates a backup.</p>
-<div class="toolbar"><button data-cmd="normal" title="Remove formatting">NORMAL</button><button data-cmd="bold" title="Bold"><b>B</b></button><button data-cmd="italic" title="Italic"><i>I</i></button><button data-cmd="pink" class="pink" title="Fuchsia italic">fuchsia italic</button><button data-cmd="link" title="Insert link">LINK</button><button data-cmd="unlink">UNLINK</button><button data-cmd="removeFormat">CLEAR</button><button id="reload">RELOAD</button><button id="saveAll" disabled>SAVE ALL CHANGES</button><button id="exportJson" title="Download a complete editorial JSON snapshot, including unsaved changes">EXPORT JSON ↓</button><span id="counter" class="muted">0 unsaved changes</span></div>
-<div id="notice" role="status"></div><div id="blocks"></div></main>
+<div class="sticky-controls"><header><div><h1>✳ [#]_HYPERARCHIVE / CONTENT EDITOR</h1><small>LOCAL ADMIN · 4312 · STELLAR</small></div><div><a href="http://localhost:4321/portfolio/otherwise-hyperarchive/?theme=punk" target="_blank" rel="noopener">VIEW PAGE ↗</a>　<input id="search" placeholder="Filter text…"></div></header>
+<div class="toolbar"><button data-cmd="normal" title="Remove formatting">NORMAL</button><button data-cmd="bold" title="Bold"><b>B</b></button><button data-cmd="italic" title="Italic"><i>I</i></button><button data-cmd="pink" class="pink" title="Fuchsia italic">fuchsia italic</button><button data-cmd="link" title="Insert link">LINK</button><button data-cmd="unlink">UNLINK</button><button data-cmd="removeFormat">CLEAR</button><button id="reload">RELOAD</button><button id="saveAll" disabled>SAVE ALL CHANGES</button><button id="exportJson" title="Download a complete editorial JSON snapshot, including unsaved changes">EXPORT JSON ↓</button><span id="counter" class="muted">0 unsaved changes</span></div><div class="section-tools"><label for="sectionFilter">SECTION</label><select id="sectionFilter"><option value="">ALL SECTIONS</option></select><span id="visibleCount" class="muted"></span></div></div><main><p class="muted">Click a text block to edit it. Select text and apply formatting. Edit text using NORMAL / BOLD / ITALIC. Drag the handle to reorder adjacent text blocks, or duplicate a block. Save text edits before moving or duplicating. EXPORT JSON downloads a complete editorial snapshot. Each save creates a backup.</p>
+
+<div id="notice" role="status"></div><div class="editor-layout"><nav class="section-nav" id="sectionNav" aria-label="Page sections"></nav><div class="editor-main" id="blocks"></div></div></main>
 <script>
 const $=id=>document.getElementById(id);
 let blocks=[],dirty=new Map(),active=null,selection=null,draggedIndex=null;
@@ -26,13 +27,16 @@ function mark(id){
  $('counter').textContent=dirty.size+' unsaved changes';
 }
 function make(b){
- const row=document.createElement('section');row.className='row';row.dataset.index=b.index;
+ const row=document.createElement('section');row.className='row';row.dataset.index=b.index;row.dataset.kind=b.tag.toLowerCase();
  row.addEventListener('dragover',e=>{if(draggedIndex!==null){e.preventDefault();row.classList.add('drag-over')}});
  row.addEventListener('dragleave',()=>row.classList.remove('drag-over'));
  row.addEventListener('drop',async e=>{e.preventDefault();row.classList.remove('drag-over');if(draggedIndex!==null){const from=draggedIndex;draggedIndex=null;await structure('move',from,b.index)}});
  const meta=document.createElement('div');meta.className='meta';
  const number=document.createElement('strong');number.textContent=String(b.index+1).padStart(3,'0')+' / '+b.tag.toUpperCase();
  meta.append(number);
+ const component=document.createElement('span');component.className='component';component.textContent='TYPE / '+b.tag.toUpperCase()+' · '+b.component;
+ meta.append(component);
+ if(b.subsection){const sub=document.createElement('span');sub.className='subsection';sub.textContent='↳ '+b.subsection;meta.append(sub)}
  const handle=document.createElement('button');handle.className='drag-handle';handle.textContent='⠿ DRAG';handle.title='Drag to reorder adjacent sibling blocks';handle.draggable=true;
  handle.addEventListener('dragstart',e=>{if(dirty.size){e.preventDefault();notice('Save text changes before dragging.');return}draggedIndex=b.index;e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',String(b.index))});
  handle.addEventListener('dragend',()=>{draggedIndex=null;document.querySelectorAll('.drag-over').forEach(x=>x.classList.remove('drag-over'))});
@@ -57,18 +61,45 @@ function make(b){
 }
 function markLater(row,index){row.classList.toggle('is-dirty',dirty.has(index))}
 function filter(){
- const q=$('search').value.toLowerCase().trim();
+ const q=$('search').value.toLowerCase().trim(),chosen=$('sectionFilter').value;
+ let count=0;
  document.querySelectorAll('.row').forEach(row=>{
   const id=Number(row.dataset.index),b=blocks.find(x=>x.index===id);
-  row.classList.toggle('hidden',!((b?.tag||'')+' '+(editorMap.get(id)?.textContent||'')).toLowerCase().includes(q));
+  const match=(!chosen||b?.section===chosen)&&((b?.tag||'')+' '+(b?.component||'')+' '+(b?.section||'')+' '+(b?.subsection||'')+' '+(editorMap.get(id)?.textContent||'')).toLowerCase().includes(q);
+  row.classList.toggle('hidden',!match);if(match)count++;
  });
+ document.querySelectorAll('.section-heading').forEach(h=>{
+  h.classList.toggle('hidden',!Array.from(h.nextElementSibling?.children||[]).some(x=>x.classList.contains('row')&&!x.classList.contains('hidden')));
+ });
+ $('visibleCount').textContent=count+' / '+blocks.length+' blocks';
+ document.querySelectorAll('#sectionNav button').forEach(btn=>btn.classList.toggle('active',btn.dataset.section===chosen));
 }
+function renderSections(){
+ const selected=$('sectionFilter').value;
+ const sections=[...new Set(blocks.map(b=>b.section||'INTRO / HEADER'))];
+ $('sectionFilter').replaceChildren(new Option('ALL SECTIONS',''),...sections.map(s=>new Option(s,s)));
+ $('sectionFilter').value=sections.includes(selected)?selected:'';
+ const nav=$('sectionNav');nav.replaceChildren();
+ const container=$('blocks');container.replaceChildren();
+ for(const section of sections){
+  const navButton=document.createElement('button');navButton.type='button';navButton.dataset.section=section;navButton.textContent=section;
+  navButton.onclick=()=>{$('sectionFilter').value=section;filter();document.querySelector('.section-heading:not(.hidden)')?.scrollIntoView({behavior:'smooth',block:'start'})};
+  nav.append(navButton);
+  const heading=document.createElement('h2');heading.className='section-heading';heading.textContent=section;
+  const sectionRows=document.createElement('div');sectionRows.className='section-rows';
+  const group=blocks.filter(b=>(b.section||'INTRO / HEADER')===section);
+  const caption=document.createElement('small');caption.textContent=group.length+' text components';heading.append(caption);
+  sectionRows.append(...group.map(make));
+  container.append(heading,sectionRows);
+ }
+}
+
 async function load(keepDirty=false){
  if(!keepDirty&&dirty.size&&!confirm('Discard all unsaved changes?'))return;
  if(!keepDirty)dirty.clear();
  const r=await fetch('/api/blocks');if(!r.ok)throw Error('Cannot load content');
  blocks=(await r.json()).blocks;editorMap.clear();active=null;selection=null;
- $('blocks').replaceChildren(...blocks.map(make));filter();
+ renderSections();filter();
  $('saveAll').disabled=!dirty.size;
  $('counter').textContent=dirty.size+' unsaved changes';
  notice(blocks.length+' editable blocks loaded');
@@ -128,6 +159,7 @@ function exportJson(){
  notice('✓ JSON snapshot exported ('+snapshot.blocks.length+' blocks'+(dirty.size?', including '+dirty.size+' unsaved edits':'')+').');
 }
 $('search').addEventListener('input',filter);
+$('sectionFilter').addEventListener('change',filter);
 $('exportJson').onclick=exportJson;
 $('reload').onclick=()=>load(false);
 $('saveAll').onclick=()=>saveChanges([...dirty.keys()]);
