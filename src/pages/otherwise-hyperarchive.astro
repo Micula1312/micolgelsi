@@ -60,7 +60,7 @@ const applications = [
   <footer class="hyper-footer"><span>HYPERARCHIVIATION STUDIES / WORKING PROPOSAL / 2027</span><a href="#top">BACK TO TOP ↑</a></footer>
 </article>
 
-<div id="hyper-note-layer" aria-label="Spatial annotations"><button id="hyper-notes-toggle" type="button" aria-pressed="true">✳ NOTES <span id="hyper-notes-count"></span></button><div id="hyper-notes-list"></div><div id="hyper-notes-editor" hidden><button id="hyper-notes-add" type="button">+ PLACE NOTE</button><span id="hyper-notes-status" role="status"></span></div></div>
+<div id="hyper-note-layer" aria-label="Spatial annotations"><button id="hyper-notes-toggle" type="button" aria-pressed="true">✳ NOTES <span id="hyper-notes-count"></span></button><div id="hyper-notes-list"></div><div id="hyper-notes-editor" hidden><button id="hyper-notes-add" type="button" aria-label="Add note">+ ADD NOTE</button><span id="hyper-notes-status" role="status"></span></div></div>
 <script id="hyper-notes-data" type="application/json" set:html={JSON.stringify(hyperNotes).replace(/</g,'\\u003c')} />
 <script is:inline>
 (()=>{
@@ -68,19 +68,86 @@ const applications = [
  if(!root||!layer)return;
  let notes=JSON.parse(document.getElementById('hyper-notes-data').textContent||'[]');
  const list=document.getElementById('hyper-notes-list'),toggle=document.getElementById('hyper-notes-toggle'),count=document.getElementById('hyper-notes-count'),editor=document.getElementById('hyper-notes-editor'),add=document.getElementById('hyper-notes-add'),status=document.getElementById('hyper-notes-status');
- const edit=/^(localhost|127\\.0\\.0\\.1)$/.test(location.hostname)&&new URLSearchParams(location.search).get('notes')==='edit';
- let placing=false,visible=true;
+ const edit=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)&&new URLSearchParams(location.search).get('notes')==='edit';
+ let placing=false,visible=true,dragging=false;
  const anchors=()=>[root.querySelector('.hyper-hero'),...root.querySelectorAll('section[id]')].filter(Boolean);
- function render(){list.replaceChildren();count.textContent='('+notes.length+')';for(const n of notes){const anchor=n.anchor==='hero'?root.querySelector('.hyper-hero'):document.getElementById(n.anchor);if(!anchor)continue;const card=document.createElement('aside');card.className='hyper-spatial-note';card.style.left=(anchor.getBoundingClientRect().left+window.scrollX+anchor.clientWidth*n.x)+'px';card.style.top=(anchor.getBoundingClientRect().top+window.scrollY+anchor.clientHeight*n.y)+'px';card.setAttribute('aria-label','Annotation');const text=document.createElement('span');text.textContent=n.text;card.append(text);if(edit){const remove=document.createElement('button');remove.type='button';remove.textContent='×';remove.setAttribute('aria-label','Delete annotation');remove.onclick=async()=>{if(confirm('Delete this note?'))await save(notes.filter(v=>v.id!==n.id))};card.append(remove)}list.append(card)}}
- async function save(next){status.textContent='Saving…';try{const r=await fetch('http://127.0.0.1:4312/api/notes',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({notes:next})});const j=await r.json();if(!r.ok)throw Error(j.error||'Save failed');notes=next;render();status.textContent='Saved locally. Commit and push to publish.'}catch(e){status.textContent='Error: '+e.message+' — run npm run admin:hyperarchive'}}
+ const clamp=v=>Math.max(0,Math.min(1,v));
+ function locationFor(clientX,clientY){
+  const available=anchors();
+  const anchor=available.find(a=>{const r=a.getBoundingClientRect();return clientY>=r.top&&clientY<=r.bottom})||available.reduce((best,a)=>Math.abs(a.getBoundingClientRect().top-clientY)<Math.abs(best.getBoundingClientRect().top-clientY)?a:best);
+  const r=anchor.getBoundingClientRect();
+  return {anchor:anchor.id||'hero',x:clamp((clientX-r.left)/r.width),y:clamp((clientY-r.top)/r.height)};
+ }
+ function placeCard(card,n){
+  const anchor=n.anchor==='hero'?root.querySelector('.hyper-hero'):document.getElementById(n.anchor);
+  if(!anchor)return false;
+  const r=anchor.getBoundingClientRect();
+  card.style.left=(r.left+window.scrollX+r.width*n.x)+'px';
+  card.style.top=(r.top+window.scrollY+r.height*n.y)+'px';
+  return true;
+ }
+ function render(){
+  list.replaceChildren();count.textContent='('+notes.length+')';
+  for(const n of notes){
+   const card=document.createElement('aside');card.className='hyper-spatial-note';card.setAttribute('aria-label','Annotation');
+   if(!placeCard(card,n))continue;
+   const content=document.createElement('span');content.textContent=n.text;card.append(content);
+   if(edit){
+    card.classList.add('is-draggable');card.title='Drag to reposition';
+    const remove=document.createElement('button');remove.type='button';remove.textContent='×';remove.setAttribute('aria-label','Delete annotation');
+    remove.onclick=async()=>{if(confirm('Delete this note?'))await save(notes.filter(v=>v.id!==n.id))};card.append(remove);
+    card.addEventListener('pointerdown',e=>{
+     if(e.button!==0||e.target.closest('button'))return;
+     e.preventDefault();const startX=e.clientX,startY=e.clientY;
+     const initial=card.getBoundingClientRect(),offsetX=startX-initial.left,offsetY=startY-initial.top;
+     let moved=false;dragging=true;card.classList.add('is-dragging');card.setPointerCapture(e.pointerId);
+     const move=ev=>{if(ev.pointerId!==e.pointerId)return;moved=moved||Math.hypot(ev.clientX-startX,ev.clientY-startY)>3;card.style.left=(ev.clientX-offsetX+window.scrollX)+'px';card.style.top=(ev.clientY-offsetY+window.scrollY)+'px'};
+     const finish=async ev=>{
+      if(ev.pointerId!==e.pointerId)return;
+      card.removeEventListener('pointermove',move);card.removeEventListener('pointerup',finish);card.removeEventListener('pointercancel',cancel);
+      if(card.hasPointerCapture(e.pointerId))card.releasePointerCapture(e.pointerId);
+      card.classList.remove('is-dragging');dragging=false;
+      if(!moved){placeCard(card,n);return}
+      const updated=locationFor(ev.clientX-offsetX,ev.clientY-offsetY);
+      await save(notes.map(item=>item.id===n.id?{...item,...updated}:item));
+     };
+     const cancel=ev=>{if(ev.pointerId!==e.pointerId)return;card.removeEventListener('pointermove',move);card.removeEventListener('pointerup',finish);card.removeEventListener('pointercancel',cancel);dragging=false;card.classList.remove('is-dragging');placeCard(card,n)};
+     card.addEventListener('pointermove',move);card.addEventListener('pointerup',finish);card.addEventListener('pointercancel',cancel);
+    });
+   }
+   list.append(card);
+  }
+  list.hidden=!visible;
+ }
+ async function save(next){
+  status.textContent='Saving…';
+  try{
+   const response=await fetch('http://127.0.0.1:4312/api/notes',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({notes:next})});
+   const data=await response.json();if(!response.ok)throw Error(data.error||'Save failed');
+   notes=next;render();status.textContent='Saved locally. Commit and push to publish.';
+  }catch(error){render();status.textContent='Error: '+error.message+' — run npm run admin:hyperarchive'}
+ }
  toggle.onclick=()=>{visible=!visible;list.hidden=!visible;toggle.setAttribute('aria-pressed',String(visible))};
- if(edit){editor.hidden=false;add.onclick=()=>{placing=!placing;add.textContent=placing?'CLICK ANYWHERE IN THE PAGE…':'+ PLACE NOTE';status.textContent=placing?'Click the page to position the note':''};root.addEventListener('click',async e=>{if(!placing||e.target.closest('a,button,input,textarea'))return;placing=false;add.textContent='+ PLACE NOTE';const anchor=anchors().find(a=>{const r=a.getBoundingClientRect();return e.clientY>=r.top&&e.clientY<=r.bottom})||anchors().reduce((best,a)=>Math.abs(a.getBoundingClientRect().top-e.clientY)<Math.abs(best.getBoundingClientRect().top-e.clientY)?a:best);const r=anchor.getBoundingClientRect(),x=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),y=Math.max(0,Math.min(1,(e.clientY-r.top)/r.height));const text=prompt('Note (max 280 characters)');if(!text?.trim())return;await save([...notes,{id:crypto.randomUUID(),anchor:anchor.id||'hero',x,y,text:text.trim().slice(0,280)}])},true)}
- let scheduled=false;const reposition=()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;render()})};window.addEventListener('resize',reposition);window.addEventListener('load',reposition);
+ if(edit){
+  editor.hidden=false;
+  add.onclick=()=>{placing=!placing;add.textContent=placing?'× CANCEL':'＋ ADD NOTE';status.textContent=placing?'Click where you want the new note':''};
+  root.addEventListener('click',async e=>{
+   if(!placing||dragging||e.target.closest('a,button,input,textarea,.hyper-spatial-note'))return;
+   placing=false;add.textContent='＋ ADD NOTE';
+   const position=locationFor(e.clientX,e.clientY);
+   const message=prompt('Note (max 280 characters)');
+   if(!message?.trim())return;
+   await save([...notes,{id:crypto.randomUUID(),...position,text:message.trim().slice(0,280)}]);
+  },true);
+ }
+ let scheduled=false;
+ const reposition=()=>{if(scheduled||dragging)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;render()})};
+ window.addEventListener('resize',reposition);window.addEventListener('load',reposition);
  render();
 })();
 </script>
 <style is:global>
-#hyper-note-layer{font-family:Helvetica,Arial,sans-serif}#hyper-notes-toggle{position:fixed;right:14px;bottom:14px;z-index:1500;border:1px solid #39ff14;background:#0b130c;color:#39ff14;padding:9px 12px;font:600 11px Helvetica,Arial,sans-serif;cursor:pointer}#hyper-notes-list[hidden]{display:none}#hyper-notes-editor{position:fixed;bottom:58px;right:14px;z-index:1500;background:#0b130c;color:#39ff14;padding:10px;max-width:260px;border:1px solid #39ff14;font:11px Helvetica,Arial,sans-serif}#hyper-notes-editor[hidden]{display:none}#hyper-notes-add{background:transparent;color:#39ff14;border:1px solid #39ff14;padding:8px;cursor:pointer}#hyper-notes-status{display:block;margin-top:8px}.hyper-spatial-note{position:absolute;z-index:200;max-width:min(220px,65vw);min-width:100px;padding:12px 20px 12px 12px;background:#a9fa84;color:#172414;font:12px/1.4 Helvetica,Arial,sans-serif;overflow-wrap:anywhere;box-shadow:2px 3px 0 rgba(0,0,0,.22)}.hyper-spatial-note button{position:absolute;top:2px;right:3px;background:transparent;border:0;color:#172414;cursor:pointer;font-size:18px}.hyper-spatial-note:focus-within{outline:2px solid #172414}@media(max-width:650px){.hyper-spatial-note{max-width:160px;font-size:11px}}
+#hyper-note-layer{font-family:Helvetica,Arial,sans-serif}#hyper-notes-toggle{position:fixed;right:14px;bottom:14px;z-index:1500;border:1px solid #39ff14;background:#0b130c;color:#39ff14;padding:9px 12px;font:600 11px Helvetica,Arial,sans-serif;cursor:pointer}#hyper-notes-list[hidden]{display:none}#hyper-notes-editor{position:fixed;bottom:58px;right:14px;z-index:1500;background:#0b130c;color:#39ff14;padding:10px;max-width:260px;border:1px solid #39ff14;font:11px Helvetica,Arial,sans-serif}#hyper-notes-editor[hidden]{display:none}#hyper-notes-add{background:transparent;color:#39ff14;border:1px solid #39ff14;padding:8px;cursor:pointer}#hyper-notes-status{display:block;margin-top:8px}.hyper-spatial-note{position:absolute;z-index:200;max-width:min(220px,65vw);min-width:100px;padding:12px 20px 12px 12px;background:#a9fa84;color:#172414;font:12px/1.4 Helvetica,Arial,sans-serif;overflow-wrap:anywhere;box-shadow:2px 3px 0 rgba(0,0,0,.22)}.hyper-spatial-note button{position:absolute;top:2px;right:3px;background:transparent;border:0;color:#172414;cursor:pointer;font-size:18px}.hyper-spatial-note:focus-within{outline:2px solid #172414}.hyper-spatial-note.is-draggable{cursor:grab;touch-action:none;user-select:none}.hyper-spatial-note.is-dragging{cursor:grabbing;z-index:1600;opacity:.9}#hyper-notes-add{font-weight:700;font-size:12px;min-width:110px}@media(max-width:650px){.hyper-spatial-note{max-width:160px;font-size:11px}}
 </style>
 </BaseLayout>
 <style>
