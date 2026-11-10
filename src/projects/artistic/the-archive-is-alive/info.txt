@@ -52,19 +52,14 @@ STATUS:
 MAIN LINK: 
 COLLABORATORS: Giuseppe Di Capua and Federico Russo
 CREDITS: Foto di Sara Scognamillo
-OUTPUTS: 
+OUTPUTS: Instgram
+media: moments/instgram
 COVER EMBED: 
 RELATED: 
 HOMEPAGE: true
-
 TIMELINE LABEL: website
-
-CLIENT:
-
-ROLE:
-
-STACK:
-
-URL:
-
+CLIENT: 
+ROLE: 
+STACK: 
+URL: 
 PRACTICE: web-development
