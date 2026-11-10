@@ -40,45 +40,6 @@
     frame.src = url;
     return frame;
   };
-  const sizePreview = card => {
-    const image = card.querySelector('.institutional-entry-image');
-    if (!image || !image.clientWidth) return;
-    const scale = Math.min(image.clientWidth / 1200, image.clientHeight / 900);
-    card.style.setProperty('--lab-preview-scale', String(scale));
-    const frame = card.querySelector('[data-lab-live] iframe');
-    if (frame) {
-      frame.style.setProperty('transform', `translate(-50%,-50%) scale(${scale})`, 'important');
-    }
-  };
-  const unload = card => {
-    const frame = card.querySelector('[data-lab-live] iframe');
-    frame?.remove();
-    card.querySelector('video')?.pause();
-  };
-  const load = card => {
-    if (card.hidden || !gallery.classList.contains('is-lab-windows') || document.hidden || dialog.open) return;
-    const host = card.querySelector('[data-lab-live]');
-    const url = safeURL(host?.dataset.labLive || '');
-    if (host && url && !host.querySelector('iframe')) {
-      const frame = frameFor(url, `Preview: ${card.dataset.labTitle}`);
-      frame.tabIndex = -1;
-      frame.setAttribute('aria-hidden', 'true');
-      frame.addEventListener('error', () => frame.remove());
-      host.append(frame);
-      sizePreview(card);
-    }
-    card.querySelector('video')?.play().catch(() => {});
-  };
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => entry.isIntersecting ? load(entry.target) : unload(entry.target));
-  }, { threshold: .15 });
-  const refresh = () => {
-    cards.forEach(card => {
-      observer.unobserve(card);
-      if (!card.hidden && gallery.classList.contains('is-lab-windows')) observer.observe(card);
-      else unload(card);
-    });
-  };
   const open = card => {
     opener = card;
     title.textContent = card.dataset.labTitle;
@@ -88,7 +49,12 @@
     play.hidden = !destination;
     play.textContent = demo ? 'PLAY ↗' : 'SOURCE ↗';
     content.replaceChildren();
-    const media = card.querySelector('.institutional-entry-image img, .institutional-entry-image video');
+    const mediaURL = safeURL(card.dataset.labImage || '');
+    const media = mediaURL ? document.createElement(/\.(mp4|webm|ogg|mov)(?:$|[?#])/i.test(mediaURL) ? 'video' : 'img') : null;
+    if (media) {
+      media.src = mediaURL;
+      if (media.tagName === 'IMG') media.alt = card.dataset.labTitle || '';
+    }
     if (demo) content.append(frameFor(demo, card.dataset.labTitle));
     else if (media) {
       const copy = media.cloneNode(true);
@@ -96,28 +62,19 @@
       content.append(copy);
     } else {
       const description = document.createElement('p');
-      description.textContent = card.querySelector('.institutional-entry-info p')?.textContent || 'Local prototype';
+      description.textContent = card.dataset.labDescription || 'Local prototype';
       content.append(description);
     }
     hint.hidden = !demo;
-    cards.forEach(unload);
     dialog.showModal();
     close.focus();
   };
   cards.forEach(card => {
-    const image = card.querySelector('.institutional-entry-image');
-    if (image) new ResizeObserver(() => sizePreview(card)).observe(image);
-    sizePreview(card);
-    card.querySelectorAll('.institutional-entry-image img, .institutional-entry-image video').forEach(media => {
-      media.addEventListener('error', () => { media.style.setProperty('display', 'none', 'important'); });
-    });
     card.addEventListener('click', event => {
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
       open(card);
     });
-    card.addEventListener('pointerenter', () => load(card));
-    card.addEventListener('focusin', () => load(card));
   });
   close.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
@@ -125,9 +82,5 @@
     content.querySelector('video')?.pause();
     content.replaceChildren();
     opener?.focus({ preventScroll: true });
-    refresh();
   });
-  document.addEventListener('visibilitychange', () => document.hidden ? cards.forEach(unload) : refresh());
-  archive.addEventListener('graphics:layout', refresh);
-  refresh();
 })();
