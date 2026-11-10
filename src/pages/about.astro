@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import homeConfig from '../../config/home.json';
+const bio = homeConfig.bio || [];
+---
+<BaseLayout title="About — Micol Gelsi">
+  <article class="about-page" aria-labelledby="about-heading">
+    <h2 id="about-heading" data-en="ABOUT" data-it="CHI SONO">ABOUT</h2>
+    <div class="about-biography">
+      {bio.map((line, index) => <p data-en={line} data-it={homeConfig.bioIt?.[index] || line}>{line}</p>)}
+    </div>
+  </article>
+  <style is:global>
+    .about-page {max-width:64ch;margin:0;padding:20px 0 64px;}
+    .about-page h2 {font:500 11px/1.4 Helvetica,Arial,sans-serif;letter-spacing:.04em;margin:0 0 28px;}
+    .about-biography p {font:400 13px/1.65 Helvetica,Arial,sans-serif;letter-spacing:0;margin:0 0 16px;}
+    html[data-portfolio-mode="institutional"] body[data-about-page="true"] .shell {
+      display:block!important;width:100%!important;max-width:none!important;
+      height:auto!important;min-height:100dvh!important;max-height:none!important;overflow:visible!important;
+    }
+    html[data-portfolio-mode="institutional"] body[data-about-page="true"] main.page {
+      box-sizing:border-box!important;display:block!important;
+      width:70%!important;max-width:none!important;margin:0 0 0 30%!important;
+      height:auto!important;min-height:100dvh!important;max-height:none!important;
+      padding:20px 28px 64px!important;overflow:visible!important;
+    }
+    html[data-portfolio-mode="institutional"] body[data-about-page="true"] .institutional-detail-sidebar {
+      position:fixed!important;inset:0 auto 0 0!important;width:30%!important;
+      max-width:30%!important;height:100dvh!important;overflow-y:auto!important;
+    }
+    html[data-portfolio-mode="institutional"] .about-page h2 {font:500 11px/1.4 Helvetica,Arial,sans-serif!important;margin:0 0 28px!important;}
+    html[data-portfolio-mode="institutional"] .about-biography p {font:400 13px/1.65 Helvetica,Arial,sans-serif!important;margin:0 0 16px!important;}
+    html[data-portfolio-mode="institutional"] body[data-about-page="true"] .institutional-sidebar-nav a[aria-current="page"] {font-weight:600!important;}
+    @media(max-width:760px) {
+      html[data-portfolio-mode="institutional"] body[data-about-page="true"] .institutional-detail-sidebar {
+        position:relative!important;inset:auto!important;width:100%!important;max-width:none!important;height:auto!important;
+      }
+      html[data-portfolio-mode="institutional"] body[data-about-page="true"] main.page {
+        width:100%!important;margin:0!important;padding:20px 12px 64px!important;min-height:0!important;
+      }
+      .about-page {padding-top:8px;}
+    }
+  </style>
+</BaseLayout>
