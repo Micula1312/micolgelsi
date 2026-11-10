@@ -33,16 +33,24 @@
   };
   const float = card => {
     if (reduced.matches || !active || card.hidden || animations.has(card)) return;
-    const radius = 9 + Math.random() * 7;
-    const tilt = Math.random() * 4 - 2;
-    const animation = card.animate([
-      { transform: 'translate(0,0) rotate(0deg)' },
-      { transform: `translate(${radius}px,${-radius}px) rotate(${tilt}deg)` },
-      { transform: `translate(${-radius}px,${radius}px) rotate(${-tilt}deg)` },
-      { transform: 'translate(0,0) rotate(0deg)' }
-    ], { duration: 15000 + Math.random() * 14000, iterations: Infinity, easing: 'ease-in-out' });
+    const x = parseFloat(card.style.getPropertyValue('--kaos-x')) || 0;
+    const y = parseFloat(card.style.getPropertyValue('--kaos-y')) || 0;
+    const width = card.offsetWidth;
+    const height = card.offsetHeight;
+    const limitX = Math.max(0, gallery.clientWidth - width - 12);
+    const limitY = Math.max(0, gallery.clientHeight - height - 12);
+    const points = [{ transform: 'translate(0,0) rotate(0deg)' }];
+    for (let i = 0; i < 5; i++) {
+      const targetX = 6 + Math.random() * Math.max(0, limitX - 6);
+      const targetY = 6 + Math.random() * Math.max(0, limitY - 6);
+      points.push({ transform: `translate(${targetX - x}px,${targetY - y}px) rotate(${Math.random() * 16 - 8}deg)` });
+    }
+    points.push(points[0]);
+    const animation = card.animate(points, {
+      duration: 14000 + Math.random() * 10000, iterations: Infinity, easing: 'linear'
+    });
     animations.set(card, animation);
-    if (document.hidden || card.matches(':hover, :focus-visible')) animation.pause();
+    if (document.hidden || lightbox.open || card.matches(':focus-visible')) animation.pause();
   };
   const scatter = (animate = true) => {
     const before = rects();
@@ -51,18 +59,17 @@
     const width = gallery.clientWidth;
     if (!width) return;
     const margin = Math.min(26, width * .07);
-    const columns = width < 540 ? 2 : 3;
+    const columns = width < 540 ? 3 : 4;
     const size = Math.max(1, (width - margin * 2) / columns);
-    const height = Math.max(420, Math.ceil(items.length / columns) * size * 1.2);
+    const height = Math.max(460, Math.min(850, window.innerHeight * .82));
     gallery.style.setProperty('--kaos-height', `${height}px`);
     gallery.classList.add('is-graphics-kaos');
     items.forEach((card, index) => {
       const cardWidth = Math.min(width - margin * 2, size * (.72 + Math.random() * .25));
       const cardHeight = size * (.85 + Math.random() * .2);
-      const row = Math.floor(index / columns);
-      const column = index % columns;
-      const x = Math.max(margin, Math.min(width - cardWidth - margin, margin + column * size + (Math.random() - .5) * size * .5));
-      const y = Math.max(margin, Math.min(height - cardHeight - margin, margin + row * size * 1.2 + Math.random() * size * .4));
+
+      const x = Math.max(margin, Math.min(width - cardWidth - margin, Math.random() * (width - cardWidth)));
+      const y = Math.max(margin, Math.min(height - cardHeight - margin, Math.random() * (height - cardHeight)));
       card.style.setProperty('--kaos-x', `${x}px`);
       card.style.setProperty('--kaos-y', `${y}px`);
       card.style.setProperty('--kaos-width', `${cardWidth}px`);
@@ -101,13 +108,60 @@
   gallery.querySelectorAll('.institutional-graphic-entry').forEach(card => {
     const pause = () => animations.get(card)?.pause();
     const resume = () => {
-      if (!document.hidden && !card.matches(':hover, :focus-within')) animations.get(card)?.play();
+      if (!document.hidden && !lightbox.open && !card.matches(':focus-within')) animations.get(card)?.play();
     };
-    card.addEventListener('pointerenter', pause);
-    card.addEventListener('pointerleave', resume);
     card.addEventListener('focusin', pause);
     card.addEventListener('focusout', resume);
   });
+
+  const lightbox = document.createElement('dialog');
+  lightbox.className = 'graphics-lightbox';
+  lightbox.setAttribute('aria-label', 'Graphic preview');
+  const closeButton = document.createElement('button');
+  closeButton.type = 'button';
+  closeButton.className = 'graphics-lightbox-close';
+  closeButton.textContent = '×';
+  closeButton.setAttribute('aria-label', 'Close graphic');
+  const preview = document.createElement('div');
+  preview.className = 'graphics-lightbox-media';
+  lightbox.append(closeButton, preview);
+  document.body.append(lightbox);
+  let opener = null;
+  const openGraphic = card => {
+    const source = card.querySelector('.institutional-entry-image img, .institutional-entry-image video');
+    if (!source) return;
+    opener = card;
+    const media = source.cloneNode(true);
+    media.removeAttribute('loading');
+    if (media.tagName === 'VIDEO') {
+      media.controls = true;
+      media.autoplay = true;
+      media.loop = true;
+    }
+    preview.replaceChildren(media);
+    animations.forEach(animation => animation.pause());
+    lightbox.showModal();
+    closeButton.focus();
+  };
+  closeButton.addEventListener('click', () => lightbox.close());
+  lightbox.addEventListener('click', event => {
+    if (event.target === lightbox || event.target === preview) lightbox.close();
+  });
+  lightbox.addEventListener('close', () => {
+    preview.querySelector('video')?.pause();
+    preview.replaceChildren();
+    opener?.focus({ preventScroll: true });
+    animations.forEach((animation, card) => {
+      if (!document.hidden && !card.matches(':focus-within')) animation.play();
+    });
+  });
+  gallery.addEventListener('click', event => {
+    const card = event.target.closest('.institutional-graphic-entry');
+    if (!card || !gallery.classList.contains('is-graphics-masonry') || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    openGraphic(card);
+  });
+
   archive.addEventListener('graphics:layout', refresh);
   let lastWidth = gallery.clientWidth;
   new ResizeObserver(() => {
@@ -118,10 +172,10 @@
     pending = requestAnimationFrame(() => { if (active) scatter(false); });
   }).observe(gallery);
   document.addEventListener('visibilitychange', () => animations.forEach((animation, card) => {
-    if (document.hidden || card.matches(':hover, :focus-within')) animation.pause();
+    if (document.hidden || lightbox.open || card.matches(':focus-within')) animation.pause();
     else animation.play();
   }));
   reduced.addEventListener('change', () => { if (active) scatter(false); });
-  document.addEventListener('keydown', event => { if (event.key === 'Escape' && active) restore(); });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && active && !lightbox.open && !event.defaultPrevented) restore(); });
   refresh();
 })();
