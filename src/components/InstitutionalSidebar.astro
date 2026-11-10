@@ -19,7 +19,7 @@ const sections = [
       ? <button type="button" class:list={['institutional-section-link',{'is-active':key==='art'}]} data-institutional-section={key} aria-pressed={key==='art'?'true':'false'}>{label}</button>
       : <a href={`${base}?theme=institutional&section=${key}`}>{label}</a>
     )}
-    <button type="button" data-institutional-about-trigger>About</button>
+    <a href={`${base}about/`} aria-current={/\/about\/?$/.test(Astro.url.pathname) ? 'page' : undefined}>About</a>
     <a href={`${base}cv/`}>CV</a>
     <a href={`${base}play-with-me/`}>Contact</a>
   </nav>
