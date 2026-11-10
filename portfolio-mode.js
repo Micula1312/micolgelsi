@@ -1,0 +1,30 @@
+(() => {
+  const root=document.documentElement;
+  const buttons=[...document.querySelectorAll('[data-portfolio-mode-toggle]')];
+  const params=new URLSearchParams(location.search);
+  const requested=params.get('theme');
+  let saved=null;
+  try {saved=localStorage.getItem('portfolio-mode')} catch {}
+  const initial=['punk','institutional'].includes(requested)?requested:(['punk','institutional'].includes(saved)?saved:'punk');
+  const apply=(mode,persist=true)=>{
+    root.dataset.portfolioMode=mode;
+    root.dataset.theme=mode==='institutional'?'light':'dark';
+    document.querySelectorAll('[data-theme-toggle]').forEach(button=>{button.textContent=mode==='institutional'?'Light':'Dark';button.disabled=true;button.setAttribute('aria-label','Appearance follows portfolio mode');});
+    if(mode==='punk'){
+      root.dataset.copyStyle='pink';
+      try{localStorage.setItem('portfolio-copy-style','pink')}catch{}
+      const copyButton=document.querySelector('[data-copy-toggle]');
+      if(copyButton){copyButton.textContent=root.dataset.language==='it'?'Rosa':'Pink';copyButton.setAttribute('aria-pressed','true');}
+    }
+    buttons.forEach(button=>{button.textContent=mode==='institutional'?'STELLAR':'INSTITUTIONAL';button.setAttribute('aria-pressed',String(mode==='institutional'));button.setAttribute('aria-label','Switch portfolio theme from '+mode);});
+    if(mode==='institutional'){
+      document.querySelector('[data-entry-gate]')?.remove();
+      document.querySelector('[data-project-loader]')?.remove();
+      if(document.body.style.overflow==='hidden')document.body.style.overflow='';
+    }
+    if(persist){try{localStorage.setItem('portfolio-mode',mode)}catch{}}
+    window.dispatchEvent(new CustomEvent('portfolio-mode-change',{detail:{mode}}));
+  };
+  apply(initial,false);
+  buttons.forEach(button=>button.addEventListener('click',()=>apply(root.dataset.portfolioMode==='institutional'?'punk':'institutional')));
+})();
