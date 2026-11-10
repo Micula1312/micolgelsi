@@ -59,15 +59,10 @@ const labStars=labProjects.map((project,index)=>({
         </div>
         <div class="institutional-entry-info"><span class="institutional-entry-number" aria-hidden="true">{String(index+1).padStart(2,'0')}</span><h2>{item.data.title}</h2>{(item.data.author || item.data.collective) && <span class="institutional-with-badge">with {item.data.author || item.data.collective}</span>}<p>{item.data.summary}</p><div class="institutional-entry-meta"><span>{getTaxonomyType(item.data,item.collection)}</span><span>{displayYear(item.data,item.yearGroup)}</span></div></div>
       </a>)}
-      {labProjects.map((project,index)=><a class="institutional-entry institutional-lab-entry" data-lab-window data-lab-title={project.title} data-lab-demo={project.demo||''} style={`--lab-angle:${[-1.2,1.1,.7,-.9][index%4]}deg;--lab-offset:${index%2?24:0}px;--lab-accent:${project.accent||'#ff2bbd'}`} data-institutional-entry data-institutional-category="lab" data-institutional-year="" data-institutional-context={project.type||'lab'} data-institutional-tags={JSON.stringify(project.tags||[])} data-institutional-research="lab" href={project.demo||project.repository||'#'} target="_blank" rel="noopener noreferrer" aria-label={`Preview ${project.title}`}>
-        <div class="lab-window-bar" aria-hidden="true"><i></i><i></i><i></i><small>{project.id||'experiment'}</small><b>↗</b></div>
-        <div class="institutional-entry-image">
-          {project.image ? (isVideoPreview(project.image)
-            ? <video src={resolveMedia(project.image)} muted playsinline loop preload="metadata" aria-label={project.title}/>
-            : <img src={resolveMedia(project.image)} alt="" loading="lazy" />)
-            : <><div class="lab-window-fallback" aria-hidden="true"><span>✳</span><small>{project.demo?'live experiment':'local prototype'}</small></div>{project.demo&&<div class="lab-live-preview" data-lab-live={project.demo}></div>}</>}
-        </div>
+      {labProjects.map(project=><a class="institutional-entry institutional-lab-entry" data-lab-window data-lab-title={project.title} data-lab-demo={project.demo||''} data-lab-image={resolveMedia(project.image||'')} data-lab-description={project.description||project.type||''} data-institutional-entry data-institutional-category="lab" data-institutional-year="" data-institutional-context={project.type||'lab'} data-institutional-tags={JSON.stringify(project.tags||[])} data-institutional-research="lab" href={project.demo||project.repository||'#'} target="_blank" rel="noopener noreferrer" aria-label={`Preview ${project.title}`}>
+        <span class="lab-list-star" aria-hidden="true">✳</span>
         <div class="institutional-entry-info"><h2>{project.title}</h2><p>{project.type||project.description}</p></div>
+        <span class="lab-list-open" aria-hidden="true">↗</span>
       </a>)}
       {graphics.map((graphic,index)=><a class="institutional-entry institutional-graphic-entry" data-institutional-entry data-institutional-category="graphics" data-institutional-year={String(graphic.year||'')} data-institutional-context={graphic.type||'graphic'} data-institutional-tags={JSON.stringify(graphic.tags||[])} data-institutional-research="graphics" href={graphic.link||resolveMedia(graphic.image)||'#'} target="_blank" rel="noopener noreferrer" aria-label={graphic.title||'Open graphic'}>
         <div class="institutional-entry-image">{/\.(mp4|webm|ogg)(?:$|[?#])/i.test(graphic.image||"")?<video src={resolveMedia(graphic.image)} muted playsinline loop autoplay preload="metadata" aria-label={graphic.title||"Graphic work"} />:<img src={resolveMedia(graphic.image)} alt={graphic.title||""} loading="lazy" />}</div>
