@@ -44,10 +44,10 @@ const labStars=labProjects.map((project,index)=>({
   <div class="institutional-main" id="institutional-projects">
     <div class="institutional-main-heading">
       <span data-institutional-heading>ARTISTIC PRACTICE</span>
-      <div class="institutional-filters" aria-label="Archive filters"><label>Type <select data-institutional-type aria-label="Filter by type"><option value="">All types</option></select></label><button type="button" data-institutional-search-toggle aria-expanded="false" aria-controls="institutional-search-panel">⌕ Search</button></div>
+      <div class="institutional-filters" aria-label="Archive filters"><button type="button" data-graphics-kaos aria-pressed="false" aria-controls="graphics-gallery" title="Scatter the gallery; click again to return to the grid" hidden>KAOS ↗</button><label>Type <select data-institutional-type aria-label="Filter by type"><option value="">All types</option></select></label><button type="button" data-institutional-search-toggle aria-expanded="false" aria-controls="institutional-search-panel">⌕ Search</button></div>
     </div>
     <div class="institutional-search-panel" id="institutional-search-panel" data-institutional-search-panel hidden><input type="search" data-institutional-search placeholder="Search title, type, #tag…" aria-label="Search projects" /><div data-institutional-tags class="institutional-tag-suggestions"></div></div><p class="institutional-archive-description" data-institutional-description></p><p data-institutional-empty hidden>No matching projects.</p>
-    <div class="institutional-entries" data-institutional-entries>
+    <div class="institutional-entries" id="graphics-gallery" data-institutional-entries>
       {items.slice().sort((a,b)=>String(b.start).localeCompare(String(a.start))).map((item,index)=><a class="institutional-entry" data-institutional-entry data-institutional-category={item.lane==='external'?'web':'art'} data-institutional-year={item.yearGroup} data-institutional-context={getTaxonomyType(item.data,item.collection)} data-institutional-tags={JSON.stringify([...(item.data.tags||[]),...(item.data.themes||[]),...(item.data.researchAreas||[])])} data-institutional-research={item.researchAreas.join(', ')} href={item.externalLink?item.href:`${base}${item.href.slice(1)}`}>
         <div class="institutional-entry-image">
           {item.lane==='external' && item.externalLink && <><span class="institutional-web-indicator" aria-hidden="true">→</span><iframe class="institutional-web-frame" title={`Preview of ${item.data.title}`} data-web-preview={item.href} loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer" /></>}
@@ -141,7 +141,8 @@ const labStars=labProjects.map((project,index)=>({
     entries.forEach(e=>{e.hidden=!visible.includes(e);});
     visible.forEach((e,index)=>{container.appendChild(e);const number=e.querySelector('.institutional-entry-number');if(number)number.textContent=String(index+1).padStart(2,'0');});
     empty.hidden=visible.length>0;
-    if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)requestAnimationFrame(()=>visible.forEach(e=>{const old=before.get(e);if(!old)return;const next=e.getBoundingClientRect(),dx=old.left-next.left,dy=old.top-next.top;if(Math.abs(dx)+Math.abs(dy)>2)e.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:'translate(0,0)'}],{duration:420,easing:'cubic-bezier(.22,.61,.36,1)'});}));
+    archive.dispatchEvent(new Event('graphics:layout'));
+    if(animate&&category!=='graphics'&&!matchMedia('(prefers-reduced-motion: reduce)').matches)requestAnimationFrame(()=>visible.forEach(e=>{const old=before.get(e);if(!old)return;const next=e.getBoundingClientRect(),dx=old.left-next.left,dy=old.top-next.top;if(Math.abs(dx)+Math.abs(dy)>2)e.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:'translate(0,0)'}],{duration:420,easing:'cubic-bezier(.22,.61,.36,1)'});}));
   };
   sections.forEach(b=>b.addEventListener('click',()=>{category=b.dataset.institutionalSection;searchInput.value='';refreshOptions();apply();main.scrollTop=0;}));
   typeSelect.addEventListener('change',()=>apply());
@@ -198,4 +199,6 @@ window.addEventListener('resize',()=>{if(list.dataset.view!=='year')return;clear
   }, true);
 })();
 </script>
+<link rel="stylesheet" href={`${base}graphics-gallery.css`} />
+<script is:inline src={`${base}graphics-kaos.js`} defer></script>
 </BaseLayout>
