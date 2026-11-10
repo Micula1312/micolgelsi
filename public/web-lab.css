@@ -1,39 +1,30 @@
+/* Web Lab: compact typographic index. */
 html[data-portfolio-mode="institutional"] .institutional-archive .institutional-entries.is-lab-windows {
-  display:grid!important;grid-template-columns:repeat(auto-fill,minmax(125px,1fr))!important;
-  gap:28px 18px!important;padding:24px 8px 60px!important;align-items:start;
+  display:block!important;padding:8px 0 40px!important;
 }
 html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry {
-  display:block!important;position:relative;min-width:0;padding:0!important;
-  border:0!important;background:transparent!important;max-width:190px!important;width:100%!important;justify-self:center;
-  transform:translateY(var(--lab-offset,0px)) rotate(var(--lab-angle,0deg));
-  transition:transform .25s ease!important;text-decoration:none!important;
+  display:grid!important;grid-template-columns:22px minmax(0,1fr) 18px!important;
+  align-items:center!important;gap:14px!important;
+  width:100%!important;max-width:none!important;margin:0!important;padding:18px 0!important;
+  border:0!important;border-bottom:1px solid #e8e8e8!important;background:transparent!important;
+  transform:none!important;text-decoration:none!important;
 }
 html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-entry[hidden] {display:none!important;}
-html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry:is(:hover,:focus-visible) {
-  z-index:4;transform:translateY(-5px) rotate(0deg) scale(1.035);outline-color:#ff2bbd;
-}
-.lab-window-bar {display:none!important;}
-.lab-window-bar i {width:5px;height:5px;border:1px solid currentColor;border-radius:50%;}
-.lab-window-bar small {margin-left:7px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:9px;}
-.lab-window-bar b {margin-left:auto;font-size:11px;font-weight:400;}
-html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry .institutional-entry-image {
-  position:relative!important;width:100%!important;height:auto!important;aspect-ratio:1!important;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 94%,50% 72%,21% 94%,32% 57%,2% 35%,39% 35%)!important;
-  overflow:hidden!important;background:var(--lab-accent,#ff2bbd)!important;
-}
-html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry .institutional-entry-image :is(img,video) {
-  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
-  max-height:none!important;object-fit:cover!important;pointer-events:none;
-}
-.lab-live-preview {position:absolute;inset:0;pointer-events:none;overflow:hidden;}
-.lab-live-preview iframe {position:absolute;left:0;top:0;width:1200px;height:900px;border:0;transform:scale(var(--lab-preview-scale,.25));transform-origin:top left;pointer-events:none;background:#fff;}
-.lab-window-fallback {position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#171717;}
-.lab-window-fallback span {display:none;}
-.lab-window-fallback small {display:none;}
 html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry .institutional-entry-info {
-  padding:12px 0!important;display:block!important;text-align:center;min-height:0!important;
+  display:block!important;min-height:0!important;min-width:0!important;padding:0!important;text-align:left!important;
 }
-html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry .institutional-entry-info h2 {font-size:12px!important;letter-spacing:-.025em!important;margin:0!important;}
-html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry .institutional-entry-info p {font:italic 11px/1.35 Georgia,serif!important;color:#ff2bbd;margin:6px 0 0!important;}
+html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry h2 {
+  font:500 14px/1.3 Helvetica,Arial,sans-serif!important;letter-spacing:-.015em!important;margin:0!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry .institutional-entry-info p {
+  font:italic 11px/1.45 Georgia,serif!important;letter-spacing:0!important;color:#ff2bbd!important;margin:4px 0 0!important;
+}
+.lab-list-star {display:block;font:22px/1 Georgia,serif;transition:color .18s ease,transform .25s ease;}
+.lab-list-open {font:14px/1 Helvetica,Arial,sans-serif;color:#888;}
+html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry:is(:hover,:focus-visible) .lab-list-star {
+  color:#ff2bbd;transform:rotate(45deg)!important;
+}
+html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry:focus-visible {outline:1px solid #ff2bbd!important;outline-offset:4px;}
 .lab-preview-dialog {position:fixed!important;inset:0!important;width:92vw;max-width:1440px;height:88dvh;max-height:92dvh;margin:auto;padding:0;border:1px solid #171717;background:#fff;color:#171717;overflow:hidden;}
 .lab-preview-dialog[open] {display:flex;flex-direction:column;}
 .lab-preview-dialog::backdrop {background:rgba(0,0,0,.72);}
@@ -46,28 +37,9 @@ html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows
 .lab-preview-content :is(img,video) {max-width:100%;max-height:100%;object-fit:contain;}
 .lab-preview-content p {max-width:50ch;padding:24px;}
 .lab-preview-hint {font:10px/1.4 Helvetica,Arial,sans-serif;padding:8px 14px;margin:0;border-top:1px solid #ddd;color:#666;}
-@keyframes lab-window-orbit {to{transform:rotate(360deg);}}
+
 @media(max-width:760px) {
-  html[data-portfolio-mode="institutional"] .institutional-archive .institutional-entries.is-lab-windows {gap:20px 12px!important;padding:15px 4px 40px!important;}
-  html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry .institutional-entry-info {padding:9px 0!important;}
-  html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry .institutional-entry-info h2 {font-size:12px!important;}
+  html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry {gap:10px!important;padding:16px 0!important;}
   .lab-preview-dialog {width:96vw;height:90dvh;}
 }
-@media(max-width:430px) {
-  html[data-portfolio-mode="institutional"] .institutional-archive .institutional-entries.is-lab-windows {grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:24px 14px!important;}
-}
-@media(prefers-reduced-motion:reduce) {
-  .lab-window-fallback span {animation:none;}
-  html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry {transform:none!important;transition:none!important;}
-}
-
-html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry .lab-live-preview {
-  position:absolute!important;inset:0!important;overflow:hidden!important;
-}
-html[data-portfolio-mode="institutional"] .institutional-archive .is-lab-windows .institutional-lab-entry .lab-live-preview iframe {
-  position:absolute!important;width:1200px!important;height:900px!important;
-  min-width:1200px!important;max-width:none!important;max-height:none!important;
-  left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;
-  border:0!important;transform-origin:center!important;
-  transform:translate(-50%,-50%) scale(var(--lab-preview-scale,.1))!important;
-}
+@media(prefers-reduced-motion:reduce) {.lab-list-star {transition:none!important;}}
