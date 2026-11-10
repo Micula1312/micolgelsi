@@ -59,9 +59,15 @@ const labStars=labProjects.map((project,index)=>({
         </div>
         <div class="institutional-entry-info"><span class="institutional-entry-number" aria-hidden="true">{String(index+1).padStart(2,'0')}</span><h2>{item.data.title}</h2>{(item.data.author || item.data.collective) && <span class="institutional-with-badge">with {item.data.author || item.data.collective}</span>}<p>{item.data.summary}</p><div class="institutional-entry-meta"><span>{getTaxonomyType(item.data,item.collection)}</span><span>{displayYear(item.data,item.yearGroup)}</span></div></div>
       </a>)}
-      {labProjects.map((project,index)=><a class="institutional-entry institutional-lab-entry" data-institutional-entry data-institutional-category="lab" data-institutional-year="" data-institutional-context={project.type||'lab'} data-institutional-tags={JSON.stringify(project.tags||[])} data-institutional-research="lab" href={project.demo||project.repository||'#'} target="_blank" rel="noopener noreferrer">
-        <div class="institutional-entry-image">{project.image?(/\.(mp4|webm|ogg)(?:$|[?#])/i.test(project.image)?<video src={project.image} muted playsinline loop autoplay preload="metadata" aria-label={project.title}/>:<img src={project.image} alt="" loading="lazy" />):<span class="institutional-lab-placeholder" aria-hidden="true">★</span>}</div>
-        <div class="institutional-entry-info"><span class="institutional-entry-number">{String(index+1).padStart(2,'0')}</span><h2>{project.title}</h2><p>{project.description||project.type}</p><div class="institutional-entry-meta"><span>{project.type||'LAB'}</span></div></div>
+      {labProjects.map((project,index)=><a class="institutional-entry institutional-lab-entry" data-lab-window data-lab-title={project.title} data-lab-demo={project.demo||''} style={`--lab-angle:${[-1.2,1.1,.7,-.9][index%4]}deg;--lab-offset:${index%2?24:0}px;--lab-accent:${project.accent||'#ff2bbd'}`} data-institutional-entry data-institutional-category="lab" data-institutional-year="" data-institutional-context={project.type||'lab'} data-institutional-tags={JSON.stringify(project.tags||[])} data-institutional-research="lab" href={project.demo||project.repository||'#'} target="_blank" rel="noopener noreferrer" aria-label={`Preview ${project.title}`}>
+        <div class="lab-window-bar" aria-hidden="true"><i></i><i></i><i></i><small>{project.id||'experiment'}</small><b>↗</b></div>
+        <div class="institutional-entry-image">
+          {project.image ? (isVideoPreview(project.image)
+            ? <video src={resolveMedia(project.image)} muted playsinline loop preload="metadata" aria-label={project.title}/>
+            : <img src={resolveMedia(project.image)} alt="" loading="lazy" />)
+            : <><div class="lab-window-fallback" aria-hidden="true"><span>✳</span><small>{project.demo?'live experiment':'local prototype'}</small></div>{project.demo&&<div class="lab-live-preview" data-lab-live={project.demo}></div>}</>}
+        </div>
+        <div class="institutional-entry-info"><h2>{project.title}</h2><p>{project.type||project.description}</p></div>
       </a>)}
       {graphics.map((graphic,index)=><a class="institutional-entry institutional-graphic-entry" data-institutional-entry data-institutional-category="graphics" data-institutional-year={String(graphic.year||'')} data-institutional-context={graphic.type||'graphic'} data-institutional-tags={JSON.stringify(graphic.tags||[])} data-institutional-research="graphics" href={graphic.link||resolveMedia(graphic.image)||'#'} target="_blank" rel="noopener noreferrer" aria-label={graphic.title||'Open graphic'}>
         <div class="institutional-entry-image">{/\.(mp4|webm|ogg)(?:$|[?#])/i.test(graphic.image||"")?<video src={resolveMedia(graphic.image)} muted playsinline loop autoplay preload="metadata" aria-label={graphic.title||"Graphic work"} />:<img src={resolveMedia(graphic.image)} alt={graphic.title||""} loading="lazy" />}</div>
@@ -133,6 +139,7 @@ const labStars=labProjects.map((project,index)=>({
     sections.forEach(b=>{const active=b.dataset.institutionalSection===category;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});
     heading.textContent=names[category];
     container.classList.toggle('is-graphics-masonry',category==='graphics');
+    container.classList.toggle('is-lab-windows',category==='lab');
     if(description){description.textContent=descriptions[category]||'';description.hidden=!descriptions[category];}
     const query=searchInput.value.trim().replace(/^#/,'').toLocaleLowerCase();
     const type=typeSelect.value;
@@ -142,7 +149,7 @@ const labStars=labProjects.map((project,index)=>({
     visible.forEach((e,index)=>{container.appendChild(e);const number=e.querySelector('.institutional-entry-number');if(number)number.textContent=String(index+1).padStart(2,'0');});
     empty.hidden=visible.length>0;
     archive.dispatchEvent(new Event('graphics:layout'));
-    if(animate&&category!=='graphics'&&!matchMedia('(prefers-reduced-motion: reduce)').matches)requestAnimationFrame(()=>visible.forEach(e=>{const old=before.get(e);if(!old)return;const next=e.getBoundingClientRect(),dx=old.left-next.left,dy=old.top-next.top;if(Math.abs(dx)+Math.abs(dy)>2)e.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:'translate(0,0)'}],{duration:420,easing:'cubic-bezier(.22,.61,.36,1)'});}));
+    if(animate&&category!=='graphics'&&category!=='lab'&&!matchMedia('(prefers-reduced-motion: reduce)').matches)requestAnimationFrame(()=>visible.forEach(e=>{const old=before.get(e);if(!old)return;const next=e.getBoundingClientRect(),dx=old.left-next.left,dy=old.top-next.top;if(Math.abs(dx)+Math.abs(dy)>2)e.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:'translate(0,0)'}],{duration:420,easing:'cubic-bezier(.22,.61,.36,1)'});}));
   };
   sections.forEach(b=>b.addEventListener('click',()=>{category=b.dataset.institutionalSection;searchInput.value='';refreshOptions();apply();main.scrollTop=0;}));
   typeSelect.addEventListener('change',()=>apply());
@@ -201,4 +208,6 @@ window.addEventListener('resize',()=>{if(list.dataset.view!=='year')return;clear
 </script>
 <link rel="stylesheet" href={`${base}graphics-gallery.css`} />
 <script is:inline src={`${base}graphics-kaos.js`} defer></script>
+<link rel="stylesheet" href={`${base}web-lab.css`} />
+<script is:inline src={`${base}web-lab.js`} defer></script>
 </BaseLayout>
