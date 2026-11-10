@@ -40,6 +40,16 @@
     frame.src = url;
     return frame;
   };
+  const sizePreview = card => {
+    const image = card.querySelector('.institutional-entry-image');
+    if (!image || !image.clientWidth) return;
+    const scale = Math.min(image.clientWidth / 1200, image.clientHeight / 900);
+    card.style.setProperty('--lab-preview-scale', String(scale));
+    const frame = card.querySelector('[data-lab-live] iframe');
+    if (frame) {
+      frame.style.setProperty('transform', `translate(-50%,-50%) scale(${scale})`, 'important');
+    }
+  };
   const unload = card => {
     const frame = card.querySelector('[data-lab-live] iframe');
     frame?.remove();
@@ -53,7 +63,9 @@
       const frame = frameFor(url, `Preview: ${card.dataset.labTitle}`);
       frame.tabIndex = -1;
       frame.setAttribute('aria-hidden', 'true');
+      frame.addEventListener('error', () => frame.remove());
       host.append(frame);
+      sizePreview(card);
     }
     card.querySelector('video')?.play().catch(() => {});
   };
@@ -94,7 +106,11 @@
   };
   cards.forEach(card => {
     const image = card.querySelector('.institutional-entry-image');
-    if (image) new ResizeObserver(() => card.style.setProperty('--lab-preview-scale', String(image.clientWidth / 1200))).observe(image);
+    if (image) new ResizeObserver(() => sizePreview(card)).observe(image);
+    sizePreview(card);
+    card.querySelectorAll('.institutional-entry-image img, .institutional-entry-image video').forEach(media => {
+      media.addEventListener('error', () => { media.style.setProperty('display', 'none', 'important'); });
+    });
     card.addEventListener('click', event => {
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
